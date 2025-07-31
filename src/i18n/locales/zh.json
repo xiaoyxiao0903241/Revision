@@ -1,0 +1,63 @@
+{
+  "navigation": {
+    "dashboard": "仪表板",
+    "analytics": "分析",
+    "community": "社区",
+    "staking": "质押",
+    "noLockStaking": "无锁定期质押",
+    "lockedStaking": "锁定质押",
+    "bonds": "债券",
+    "lpBonds": "LP债券",
+    "treasuryBonds": "国库债券",
+    "tools": "工具",
+    "dao": "DAO",
+    "coolingPool": "冷却池",
+    "turbine": "涡轮",
+    "swap": "交换",
+    "documents": "文档",
+    "viewOnAve": "在AVE上查看",
+    "viewOnDexScreener": "在DexScreener上查看"
+  },
+  "header": {
+    "language": "语言",
+    "network": "BNB智能链",
+    "wallet": "钱包"
+  },
+  "staking": {
+    "title": "质押",
+    "description": "长期质押通过爆块奖励加成激励用户延长质押周期,加成幅度与质押时长成正比。",
+    "stake": "质押",
+    "unstake": "解质押",
+    "claim": "领取",
+    "records": "记录",
+    "calculator": "计算器",
+    "selectDuration": "选择质押期限",
+    "amount": "金额",
+    "balance": "余额",
+    "useMax": "使用最大",
+    "rebaseRewardRate": "重基奖励率",
+    "rebaseBoost": "重基加成",
+    "nextRebaseRewardRate": "下次重基奖励率",
+    "countdownToNextRebase": "距离下次重基倒计时",
+    "availableToStake": "可质押数量",
+    "apr": "年化收益率",
+    "stakedAmount": "已质押数量",
+    "rebaseRewards": "重基奖励",
+    "addToMetaMask": "添加到MetaMask",
+    "statistics": "统计",
+    "viewOnBscScan": "在BscScan上查看",
+    "annualPercentageRate": "年化收益率",
+    "totalStaked": "总质押量",
+    "stakers": "质押者数量",
+    "marketCap": "OLY市值"
+  },
+  "common": {
+    "welcome": "欢迎来到 ONE OLYONE",
+    "description": "DeFi 质押平台",
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "cancel": "取消",
+    "confirm": "确认"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "analytics": "Analytics",
+    "community": "Community",
+    "staking": "Staking",
+    "noLockStaking": "No-Lock Staking",
+    "lockedStaking": "Locked Staking",
+    "bonds": "Bonds",
+    "lpBonds": "LP Bonds",
+    "treasuryBonds": "Treasury Bonds",
+    "tools": "Tools",
+    "dao": "DAO",
+    "coolingPool": "Cooling Pool",
+    "turbine": "Turbine",
+    "swap": "Swap",
+    "documents": "Documents",
+    "viewOnAve": "View On AVE",
+    "viewOnDexScreener": "View On Dex Screener"
+  },
+  "header": {
+    "language": "Language",
+    "network": "BNB Smart Chain",
+    "wallet": "Wallet"
+  },
+  "staking": {
+    "title": "Stake",
+    "description": "Long-term staking incentivizes users to extend the staking period through block rewards, and the incentive amount is directly proportional to the staking duration.",
+    "stake": "Stake",
+    "unstake": "Unstake",
+    "claim": "Claim",
+    "records": "Records",
+    "calculator": "Calculator",
+    "selectDuration": "Select Staking Duration",
+    "amount": "Amount",
+    "balance": "Balance",
+    "useMax": "Use MAX",
+    "rebaseRewardRate": "Rebase Reward Rate",
+    "rebaseBoost": "Rebase Boost",
+    "nextRebaseRewardRate": "Next Rebase Reward Rate",
+    "countdownToNextRebase": "Countdown to Next Rebase",
+    "availableToStake": "Available to stake",
+    "apr": "APR",
+    "stakedAmount": "Staked amount",
+    "rebaseRewards": "Rebase Rewards",
+    "addToMetaMask": "ONE Add to MetaMask",
+    "statistics": "Statistics",
+    "viewOnBscScan": "View on BscScan",
+    "annualPercentageRate": "Annual percentage rate",
+    "totalStaked": "Total staked",
+    "stakers": "Stakers",
+    "marketCap": "OLY market cap"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  }
+}
