@@ -1,13 +1,13 @@
 "use client"
 import { motion } from "motion/react"
 import { FC, useEffect, useRef, useState } from "react"
+import { Link } from "~/i18n/navigation"
 
 import { cn } from "~/lib/utils"
 
 export const Tabs: FC<{
-  data: string[]
+  data: { label: string; href: string }[]
   activeIndex?: number
-  onChange: (index: number) => void
   children?: React.ReactNode
   className?: string
   indicatorClassName?: string
@@ -16,7 +16,6 @@ export const Tabs: FC<{
 }> = ({
   data,
   activeIndex = 0,
-  onChange,
   children,
   className,
   indicatorClassName,
@@ -38,7 +37,7 @@ export const Tabs: FC<{
   return (
     <div
       className={cn(
-        "relative flex w-full h-12 gap-8 mx-auto border-b flew-row backdrop-blur-sm",
+        "relative flex w-full h-12 gap-8 mx-auto border-b border-border/10 flew-row backdrop-blur-sm",
         className
       )}
     >
@@ -46,12 +45,18 @@ export const Tabs: FC<{
         className="absolute bottom-0 flex overflow-hidden transition-all duration-300 -z-10"
         style={{ left: tabUnderlineLeft, width: tabUnderlineWidth }}
       >
-        <span className={cn("w-full h-1 bg-white", indicatorClassName)} />
+        <span
+          className={cn(
+            "w-full h-[2px] bg-gradient-to-r from-[#B408D7] to-[#576AF4]",
+            indicatorClassName
+          )}
+        />
       </span>
       {data.map((tab, index) => {
         const isActive = activeIndex === index
         return (
-          <button
+          <Link
+            href={tab.href}
             key={index}
             ref={(el) => {
               tabsRef.current[index] = el
@@ -59,15 +64,16 @@ export const Tabs: FC<{
             className={cn(
               "my-auto cursor-pointer font-lg select-none text-nowrap font-semibold rounded-full text-center text-secondary",
               {
-                "hover:text-neutral-300": !isActive,
-                [activeClassName ?? "text-white"]: isActive,
+                "hover:text-neutral-300 text-white/70": !isActive,
+                [activeClassName ??
+                "bg-gradient-to-r from-[#B408D7] to-[#576AF4] text-transparent bg-clip-text"]:
+                  isActive,
               },
               labelClassName
             )}
-            onClick={() => onChange(index)}
           >
-            {tab}
-          </button>
+            {tab.label}
+          </Link>
         )
       })}
       {children}
