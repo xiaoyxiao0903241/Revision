@@ -1,66 +1,109 @@
 "use client"
-
-import * as React from "react"
-import * as TabsPrimitive from "@radix-ui/react-tabs"
+import { motion } from "motion/react"
+import { FC, useEffect, useRef, useState } from "react"
 
 import { cn } from "~/lib/utils"
 
-function Tabs({
+export const Tabs: FC<{
+  data: string[]
+  activeIndex?: number
+  onChange: (index: number) => void
+  children?: React.ReactNode
+  className?: string
+  indicatorClassName?: string
+  activeClassName?: string
+  labelClassName?: string
+}> = ({
+  data,
+  activeIndex = 0,
+  onChange,
+  children,
   className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Root>) {
-  return (
-    <TabsPrimitive.Root
-      data-slot="tabs"
-      className={cn("flex flex-col gap-2", className)}
-      {...props}
-    />
-  )
-}
+  indicatorClassName,
+  activeClassName,
+  labelClassName,
+}) => {
+  const tabsRef = useRef<(HTMLElement | null)[]>([])
+  const [tabUnderlineWidth, setTabUnderlineWidth] = useState(0)
+  const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0)
+  useEffect(() => {
+    const setTabPosition = () => {
+      const currentTab = tabsRef.current[activeIndex] as HTMLElement
+      setTabUnderlineLeft(currentTab?.offsetLeft ?? 0)
+      setTabUnderlineWidth(currentTab?.clientWidth ?? 0)
+    }
+    setTabPosition()
+  }, [activeIndex])
 
-function TabsList({
-  className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.List>) {
   return (
-    <TabsPrimitive.List
-      data-slot="tabs-list"
+    <div
       className={cn(
-        "bg-muted text-muted-foreground inline-flex h-9 w-fit items-center justify-center rounded-lg p-[3px]",
+        "relative flex w-full h-12 gap-8 mx-auto border-b flew-row backdrop-blur-sm",
         className
       )}
-      {...props}
-    />
+    >
+      <span
+        className="absolute bottom-0 flex overflow-hidden transition-all duration-300 -z-10"
+        style={{ left: tabUnderlineLeft, width: tabUnderlineWidth }}
+      >
+        <span className={cn("w-full h-1 bg-white", indicatorClassName)} />
+      </span>
+      {data.map((tab, index) => {
+        const isActive = activeIndex === index
+        return (
+          <button
+            key={index}
+            ref={(el) => {
+              tabsRef.current[index] = el
+            }}
+            className={cn(
+              "my-auto cursor-pointer font-lg select-none text-nowrap font-semibold rounded-full text-center text-secondary",
+              {
+                "hover:text-neutral-300": !isActive,
+                [activeClassName ?? "text-white"]: isActive,
+              },
+              labelClassName
+            )}
+            onClick={() => onChange(index)}
+          >
+            {tab}
+          </button>
+        )
+      })}
+      {children}
+    </div>
   )
 }
 
-function TabsTrigger({
-  className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+export const AnimatedTabs: FC<{
+  data: string[]
+  value: string
+  onChange: (v: string) => void
+}> = ({ data, onChange, value }) => {
   return (
-    <TabsPrimitive.Trigger
-      data-slot="tabs-trigger"
-      className={cn(
-        "data-[state=active]:bg-background dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className
-      )}
-      {...props}
-    />
+    <div className="flex space-x-1 bg-card rounded-full h-12 border overflow-x-auto">
+      {data.map((tab) => (
+        <button
+          key={tab}
+          onClick={() => onChange(tab)}
+          className={`${
+            value === tab ? "" : "hover:text-white"
+          } relative rounded-full flex-1 px-6 py-1.5 text-sm font-medium text-white/60 outline-sky-400 transition focus-visible:outline-2`}
+          style={{
+            WebkitTapHighlightColor: "transparent",
+          }}
+        >
+          {value === tab && (
+            <motion.span
+              layoutId="bubble"
+              className="absolute inset-0 z-10 bg-primary mix-blend-difference"
+              style={{ borderRadius: 9999 }}
+              transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+            />
+          )}
+          {tab}
+        </button>
+      ))}
+    </div>
   )
 }
-
-function TabsContent({
-  className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Content>) {
-  return (
-    <TabsPrimitive.Content
-      data-slot="tabs-content"
-      className={cn("flex-1 outline-none", className)}
-      {...props}
-    />
-  )
-}
-
-export { Tabs, TabsList, TabsTrigger, TabsContent }

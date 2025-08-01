@@ -52,10 +52,10 @@ export function StakingForm() {
             {t("selectDuration")}
           </label>
           <Select value={duration} onValueChange={setDuration}>
-            <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
+            <SelectTrigger>
               <SelectValue placeholder="选择质押期限" />
             </SelectTrigger>
-            <SelectContent className="bg-gray-800 border-gray-700">
+            <SelectContent>
               {durations.map((dur) => (
                 <SelectItem key={dur.value} value={dur.value}>
                   <div className="flex items-center justify-between w-full">

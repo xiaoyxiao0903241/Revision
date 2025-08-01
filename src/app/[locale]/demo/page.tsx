@@ -1,10 +1,10 @@
-import { Card, CardHeader } from "~/components"
+import { Card, CardHeader, Icon } from "~/components"
 
 export default function DemoPage() {
   return (
     <div className="space-y-8 p-8 bg-">
       <h1 className="text-3xl font-bold text-white">九宫格边框组件演示</h1>
-
+      <Icon name="Home" />
       {/* 小尺寸演示 */}
       <div className="space-y-4">
         <h2 className="text-xl font-semibold text-white">小尺寸 (300x200)</h2>

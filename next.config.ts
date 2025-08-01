@@ -8,6 +8,44 @@ const nextConfig: NextConfig = {
     useCache: true,
     useLightningcss: true,
     viewTransition: true,
+    turbo: {
+      rules: {
+        "*.svg": {
+          loaders: ["@svgr/webpack"],
+          as: "*.js",
+        },
+      },
+    },
+  },
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: [
+        {
+          loader: "@svgr/webpack",
+          options: {
+            icon: true,
+            svgoConfig: {
+              plugins: [
+                {
+                  name: "preset-default",
+                  params: {
+                    overrides: {
+                      removeViewBox: false,
+                      removeUnknownsAndDefaults: {
+                        keepRoleAttr: true,
+                      },
+                    },
+                  },
+                },
+                "removeXMLNS",
+              ],
+            },
+          },
+        },
+      ],
+    })
+    return config
   },
 }
 

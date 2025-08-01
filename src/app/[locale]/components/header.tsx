@@ -1,7 +1,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { Icons, Button } from "~/components"
+import { Button } from "~/components"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,7 +20,7 @@ export function Header() {
   ]
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-gray-800 bg-gray-900 px-6 text-white">
+    <header className="flex h-20 items-center justify-between px-9">
       <div className="flex items-center space-x-4">
         {/* Language Selector */}
         <DropdownMenu>
@@ -30,9 +30,7 @@ export function Header() {
               size="sm"
               className="text-gray-300 hover:text-white"
             >
-              <Icons.Globe className="mr-2 h-4 w-4" />
               {languages.find((lang) => lang.code === currentLanguage)?.name}
-              <Icons.ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" className="w-40">
@@ -60,7 +58,6 @@ export function Header() {
             >
               <div className="mr-2 h-4 w-4 rounded-full bg-yellow-400" />
               {t("network")}
-              <Icons.ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" className="w-48">
@@ -85,20 +82,12 @@ export function Header() {
               size="sm"
               className="text-gray-300 hover:text-white"
             >
-              <Icons.Wallet className="mr-2 h-4 w-4 text-purple-400" />
               0xg2a9...12b8
-              <Icons.ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuItem>
-              <Icons.Wallet className="mr-2 h-4 w-4" />
-              {t("wallet")}
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Icons.ExternalLink className="mr-2 h-4 w-4" />
-              View on Explorer
-            </DropdownMenuItem>
+            <DropdownMenuItem>{t("wallet")}</DropdownMenuItem>
+            <DropdownMenuItem>View on Explorer</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

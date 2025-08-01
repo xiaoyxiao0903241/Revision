@@ -32,46 +32,34 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
   body {
     @apply bg-background text-foreground;
     background-image: url("/images/background/global.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  .absolute-center-x {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 
 @layer components {
+  /* 九宫格边框 */
   .nine-patch-frame {
     display: inline-block;
     border-style: solid;
     border-image-repeat: stretch;
     box-sizing: border-box;
   }
-  .card-body {
-    border-width: 32px 32px 32px 192px;
-    border-image: url("/images/background/card-body.png");
-    border-image-slice: 32 32 32 192 fill;
-    /* 直接子元素样式 */
-    & > div {
-      margin: -32px;
-      margin-left: -192px;
-      margin-bottom: -16px;
-    }
-  }
-  .card-header {
-    border-width: 32px 192px 32 32px;
-    border-image: url("/images/background/card-header.png");
-    border-image-slice: 32 192 32 32 fill;
-    & > div {
-      margin: -32px;
-      margin-right: -192px;
-      margin-bottom: -16px;
-    }
-  }
+  /* 侧边栏 */
   .sidebar {
     border-width: 32px 32px 32px 120px;
     border-image: url("/images/background/sidebar.png");
@@ -83,24 +71,60 @@
       margin-bottom: -16px;
     }
   }
-
-  /* 绝对定位元素居中工具类 */
-  .absolute-center-x {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+  /* 卡片 */
+  .card-body {
+    border-width: 32px 32px 32px 192px;
+    border-image: url("/images/background/card-body.png");
+    border-image-slice: 32 32 32 192 fill;
+    /* 直接子元素样式 */
+    & > div {
+      margin: -32px;
+      margin-left: -192px;
+      margin-bottom: -16px;
+    }
   }
-
-  .absolute-center-y {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+  /* 卡片头部 */
+  .card-header {
+    border-width: 32px 192px 32 32px;
+    border-image: url("/images/background/card-header.png");
+    border-image-slice: 32 192 32 32 fill;
+    & > div {
+      margin: -32px;
+      margin-right: -192px;
+      margin-bottom: -16px;
+    }
   }
-
-  .absolute-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  .container {
+    border-width: 16px 16px 16px 16px;
+    border-image: url("/images/background/container.png");
+    border-image-slice: 16 16 16 16 fill;
+    & > div {
+      margin: -16px;
+    }
+  }
+  .alert {
+    border-width: 0px 0 32px 0px;
+    border-image: url("/images/background/alert.png");
+    border-image-slice: 0 0 32 0 fill;
+    & > div {
+      margin: 0 0 0 -32px;
+    }
+  }
+  /* Select 下拉菜单 */
+  .select-trigger {
+    border-width: 16px 16px 16px 16px;
+    border-image: url("/images/background/select-trigger.png");
+    border-image-slice: 16 16 16 16 fill;
+    & > div {
+      margin: -16px;
+    }
+  }
+  .select-dropdown {
+    border-width: 24px 24px 24px 24px;
+    border-image: url("/images/background/dropdown.png");
+    border-image-slice: 24 24 24 24 fill;
+    & > div {
+      margin: -24px;
+    }
   }
 }
