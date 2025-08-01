@@ -1,39 +1,36 @@
 "use client"
-import { FC, SVGProps } from "react"
+
+import React from "react"
 import { cn } from "~/lib/utils"
 
-import shaking from "~/assets/icons/shaking.svg"
+export type IconFontName = "analytics" | "community" | "Frame"
 
-const icons = {
-  shaking,
-} as const
+// 图标映射表
+export const ICON_MAP: Record<IconFontName, string> = {
+  analytics: "\ue726",
+  community: "\ue727",
+  Frame: "\ue725",
+}
 
-type IconType = keyof typeof icons
-
-type Props = {
-  name: IconType
+interface IconFontProps {
+  name: IconFontName
   className?: string
-  active?: boolean
-} & Omit<SVGProps<SVGSVGElement>, "className">
+  size?: number | string
+  color?: string
+  onClick?: () => void
+}
 
-const Icon: FC<Props> = ({ name, className, active, ...svgProps }) => {
-  const IconComponent = icons[name]
+export function Icon({ name, className, ...props }: IconFontProps) {
+  const iconCode = ICON_MAP[name]
 
-  if (!IconComponent) {
-    console.warn(`Icon "${name}" not found`)
+  if (!iconCode) {
+    console.warn(`Icon "${name}" not found in icon resources`)
     return null
   }
 
   return (
-    <IconComponent
-      className={cn("flex-shrink-0", className)}
-      from="red"
-      to="blue"
-      {...svgProps}
-    />
+    <i className={cn("iconfont text-2xl text-white", className)} {...props}>
+      {iconCode}
+    </i>
   )
 }
-
-Icon.displayName = "Icon"
-
-export { Icon, type IconType }

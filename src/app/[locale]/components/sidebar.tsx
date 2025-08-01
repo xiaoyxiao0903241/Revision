@@ -20,13 +20,16 @@ const NavigationItem = ({ item }: { item: NavigationItem }) => {
       href={item.href}
       className={cn(
         "flex w-full items-center space-x-3 rounded-lg px-5 py-4 text-sm font-medium",
-        isActive
-          ? "bg-purple-600 text-foreground/70"
-          : "text-foreground/70 hover:bg-foreground/5"
+        "text-primary/70 hover:bg-foreground/5"
       )}
     >
-      <Icon name="Shaking" className={cn(!isActive && "text-gray-400")} />
-      <span>{item.label}</span>
+      <Icon
+        name="analytics"
+        className={cn("text-primary/70", { "gradient-text": isActive })}
+      />
+      <span className={cn("text-primary/70", { "gradient-text": isActive })}>
+        {item.label}
+      </span>
     </Link>
   )
 }

@@ -65,9 +65,7 @@ export const Tabs: FC<{
               "my-auto cursor-pointer font-lg select-none text-nowrap font-semibold rounded-full text-center text-secondary",
               {
                 "hover:text-neutral-300 text-white/70": !isActive,
-                [activeClassName ??
-                "bg-gradient-to-r from-[#B408D7] to-[#576AF4] text-transparent bg-clip-text"]:
-                  isActive,
+                [activeClassName ?? "gradient-text"]: isActive,
               },
               labelClassName
             )}

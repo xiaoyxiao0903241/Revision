@@ -7,16 +7,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/select"
+import { Icon } from "~/components"
 
 export default function TestPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 p-8">
-      <div className="max-w-md mx-auto space-y-8">
+    <div className="min-h-screen">
+      <div className="max-w-4xl mx-auto space-y-8">
         <h1 className="text-3xl font-bold text-white text-center mb-8">
-          Select 组件测试
+          组件测试页面
         </h1>
-
+        <Icon name="analytics" className="gradient-text" />
+        <Icon name="analytics" className="text-red-400" />
+        {/* Select 组件测试 */}
         <div className="space-y-4">
+          <h2 className="text-xl font-semibold text-white">Select 组件测试</h2>
           <label className="block text-white text-sm font-medium">
             选择质押期限
           </label>
@@ -75,6 +79,30 @@ export default function TestPage() {
               </SelectItem>
             </SelectContent>
           </Select>
+        </div>
+
+        {/* IconFont 组件测试 */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold text-white">
+            IconFont 组件测试
+          </h2>
+
+          <div className="grid grid-cols-3 gap-4">
+            <div className="flex flex-col items-center p-4 bg-white/5 rounded-lg">
+              <Icon name="analytics" size={24} className="text-white mb-2" />
+              <span className="text-xs text-white/70">analytics</span>
+            </div>
+
+            <div className="flex flex-col items-center p-4 bg-white/5 rounded-lg">
+              <Icon name="community" size={24} className="text-white mb-2" />
+              <span className="text-xs text-white/70">community</span>
+            </div>
+
+            <div className="flex flex-col items-center p-4 bg-white/5 rounded-lg">
+              <Icon name="Frame" size={24} className="text-white mb-2" />
+              <span className="text-xs text-white/70">Frame</span>
+            </div>
+          </div>
         </div>
 
         <div className="text-white text-sm text-center mt-8">

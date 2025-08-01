@@ -1,6 +1,6 @@
 {
   "version": "0.2",
   "language": "en",
-  "words": ["turbopack", "Lightningcss", "svgr"],
+  "words": ["turbopack", "Lightningcss", "svgr", "iconfont"],
   "ignorePaths": ["node_modules", "dist", "build", ".git", "package-lock.json"]
 }

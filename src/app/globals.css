@@ -1,3 +1,6 @@
+/* 引入 iconfont 字体图标 */
+@import url("../../public/fonts/iconfont.css");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -49,6 +52,12 @@
     left: 50%;
     transform: translateX(-50%);
   }
+  .gradient {
+    @apply bg-gradient-to-r from-[#B408D7] to-[#576AF4];
+  }
+  .gradient-text {
+    @apply bg-gradient-to-r from-[#B408D7] to-[#576AF4] text-transparent bg-clip-text;
+  }
 }
 
 @layer components {
@@ -61,6 +70,7 @@
   }
   /* 侧边栏 */
   .sidebar {
+    width: 260px;
     border-width: 32px 32px 32px 120px;
     border-image: url("/images/background/sidebar.png");
     border-image-slice: 32 32 32 120 fill;
@@ -119,12 +129,98 @@
       margin: -16px;
     }
   }
-  .select-dropdown {
+  .dropdown-head {
+    border-width: 0px 16px 0px 0px;
+    border-image: url("/images/background/dropdown-head.png");
+    border-image-slice: 0 16 0 0 fill;
+  }
+  .dropdown-foot {
+    border-width: 0px 0px 0px 16px;
+    border-image: url("/images/background/dropdown-foot.png");
+    border-image-slice: 0 0 0 16 fill;
+  }
+  .dropdown-body {
+    background-image: url("/images/background/dropdown-body.png");
+    background-repeat: repeat-y;
+    background-size: 100% auto;
+  }
+  /* 按钮样式 */
+  .button {
+    border-width: 16px 16px 16px 16px;
+    border-image-slice: 16 16 16 16 fill;
+  }
+  .button-primary {
+    border-image: url("/images/background/button-primary.png");
+  }
+  .button-hover {
+    border-image: url("/images/background/button-hover.png");
+  }
+  .button-active {
+    border-image: url("/images/background/button-active.png");
+  }
+  .button-disabled {
+    border-image: url("/images/background/button-disabled.png");
+  }
+  .button-outlined {
+    border-image: url("/images/background/button-outlined.png");
+  }
+  .button-gradient-outlined {
+    border-image: url("/images/background/button-gradient-outlined.png");
+  }
+  .button-square {
+    border-image: url("/images/background/button-square.png");
+  }
+  .button-accent {
+    border-image: url("/images/background/button-accent.png");
+  }
+  /* 项目样式 */
+  .item {
+    border-width: 16px 16px 16px 16px;
+    border-image: url("/images/background/item.png");
+    border-image-slice: 16 16 16 16 fill;
+    & > div {
+      margin: -16px;
+    }
+  }
+  .item-active {
+    border-width: 16px 16px 16px 16px;
+    border-image: url("/images/background/item-active.png");
+    border-image-slice: 16 16 16 16 fill;
+    & > div {
+      margin: -16px;
+    }
+  }
+  .item-inactive {
+    border-width: 16px 16px 16px 16px;
+    border-image: url("/images/background/item-inactive.png");
+    border-image-slice: 16 16 16 16 fill;
+    & > div {
+      margin: -16px;
+    }
+  }
+  /* 其他组件 */
+  .tooltip {
+    border-width: 16px 16px 16px 16px;
+    border-image: url("/images/background/tooltip.png");
+    border-image-slice: 16 16 16 16 fill;
+    & > div {
+      margin: -16px;
+    }
+  }
+  .popup {
     border-width: 24px 24px 24px 24px;
-    border-image: url("/images/background/dropdown.png");
+    border-image: url("/images/background/popup.png");
     border-image-slice: 24 24 24 24 fill;
     & > div {
       margin: -24px;
+    }
+  }
+  .slider-track {
+    border-width: 8px 8px 8px 8px;
+    border-image: url("/images/background/slider-track.png");
+    border-image-slice: 8 8 8 8 fill;
+    & > div {
+      margin: -8px;
     }
   }
 }
