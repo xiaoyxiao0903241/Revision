@@ -1,6 +1,6 @@
 {
   "version": "0.2",
   "language": "en",
-  "words": ["oklch"],
+  "words": ["turbopack"],
   "ignorePaths": ["node_modules", "dist", "build", ".git", "package-lock.json"]
 }

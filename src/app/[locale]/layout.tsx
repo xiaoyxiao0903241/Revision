@@ -1,6 +1,7 @@
-import { MainLayout } from "~/components/layout/main-layout"
 import { NextIntlClientProvider } from "next-intl"
 import "../globals.css"
+import { Sidebar } from "./components/sidebar"
+import { Header } from "./components/header"
 
 export default async function LocaleLayout({
   children,
@@ -13,10 +14,22 @@ export default async function LocaleLayout({
   const { locale = "zh" } = await params
 
   return (
-    <html lang={locale}>
-      <body>
+    <html lang={locale} className="h-full">
+      <body className="h-full">
         <NextIntlClientProvider>
-          <MainLayout>{children}</MainLayout>
+          <div className="flex h-screen">
+            {/* 左侧主导航栏 */}
+            <Sidebar />
+
+            {/* 右侧主内容区域 */}
+            <div className="flex flex-1 flex-col overflow-hidden">
+              {/* 顶部导航栏 */}
+              <Header />
+
+              {/* 主内容区域 */}
+              <main className="flex-1 overflow-auto p-6">{children}</main>
+            </div>
+          </div>
         </NextIntlClientProvider>
       </body>
     </html>

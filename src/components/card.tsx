@@ -1,30 +1,53 @@
+import Image from "next/image"
 import * as React from "react"
 
 import { cn } from "~/lib/utils"
 
 function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <div
-      data-slot="card"
-      className={cn(
-        "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
-        className
-      )}
-      {...props}
-    />
+    <div data-slot="card" className="nine-patch-frame card-body relative">
+      <div className="absolute top-0 left-0 right-0">
+        <Image
+          className="absolute-center-x min-w-[200px] min-h-[9px]"
+          src="/images/background/card-indicator.png"
+          alt="card-indicator"
+          width={200}
+          height={9}
+        />
+      </div>
+      <div
+        className={cn(
+          "text-card-foreground flex flex-col gap-6 p-6",
+          className
+        )}
+        {...props}
+      />
+    </div>
   )
 }
 
-function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
+function CardHeader({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-header"
-      className={cn(
-        "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6",
-        className
-      )}
+      className={cn("nine-patch-frame card-header relative -m-6", className)}
       {...props}
-    />
+    >
+      <div className="absolute top-0 left-0 right-0">
+        <Image
+          className="absolute-center-x min-w-[200px] min-h-[9px]"
+          src="/images/background/card-header-indicator.png"
+          alt="card-indicator"
+          width={200}
+          height={9}
+        />
+      </div>
+      <div className="p-6">{children}</div>
+    </div>
   )
 }
 
@@ -83,10 +106,10 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
 
 export {
   Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
   CardAction,
-  CardDescription,
   CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 }

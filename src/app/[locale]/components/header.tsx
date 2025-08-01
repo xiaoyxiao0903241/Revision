@@ -1,8 +1,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { Icons } from "~/components/icons"
-import { Button } from "~/components/button"
+import { Icons, Button } from "~/components"
 import {
   DropdownMenu,
   DropdownMenuContent,
