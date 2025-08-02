@@ -21,12 +21,6 @@ export default function HomePage() {
             >
               质押页面 (next-intl Link)
             </Link>
-            <a
-              href="/zh/staking"
-              className="text-blue-400 hover:text-blue-300 underline"
-            >
-              质押页面 (原生 a 标签)
-            </a>
           </div>
         </div>
       </div>

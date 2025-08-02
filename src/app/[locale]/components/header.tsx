@@ -22,15 +22,14 @@ export function Header() {
 
   return (
     <header className="flex h-20 items-center justify-between px-9">
-      <div className="flex items-center space-x-4">
-        <div className="flex flex-col items-center justify-center">
-          <Logo className="w-24" />
-          <AppName className="w-24" />
-        </div>
-        {/* Language Selector */}
+      <div className="flex flex-col items-center justify-center">
+        <Logo className="w-24" />
+        <AppName className="w-24" />
+      </div>
+      <div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="text-gray-300 hover:text-white">
+            <Button variant="outlined">
               {languages.find((lang) => lang.code === currentLanguage)?.name}
             </Button>
           </DropdownMenuTrigger>
@@ -46,44 +45,6 @@ export function Header() {
                 {language.name}
               </DropdownMenuItem>
             ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        {/* Network Selector */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="default">
-              <div className="mr-2 h-4 w-4 rounded-full bg-yellow-400" />
-              {t("network")}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-48">
-            <DropdownMenuItem>
-              <div className="mr-2 h-4 w-4 rounded-full bg-yellow-400" />
-              BNB Smart Chain
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <div className="mr-2 h-4 w-4 rounded-full bg-blue-400" />
-              Ethereum
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-
-      <div className="flex items-center space-x-4">
-        {/* Wallet Connection */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="default"
-              className="text-gray-300 hover:text-white"
-            >
-              0xg2a9...12b8
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuItem>{t("wallet")}</DropdownMenuItem>
-            <DropdownMenuItem>View on Explorer</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

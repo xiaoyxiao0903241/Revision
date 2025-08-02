@@ -20,7 +20,7 @@ export default async function LocaleLayout({
           {/* 顶部导航栏 */}
           <Header />
           {/* 主内容区域 */}
-          <div className="flex flex-1 flex-row pb-6">
+          <div className="flex flex-1 flex-row py-6">
             {/* 左侧主导航栏 */}
             <Sidebar />
             {/* 右侧主内容区域 */}

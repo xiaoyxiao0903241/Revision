@@ -62,10 +62,10 @@ export const NavigationTabs: FC<{
               tabsRef.current[index] = el
             }}
             className={cn(
-              "my-auto cursor-pointer font-lg select-none text-nowrap font-semibold rounded-full text-center",
+              "cursor-pointer font-lg text-2xl uppercase select-none text-nowrap",
               {
                 "hover:text-neutral-300": !isActive,
-                [activeClassName ?? "gradient-text"]: isActive,
+                [activeClassName ?? "gradient-text font-bold"]: isActive,
               },
               labelClassName
             )}
