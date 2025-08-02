@@ -144,35 +144,7 @@
     background-repeat: repeat-y;
     background-size: 100% auto;
   }
-  /* 按钮样式 */
-  .button {
-    border-width: 16px 16px 16px 16px;
-    border-image-slice: 16 16 16 16 fill;
-  }
-  .button-primary {
-    border-image: url("/images/background/button-primary.png");
-  }
-  .button-hover {
-    border-image: url("/images/background/button-hover.png");
-  }
-  .button-active {
-    border-image: url("/images/background/button-active.png");
-  }
-  .button-disabled {
-    border-image: url("/images/background/button-disabled.png");
-  }
-  .button-outlined {
-    border-image: url("/images/background/button-outlined.png");
-  }
-  .button-gradient-outlined {
-    border-image: url("/images/background/button-gradient-outlined.png");
-  }
-  .button-square {
-    border-image: url("/images/background/button-square.png");
-  }
-  .button-accent {
-    border-image: url("/images/background/button-accent.png");
-  }
+
   /* 项目样式 */
   .item {
     border-width: 16px 16px 16px 16px;

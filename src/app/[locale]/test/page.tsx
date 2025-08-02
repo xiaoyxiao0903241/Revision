@@ -7,17 +7,114 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/select"
-import { Icon } from "~/components"
+import { Button } from "~/components/button"
 
 export default function TestPage() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 p-8">
       <div className="max-w-4xl mx-auto space-y-8">
         <h1 className="text-3xl font-bold text-white text-center mb-8">
           组件测试页面
         </h1>
-        <Icon name="analytics" className="gradient-text" />
-        <Icon name="analytics" className="text-red-400" />
+
+        {/* Button 组件测试 */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold text-white">Button 组件测试</h2>
+
+          <div className="space-y-6">
+            {/* 基础按钮 */}
+            <div>
+              <h3 className="text-lg font-medium text-white mb-3">基础按钮</h3>
+              <div className="flex flex-wrap gap-4">
+                <Button variant="primary">Primary</Button>
+                <Button variant="secondary">Secondary</Button>
+                <Button variant="outlined">Outlined</Button>
+                <Button variant="gradient">Gradient</Button>
+              </div>
+            </div>
+
+            {/* 斜切按钮 */}
+            <div>
+              <h3 className="text-lg font-medium text-white mb-3">斜切按钮</h3>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="text-md font-medium text-white/80 mb-2">
+                    左上-右下斜切
+                  </h4>
+                  <div className="flex flex-wrap gap-4">
+                    <Button
+                      variant="primary"
+                      clipDirection="topLeft-bottomRight"
+                      clipSize={8}
+                    >
+                      Small Clip
+                    </Button>
+                    <Button
+                      variant="gradient"
+                      clipDirection="topLeft-bottomRight"
+                      clipSize={12}
+                    >
+                      Medium Clip
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      clipDirection="topLeft-bottomRight"
+                      clipSize={16}
+                    >
+                      Large Clip
+                    </Button>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-md font-medium text-white/80 mb-2">
+                    右上-左下斜切
+                  </h4>
+                  <div className="flex flex-wrap gap-4">
+                    <Button
+                      variant="primary"
+                      clipDirection="topRight-bottomLeft"
+                      clipSize={8}
+                    >
+                      Small Clip
+                    </Button>
+                    <Button
+                      variant="gradient"
+                      clipDirection="topRight-bottomLeft"
+                      clipSize={12}
+                    >
+                      Medium Clip
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      clipDirection="topRight-bottomLeft"
+                      clipSize={16}
+                    >
+                      Large Clip
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 不同尺寸 */}
+            <div>
+              <h3 className="text-lg font-medium text-white mb-3">不同尺寸</h3>
+              <div className="flex flex-wrap gap-4 items-center">
+                <Button variant="primary" size="sm">
+                  Small
+                </Button>
+                <Button variant="primary" size="md">
+                  Medium
+                </Button>
+                <Button variant="primary" size="lg">
+                  Large
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Select 组件测试 */}
         <div className="space-y-4">
           <h2 className="text-xl font-semibold text-white">Select 组件测试</h2>
@@ -79,30 +176,6 @@ export default function TestPage() {
               </SelectItem>
             </SelectContent>
           </Select>
-        </div>
-
-        {/* IconFont 组件测试 */}
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-white">
-            IconFont 组件测试
-          </h2>
-
-          <div className="grid grid-cols-3 gap-4">
-            <div className="flex flex-col items-center p-4 bg-white/5 rounded-lg">
-              <Icon name="analytics" size={24} className="text-white mb-2" />
-              <span className="text-xs text-white/70">analytics</span>
-            </div>
-
-            <div className="flex flex-col items-center p-4 bg-white/5 rounded-lg">
-              <Icon name="community" size={24} className="text-white mb-2" />
-              <span className="text-xs text-white/70">community</span>
-            </div>
-
-            <div className="flex flex-col items-center p-4 bg-white/5 rounded-lg">
-              <Icon name="Frame" size={24} className="text-white mb-2" />
-              <span className="text-xs text-white/70">Frame</span>
-            </div>
-          </div>
         </div>
 
         <div className="text-white text-sm text-center mt-8">

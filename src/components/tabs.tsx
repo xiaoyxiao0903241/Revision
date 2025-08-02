@@ -62,9 +62,9 @@ export const Tabs: FC<{
               tabsRef.current[index] = el
             }}
             className={cn(
-              "my-auto cursor-pointer font-lg select-none text-nowrap font-semibold rounded-full text-center text-secondary",
+              "my-auto cursor-pointer font-lg select-none text-nowrap font-semibold rounded-full text-center",
               {
-                "hover:text-neutral-300 text-white/70": !isActive,
+                "hover:text-neutral-300": !isActive,
                 [activeClassName ?? "gradient-text"]: isActive,
               },
               labelClassName

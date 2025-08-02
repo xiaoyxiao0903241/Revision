@@ -25,11 +25,7 @@ export function Header() {
         {/* Language Selector */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-gray-300 hover:text-white"
-            >
+            <Button className="text-gray-300 hover:text-white">
               {languages.find((lang) => lang.code === currentLanguage)?.name}
             </Button>
           </DropdownMenuTrigger>
@@ -51,11 +47,7 @@ export function Header() {
         {/* Network Selector */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-gray-300 hover:text-white"
-            >
+            <Button variant="default">
               <div className="mr-2 h-4 w-4 rounded-full bg-yellow-400" />
               {t("network")}
             </Button>
@@ -78,8 +70,7 @@ export function Header() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
-              variant="ghost"
-              size="sm"
+              variant="default"
               className="text-gray-300 hover:text-white"
             >
               0xg2a9...12b8

@@ -29,7 +29,10 @@ export function Icon({ name, className, ...props }: IconFontProps) {
   }
 
   return (
-    <i className={cn("iconfont text-2xl text-white", className)} {...props}>
+    <i
+      className={cn("iconfont text-2xl text-primary/70", className)}
+      {...props}
+    >
       {iconCode}
     </i>
   )
