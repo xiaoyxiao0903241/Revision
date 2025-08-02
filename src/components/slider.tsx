@@ -2,26 +2,43 @@
 
 import * as SliderPrimitive from "@radix-ui/react-slider"
 import * as React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import { cn } from "~/lib/utils"
 
 interface SliderProps
   extends React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> {
-  indicators?: Array<{ value: number; label: string }> // 指示器数组，value 范围 0-1
-  indicatorPadding?: number // 指示器左右两侧的 padding 宽度（百分比，0-50）
+  indicators?: Array<{ value: number; label: string } | number> // 支持对象格式或数字格式
 }
 
 const Slider = React.forwardRef<
   React.ElementRef<typeof SliderPrimitive.Root>,
   SliderProps
->(({ className, indicators = [], indicatorPadding = 0, ...props }, ref) => {
-  const [value, setValue] = useState<number[]>([0])
+>(({ className, indicators = [], defaultValue, value, ...props }, ref) => {
+  // 使用传入的 defaultValue 或 value 作为初始状态
+  const [internalValue, setInternalValue] = useState<number[]>(
+    value || defaultValue || [0]
+  )
+
+  // 当外部 value 改变时，更新内部状态
+  useEffect(() => {
+    if (value !== undefined) {
+      setInternalValue(value)
+    }
+  }, [value])
 
   const handleValueChange = (newValue: number[]) => {
-    setValue(newValue)
+    setInternalValue(newValue)
     props.onValueChange?.(newValue)
   }
+
+  // 处理指示器格式，支持数字和对象两种格式
+  const processedIndicators = indicators.map((indicator) => {
+    if (typeof indicator === "number") {
+      return { value: indicator, label: `${(indicator * 100).toFixed(0)}%` }
+    }
+    return indicator
+  })
 
   return (
     <SliderPrimitive.Root
@@ -30,28 +47,25 @@ const Slider = React.forwardRef<
         "relative flex w-full touch-none select-none items-center pb-2",
         className
       )}
-      value={value}
+      value={internalValue}
       onValueChange={handleValueChange}
       {...props}
     >
       <SliderPrimitive.Track className="relative h-1 w-full grow rounded-full bg-[#868686]">
-        <SliderPrimitive.Range className="absolute h-full gradient" />
+        <SliderPrimitive.Range className="absolute h-full rounded-full gradient" />
 
         {/* 指示器 */}
-        {indicators.map((indicator, index) => {
-          const isActive = value[0] >= indicator.value
-          // 计算考虑 padding 后的位置
-          // 将 0-1 的值映射到 padding 到 (100-padding) 的范围
-          const availableWidth = 100 - indicatorPadding * 2
-          const adjustedPosition =
-            indicatorPadding + indicator.value * availableWidth
+        {processedIndicators.map((indicator, index) => {
+          const isActive = internalValue[0] >= indicator.value
+          // 根据传入的数值和 max 属性计算百分比位置
+          const position = (indicator.value / (props.max || 1)) * 100
 
           return (
             <div
               key={index}
               className="absolute top-0 flex flex-col items-center gap-2"
               style={{
-                left: `${adjustedPosition}%`,
+                left: `${position}%`,
                 transform: "translateX(-50%)",
               }}
             >

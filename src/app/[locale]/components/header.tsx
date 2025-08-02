@@ -9,7 +9,8 @@ import {
   DropdownMenuTrigger,
 } from "~/components/dropdown-menu"
 import { useLanguageStore } from "~/store/language-store"
-
+import Logo from "~/assets/logo.svg"
+import AppName from "~/assets/app-name.svg"
 export function Header() {
   const t = useTranslations("header")
   const { currentLanguage, setLanguage } = useLanguageStore()
@@ -22,6 +23,10 @@ export function Header() {
   return (
     <header className="flex h-20 items-center justify-between px-9">
       <div className="flex items-center space-x-4">
+        <div className="flex flex-col items-center justify-center">
+          <Logo className="w-24" />
+          <AppName className="w-24" />
+        </div>
         {/* Language Selector */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

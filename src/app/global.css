@@ -1,6 +1,3 @@
-/* 引入 iconfont 字体图标 */
-@import url("../../public/fonts/iconfont.css");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -29,6 +26,22 @@
     --warning: 38.8 100% 50%;
     --success: 142.1 76.2% 36.3%;
   }
+}
+
+/* iconfont 字体图标定义 */
+@font-face {
+  font-family: "iconfont"; /* Project id 4989841 */
+  src: url("/fonts/iconfont.woff2?t=1754133405093") format("woff2"),
+    url("/fonts/iconfont.woff?t=1754133405093") format("woff"),
+    url("/fonts/iconfont.ttf?t=1754133405093") format("truetype");
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* 字体定义 */
@@ -109,6 +122,63 @@
   src: url("/fonts/ChakraPetch-BoldItalic.ttf") format("truetype");
   font-weight: 700;
   font-style: italic;
+  font-display: swap;
+}
+
+/* Oxanium 字体定义 */
+@font-face {
+  font-family: "Oxanium";
+  src: url("/fonts/Oxanium-ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Oxanium";
+  src: url("/fonts/Oxanium-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Oxanium";
+  src: url("/fonts/Oxanium-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Oxanium";
+  src: url("/fonts/Oxanium-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Oxanium";
+  src: url("/fonts/Oxanium-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Oxanium";
+  src: url("/fonts/Oxanium-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Oxanium";
+  src: url("/fonts/Oxanium-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
   font-display: swap;
 }
 
@@ -234,5 +304,40 @@
     clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
     z-index: 1;
     display: block !important;
+  }
+
+  /* Oxanium 字体类 */
+  .oxanium {
+    font-family: "Oxanium", sans-serif;
+  }
+
+  .oxanium-light {
+    font-family: "Oxanium", sans-serif;
+    font-weight: 300;
+  }
+
+  .oxanium-regular {
+    font-family: "Oxanium", sans-serif;
+    font-weight: 400;
+  }
+
+  .oxanium-medium {
+    font-family: "Oxanium", sans-serif;
+    font-weight: 500;
+  }
+
+  .oxanium-semibold {
+    font-family: "Oxanium", sans-serif;
+    font-weight: 600;
+  }
+
+  .oxanium-bold {
+    font-family: "Oxanium", sans-serif;
+    font-weight: 700;
+  }
+
+  .oxanium-extrabold {
+    font-family: "Oxanium", sans-serif;
+    font-weight: 800;
   }
 }

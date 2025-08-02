@@ -1,5 +1,5 @@
 import { NextIntlClientProvider } from "next-intl"
-import "../globals.css"
+import "../global.css"
 import { Sidebar } from "./components/sidebar"
 import { Header } from "./components/header"
 
