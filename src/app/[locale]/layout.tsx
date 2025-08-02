@@ -16,7 +16,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <NextIntlClientProvider>
-        <body className="flex flex-col text-primary/70">
+        <body className="flex flex-col text-foreground/70">
           {/* 顶部导航栏 */}
           <Header />
           {/* 主内容区域 */}

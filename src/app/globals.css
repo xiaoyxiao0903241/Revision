@@ -189,4 +189,93 @@
     padding: 12px 16px;
     position: relative;
   }
+
+  /* View 组件带边框的斜切效果 */
+  .view-with-border {
+    position: relative;
+  }
+
+  .view-with-border::before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    background: rgba(255, 255, 255, 0.8) !important;
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+    z-index: 0;
+    pointer-events: none;
+    display: block !important;
+  }
+
+  .view-with-border::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+    z-index: 1;
+    display: block !important;
+  }
+
+  /* 不同边框颜色的变体 */
+  .view-with-border-white {
+    position: relative;
+  }
+
+  .view-with-border-white::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: rgba(255, 255, 255, 0.2);
+    clip-path: inherit;
+    z-index: 0;
+  }
+
+  .view-with-border-white::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    clip-path: inherit;
+    z-index: 1;
+  }
+
+  .view-with-border-black {
+    position: relative;
+  }
+
+  .view-with-border-black::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: rgba(0, 0, 0, 0.3);
+    clip-path: inherit;
+    z-index: 0;
+  }
+
+  .view-with-border-black::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    clip-path: inherit;
+    z-index: 1;
+  }
 }

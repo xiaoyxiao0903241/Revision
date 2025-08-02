@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { cn } from "~/lib/utils"
+import { cn, getClipPath } from "~/lib/utils"
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "outlined" | "accent" | "disabled"
@@ -39,24 +39,7 @@ export function Button({
       "bg-transparent border-2 border-white/20 text-white hover:bg-white/10",
   }
 
-  // 生成 clip-path 样式
-  const getClipPath = () => {
-    if (clipDirection === "none" || clipSize === 0) {
-      return undefined
-    }
-
-    if (clipDirection === "topLeft-bottomRight") {
-      return `polygon(${clipSize}px 0, 100% 0, 100% calc(100% - ${clipSize}px), calc(100% - ${clipSize}px) 100%, 0 100%, 0 ${clipSize}px)`
-    }
-
-    if (clipDirection === "topRight-bottomLeft") {
-      return `polygon(0 0, calc(100% - ${clipSize}px) 0, 100% ${clipSize}px, 100% 100%, ${clipSize}px 100%, 0 calc(100% - ${clipSize}px))`
-    }
-
-    return undefined
-  }
-
-  const clipPath = getClipPath()
+  const clipPath = getClipPath(clipDirection, clipSize)
 
   return (
     <button
