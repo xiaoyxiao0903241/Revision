@@ -31,9 +31,99 @@
   }
 }
 
+/* 字体定义 */
+@font-face {
+  font-family: "ChakraPetch";
+  src: url("/fonts/ChakraPetch-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ChakraPetch";
+  src: url("/fonts/ChakraPetch-LightItalic.ttf") format("truetype");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ChakraPetch";
+  src: url("/fonts/ChakraPetch-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ChakraPetch";
+  src: url("/fonts/ChakraPetch-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ChakraPetch";
+  src: url("/fonts/ChakraPetch-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ChakraPetch";
+  src: url("/fonts/ChakraPetch-MediumItalic.ttf") format("truetype");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ChakraPetch";
+  src: url("/fonts/ChakraPetch-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ChakraPetch";
+  src: url("/fonts/ChakraPetch-SemiBoldItalic.ttf") format("truetype");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ChakraPetch";
+  src: url("/fonts/ChakraPetch-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ChakraPetch";
+  src: url("/fonts/ChakraPetch-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "VCR-OSD-Mono";
+  src: url("/fonts/Vcr-Osd-Mono.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   body {
     @apply bg-background text-foreground;
+    font-family: "ChakraPetch", sans-serif;
     background-image: url("/images/background/global.jpg");
     background-size: cover;
     background-position: center;
@@ -54,6 +144,9 @@
   }
   .gradient-text {
     @apply bg-gradient-to-r from-[#B408D7] to-[#576AF4] text-transparent bg-clip-text;
+  }
+  .mono {
+    font-family: "VCR-OSD-Mono", monospace;
   }
 }
 
