@@ -1,6 +1,5 @@
 "use client"
 import { useTranslations } from "next-intl"
-import { StaticImport } from "next/dist/shared/lib/get-img-props"
 import Image from "next/image"
 import { Icon, IconFontName } from "~/components"
 import { Link, usePathname } from "~/i18n/navigation"
@@ -14,17 +13,10 @@ interface NavigationItem {
   uppercase?: boolean
 }
 
-interface FooterItem {
-  label: string
-  href: string
-  icon: string | StaticImport
-  uppercase?: boolean
-}
-
 const NavigationItem = ({ item }: { item: NavigationItem }) => {
   const pathname = usePathname()
   const isActive =
-    pathname.endsWith(item.href) || pathname.includes(`/${item.href}/`)
+    pathname === item.href || pathname.startsWith(`${item.href}/`)
 
   return (
     <Link
