@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl"
 import { cn } from "~/lib/utils"
 import { Coins, RotateCcw, BarChart3, FileText, TrendingUp } from "lucide-react"
 import { Link, usePathname } from "~/i18n/navigation"
-import { Tabs } from "~/components"
+import { NavigationTabs, Tabs } from "~/components"
 
 interface StakingLayoutProps {
   children: React.ReactNode
@@ -27,7 +27,7 @@ export default function StakingLayout({ children }: StakingLayoutProps) {
     <div className="space-y-6">
       {/* 次级导航栏 */}
       <div className="border-b border-gray-800 pb-4">
-        <Tabs
+        <NavigationTabs
           data={subNavItems}
           activeIndex={subNavItems.findIndex(
             (item) =>
