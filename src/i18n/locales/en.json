@@ -55,7 +55,22 @@
     "totalStakedDesc": "$0.35",
     "stakers": "Stakers",
     "marketCap": "OLY market cap",
-    "days": "Days"
+    "days": "Days",
+    "rebaseRewardRate": "Rebase Reward Rate",
+    "rebaseBoost": "Rebase Boost",
+    "nextRebaseRewardRate": "Next Rebase Reward Rate",
+    "countdownToNextRebase": "Countdown to Next Rebase",
+    "availableToStake": "Available to stake",
+    "apr": "APR",
+    "stakedAmount": "Staked amount",
+    "rebaseRewards": "Rebase Rewards",
+    "addToMetaMask": "Add to MetaMask",
+    "statistics": "Statistics",
+    "viewOnBscScan": "View on BscScan",
+    "annualPercentageRate": "Annual percentage rate",
+    "totalStaked": "Total staked",
+    "stakers": "Stakers",
+    "olyMarketCap": "OLY market cap"
   },
   "common": {
     "loading": "Loading...",

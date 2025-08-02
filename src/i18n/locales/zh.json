@@ -55,7 +55,22 @@
     "totalStakedDesc": "$0.35",
     "stakers": "质押者数量",
     "marketCap": "OLY市值",
-    "days": "天"
+    "days": "天",
+    "rebaseRewardRate": "重基奖励率",
+    "rebaseBoost": "重基加成",
+    "nextRebaseRewardRate": "下次重基奖励率",
+    "countdownToNextRebase": "距离下次重基倒计时",
+    "availableToStake": "可质押数量",
+    "apr": "年化收益率",
+    "stakedAmount": "已质押数量",
+    "rebaseRewards": "重基奖励",
+    "addToMetaMask": "添加到MetaMask",
+    "statistics": "统计",
+    "viewOnBscScan": "在BscScan上查看",
+    "annualPercentageRate": "年化收益率",
+    "totalStaked": "总质押量",
+    "stakers": "质押者数量",
+    "olyMarketCap": "OLY市值"
   },
   "common": {
     "welcome": "欢迎来到 ONE OLYONE",

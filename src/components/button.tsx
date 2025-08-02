@@ -25,7 +25,7 @@ export function Button({
     "relative inline-flex items-center justify-center font-bold text-white cursor-pointer transition-all duration-300 ease-in-out focus:outline-none hover:opacity-80 active:opacity-70"
 
   const sizeClasses = {
-    sm: "px-4 h-6 text-sm",
+    sm: "px-2 h-6 text-sm font-normal",
     md: "px-6 h-12 text-base",
     lg: "px-8 py-4 text-lg",
   }

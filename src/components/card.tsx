@@ -5,7 +5,10 @@ import { cn } from "~/lib/utils"
 
 function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <div data-slot="card" className="nine-patch-frame card-body relative">
+    <div
+      data-slot="card"
+      className="nine-patch-frame card-body relative w-full"
+    >
       <div className="absolute top-0 left-0 right-0">
         <Image
           className="absolute-center-x min-w-[200px] min-h-[9px]"
@@ -34,7 +37,7 @@ function CardHeader({
   return (
     <div
       data-slot="card-header"
-      className={cn("nine-patch-frame card-header relative -m-6", className)}
+      className="nine-patch-frame card-header relative -m-6"
       {...props}
     >
       <div className="absolute top-0 left-0 right-0">
@@ -46,7 +49,7 @@ function CardHeader({
           height={9}
         />
       </div>
-      <div className="p-6">{children}</div>
+      <div className={cn("p-6", className)}>{children}</div>
     </div>
   )
 }
