@@ -17,8 +17,8 @@ interface ViewProps extends React.HTMLAttributes<HTMLDivElement> {
 export function View({
   className,
   children,
-  clipDirection = "none",
-  clipSize = 8,
+  clipDirection = "topRight-bottomLeft",
+  clipSize = 12,
   border = false,
   borderColor = "rgba(255, 255, 255, 0.2)",
   borderWidth = 2,

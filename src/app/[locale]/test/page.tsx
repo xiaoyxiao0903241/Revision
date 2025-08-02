@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/select"
+import { Alert } from "~/components/alert"
 
 export default function TestPage() {
   return (
@@ -147,63 +148,24 @@ export default function TestPage() {
           </div>
         </div>
 
-        {/* ClaimBanner 组件测试 */}
+        {/* Alert 组件测试 */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-white">
-            ClaimBanner 组件测试
-          </h2>
+          <h2 className="text-xl font-semibold text-white">Alert 组件测试</h2>
 
           <div className="space-y-6">
-            {/* 默认样式 */}
-            <div>
-              <h3 className="text-lg font-medium text-white mb-3">默认样式</h3>
-              <ClaimBanner onClick={() => console.log("Claim clicked!")} />
-            </div>
-
-            {/* 自定义内容 */}
+            {/* 默认样式（带边框） */}
             <div>
               <h3 className="text-lg font-medium text-white mb-3">
-                自定义内容
+                默认样式（带边框）
               </h3>
-              <ClaimBanner
-                title="REWARDS"
-                description="Collect your daily rewards and bonuses now available."
-                onClick={() => console.log("Rewards clicked!")}
-              />
-            </div>
-
-            {/* 自定义图标 */}
-            <div>
-              <h3 className="text-lg font-medium text-white mb-3">
-                自定义图标
-              </h3>
-              <ClaimBanner
-                title="BOOST"
-                description="Activate your power boost for enhanced performance."
-                icon={
-                  <svg
-                    className="w-6 h-6 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M7 2v11h3v9l7-12h-4l4-8z" />
-                  </svg>
-                }
-                onClick={() => console.log("Boost clicked!")}
-              />
-            </div>
-
-            {/* 自定义样式 */}
-            <div>
-              <h3 className="text-lg font-medium text-white mb-3">
-                自定义样式
-              </h3>
-              <ClaimBanner
-                title="SPECIAL"
-                description="Limited time offer - don't miss out!"
-                className="bg-gradient-to-r from-purple-600 to-blue-600 border-purple-500/30"
-                onClick={() => console.log("Special clicked!")}
-              />
+              <Alert>
+                <h3 className="text-lg font-bold text-white uppercase tracking-wide mb-1">
+                  SPECIAL
+                </h3>
+                <p className="text-sm leading-relaxed">
+                  Limited time offer - don't miss out!
+                </p>
+              </Alert>
             </div>
           </div>
         </div>
