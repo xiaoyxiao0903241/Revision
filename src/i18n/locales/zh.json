@@ -26,12 +26,15 @@
   "staking": {
     "title": "质押",
     "description": "长期质押通过爆块奖励加成激励用户延长质押周期,加成幅度与质押时长成正比。",
+    "alertTitle": "质押",
+    "alertDescription": "您可以随时存入或解除质押，无锁定期限，每12小时发放爆块奖励",
     "stake": "质押",
     "unstake": "解质押",
     "claim": "领取",
     "records": "记录",
     "calculator": "计算器",
     "selectDuration": "选择质押期限",
+    "selectDurationPlaceholder": "选择质押期限",
     "amount": "金额",
     "balance": "余额",
     "useMax": "使用最大",
@@ -48,8 +51,11 @@
     "viewOnBscScan": "在BscScan上查看",
     "annualPercentageRate": "年化收益率",
     "totalStaked": "总质押量",
+    "totalStakedValue": "1,234,567.89 OLY",
+    "totalStakedDesc": "$0.35",
     "stakers": "质押者数量",
-    "marketCap": "OLY市值"
+    "marketCap": "OLY市值",
+    "days": "天"
   },
   "common": {
     "welcome": "欢迎来到 ONE OLYONE",

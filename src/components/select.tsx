@@ -1,10 +1,10 @@
 "use client"
 
-import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react"
+import { ChevronDownIcon, ChevronUpIcon } from "lucide-react"
+import * as React from "react"
 
-import { cn, getClipPath } from "~/lib/utils"
+import { cn } from "~/lib/utils"
 import { View } from "./view"
 
 function Select({
@@ -26,7 +26,7 @@ function SelectValue({
   return (
     <SelectPrimitive.Value
       data-slot="select-value"
-      className={cn("text-white", className)}
+      className={cn("text-foreground/70", className)}
       {...props}
     />
   )
@@ -50,7 +50,7 @@ function SelectTrigger({
       <View
         className={cn(
           "w-full focus:outline-none cursor-pointer",
-          "bg-[#22285E] h-12 px-4 flex items-center justify-between gap-3 text-sm whitespace-nowrap",
+          "bg-[#22285E] h-12 px-4 flex items-center text-foreground/70 justify-between gap-3 text-sm whitespace-nowrap",
           className
         )}
         clipDirection="topRight-bottomLeft"

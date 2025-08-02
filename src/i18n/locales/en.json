@@ -26,12 +26,15 @@
   "staking": {
     "title": "Stake",
     "description": "Long-term staking incentivizes users to extend the staking period through block rewards, and the incentive amount is directly proportional to the staking duration.",
+    "alertTitle": "Stake",
+    "alertDescription": "You can deposit or withdraw staking at any time, with no lock-in period, and block rewards are distributed every 12 hours",
     "stake": "Stake",
     "unstake": "Unstake",
     "claim": "Claim",
     "records": "Records",
     "calculator": "Calculator",
     "selectDuration": "Select Staking Duration",
+    "selectDurationPlaceholder": "Select Staking Duration",
     "amount": "Amount",
     "balance": "Balance",
     "useMax": "Use MAX",
@@ -47,9 +50,12 @@
     "statistics": "Statistics",
     "viewOnBscScan": "View on BscScan",
     "annualPercentageRate": "Annual percentage rate",
-    "totalStaked": "Total staked",
+    "totalStaked": "Total Staked",
+    "totalStakedValue": "1,234,567.89 OLY",
+    "totalStakedDesc": "$0.35",
     "stakers": "Stakers",
-    "marketCap": "OLY market cap"
+    "marketCap": "OLY market cap",
+    "days": "Days"
   },
   "common": {
     "loading": "Loading...",

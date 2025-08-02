@@ -22,20 +22,16 @@ export default function StakingLayout({ children }: StakingLayoutProps) {
     { label: t("calculator"), href: "/staking/calculator", icon: TrendingUp },
   ]
 
-  console.log(pathname)
   return (
     <div className="space-y-6">
       {/* 次级导航栏 */}
-      <div className="border-b border-gray-800 pb-4">
-        <NavigationTabs
-          data={subNavItems}
-          activeIndex={subNavItems.findIndex(
-            (item) =>
-              pathname.endsWith(item.href) ||
-              pathname.includes(`/${item.href}/`)
-          )}
-        />
-      </div>
+      <NavigationTabs
+        data={subNavItems}
+        activeIndex={subNavItems.findIndex(
+          (item) =>
+            pathname.endsWith(item.href) || pathname.includes(`/${item.href}/`)
+        )}
+      />
 
       {/* 页面内容 */}
       {children}
