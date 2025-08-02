@@ -13,9 +13,9 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
+    --primary: 291.4 91.2% 44.1%;
     --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 227.1 91.2% 64.9%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
@@ -26,11 +26,8 @@
     --destructive-foreground: 210 40% 98%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --warning: 36 100% 50%;
+    --success: 142.1 76.2% 36.3%;
   }
 }
 
@@ -104,14 +101,7 @@
       margin-bottom: -16px;
     }
   }
-  .container {
-    border-width: 16px 16px 16px 16px;
-    border-image: url("/images/background/container.png");
-    border-image-slice: 16 16 16 16 fill;
-    & > div {
-      margin: -16px;
-    }
-  }
+
   .alert {
     border-width: 0px 0 32px 0px;
     border-image: url("/images/background/alert.png");
@@ -120,79 +110,83 @@
       margin: 0 0 0 -32px;
     }
   }
-  /* Select 下拉菜单 */
-  .select-trigger {
-    border-width: 16px 16px 16px 16px;
-    border-image: url("/images/background/select-trigger.png");
-    border-image-slice: 16 16 16 16 fill;
-    & > div {
-      margin: -16px;
-    }
-  }
-  .dropdown-head {
-    border-width: 0px 16px 0px 0px;
-    border-image: url("/images/background/dropdown-head.png");
-    border-image-slice: 0 16 0 0 fill;
-  }
-  .dropdown-foot {
-    border-width: 0px 0px 0px 16px;
-    border-image: url("/images/background/dropdown-foot.png");
-    border-image-slice: 0 0 0 16 fill;
-  }
-  .dropdown-body {
-    background-image: url("/images/background/dropdown-body.png");
-    background-repeat: repeat-y;
-    background-size: 100% auto;
+
+  /* OptionItem 组件样式 */
+  .option-list {
+    position: relative;
+    padding: 16px;
   }
 
-  /* 项目样式 */
-  .item {
-    border-width: 16px 16px 16px 16px;
-    border-image: url("/images/background/item.png");
-    border-image-slice: 16 16 16 16 fill;
-    & > div {
-      margin: -16px;
-    }
+  /* 使用伪元素创建带边框的斜切效果 */
+  .option-list::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(
+      135deg,
+      rgba(59, 130, 246, 0.3),
+      rgba(59, 130, 246, 0.3)
+    );
+    clip-path: polygon(
+      0 0,
+      calc(100% - 16px) 0,
+      100% 16px,
+      100% 100%,
+      16px 100%,
+      0 calc(100% - 16px)
+    );
+    z-index: 0;
   }
-  .item-active {
-    border-width: 16px 16px 16px 16px;
-    border-image: url("/images/background/item-active.png");
-    border-image-slice: 16 16 16 16 fill;
-    & > div {
-      margin: -16px;
-    }
+
+  .option-list::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    clip-path: polygon(
+      0 0,
+      calc(100% - 16px) 0,
+      100% 16px,
+      100% 100%,
+      16px 100%,
+      0 calc(100% - 16px)
+    );
+    z-index: 1;
+    box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.2),
+      inset 0 0 40px rgba(59, 130, 246, 0.1);
   }
-  .item-inactive {
-    border-width: 16px 16px 16px 16px;
-    border-image: url("/images/background/item-inactive.png");
-    border-image-slice: 16 16 16 16 fill;
-    & > div {
-      margin: -16px;
-    }
+
+  .option-item {
+    position: relative;
+    background: #1e293b;
+    margin: 2px 0;
+    z-index: 2;
+    transition: all 0.3s ease;
   }
-  /* 其他组件 */
-  .tooltip {
-    border-width: 16px 16px 16px 16px;
-    border-image: url("/images/background/tooltip.png");
-    border-image-slice: 16 16 16 16 fill;
-    & > div {
-      margin: -16px;
-    }
+
+  .option-item:hover {
+    background: #334155;
+    box-shadow: inset 0 0 15px rgba(59, 130, 246, 0.3),
+      inset 0 0 30px rgba(59, 130, 246, 0.1);
   }
-  .popup {
-    border-width: 24px 24px 24px 24px;
-    border-image: url("/images/background/popup.png");
-    border-image-slice: 24 24 24 24 fill;
-    & > div {
-      margin: -24px;
-    }
+
+  .option-item-selected {
+    background: #1e40af;
+    box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.4),
+      inset 0 0 40px rgba(59, 130, 246, 0.2);
   }
-  .slider-track {
-    border-width: 8px 8px 8px 8px;
-    border-image: url("/images/background/slider-track.png");
-    border-image-slice: 8 8 8 8 fill;
-    & > div {
-      margin: -8px;
-    }
+
+  .option-item-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    position: relative;
   }
 }

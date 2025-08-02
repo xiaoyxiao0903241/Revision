@@ -4,7 +4,7 @@ import React from "react"
 import { cn } from "~/lib/utils"
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "outlined" | "gradient"
+  variant?: "primary" | "secondary" | "outlined" | "accent" | "disabled"
   size?: "sm" | "md" | "lg"
   children: React.ReactNode
   // 斜切相关属性
@@ -22,23 +22,21 @@ export function Button({
   ...props
 }: ButtonProps) {
   const baseClasses =
-    "relative inline-flex items-center justify-center font-bold text-white border-none cursor-pointer transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+    "relative inline-flex items-center justify-center font-bold text-white cursor-pointer transition-all duration-300 ease-in-out focus:outline-none hover:opacity-80 active:opacity-70"
 
   const sizeClasses = {
-    sm: "px-4 py-2 text-sm",
-    md: "px-6 py-3 text-base",
+    sm: "px-4 h-6 text-sm",
+    md: "px-6 h-12 text-base",
     lg: "px-8 py-4 text-lg",
   }
 
   const variantClasses = {
-    primary:
-      "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl",
-    secondary:
-      "bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 shadow-lg hover:shadow-xl",
+    primary: "gradient",
+    secondary: "bg-secondary",
+    accent: "bg-warning",
+    disabled: "bg-gray-500 hover:opacity-100 active:opacity-100",
     outlined:
-      "bg-transparent border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white",
-    gradient:
-      "bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 hover:from-purple-700 hover:via-pink-700 hover:to-blue-700 shadow-lg hover:shadow-xl",
+      "bg-transparent border-2 border-white/20 text-white hover:bg-white/10",
   }
 
   // 生成 clip-path 样式
@@ -70,14 +68,6 @@ export function Button({
       )}
       style={{
         clipPath,
-        ...(clipPath && {
-          fontFamily: "'Courier New', monospace",
-          textTransform: "uppercase",
-          letterSpacing: "1px",
-          textShadow:
-            "1px 1px 0px rgba(0, 0, 0, 0.5), 2px 2px 0px rgba(0, 0, 0, 0.3)",
-          imageRendering: "pixelated",
-        }),
       }}
       {...props}
     >

@@ -1,5 +1,7 @@
 "use client"
 
+import { Button } from "~/components/button"
+import { OptionItem, OptionList, OneIcon } from "~/components/option-item"
 import {
   Select,
   SelectContent,
@@ -7,15 +9,104 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/select"
-import { Button } from "~/components/button"
 
 export default function TestPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 p-8">
+    <div className="min-h-screen bg-gray-900 p-8">
       <div className="max-w-4xl mx-auto space-y-8">
-        <h1 className="text-3xl font-bold text-white text-center mb-8">
-          组件测试页面
-        </h1>
+        <h1 className="text-3xl font-bold text-white mb-8">组件测试页面</h1>
+
+        {/* Select 组件测试 */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold text-white">Select 组件测试</h2>
+          <div className="w-64">
+            <Select>
+              <SelectTrigger className="nine-patch-frame select-trigger">
+                <div className="flex items-center gap-2">
+                  <svg
+                    className="w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <SelectValue placeholder="选择时间" />
+                </div>
+              </SelectTrigger>
+              <SelectContent className="nine-patch-frame select-dropdown">
+                <SelectItem value="7" className="flex justify-between">
+                  <span>天</span>
+                  <span className="bg-white/10 px-2 py-1 rounded">x1</span>
+                </SelectItem>
+                <SelectItem value="30" className="flex justify-between">
+                  <span>天</span>
+                  <span className="bg-white/10 px-2 py-1 rounded">x4</span>
+                </SelectItem>
+                <SelectItem value="90" className="flex justify-between">
+                  <span>天</span>
+                  <span className="bg-white/10 px-2 py-1 rounded">x12</span>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* OptionItem 组件测试 */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold text-white">
+            OptionItem 组件测试
+          </h2>
+          <div className="w-96">
+            <OptionList>
+              <OptionItem
+                isSelected={true}
+                onClick={() => console.log("7 Days selected")}
+              >
+                <div className="flex items-center gap-3">
+                  <OneIcon />
+                  <span className="text-white font-mono font-bold text-sm uppercase tracking-wide">
+                    2.01 OLY
+                  </span>
+                </div>
+                <span className="text-white font-mono font-bold text-sm uppercase tracking-wide">
+                  7 Days
+                </span>
+              </OptionItem>
+              <OptionItem
+                isSelected={false}
+                onClick={() => console.log("30 Days selected")}
+              >
+                <div className="flex items-center gap-3">
+                  <OneIcon />
+                  <span className="text-white font-mono font-bold text-sm uppercase tracking-wide">
+                    2.01 OLY
+                  </span>
+                </div>
+                <span className="text-white font-mono font-bold text-sm uppercase tracking-wide">
+                  30 Days
+                </span>
+              </OptionItem>
+              <OptionItem
+                isSelected={false}
+                onClick={() => console.log("90 Days selected")}
+              >
+                <div className="flex items-center gap-3">
+                  <OneIcon />
+                  <span className="text-white font-mono font-bold text-sm uppercase tracking-wide">
+                    2.01 OLY
+                  </span>
+                </div>
+                <span className="text-white font-mono font-bold text-sm uppercase tracking-wide">
+                  90 Days
+                </span>
+              </OptionItem>
+            </OptionList>
+          </div>
+        </div>
 
         {/* Button 组件测试 */}
         <div className="space-y-4">
@@ -112,76 +203,6 @@ export default function TestPage() {
                 </Button>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Select 组件测试 */}
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-white">Select 组件测试</h2>
-          <label className="block text-white text-sm font-medium">
-            选择质押期限
-          </label>
-
-          <Select defaultValue="30">
-            <SelectTrigger>
-              <SelectValue>
-                <div className="flex items-center gap-2">
-                  <span>30天</span>
-                  <span className="bg-white/10 px-2 py-1 rounded text-xs">
-                    1.5x
-                  </span>
-                </div>
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="7">
-                <div className="flex items-center gap-2">
-                  <span>7天</span>
-                  <span className="bg-white/10 px-2 py-1 rounded text-xs">
-                    1.0x
-                  </span>
-                </div>
-              </SelectItem>
-              <SelectItem value="30">
-                <div className="flex items-center gap-2">
-                  <span>30天</span>
-                  <span className="bg-white/10 px-2 py-1 rounded text-xs">
-                    1.5x
-                  </span>
-                </div>
-              </SelectItem>
-              <SelectItem value="90">
-                <div className="flex items-center gap-2">
-                  <span>90天</span>
-                  <span className="bg-white/10 px-2 py-1 rounded text-xs">
-                    2.0x
-                  </span>
-                </div>
-              </SelectItem>
-              <SelectItem value="180">
-                <div className="flex items-center gap-2">
-                  <span>180天</span>
-                  <span className="bg-white/10 px-2 py-1 rounded text-xs">
-                    2.5x
-                  </span>
-                </div>
-              </SelectItem>
-              <SelectItem value="365">
-                <div className="flex items-center gap-2">
-                  <span>365天</span>
-                  <span className="bg-white/10 px-2 py-1 rounded text-xs">
-                    3.0x
-                  </span>
-                </div>
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="text-white text-sm text-center mt-8">
-          <div className="flex justify-between items-center">
-            <span>距离下次重新基准还有</span>
-            <span className="font-mono">3M 59M 46S</span>
           </div>
         </div>
       </div>
