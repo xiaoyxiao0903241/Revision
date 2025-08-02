@@ -44,7 +44,6 @@ export {
   TooltipProvider,
   TooltipTrigger,
 } from "./tooltip"
-export { OptionItem, OptionList, OneIcon } from "./option-item"
 export { Icon } from "./icon"
 export { ClaimBanner } from "./claim-banner"
 export { View } from "./view"

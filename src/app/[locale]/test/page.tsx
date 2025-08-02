@@ -2,111 +2,50 @@
 
 import { Button } from "~/components/button"
 import { ClaimBanner } from "~/components/claim-banner"
-import { OptionItem, OptionList, OneIcon } from "~/components/option-item"
 import { View } from "~/components/view"
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "~/components/select"
 
 export default function TestPage() {
   return (
-    <div className="min-h-screen  bg-gray-600 p-8">
+    <div className="min-h-screen  bg-transparent p-8">
       <div className="max-w-4xl mx-auto space-y-8">
         <h1 className="text-3xl font-bold text-white mb-8">组件测试页面</h1>
 
+        <View
+          className="bg-[#151A3F] min-h-[50px]"
+          clipDirection="topRight-bottomLeft"
+          clipSize={12}
+          border={true}
+          borderColor="rgba(255, 255, 255, 0.1)"
+        >
+          <div className="p-2 min-h-[50px]">
+            <p className="text-white">Select 组件测试</p>
+          </div>
+        </View>
         {/* Select 组件测试 */}
         <div className="space-y-4">
           <h2 className="text-xl font-semibold text-white">Select 组件测试</h2>
           <div className="w-64">
             <Select>
-              <SelectTrigger className="nine-patch-frame select-trigger">
-                <div className="flex items-center gap-2">
-                  <svg
-                    className="w-4 h-4"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <SelectValue placeholder="选择时间" />
-                </div>
+              <SelectTrigger>
+                <SelectValue placeholder="Select Staking Duration" />
               </SelectTrigger>
-              <SelectContent className="nine-patch-frame select-dropdown">
-                <SelectItem value="7" className="flex justify-between">
-                  <span>天</span>
-                  <span className="bg-white/10 px-2 py-1 rounded">x1</span>
-                </SelectItem>
-                <SelectItem value="30" className="flex justify-between">
-                  <span>天</span>
-                  <span className="bg-white/10 px-2 py-1 rounded">x4</span>
-                </SelectItem>
-                <SelectItem value="90" className="flex justify-between">
-                  <span>天</span>
-                  <span className="bg-white/10 px-2 py-1 rounded">x12</span>
-                </SelectItem>
+              <SelectContent>
+                <SelectItem value="7">7 Days</SelectItem>
+                <SelectItem value="30">30 Days</SelectItem>
+                <SelectItem value="90">90 Days</SelectItem>
+                <SelectItem value="180">180 Days</SelectItem>
+                <SelectItem value="360">360 Days</SelectItem>
               </SelectContent>
             </Select>
-          </div>
-        </div>
-
-        {/* OptionItem 组件测试 */}
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-white">
-            OptionItem 组件测试
-          </h2>
-          <div className="w-96">
-            <OptionList>
-              <OptionItem
-                isSelected={true}
-                onClick={() => console.log("7 Days selected")}
-              >
-                <div className="flex items-center gap-3">
-                  <OneIcon />
-                  <span className="text-white font-mono font-bold text-sm uppercase tracking-wide">
-                    2.01 OLY
-                  </span>
-                </div>
-                <span className="text-white font-mono font-bold text-sm uppercase tracking-wide">
-                  7 Days
-                </span>
-              </OptionItem>
-              <OptionItem
-                isSelected={false}
-                onClick={() => console.log("30 Days selected")}
-              >
-                <div className="flex items-center gap-3">
-                  <OneIcon />
-                  <span className="text-white font-mono font-bold text-sm uppercase tracking-wide">
-                    2.01 OLY
-                  </span>
-                </div>
-                <span className="text-white font-mono font-bold text-sm uppercase tracking-wide">
-                  30 Days
-                </span>
-              </OptionItem>
-              <OptionItem
-                isSelected={false}
-                onClick={() => console.log("90 Days selected")}
-              >
-                <div className="flex items-center gap-3">
-                  <OneIcon />
-                  <span className="text-white font-mono font-bold text-sm uppercase tracking-wide">
-                    2.01 OLY
-                  </span>
-                </div>
-                <span className="text-white font-mono font-bold text-sm uppercase tracking-wide">
-                  90 Days
-                </span>
-              </OptionItem>
-            </OptionList>
           </div>
         </div>
 

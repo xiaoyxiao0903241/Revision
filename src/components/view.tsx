@@ -37,7 +37,7 @@ export function View({
             left: `-${borderWidth}px`,
             right: `-${borderWidth}px`,
             bottom: `-${borderWidth}px`,
-            background: borderColor,
+            backgroundColor: borderColor,
             clipPath,
             zIndex: 0,
           }}

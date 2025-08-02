@@ -4,8 +4,8 @@ import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react"
 
-import { cn } from "~/lib/utils"
-import Image from "next/image"
+import { cn, getClipPath } from "~/lib/utils"
+import { View } from "./view"
 
 function Select({
   ...props
@@ -44,18 +44,23 @@ function SelectTrigger({
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
       data-size={size}
-      className={cn(
-        "nine-patch-frame select-trigger w-full bg-transparent focus:outline-none focus:ring-0",
-        className
-      )}
+      asChild
       {...props}
     >
-      <div className="h-12 bg-transparent flex items-center justify-between gap-3 px-4 text-sm whitespace-nowrap">
+      <View
+        className={cn(
+          "w-full focus:outline-none cursor-pointer",
+          "bg-[#22285E] h-12 px-4 flex items-center justify-between gap-3 text-sm whitespace-nowrap",
+          className
+        )}
+        clipDirection="topRight-bottomLeft"
+        clipSize={12}
+      >
         {children}
         <SelectPrimitive.Icon asChild>
-          <ChevronDownIcon className="size-4 text-white opacity-70" />
+          <ChevronDownIcon className="size-4 text-white transition-transform duration-200 group-data-[state=open]:rotate-180" />
         </SelectPrimitive.Icon>
-      </div>
+      </View>
     </SelectPrimitive.Trigger>
   )
 }
@@ -71,7 +76,7 @@ function SelectContent({
       <SelectPrimitive.Content
         data-slot="select-content"
         className={cn(
-          "p-0 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 max-h-(--radix-select-content-available-height) min-w-[8rem] origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto focus:outline-none focus:ring-0",
+          "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 max-h-60 min-w-[8rem] origin-top focus:outline-none",
           position === "popper" &&
             "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
           className
@@ -79,19 +84,24 @@ function SelectContent({
         position={position}
         {...props}
       >
-        <SelectScrollUpButton />
-        <div className="dropdown-head h-4" />
-        <SelectPrimitive.Viewport
-          className={cn(
-            "dropdown-body",
-            position === "popper" &&
-              "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)] scroll-my-1"
-          )}
+        <View
+          className="bg-[#151A3F] overflow-hidden"
+          clipDirection="topRight-bottomLeft"
+          clipSize={12}
+          border={true}
+          borderColor="#262a60"
+          borderWidth={2}
         >
-          {children}
-        </SelectPrimitive.Viewport>
-        <div className="dropdown-foot h-4" />
-        <SelectScrollDownButton />
+          <SelectPrimitive.Viewport
+            className={cn(
+              "py-4",
+              position === "popper" &&
+                "w-full min-w-[var(--radix-select-trigger-width)]"
+            )}
+          >
+            {children}
+          </SelectPrimitive.Viewport>
+        </View>
       </SelectPrimitive.Content>
     </SelectPrimitive.Portal>
   )
@@ -104,7 +114,7 @@ function SelectLabel({
   return (
     <SelectPrimitive.Label
       data-slot="select-label"
-      className={cn("px-2 py-1.5 text-xs", className)}
+      className={cn("px-3 py-2 text-sm font-semibold text-white", className)}
       {...props}
     />
   )
@@ -119,7 +129,7 @@ function SelectItem({
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
-        "hover:text-white h-13 hover:bg-[#333A74] relative flex w-full cursor-default items-center gap-2 py-2 pr-8 pl-2 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 text-white focus:outline-none focus:ring-0",
+        "relative flex w-full h-12 cursor-pointer select-none items-center px-3 py-2 text-sm hover:bg-[#333A74] outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[state=checked]:text-white",
         className
       )}
       {...props}
@@ -136,10 +146,7 @@ function SelectSeparator({
   return (
     <SelectPrimitive.Separator
       data-slot="select-separator"
-      className={cn(
-        "bg-white/20 pointer-events-none -mx-1 my-1 h-px",
-        className
-      )}
+      className={cn("pointer-events-none -mx-1 my-1 h-px", className)}
       {...props}
     />
   )
@@ -153,7 +160,7 @@ function SelectScrollUpButton({
     <SelectPrimitive.ScrollUpButton
       data-slot="select-scroll-up-button"
       className={cn(
-        "flex cursor-default items-center justify-center py-1 text-white",
+        "flex cursor-default items-center justify-center py-1 text-white hover:bg-blue-800 transition-colors outline-none",
         className
       )}
       {...props}
@@ -171,7 +178,7 @@ function SelectScrollDownButton({
     <SelectPrimitive.ScrollDownButton
       data-slot="select-scroll-down-button"
       className={cn(
-        "flex cursor-default items-center justify-center py-1 text-white",
+        "flex cursor-default items-center justify-center py-1 text-white hover:bg-blue-800 transition-colors outline-none",
         className
       )}
       {...props}

@@ -26,7 +26,7 @@
     --destructive-foreground: 210 40% 98%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
-    --warning: 36 100% 50%;
+    --warning: 38.8 100% 50%;
     --success: 142.1 76.2% 36.3%;
   }
 }
@@ -111,85 +111,6 @@
     }
   }
 
-  /* OptionItem 组件样式 */
-  .option-list {
-    position: relative;
-    padding: 16px;
-  }
-
-  /* 使用伪元素创建带边框的斜切效果 */
-  .option-list::before {
-    content: "";
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(
-      135deg,
-      rgba(59, 130, 246, 0.3),
-      rgba(59, 130, 246, 0.3)
-    );
-    clip-path: polygon(
-      0 0,
-      calc(100% - 16px) 0,
-      100% 16px,
-      100% 100%,
-      16px 100%,
-      0 calc(100% - 16px)
-    );
-    z-index: 0;
-  }
-
-  .option-list::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, #0f172a, #1e293b);
-    clip-path: polygon(
-      0 0,
-      calc(100% - 16px) 0,
-      100% 16px,
-      100% 100%,
-      16px 100%,
-      0 calc(100% - 16px)
-    );
-    z-index: 1;
-    box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.2),
-      inset 0 0 40px rgba(59, 130, 246, 0.1);
-  }
-
-  .option-item {
-    position: relative;
-    background: #1e293b;
-    margin: 2px 0;
-    z-index: 2;
-    transition: all 0.3s ease;
-  }
-
-  .option-item:hover {
-    background: #334155;
-    box-shadow: inset 0 0 15px rgba(59, 130, 246, 0.3),
-      inset 0 0 30px rgba(59, 130, 246, 0.1);
-  }
-
-  .option-item-selected {
-    background: #1e40af;
-    box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.4),
-      inset 0 0 40px rgba(59, 130, 246, 0.2);
-  }
-
-  .option-item-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-    position: relative;
-  }
-
   /* View 组件带边框的斜切效果 */
   .view-with-border {
     position: relative;
@@ -220,62 +141,5 @@
     clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
     z-index: 1;
     display: block !important;
-  }
-
-  /* 不同边框颜色的变体 */
-  .view-with-border-white {
-    position: relative;
-  }
-
-  .view-with-border-white::before {
-    content: "";
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: rgba(255, 255, 255, 0.2);
-    clip-path: inherit;
-    z-index: 0;
-  }
-
-  .view-with-border-white::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: transparent;
-    clip-path: inherit;
-    z-index: 1;
-  }
-
-  .view-with-border-black {
-    position: relative;
-  }
-
-  .view-with-border-black::before {
-    content: "";
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: rgba(0, 0, 0, 0.3);
-    clip-path: inherit;
-    z-index: 0;
-  }
-
-  .view-with-border-black::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: transparent;
-    clip-path: inherit;
-    z-index: 1;
   }
 }
