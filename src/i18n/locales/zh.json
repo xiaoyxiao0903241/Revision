@@ -72,6 +72,50 @@
     "stakers": "质押者数量",
     "olyMarketCap": "OLY市值"
   },
+  "invite": {
+    "myInvitation": "社群",
+    "induce": "共建、共享、共治的去中心化社區新範式",
+    "referral": "我的推薦人",
+    "join": "綁定",
+    "referralLink": "我的推薦鏈接",
+    "copy": "複製",
+    "copySuccess": "已複製到剪貼板！",
+    "copyError": "複製鏈接失敗,請手動複製",
+    "enterReferralId": "請輸入您的推薦人地址，確保推薦人能夠獲得相應的獎勵",
+    "userId": "地址",
+    "invitationTime": "加入時間",
+    "status": "狀態",
+    "directInvitation": "直推地址數量 / 社區地址數量",
+    "teamMember": "獎金總數量",
+    "joining": "進行中...",
+    "missingParams": "綁定的賬號未激活或錯誤",
+    "sendingTransaction": "正在發送交易...",
+    "waitingConfirmation": "等待交易確認...",
+    "joinSuccess": "成功加入網絡",
+    "joinFailed": "加入網絡失敗",
+    "invalidInitialization": "合約初始化無效",
+    "notInitializing": "合約未初始化",
+    "invalidOwner": "無效的所有者地址",
+    "unauthorizedAccount": "未授權的賬戶操作",
+    "insufficientFunds": "資金不足",
+    "userRejected": "用戶拒絕了交易",
+    "alreadyJoined": "已綁定",
+    "invalidReferrer": "無效的推薦人地址",
+    "unknownError": "綁定的賬戶未激活或賬戶錯誤",
+    "invitationRecord": "直推詳情",
+    "invalidAddress": "無效的地址",
+    "Activated": "已綁定",
+    "copy_success_message": "鏈接已複製",
+    "noLinkAvailable": "暫無鏈接",
+    "total": "眾籌數量",
+    "market": "社區業績"
+  },
+  "netWork": {
+    "changeNet": "點擊切換網絡",
+    "connect": "請先連接錢包",
+    "noSupport": "未知網絡",
+    "NotConnected": "未連接網絡"
+  },
   "common": {
     "welcome": "欢迎来到 ONE OLYONE",
     "description": "DeFi 质押平台",
@@ -79,6 +123,49 @@
     "error": "错误",
     "success": "成功",
     "cancel": "取消",
-    "confirm": "确认"
+    "confirm": "确认",
+    "connect_wallet": "連接錢包",
+    "nodata": "暫無數據",
+    "language": "中文繁體",
+    "copyright": "© 2025 OLYONE DAO",
+    "copy_success_message": "複製成功",
+    "copy_error_message": "複製失敗",
+    "expired": "倒計時已結束",
+    "unclaimed_reward": "可領取的獎金",
+    "claim": "領取",
+    "claiming": "進行中...",
+    "toast": {
+      "confirm_in_wallet": "請在錢包中確認交易...",
+      "confirming": "交易確認中...",
+      "claim_success": "領取成功",
+      "claim_failed": "領取失敗"
+    },
+    "time": {
+      "days": "天",
+      "hours": "小時",
+      "minutes": "分鐘",
+      "seconds": "秒"
+    },
+    "pagination": {
+      "previous": "上一頁",
+      "next": "下一頁",
+      "page_info": "第 {current} 頁，共 {total} 頁"
+    },
+    "wallet": {
+      "connect": "連接錢包",
+      "disconnect": "斷開連接",
+      "connected": "已連接",
+      "wrong_network": "未知網絡",
+      "switch_network": "切換網絡",
+      "copy_address": "複製地址",
+      "address_copied": "地址已複製",
+      "view_explorer": "在瀏覽器中查看",
+      "sign_success": "簽名成功",
+      "sign_failed": "網絡錯誤，請重新嘗試",
+      "rejectedSign": "使用者拒絕了簽名",
+      "signing": "簽名中...",
+      "please_sign": "請簽名登入",
+      "assets": "資產"
+    }
   }
 }

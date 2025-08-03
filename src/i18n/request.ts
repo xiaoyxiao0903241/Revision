@@ -14,3 +14,15 @@ export default getRequestConfig(async ({ requestLocale }) => {
     messages: (await import(`./locales/${locale}.json`)).default,
   }
 })
+export type Messages = {
+  [key: string]: string | Messages;
+};
+
+export async function loadMessages(locale: string): Promise<Messages> {
+  try {
+    return (await import(`./locales/${locale}.json`)).default;
+  } catch (error) {
+    console.error(`Failed to load messages for locale: ${locale}`, error);
+    return (await import(`./locales/en.json`)).default;
+  }
+}

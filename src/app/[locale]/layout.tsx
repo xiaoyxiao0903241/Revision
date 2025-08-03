@@ -2,6 +2,7 @@ import { NextIntlClientProvider } from "next-intl"
 import "../global.css"
 import { Sidebar } from "./components/sidebar"
 import { Header } from "./components/header"
+import AppProviders from "./components/AppProviders"
 
 export default async function LocaleLayout({
   children,
@@ -17,15 +18,17 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <NextIntlClientProvider>
         <body className="flex flex-col text-foreground/70">
-          {/* 顶部导航栏 */}
-          <Header />
-          {/* 主内容区域 */}
-          <div className="flex flex-1 flex-row py-6 pr-9">
-            {/* 左侧主导航栏 */}
-            <Sidebar />
-            {/* 右侧主内容区域 */}
-            <main className="flex-1">{children}</main>
-          </div>
+          <AppProviders>
+            {/* 顶部导航栏 */}
+            <Header />
+            {/* 主内容区域 */}
+            <div className="flex flex-1 flex-row py-6 pr-9">
+              {/* 左侧主导航栏 */}
+              <Sidebar />
+              {/* 右侧主内容区域 */}
+              <main className="flex-1">{children}</main>
+            </div>
+          </AppProviders>
         </body>
       </NextIntlClientProvider>
     </html>
