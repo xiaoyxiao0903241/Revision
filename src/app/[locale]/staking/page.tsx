@@ -8,7 +8,7 @@ import { AmountCard } from "~/widgets/amount-card"
 import { DurationSelect } from "~/widgets/select"
 export default function StakingPage() {
   const t = useTranslations("staking")
-  const { duration, setDuration } = useMock()
+  const { duration, setDuration, amount, setAmount } = useMock()
   return (
     <div className="space-y-6">
       <Alert
@@ -28,10 +28,11 @@ export default function StakingPage() {
             />
             <AmountCard
               data={{
-                value: 123,
+                value: amount ?? 100,
                 desc: 456,
                 balance: 789,
               }}
+              onChange={(value) => setAmount(Number(value))}
             />
             <List>
               <List.Item>
