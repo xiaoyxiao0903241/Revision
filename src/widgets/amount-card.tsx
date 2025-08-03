@@ -9,7 +9,7 @@ export const AmountCard: FC<{
     desc: number
     balance: number
   }
-  onChange: (value: string) => void
+  onChange?: (value: string) => void
 }> = ({ data, onChange }) => {
   const t = useTranslations("staking")
   return (

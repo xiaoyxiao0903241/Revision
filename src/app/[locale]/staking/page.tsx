@@ -57,7 +57,6 @@ export default function StakingPage() {
               </List.Item>
             </List>
             <Button
-              variant="secondary"
               clipDirection="topRight-bottomLeft"
               className="w-full font-mono"
             >

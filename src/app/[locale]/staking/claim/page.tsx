@@ -90,11 +90,7 @@ export default function ClaimPage() {
               </List>
 
               {/* 领取按钮 */}
-              <Button
-                variant="secondary"
-                clipDirection="topRight-bottomLeft"
-                className="w-full"
-              >
+              <Button clipDirection="topRight-bottomLeft" className="w-full">
                 {t("claimButton")}
               </Button>
             </CardContent>

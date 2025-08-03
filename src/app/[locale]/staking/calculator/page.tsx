@@ -152,7 +152,7 @@ export default function CalculatorPage() {
                 step={10}
                 indicators={[1, 30, 60, 90, 100].map((item) => ({
                   value: item,
-                  label: `${formatCurrency(item)}`,
+                  label: `$${formatDecimal(item, 0)}`,
                 }))}
               />
             </div>
