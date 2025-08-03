@@ -58,7 +58,19 @@
     "unstakeTitle": "Unstake",
     "unstakeDescription": "The pledged principal will be released linearly according to the block. Users can withdraw the unlocked portion at any time, while continuing to enjoy the increased returns on the remaining principal.",
     "unstakeInfo": "You may unstake the released staking amount at any time. If remaining staked, these funds will continue to generate block rewards.",
-    "unstakeButton": "Unstake"
+    "unstakeButton": "Unstake",
+    "claimTitle": "Claim Rewards",
+    "claimDescription": "Claim your staking rewards and rebase boost. Rewards will be sent directly to your wallet address.",
+    "claimInfo": "You may claim rebase rewards at any time. lf unclaimed, these rewards willautomatically compound and continue to generate additional rebase rewards.",
+    "claimButton": "Claim Rewards",
+    "rebaseReward": "Rebase Reward",
+    "claimableRewards": "Claimable Rewards",
+    "totalClaimed": "Total Claimed",
+    "nextClaimTime": "Next Claim Time",
+    "claimHistory": "Claim History",
+    "youWillReceive": "You will receive",
+    "taxRate": "Tax rate",
+    "incomeTax": "Income Tax"
   },
   "common": {
     "welcome": "Welcome to ONE OLYONE",

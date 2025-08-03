@@ -35,3 +35,11 @@ export const formatCurrency = (value: number, symbolShown = true) => {
     .format(value)
     .replace("$", "")
 }
+
+export const formatDecimal = (value: number, decimals = 2) => {
+  return Intl.NumberFormat("en-US", {
+    style: "decimal",
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  }).format(value)
+}

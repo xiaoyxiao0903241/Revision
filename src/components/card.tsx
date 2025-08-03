@@ -20,7 +20,7 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
       </div>
       <div
         className={cn(
-          "text-card-foreground flex flex-col gap-6 p-6",
+          "text-card-foreground flex flex-col gap-6 p-6 py-9",
           className
         )}
         {...props}
@@ -37,7 +37,7 @@ function CardHeader({
   return (
     <div
       data-slot="card-header"
-      className="nine-patch-frame card-header relative -m-6"
+      className="nine-patch-frame card-header relative -m-6 -mt-9"
       {...props}
     >
       <div className="absolute top-0 left-0 right-0">
@@ -49,7 +49,7 @@ function CardHeader({
           height={9}
         />
       </div>
-      <div className={cn("p-6", className)}>{children}</div>
+      <div className={cn("p-6 pt-9", className)}>{children}</div>
     </div>
   )
 }

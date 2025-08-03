@@ -57,7 +57,7 @@ export const Statistics: React.FC<StatisticsProps> = ({
       </div>
 
       {/* Description Row */}
-      {desc && <div className="text-gray-400 text-xs">{desc}</div>}
+      {desc && <div className="text-foreground/50 text-xs">{desc}</div>}
     </div>
   )
 }

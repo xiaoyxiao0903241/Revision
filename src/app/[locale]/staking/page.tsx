@@ -1,23 +1,14 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import {
-  Alert,
-  Button,
-  Card,
-  Countdown,
-  List,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "~/components"
+import { Alert, Button, Card, Countdown, List } from "~/components"
+import { durationOptions, useMock } from "~/hooks/useMock"
 import { WalletSummary } from "~/widgets"
 import { AmountCard } from "~/widgets/amount-card"
+import { DurationSelect } from "~/widgets/select"
 export default function StakingPage() {
   const t = useTranslations("staking")
-
+  const { duration, setDuration } = useMock()
   return (
     <div className="space-y-6">
       <Alert
@@ -30,18 +21,11 @@ export default function StakingPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
           <Card>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder={t("selectDurationPlaceholder")} />
-              </SelectTrigger>
-              <SelectContent>
-                {[7, 30, 90, 180, 360].map((it) => (
-                  <SelectItem key={it} value={it.toString()}>
-                    {it} {t("days")}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <DurationSelect
+              options={durationOptions}
+              value={duration}
+              onChange={setDuration}
+            />
             <AmountCard
               data={{
                 value: 123,
@@ -75,7 +59,6 @@ export default function StakingPage() {
               variant="secondary"
               clipDirection="topRight-bottomLeft"
               className="w-full font-mono"
-              clipSize={12}
             >
               {t("stake")}
             </Button>

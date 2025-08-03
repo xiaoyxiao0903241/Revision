@@ -47,6 +47,7 @@ export const WalletSummary: FC<{
         <Button
           variant="accent"
           size="sm"
+          clipSize={8}
           className="gap-2"
           clipDirection="topLeft-bottomRight"
         >

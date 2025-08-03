@@ -1,68 +1,195 @@
 "use client"
 
-import { useTranslations } from "next-intl"
+import React, { useState } from "react"
+import { Segments } from "~/components/segments"
+import { Button } from "~/components/button"
+import { Card } from "~/components/card"
+import {
+  Home,
+  User,
+  Settings,
+  Bell,
+  Heart,
+  Star,
+  TrendingUp,
+  BarChart3,
+  PieChart,
+  Activity,
+} from "lucide-react"
 
-export default function DemoPage() {
-  const t = useTranslations("navigation")
+const segmentOptions = [
+  { value: "home", label: "首页", icon: <Home /> },
+  { value: "profile", label: "个人", icon: <User /> },
+  { value: "settings", label: "设置", icon: <Settings /> },
+]
+
+const iconOptions = [
+  { value: "notifications", label: "通知", icon: <Bell /> },
+  { value: "favorites", label: "收藏", icon: <Heart /> },
+  { value: "starred", label: "星标", icon: <Star /> },
+]
+
+const chartOptions = [
+  { value: "trending", label: "趋势", icon: <TrendingUp /> },
+  { value: "bar", label: "柱状图", icon: <BarChart3 /> },
+  { value: "pie", label: "饼图", icon: <PieChart /> },
+  { value: "activity", label: "活动", icon: <Activity /> },
+]
+
+export default function SegmentsDemo() {
+  const [selectedValue1, setSelectedValue1] = useState("home")
+  const [selectedValue2, setSelectedValue2] = useState("notifications")
+  const [selectedValue3, setSelectedValue3] = useState("trending")
+  const [selectedValue4, setSelectedValue4] = useState("home")
+  const [selectedValue5, setSelectedValue5] = useState("notifications")
+  const [selectedValue6, setSelectedValue6] = useState("trending")
 
   return (
-    <div className="p-8">
-      <div className="card-body">
-        <div className="p-8">
-          <h1 className="text-3xl font-bold mb-6 gradient-text">
-            Sidebar 重构演示
-          </h1>
+    <div className="space-y-8 p-6">
+      <div className="text-center">
+        <h1 className="text-3xl font-bold text-white mb-2">
+          Segments 组件演示
+        </h1>
+        <p className="text-gray-400">类似iOS的segment组件，支持滑动动画效果</p>
+      </div>
 
-          <div className="space-y-4">
-            <div className="p-4 bg-gray-800/50 rounded-lg">
-              <h2 className="text-xl font-semibold mb-2">导航结构</h2>
-              <ul className="space-y-2 text-sm">
-                <li>• {t("dashboard")} - 仪表板</li>
-                <li>• {t("analytics")} - 分析</li>
-                <li>• {t("community")} - 社区</li>
-                <li>• {t("staking")} - 质押</li>
-                <li> - {t("noLockStaking")} - 无锁定期质押</li>
-                <li> - {t("lockedStaking")} - 锁定质押</li>
-                <li>• {t("bonds")} - 债券</li>
-                <li> - {t("lpBonds")} - LP债券</li>
-                <li> - {t("treasuryBonds")} - 国库债券</li>
-                <li>• {t("tools")} - 工具</li>
-                <li> - {t("dao")} - DAO</li>
-                <li> - {t("coolingPool")} - 冷却池</li>
-                <li> - {t("turbine")} - 涡轮</li>
-                <li> - {t("swap")} - 交换</li>
-                <li>• {t("documents")} - 文档</li>
-                <li>• {t("viewOnAve")} - 在AVE上查看</li>
-                <li>• {t("viewOnDexScreener")} - 在DexScreener上查看</li>
-              </ul>
-            </div>
+      {/* 基础用法 */}
+      <Card className="p-6">
+        <h2 className="text-xl font-semibold text-white mb-4">基础用法</h2>
+        <div className="space-y-4">
+          <div>
+            <p className="text-gray-300 mb-2">默认样式 (default)</p>
+            <Segments
+              options={segmentOptions}
+              value={selectedValue1}
+              onChange={setSelectedValue1}
+            />
+            <p className="text-sm text-gray-500 mt-2">
+              当前选中: {selectedValue1}
+            </p>
+          </div>
 
-            <div className="p-4 bg-gray-800/50 rounded-lg">
-              <h2 className="text-xl font-semibold mb-2">特性</h2>
-              <ul className="space-y-2 text-sm">
-                <li>✅ 使用现有图标系统</li>
-                <li>✅ 支持国际化</li>
-                <li>✅ 响应式设计</li>
-                <li>✅ 渐变高亮效果</li>
-                <li>✅ 分组显示</li>
-                <li>✅ 社交媒体链接</li>
-              </ul>
-            </div>
+          <div>
+            <p className="text-gray-300 mb-2">轮廓样式 (outlined)</p>
+            <Segments
+              options={iconOptions}
+              value={selectedValue2}
+              onChange={setSelectedValue2}
+              variant="outlined"
+            />
+            <p className="text-sm text-gray-500 mt-2">
+              当前选中: {selectedValue2}
+            </p>
+          </div>
 
-            <div className="p-4 bg-gray-800/50 rounded-lg">
-              <h2 className="text-xl font-semibold mb-2">样式特点</h2>
-              <ul className="space-y-2 text-sm">
-                <li>• 深色主题设计</li>
-                <li>• 九宫格边框效果</li>
-                <li>• 渐变文字高亮</li>
-                <li>• 悬停效果</li>
-                <li>• 分组标题</li>
-                <li>• 图标与文字对齐</li>
-              </ul>
-            </div>
+          <div>
+            <p className="text-gray-300 mb-2">填充样式 (filled)</p>
+            <Segments
+              options={chartOptions}
+              value={selectedValue3}
+              onChange={setSelectedValue3}
+              variant="filled"
+            />
+            <p className="text-sm text-gray-500 mt-2">
+              当前选中: {selectedValue3}
+            </p>
           </div>
         </div>
-      </div>
+      </Card>
+
+      {/* 尺寸变体 */}
+      <Card className="p-6">
+        <h2 className="text-xl font-semibold text-white mb-4">尺寸变体</h2>
+        <div className="space-y-4">
+          <div>
+            <p className="text-gray-300 mb-2">小尺寸 (sm)</p>
+            <Segments
+              options={segmentOptions}
+              value={selectedValue4}
+              onChange={setSelectedValue4}
+              size="sm"
+            />
+          </div>
+
+          <div>
+            <p className="text-gray-300 mb-2">中尺寸 (md) - 默认</p>
+            <Segments
+              options={iconOptions}
+              value={selectedValue5}
+              onChange={setSelectedValue5}
+              size="md"
+            />
+          </div>
+
+          <div>
+            <p className="text-gray-300 mb-2">大尺寸 (lg)</p>
+            <Segments
+              options={chartOptions}
+              value={selectedValue6}
+              onChange={setSelectedValue6}
+              size="lg"
+            />
+          </div>
+        </div>
+      </Card>
+
+      {/* 禁用状态 */}
+      <Card className="p-6">
+        <h2 className="text-xl font-semibold text-white mb-4">禁用状态</h2>
+        <div className="space-y-4">
+          <div>
+            <p className="text-gray-300 mb-2">禁用状态</p>
+            <Segments options={segmentOptions} value="home" disabled />
+          </div>
+        </div>
+      </Card>
+
+      {/* 动态选项 */}
+      <Card className="p-6">
+        <h2 className="text-xl font-semibold text-white mb-4">动态选项</h2>
+        <div className="space-y-4">
+          <div className="flex gap-2 mb-4">
+            <Button
+              size="sm"
+              onClick={() => {
+                const newOptions = [
+                  { value: "option1", label: "选项1" },
+                  { value: "option2", label: "选项2" },
+                ]
+                // 这里可以动态更新选项
+                console.log("更新选项:", newOptions)
+              }}
+            >
+              更新选项
+            </Button>
+          </div>
+          <Segments
+            options={[
+              { value: "dynamic1", label: "动态选项1" },
+              { value: "dynamic2", label: "动态选项2" },
+              { value: "dynamic3", label: "动态选项3" },
+            ]}
+            onChange={(value) => console.log("选中:", value)}
+          />
+        </div>
+      </Card>
+
+      {/* 自定义样式 */}
+      <Card className="p-6">
+        <h2 className="text-xl font-semibold text-white mb-4">自定义样式</h2>
+        <div className="space-y-4">
+          <div>
+            <p className="text-gray-300 mb-2">自定义背景色</p>
+            <Segments
+              options={segmentOptions}
+              className="bg-gradient-to-r from-purple-900/50 to-blue-900/50"
+              style={{
+                border: "1px solid rgba(139, 92, 246, 0.3)",
+              }}
+            />
+          </div>
+        </div>
+      </Card>
     </div>
   )
 }

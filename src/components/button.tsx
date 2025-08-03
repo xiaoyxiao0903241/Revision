@@ -18,7 +18,7 @@ export function Button({
   className,
   children,
   clipDirection = "none",
-  clipSize = 8,
+  clipSize = 12,
   ...props
 }: ButtonProps) {
   const baseClasses =

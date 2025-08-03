@@ -74,7 +74,6 @@ export function Segments({
   return (
     <View
       clipDirection="topRight-bottomLeft"
-      clipSize={12}
       className="bg-[#22285E] h-12 p-[3px]"
     >
       <div
@@ -103,7 +102,6 @@ export function Segments({
             <View
               clipDirection="topRight-bottomLeft"
               className="bg-[#576AF4]/40 w-full h-full"
-              clipSize={12}
             >
               <span />
             </View>

@@ -58,7 +58,19 @@
     "unstakeTitle": "解除质押",
     "unstakeDescription": "质押本金将按区块线性释放,用户可随时提取已解锁部分,同时继续享受剩余本金的增益收益。",
     "unstakeInfo": "您可以随时解除已释放的质押金额。如果仍有质押，这些资金将继续产生区块奖励。",
-    "unstakeButton": "解除质押"
+    "unstakeButton": "解除质押",
+    "claimTitle": "领取奖励",
+    "claimDescription": "领取您的质押奖励和重基加成。奖励将直接发送到您的钱包地址。",
+    "claimInfo": "您可以随时领取已累积的奖励。领取后，奖励将立即发送到您的钱包。",
+    "claimButton": "领取奖励",
+    "rebaseReward": "重基奖励",
+    "claimableRewards": "可领取奖励",
+    "totalClaimed": "已领取总额",
+    "nextClaimTime": "下次可领取时间",
+    "claimHistory": "领取历史",
+    "youWillReceive": "您将收到",
+    "taxRate": "税率",
+    "incomeTax": "所得税"
   },
   "common": {
     "welcome": "欢迎来到 ONE OLYONE",
