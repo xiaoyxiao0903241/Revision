@@ -5,12 +5,18 @@ import { Popover, PopoverContent, PopoverTrigger } from "./popover"
 export const InfoPopover: FC<{
   children: React.ReactNode
   className?: string
-}> = ({ children, className }) => {
+  triggerClassName?: string
+}> = ({ children, className, triggerClassName }) => {
   const [open, setOpen] = useState(false)
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <InfoIcon className="text-foreground/50 w-6 h-6 cursor-pointer" />
+        <InfoIcon
+          className={cn(
+            "text-foreground/50 w-6 h-6 cursor-pointer",
+            triggerClassName
+          )}
+        />
       </PopoverTrigger>
       <PopoverContent className={cn("w-52", className)}>
         {children}

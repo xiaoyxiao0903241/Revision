@@ -8,14 +8,14 @@ import { AmountCard } from "~/widgets/amount-card"
 import { DurationSelect } from "~/widgets/select"
 export default function StakingPage() {
   const t = useTranslations("staking")
-  const tNoLockedStaking = useTranslations("noLockedStaking")
+  const tLockedStaking = useTranslations("lockedStaking")
   const { duration, setDuration, decimal, setDecimal } = useMock()
   return (
     <div className="space-y-6">
       <Alert
         icon="stake"
-        title={tNoLockedStaking("alertTitle")}
-        description={tNoLockedStaking("alertDescription")}
+        title={tLockedStaking("alertTitle")}
+        description={tLockedStaking("alertDescription")}
       />
 
       {/* 主要内容区域 */}

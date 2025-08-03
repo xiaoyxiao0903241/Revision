@@ -27,7 +27,7 @@
     "title": "Stake",
     "description": "Long-term staking incentivizes users to extend the staking period through block rewards, and the incentive amount is directly proportional to the staking duration.",
     "alertTitle": "Stake",
-    "alertDescription": "You can deposit or withdraw staking at any time, with no lock-in period, and block rewards are distributed every 12 hours",
+    "alertDescription": "Long-term staking incentivizes users to extend the staking period through block rewards, and the incentive amount is directly proportional to the staking duration.",
     "stake": "Stake",
     "unstake": "Unstake",
     "claim": "Claim",

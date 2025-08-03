@@ -24,10 +24,6 @@
     "wallet": "钱包"
   },
   "staking": {
-    "title": "质押",
-    "description": "长期质押通过爆块奖励加成激励用户延长质押周期,加成幅度与质押时长成正比。",
-    "alertTitle": "质押",
-    "alertDescription": "您可以随时存入或解除质押，无锁定期限，每12小时发放爆块奖励",
     "stake": "质押",
     "unstake": "解质押",
     "claim": "领取",
@@ -95,6 +91,16 @@
     "yourReward": "您的奖励",
     "months": "个月",
     "roi": "ROI"
+  },
+  "lockedStaking": {
+    "title": "锁定质押",
+    "alertTitle": "锁定质押",
+    "alertDescription": "长期质押通过爆块奖励加成激励用户延长质押周期，加成幅度与质押时长成正比。"
+  },
+  "noLockedStaking": {
+    "title": "质押",
+    "alertTitle": "质押",
+    "alertDescription": "您可以随时存入或解除质押，无锁定期限，每12小时发放爆块奖励"
   },
   "common": {
     "welcome": "欢迎来到 ONE OLYONE",
