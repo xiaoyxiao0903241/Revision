@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl"
 import { FC } from "react"
 import { RoundedLogo, Statistics, View } from "~/components"
+import { formatCurrency } from "~/lib/utils"
 
 export const AmountCard: FC<{
   data: {
@@ -15,12 +16,7 @@ export const AmountCard: FC<{
       <div className="flex items-center justify-between border-b border-border/20 py-4">
         <Statistics
           title={t("amount")}
-          value={Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-          })
-            .format(data.value)
-            .replace("$", "")}
+          value={formatCurrency(data.value, false)}
         />
         <div className="flex items-center gap-1">
           <RoundedLogo />
@@ -28,21 +24,11 @@ export const AmountCard: FC<{
         </div>
       </div>
       <div className="flex items-center justify-between text-xs text-foreground/70 py-4">
-        <span className="font-mono">
-          {Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-          }).format(data.desc)}
-        </span>
+        <span className="font-mono">{formatCurrency(data.desc)}</span>
         <div className="flex items-center gap-2">
           <span className="font-mono">{t("balance")}</span>
           <span className="font-mono text-white">
-            {`${Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-            })
-              .format(data.balance)
-              .replace("$", "")} OLY`}
+            {`${formatCurrency(data.balance, false)} OLY`}
           </span>
           <span className="font-mono gradient-text">{t("useMax")}</span>
         </div>

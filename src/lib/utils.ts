@@ -20,3 +20,18 @@ export function getClipPath(clipDirection: string, clipSize: number) {
 
   return undefined
 }
+
+export const formatCurrency = (value: number, symbolShown = true) => {
+  if (symbolShown) {
+    return Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(value)
+  }
+  return Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  })
+    .format(value)
+    .replace("$", "")
+}

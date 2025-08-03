@@ -134,7 +134,11 @@ function SelectItem({
       )}
       {...props}
     >
-      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+      {typeof children === "string" ? (
+        <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+      ) : (
+        children
+      )}
     </SelectPrimitive.Item>
   )
 }

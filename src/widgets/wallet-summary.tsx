@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl"
 import { Button, Card, CardHeader, List, Statistics } from "~/components"
 import Logo from "~/assets/logo.svg"
 import { FC } from "react"
+import { formatCurrency } from "~/lib/utils"
 export const WalletSummary: FC<{
   data: {
     availableToStake: number
@@ -23,26 +24,13 @@ export const WalletSummary: FC<{
           <div className="flex flex-col gap-2 flex-1">
             <Statistics
               title={t("availableToStake")}
-              value={`${Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-              })
-                .format(data.availableToStake)
-                .replace("$", "")} OLY`}
+              value={`${formatCurrency(data.availableToStake, false)} OLY`}
             />
             <div className="h-px bg-border/20 w-full"></div>
             <Statistics
               title={t("stakedAmount")}
-              value={`${Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-              })
-                .format(data.stakedAmount)
-                .replace("$", "")} OLY`}
-              desc={Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-              }).format(data.stakedAmountDesc)}
+              value={`${formatCurrency(data.stakedAmount, false)} OLY`}
+              desc={formatCurrency(data.stakedAmountDesc)}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -50,16 +38,8 @@ export const WalletSummary: FC<{
             <div className="h-px bg-border/20 w-full"></div>
             <Statistics
               title={t("rebaseRewards")}
-              value={`${Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-              })
-                .format(data.rebaseRewards)
-                .replace("$", "")} OLY`}
-              desc={Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-              }).format(data.rebaseRewardsDesc)}
+              value={`${formatCurrency(data.rebaseRewards, false)} OLY`}
+              desc={formatCurrency(data.rebaseRewardsDesc)}
             />
           </div>
         </div>
@@ -92,12 +72,7 @@ export const WalletSummary: FC<{
         <List.Item>
           <List.Label>{t("totalStaked")}</List.Label>
           <List.Value className="text-secondary">
-            {`${Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-            })
-              .format(data.totalStaked)
-              .replace("$", "")} OLY`}
+            {`${formatCurrency(data.totalStaked, false)} OLY`}
           </List.Value>
         </List.Item>
         <List.Item>
@@ -106,12 +81,7 @@ export const WalletSummary: FC<{
         </List.Item>
         <List.Item>
           <List.Label>{t("olyMarketCap")}</List.Label>
-          <List.Value>
-            {Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-            }).format(data.olyMarketCap)}
-          </List.Value>
+          <List.Value>{formatCurrency(data.olyMarketCap)}</List.Value>
         </List.Item>
       </List>
     </Card>

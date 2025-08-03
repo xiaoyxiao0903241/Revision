@@ -1,6 +1,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
+import { useState } from "react"
 import {
   Alert,
   Button,
@@ -15,11 +16,28 @@ import {
   View,
   Card,
   CardHeader,
+  Notification,
 } from "~/components"
 import Logo from "~/assets/logo.svg"
+import { WalletSummary } from "~/widgets"
+import { AmountTicker } from "~/widgets/amount-ticker"
+import { formatCurrency } from "~/lib/utils"
 
 export default function UnstakePage() {
   const t = useTranslations("staking")
+  const [selectedValue, setSelectedValue] = useState<string>("")
+
+  // 定义质押选项数据
+  const stakingOptions = [
+    { value: 100, desc: "7 Days" },
+    { value: 200, desc: "14 Days" },
+    { value: 300, desc: "30 Days" },
+  ]
+
+  // 根据选中的值获取对应的选项数据
+  const selectedOption = stakingOptions.find(
+    (option) => option.value.toString() === selectedValue
+  )
 
   return (
     <div className="space-y-6">
@@ -33,115 +51,59 @@ export default function UnstakePage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
           <Card>
-            <Select>
+            <Select value={selectedValue} onValueChange={setSelectedValue}>
               <SelectTrigger>
-                <SelectValue placeholder={t("selectStakingAmount")} />
+                <SelectValue placeholder={t("selectStakingAmount")}>
+                  {selectedOption && (
+                    <div className="flex flex-row gap-2 w-full">
+                      <RoundedLogo className="w-5 h-5" />
+                      <span className="flex-1">
+                        {formatCurrency(selectedOption.value)}
+                      </span>
+                      <span>{selectedOption.desc}</span>
+                    </div>
+                  )}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">全部质押数量</SelectItem>
-                <SelectItem value="partial">部分质押数量</SelectItem>
+                {stakingOptions.map((item) => (
+                  <SelectItem key={item.value} value={item.value.toString()}>
+                    <div className="flex flex-row gap-2 w-full">
+                      <RoundedLogo className="w-5 h-5" />
+                      <span className="flex-1">
+                        {formatCurrency(item.value)}
+                      </span>
+                      <span>{item.desc}</span>
+                    </div>
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
-            <View
-              className="bg-[#22285E] px-4"
-              clipDirection="topRight-bottomLeft"
-            >
-              <div className="flex items-center justify-between border-b border-border/20 py-4">
-                <Statistics title={t("amount")} value={"0.0"} />
-                <div className="flex items-center gap-1">
-                  <RoundedLogo />
-                  <span className="text-white font-mono">ONE</span>
-                </div>
-              </div>
-              <div className="flex items-center justify-between text-xs text-foreground/70 py-4">
-                <span className="font-mono">$0.00</span>
-                <div className="flex items-center gap-2">
-                  <span className="font-mono">06d 17h 59m 52s</span>
-                </div>
-              </div>
-            </View>
-
+            <AmountTicker
+              data={{
+                value: selectedOption?.value ?? 100,
+                desc: 100,
+                endAt: new Date(Date.now() + 10000),
+              }}
+            />
             {/* 信息提示 */}
-            <div className="mt-4 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-              <p className="text-yellow-400 text-sm">{t("unstakeInfo")}</p>
-            </div>
-
-            <Button
-              variant="secondary"
-              clipDirection="topRight-bottomLeft"
-              className="w-full font-mono mt-4"
-              clipSize={12}
-            >
-              {t("unstakeButton")}
-            </Button>
+            <Notification>{t("unstakeInfo")}</Notification>
           </Card>
         </div>
         <div>
-          <Card>
-            <CardHeader className="space-y-3">
-              {/* 可用质押数量和已质押数量 */}
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col gap-2 flex-1">
-                  <Statistics title={t("availableToStake")} value="0.00" />
-                  <div className="h-px bg-border/20 w-full"></div>
-                  <Statistics
-                    title={t("stakedAmount")}
-                    value="0.00 OLY"
-                    desc="0.00"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <Statistics title={t("apr")} value="3139.23%" />
-                  <div className="h-px bg-border/20 w-full"></div>
-                  <Statistics
-                    title={t("rebaseRewards")}
-                    value="0.00 OLY"
-                    desc="0.00"
-                  />
-                </div>
-              </div>
-
-              <Button
-                variant="accent"
-                size="sm"
-                className="gap-2"
-                clipDirection="topLeft-bottomRight"
-              >
-                <div className="w-4 h-4 rounded-full bg-white flex items-center justify-center">
-                  <Logo className="w-4" />
-                </div>
-                <span className="text-black">{t("addToMetaMask")}</span>
-              </Button>
-            </CardHeader>
-            <List className="py-4">
-              <List.Item className="font-semibold">
-                <List.Label className="font-chakrapetch text-white text-base">
-                  {t("statistics")}
-                </List.Label>
-                <List.Label className="gradient-text text-base">
-                  {t("viewOnBscScan")}
-                </List.Label>
-              </List.Item>
-              <List.Item>
-                <List.Label>{t("annualPercentageRate")}</List.Label>
-                <List.Value className="text-success">3139.23%</List.Value>
-              </List.Item>
-              <List.Item>
-                <List.Label>{t("totalStaked")}</List.Label>
-                <List.Value className="text-secondary">
-                  3,069,552.45 OLY
-                </List.Value>
-              </List.Item>
-              <List.Item>
-                <List.Label>{t("stakers")}</List.Label>
-                <List.Value>356</List.Value>
-              </List.Item>
-              <List.Item>
-                <List.Label>{t("olyMarketCap")}</List.Label>
-                <List.Value>$1,263,715</List.Value>
-              </List.Item>
-            </List>
-          </Card>
+          <WalletSummary
+            data={{
+              availableToStake: 100,
+              stakedAmount: 100,
+              stakedAmountDesc: 12345,
+              apr: 100,
+              rebaseRewards: 12345678,
+              rebaseRewardsDesc: 12345678,
+              totalStaked: 100,
+              stakers: 100,
+              olyMarketCap: 100,
+            }}
+          />
         </div>
       </div>
     </div>
