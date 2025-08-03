@@ -20,10 +20,12 @@ import {
 import { formatCurrency, formatDecimal } from "~/lib/utils"
 import { WalletSummary, InfoPopover } from "~/widgets"
 import { AmountCard } from "~/widgets/amount-card"
+import { ClaimSummary } from "~/widgets/claim-summary"
 import { AmountSelect, DurationSelect } from "~/widgets/select"
 
 export default function ClaimPage() {
   const t = useTranslations("staking")
+  const tLockedStaking = useTranslations("lockedStaking")
   const { amount, setAmount, duration, setDuration, decimal, setDecimal } =
     useMock()
   const [selectedClaimType, setSelectedClaimType] =
@@ -67,49 +69,19 @@ export default function ClaimPage() {
                 }}
                 onChange={setDecimal}
               />
-              <Notification>{t("claimInfo")}</Notification>
+              <Notification>{tLockedStaking("claimInfo")}</Notification>
               <DurationSelect
                 options={durationOptions}
                 value={duration}
                 onChange={setDuration}
               />
-              <List>
-                <List.Item>
-                  <List.Label className="flex items-center gap-1">
-                    {t("youWillReceive")}
-                    <InfoPopover>
-                      <div className="flex flex-col space-y-2">
-                        {infoItems.map((item) => (
-                          <div
-                            key={item.label}
-                            className="flex justify-between"
-                          >
-                            <span className="text-foreground/50">
-                              {item.label}
-                            </span>
-                            <span className="text-secondary">{item.value}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </InfoPopover>
-                  </List.Label>
-                  <List.Value className="text-xl font-mono">
-                    {formatCurrency(85, false)} OLY
-                  </List.Value>
-                </List.Item>
-                <List.Item>
-                  <List.Label>{t("taxRate")}</List.Label>
-                  <List.Value className="text-secondary font-mono">
-                    {formatCurrency(0.38, false)}%
-                  </List.Value>
-                </List.Item>
-                <List.Item>
-                  <List.Label>{t("incomeTax")}</List.Label>
-                  <List.Value className="font-mono">
-                    {formatDecimal(0.07994899, 6)} OLY
-                  </List.Value>
-                </List.Item>
-              </List>
+              <ClaimSummary
+                data={{
+                  amount: 85,
+                  taxRate: 0.38,
+                  incomeTax: 0.07994899,
+                }}
+              />
 
               {/* 领取按钮 */}
               <Button clipDirection="topRight-bottomLeft" className="w-full">

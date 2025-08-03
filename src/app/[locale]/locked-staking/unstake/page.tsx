@@ -9,13 +9,14 @@ import { AmountSelect } from "~/widgets/select"
 
 export default function UnstakePage() {
   const t = useTranslations("staking")
+  const tLockedStaking = useTranslations("lockedStaking")
   const { amount, setAmount } = useMock()
   return (
     <div className="space-y-6">
       <Alert
         icon="unstake"
         title={t("unstakeTitle")}
-        description={t("unstakeDescription")}
+        description={tLockedStaking("unstakeDescription")}
       />
 
       {/* 主要内容区域 */}
@@ -35,7 +36,7 @@ export default function UnstakePage() {
               }}
             />
             {/* 信息提示 */}
-            <Notification>{t("unstakeInfo")}</Notification>
+            <Notification>{tLockedStaking("unstakeInfo")}</Notification>
           </Card>
         </div>
         <div>

@@ -25,6 +25,7 @@ export function Button({
   children,
   clipDirection = "none",
   clipSize = 12,
+  disabled,
   ...props
 }: ButtonProps) {
   const baseClasses =
@@ -37,7 +38,7 @@ export function Button({
   }
 
   const variantClasses = {
-    primary: "gradient",
+    primary: "bg-gradient-to-r from-[#B408D7] to-[#576AF4]",
     secondary: "bg-secondary",
     accent: "bg-warning",
     disabled: "bg-gray-500 hover:opacity-100 active:opacity-100",
@@ -54,11 +55,16 @@ export function Button({
         baseClasses,
         sizeClasses[size],
         variantClasses[variant],
+        {
+          "bg-gradient-to-r from-gray-500 to-gray-500 hover:opacity-100 active:opacity-100 text-white/50":
+            disabled,
+        },
         className
       )}
       style={{
         clipPath,
       }}
+      disabled={disabled}
       {...props}
     >
       {children}

@@ -6,7 +6,8 @@ import { dayjs, formatCurrency } from "~/lib/utils"
 
 const CountdownCard: FC<{
   endAt: Date
-}> = ({ endAt }) => {
+  disabled?: boolean
+}> = ({ endAt, disabled }) => {
   const [countDown] = useCountDown({
     targetDate: dayjs(endAt).format("YYYY-MM-DD HH:mm:ss"),
   })
@@ -28,6 +29,7 @@ const CountdownCard: FC<{
   ) : (
     <Button
       className="h-10"
+      disabled={disabled}
       clipDirection="topRight-bottomLeft"
       variant="primary"
     >
@@ -42,7 +44,8 @@ export const AmountTicker: FC<{
     desc: number
     endAt: Date
   }
-}> = ({ data }) => {
+  disabled?: boolean
+}> = ({ data, disabled }) => {
   const t = useTranslations("staking")
   return (
     <View className="bg-[#22285E] px-4" clipDirection="topRight-bottomLeft">
@@ -59,7 +62,7 @@ export const AmountTicker: FC<{
             {formatCurrency(data.desc)}
           </span>
         </div>
-        <CountdownCard endAt={data.endAt} />
+        <CountdownCard endAt={data.endAt} disabled={disabled} />
       </div>
     </View>
   )

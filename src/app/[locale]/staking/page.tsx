@@ -1,20 +1,20 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { Alert, Button, Card, Countdown, List } from "~/components"
-import { durationOptions, useMock } from "~/hooks/useMock"
+import { Alert, Button, Card } from "~/components"
+import { useMock } from "~/hooks/useMock"
 import { WalletSummary } from "~/widgets"
 import { AmountCard } from "~/widgets/amount-card"
-import { DurationSelect } from "~/widgets/select"
+import { StakingSummary } from "~/widgets/staking-summary"
 export default function StakingPage() {
   const t = useTranslations("staking")
   const tNoLockedStaking = useTranslations("noLockedStaking")
-  const { duration, setDuration, decimal, setDecimal } = useMock()
+  const { decimal, setDecimal } = useMock()
   return (
     <div className="space-y-6">
       <Alert
         icon="stake"
-        title={tNoLockedStaking("alertTitle")}
+        title={t("stake")}
         description={tNoLockedStaking("alertDescription")}
       />
 
@@ -22,11 +22,6 @@ export default function StakingPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
           <Card>
-            <DurationSelect
-              options={durationOptions}
-              value={duration}
-              onChange={setDuration}
-            />
             <AmountCard
               data={{
                 value: decimal,
@@ -35,28 +30,13 @@ export default function StakingPage() {
               }}
               onChange={setDecimal}
             />
-            <List>
-              <List.Item>
-                <List.Label>{t("rebaseRewardRate")}</List.Label>
-                <List.Value>0.3%-1%</List.Value>
-              </List.Item>
-              <List.Item>
-                <List.Label>{t("rebaseBoost")}</List.Label>
-                <List.Value>0.3%-1%</List.Value>
-              </List.Item>
-              <List.Item>
-                <List.Label>{t("nextRebaseRewardRate")}</List.Label>
-                <List.Value className="text-secondary">0.38%</List.Value>
-              </List.Item>
-              <List.Item>
-                <List.Label>{t("countdownToNextRebase")}</List.Label>
-                <List.Value>
-                  <Countdown
-                    endAt={new Date(Date.now() + 1000 * 60 * 60 * 24)}
-                  />
-                </List.Value>
-              </List.Item>
-            </List>
+            <StakingSummary
+              data={{
+                rebaseRewardRate: "0.3%-1%",
+                nextRebaseRewardRate: "0.38%",
+                endAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+              }}
+            />
             <Button
               clipDirection="topRight-bottomLeft"
               className="w-full font-mono"
