@@ -7,6 +7,13 @@ import timezone from 'dayjs/plugin/timezone';
 // 扩展 dayjs 以支持时区
 dayjs.extend(utc);
 dayjs.extend(timezone);
+import "dayjs/locale/zh"
+import "dayjs/locale/en"
+import relativeTime from "dayjs/plugin/relativeTime"
+
+dayjs.extend(relativeTime)
+
+export { dayjs }
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -376,3 +383,25 @@ export function formatTimeToLocal(
   }
 }
 
+export const formatCurrency = (value: number, symbolShown = true) => {
+  if (symbolShown) {
+    return Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(value)
+  }
+  return Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  })
+    .format(value)
+    .replace("$", "")
+}
+
+export const formatDecimal = (value: number, decimals = 2) => {
+  return Intl.NumberFormat("en-US", {
+    style: "decimal",
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  }).format(value)
+}

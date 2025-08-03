@@ -4,7 +4,13 @@ import React from "react"
 import { cn, getClipPath } from "~/lib/utils"
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "outlined" | "accent" | "disabled"
+  variant?:
+    | "primary"
+    | "secondary"
+    | "outlined"
+    | "accent"
+    | "disabled"
+    | "link"
   size?: "sm" | "md" | "lg"
   children: React.ReactNode
   // 斜切相关属性
@@ -18,7 +24,7 @@ export function Button({
   className,
   children,
   clipDirection = "none",
-  clipSize = 8,
+  clipSize = 12,
   ...props
 }: ButtonProps) {
   const baseClasses =
@@ -37,6 +43,7 @@ export function Button({
     disabled: "bg-gray-500 hover:opacity-100 active:opacity-100",
     outlined:
       "bg-transparent border-2 border-white/20 text-white hover:bg-white/10",
+    link: "bg-transparent text-white hover:bg-white/10",
   }
 
   const clipPath = getClipPath(clipDirection, clipSize)

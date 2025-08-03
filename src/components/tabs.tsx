@@ -37,7 +37,7 @@ export const NavigationTabs: FC<{
   return (
     <div
       className={cn(
-        "relative flex w-full h-12 gap-8 mx-auto border-b border-border/10 flew-row backdrop-blur-sm",
+        "relative flex w-full h-12 gap-8 mx-auto border-b border-border/20 flew-row backdrop-blur-sm",
         className
       )}
     >
@@ -113,7 +113,7 @@ export const Tabs: FC<{
   return (
     <div
       className={cn(
-        "relative flex w-full h-12 gap-8 mx-auto border-b border-border/10 flew-row backdrop-blur-sm",
+        "relative flex w-full h-12 gap-8 mx-auto border-b border-border/20 flew-row backdrop-blur-sm",
         className
       )}
     >
@@ -140,7 +140,7 @@ export const Tabs: FC<{
             className={cn(
               "my-auto cursor-pointer font-lg select-none text-nowrap font-semibold rounded-full text-center",
               {
-                "hover:text-neutral-300": !isActive,
+                "hover:text-neutral-300 text-foreground/50": !isActive,
                 [activeClassName ?? "gradient-text"]: isActive,
               },
               labelClassName

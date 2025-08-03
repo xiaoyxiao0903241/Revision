@@ -87,7 +87,6 @@ function SelectContent({
         <View
           className="bg-[#151A3F] overflow-hidden"
           clipDirection="topRight-bottomLeft"
-          clipSize={12}
           border={true}
           borderColor="#262a60"
           borderWidth={2}
@@ -134,7 +133,11 @@ function SelectItem({
       )}
       {...props}
     >
-      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+      {typeof children === "string" ? (
+        <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+      ) : (
+        children
+      )}
     </SelectPrimitive.Item>
   )
 }

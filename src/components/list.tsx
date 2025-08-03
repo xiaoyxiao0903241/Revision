@@ -25,7 +25,7 @@ const Label: FC<React.HTMLAttributes<HTMLDivElement>> = ({
   ...props
 }) => {
   return (
-    <span className={cn("text-sm text-foreground/70", className)} {...props}>
+    <span className={cn("text-sm text-foreground/50", className)} {...props}>
       {children}
     </span>
   )

@@ -7,6 +7,7 @@ module.exports = {
       fontFamily: {
         oxanium: ["Oxanium", "sans-serif"],
         chakrapetch: ["ChakraPetch", "sans-serif"],
+        mono: ["VCR-OSD-Mono", "monospace"],
       },
       borderRadius: {
         lg: "var(--radius)",
