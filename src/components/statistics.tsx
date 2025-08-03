@@ -53,7 +53,7 @@ export const Statistics: React.FC<StatisticsProps> = ({
 
       {/* Value Row */}
       <div className="flex items-center space-x-2">
-        <span className="text-white mono text-3xl">{value}</span>
+        <span className="text-white font-mono text-3xl">{value}</span>
       </div>
 
       {/* Description Row */}

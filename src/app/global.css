@@ -218,9 +218,6 @@
   .gradient-text {
     @apply bg-gradient-to-r from-[#B408D7] to-[#576AF4] text-transparent bg-clip-text;
   }
-  .mono {
-    font-family: "VCR-OSD-Mono", monospace;
-  }
 }
 
 @layer components {

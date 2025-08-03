@@ -9,7 +9,8 @@
     "ChakraPetch",
     "iconfont",
     "unstake",
-    "oxanium"
+    "oxanium",
+    "ahooks"
   ],
   "ignorePaths": ["node_modules", "dist", "build", ".git", "package-lock.json"]
 }

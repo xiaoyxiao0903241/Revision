@@ -4,19 +4,17 @@ import { useTranslations } from "next-intl"
 import {
   Alert,
   Button,
+  Card,
+  Countdown,
   List,
-  RoundedLogo,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Statistics,
-  View,
-  Card,
-  CardHeader,
 } from "~/components"
-import Logo from "~/assets/logo.svg"
+import { WalletSummary } from "~/widgets"
+import { AmountCard } from "~/widgets/amount-card"
 export default function StakingPage() {
   const t = useTranslations("staking")
 
@@ -44,26 +42,13 @@ export default function StakingPage() {
                 ))}
               </SelectContent>
             </Select>
-            <View
-              className="bg-[#22285E] px-4"
-              clipDirection="topRight-bottomLeft"
-            >
-              <div className="flex items-center justify-between border-b border-border/20 py-4">
-                <Statistics title={t("amount")} value={"0.0"} />
-                <div className="flex items-center gap-1">
-                  <RoundedLogo />
-                  <span className="text-white mono">OLY</span>
-                </div>
-              </div>
-              <div className="flex items-center justify-between text-xs text-foreground/70 py-4">
-                <span className="mono">$0.00</span>
-                <div className="flex items-center gap-2">
-                  <span className="mono">{t("balance")}</span>
-                  <span className="mono text-white">0.00 OLY</span>
-                  <span className="mono gradient-text">{t("useMax")}</span>
-                </div>
-              </div>
-            </View>
+            <AmountCard
+              data={{
+                value: 123,
+                desc: 456,
+                balance: 789,
+              }}
+            />
             <List>
               <List.Item>
                 <List.Label>{t("rebaseRewardRate")}</List.Label>
@@ -79,84 +64,37 @@ export default function StakingPage() {
               </List.Item>
               <List.Item>
                 <List.Label>{t("countdownToNextRebase")}</List.Label>
-                <List.Value>3h 59m 46s</List.Value>
+                <List.Value>
+                  <Countdown
+                    endAt={new Date(Date.now() + 1000 * 60 * 60 * 24)}
+                  />
+                </List.Value>
               </List.Item>
             </List>
             <Button
               variant="secondary"
               clipDirection="topRight-bottomLeft"
               className="w-full font-mono"
+              clipSize={12}
             >
               {t("stake")}
             </Button>
           </Card>
         </div>
         <div>
-          <Card>
-            <CardHeader className="space-y-3">
-              {/* 可用质押数量 */}
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col gap-2 flex-1">
-                  <Statistics title={t("availableToStake")} value="0.00" />
-                  <div className="h-px bg-border/20 w-full"></div>
-                  <Statistics
-                    title={t("stakedAmount")}
-                    value="0.00 OLY"
-                    desc="0.00"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <Statistics title={t("apr")} value="3139.23%" />
-                  <div className="h-px bg-border/20 w-full"></div>
-                  <Statistics
-                    title={t("rebaseRewards")}
-                    value="$1,2634,715"
-                    desc="0.00"
-                  />
-                </div>
-              </div>
-
-              {/* 已质押数量 */}
-
-              <Button
-                variant="accent"
-                size="sm"
-                className="gap-2"
-                clipDirection="topLeft-bottomRight"
-              >
-                <div className="w-4 h-4 rounded-full bg-white flex items-center justify-center">
-                  <Logo className="w-4" />
-                </div>
-                <span className="text-black">{t("addToMetaMask")}</span>
-              </Button>
-            </CardHeader>
-            <List className="py-4">
-              <List.Item className="font-semibold">
-                <List.Label className="font-chakrapetch text-white text-base">
-                  {t("statistics")}
-                </List.Label>
-                <List.Label className="gradient-text text-base">
-                  {t("viewOnBscScan")}
-                </List.Label>
-              </List.Item>
-              <List.Item>
-                <List.Label>{t("annualPercentageRate")}</List.Label>
-                <List.Value className="text-success">3139.23%</List.Value>
-              </List.Item>
-              <List.Item>
-                <List.Label>{t("totalStaked")}</List.Label>
-                <List.Value className="text-secondary">0.38%</List.Value>
-              </List.Item>
-              <List.Item>
-                <List.Label>{t("stakers")}</List.Label>
-                <List.Value>3h 59m 46s</List.Value>
-              </List.Item>
-              <List.Item>
-                <List.Label>{t("olyMarketCap")}</List.Label>
-                <List.Value>$1,2634,715</List.Value>
-              </List.Item>
-            </List>
-          </Card>
+          <WalletSummary
+            data={{
+              availableToStake: 100,
+              stakedAmount: 100,
+              stakedAmountDesc: 12345,
+              apr: 100,
+              rebaseRewards: 12345678,
+              rebaseRewardsDesc: 12345678,
+              totalStaked: 100,
+              stakers: 100,
+              olyMarketCap: 100,
+            }}
+          />
         </div>
       </div>
     </div>
