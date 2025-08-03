@@ -11,7 +11,7 @@ import {
   avalanche,
   sepolia,
 } from 'viem/chains';
-import { chainId } from '@/src/constants/tokens';
+import { chainId } from '~/wallet/constants/tokens';
 // Multicall3 contract ABI
 const MULTICALL_ABI = [
   {

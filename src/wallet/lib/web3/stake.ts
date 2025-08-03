@@ -1,9 +1,9 @@
 import { Address, Abi, formatUnits, erc20Abi } from 'viem';
 import { executeMulticall } from '~/lib/multicall';
 import {
-  longStaking30,
+  longStaking5,
   // longStaking60,
-  longStaking90,
+  // longStaking90,
   longStaking180,
   longStaking360,
   staking,
@@ -30,17 +30,17 @@ interface ContractCall {
 
 export const depositDayList = [
   {
-    token: longStaking30,
-    day: '30',
+    token: longStaking5,
+    day: '5',
   },
   // {
   //   token: longStaking60,
   //   day: "60 Day",
   // },
-  {
-    token: longStaking90,
-    day: '90',
-  },
+  // {
+  //   token: longStaking90,
+  //   day: '90',
+  // },
   {
     token: longStaking180,
     day: '180',
@@ -481,8 +481,8 @@ export const getAllowance = async ({
         },
       ],
     })) as { success: boolean; data: bigint }[];
-
-    if (res.length) {
+    console.log(res,"res11")
+    if (res.length && res[0].success) {
       const rate = formatUnits(res[0].data, decimal);
       return rate;
     }
@@ -613,7 +613,7 @@ export const endBlock = async ({ address }: { address: string }) => {
     const res = (await executeMulticall({
       calls: [
         {
-          address: longStaking30 as `0x${string}`,
+          address: longStaking5 as `0x${string}`,
           abi: LongStakingAbi as Abi,
           functionName: 'stakes',
           args: [address],

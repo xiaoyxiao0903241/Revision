@@ -4,7 +4,6 @@ import { useChainId, useAccount } from 'wagmi';
 import { useMemo } from 'react';
 import { chainId as chainIdConst } from '~/wallet/constants/tokens';
 import { useTranslations } from 'next-intl';
-import bnb_logo from '~/imgs/common/bnb_logo.svg'
 interface NetworkInfo {
   name: string;
   icon: string;
@@ -31,7 +30,7 @@ export default function NetWork() {
     if (!isConnected) {
       return {
         name: t('NotConnected'),
-        icon: '~/imgs/common/bnb_logo.svg',
+        icon: '/imgs/common/bnb_logo.svg',
         color: '#999999',
         isSupported: false,
       };
@@ -42,7 +41,7 @@ export default function NetWork() {
     if (!networkConfig && chainId !== chainIdConst) {
       return {
         name: t('noSupport'),
-        icon: '~/imgs/common/bnb_logo.svg',
+        icon: '/imgs/common/bnb_logo.svg',
         color: '#ff6b6b',
         isSupported: false,
       };

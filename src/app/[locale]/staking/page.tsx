@@ -17,8 +17,39 @@ import {
   CardHeader,
 } from "~/components"
 import Logo from "~/assets/logo.svg"
+import { demandStaking } from "~/wallet/constants/tokens";
+import { useUserAddress } from "~/contexts/UserAddressContext";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  demandInfo,
+  demandProfit,
+  demandAfterHot,
+  getAllnetReabalseNum,
+  getAllowance,
+} from "~/wallet/lib/web3/stake";
+import { OLY, staking } from "~/wallet/constants/tokens";
+
+
 export default function StakingPage() {
   const t = useTranslations("staking")
+  const { userAddress } = useUserAddress();
+
+// 获取授权长度
+const { data: allowanceLynkLength, refetch: refetchAllowanceLynk } = useQuery({
+  queryKey: ["allowanceAS"],
+  queryFn: () =>
+    getAllowance({
+      address: userAddress as `0x${string}`,
+      fromAddress: OLY,
+      toAddress: demandStaking,
+      decimal:9
+    }),
+  enabled: Boolean(userAddress),
+  retry: 1,
+  refetchInterval: 30000,
+});
+console.log(allowanceLynkLength,'allowanceLynkLength')
+
 
   return (
     <div className="space-y-6">
@@ -32,18 +63,6 @@ export default function StakingPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
           <Card>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder={t("selectDurationPlaceholder")} />
-              </SelectTrigger>
-              <SelectContent>
-                {[7, 30, 90, 180, 360].map((it) => (
-                  <SelectItem key={it} value={it.toString()}>
-                    {it} {t("days")}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
             <View
               className="bg-[#22285E] px-4"
               clipDirection="topRight-bottomLeft"

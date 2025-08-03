@@ -9,7 +9,7 @@ import { WagmiProvider } from 'wagmi';
 import { http, custom } from 'viem';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
-  bscTestnet,
+  // bscTestnet,
   bsc,
   mainnet,
   polygon,
@@ -80,12 +80,14 @@ export function RainbowProvider({ children }: { children: React.ReactNode }) {
       typeof (window as any).okxwallet === 'object' &&
       (window as any).okxwallet?.isOKExWallet
     ) {
+      console.log('okxwallet');
+      console.log(window);
       return {
         // [bsc.id]: custom(window.ethereum),
         [bsc.id]: http(
           'https://go.getblock.io/dafa5eaedfa54feea3fbd733aa1e3950'
         ),
-        [bscTestnet.id]: custom(window.ethereum),
+        // [bscTestnet.id]: custom(window.ethereum),
         [mainnet.id]: custom(window.ethereum),
         [polygon.id]: custom(window.ethereum),
         [arbitrum.id]: custom(window.ethereum),
@@ -112,10 +114,10 @@ export function RainbowProvider({ children }: { children: React.ReactNode }) {
     ) {
       return {
         // [bsc.id]: custom(window.ethereum),
-        [bsc.id]: http(
-          'https://go.getblock.io/dafa5eaedfa54feea3fbd733aa1e3950'
-        ),
-        [bscTestnet.id]: custom(window.ethereum),
+        // [bsc.id]: http(
+        //   'https://go.getblock.io/dafa5eaedfa54feea3fbd733aa1e3950'
+        // ),
+        [bsc.id]: custom(window.ethereum),
         [mainnet.id]: custom(window.ethereum),
         [polygon.id]: custom(window.ethereum),
         [arbitrum.id]: custom(window.ethereum),
@@ -138,7 +140,7 @@ export function RainbowProvider({ children }: { children: React.ReactNode }) {
     if (typeof window !== 'undefined' && window.ethereum) {
       return {
         [bsc.id]: custom(window.ethereum),
-        [bscTestnet.id]: custom(window.ethereum),
+        // [bscTestnet.id]: custom(window.ethereum),
         [mainnet.id]: custom(window.ethereum),
         [polygon.id]: custom(window.ethereum),
         [arbitrum.id]: custom(window.ethereum),
@@ -150,9 +152,9 @@ export function RainbowProvider({ children }: { children: React.ReactNode }) {
         [bsc.id]: http(
           'https://go.getblock.io/dafa5eaedfa54feea3fbd733aa1e3950'
         ),
-        [bscTestnet.id]: http(
-          'https://bnb-testnet.g.alchemy.com/v2/U6TYKzMUzYgeLnljgneV2'
-        ),
+        // [bscTestnet.id]: http(
+        //   'https://bnb-testnet.g.alchemy.com/v2/U6TYKzMUzYgeLnljgneV2'
+        // ),
         [mainnet.id]: http('https://ethereum-rpc.publicnode.com'),
         [polygon.id]: http('https://polygon-rpc.com'),
         [arbitrum.id]: http('https://1rpc.io/arb'),
@@ -166,12 +168,12 @@ export function RainbowProvider({ children }: { children: React.ReactNode }) {
     () =>
       getDefaultConfig({
         appName: 'OLYONE Finance',
-        projectId: '8a4b755ee951880b38e351a20ca3642e',
-        chains: [mainnet, bscTestnet, bsc, polygon, arbitrum, base, linea],
+        projectId: '7dca20fa6560d3a1c1957bbed71fc580',
+        chains: [mainnet, bsc, polygon, arbitrum, base, linea],
         transports,
         ssr: true,
         appDescription: 'OLYONE Finance DApp',
-        appUrl: 'https://test-hj9c2cqoh.oly-one.com',
+        appUrl: 'https://app.olyonedao.com',
         appIcon: '/favicon.ico',
       }),
     [transports]
@@ -182,7 +184,7 @@ export function RainbowProvider({ children }: { children: React.ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
           theme={customTheme}
-          initialChain={bscTestnet}
+          initialChain={bsc}
           appInfo={{
             appName: 'OLYONE Finance',
             learnMoreUrl: 'https://walletguide.walletconnect.network/',
