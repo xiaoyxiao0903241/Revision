@@ -70,7 +70,18 @@
     "claimHistory": "领取历史",
     "youWillReceive": "您将收到",
     "taxRate": "税率",
-    "incomeTax": "所得税"
+    "incomeTax": "所得税",
+    "recordsDescription": "您可以在这里查看您的质押记录。",
+    "allEvent": "全部事件",
+    "event": "事件",
+    "transactionHash": "交易哈希",
+    "period": "期限",
+    "duration": "时长",
+    "dateTime": "日期时间",
+    "recordsCount": "条记录",
+    "lastUpdate": "前更新",
+    "noRecords": "请连接钱包或输入钱包地址查看详细统计",
+    "stakeNow": "立即质押"
   },
   "common": {
     "welcome": "欢迎来到 ONE OLYONE",

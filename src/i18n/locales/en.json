@@ -70,7 +70,18 @@
     "claimHistory": "Claim History",
     "youWillReceive": "You will receive",
     "taxRate": "Tax rate",
-    "incomeTax": "Income Tax"
+    "incomeTax": "Income Tax",
+    "recordsDescription": "You can view your staking records here.",
+    "allEvent": "All Event",
+    "event": "Event",
+    "transactionHash": "Transaction Hash",
+    "period": "Period",
+    "duration": "Duration",
+    "dateTime": "Date & Time",
+    "recordsCount": "records",
+    "lastUpdate": "ago",
+    "noRecords": "Please connect your wallet or enter a wallet address to view the detailed statistics",
+    "stakeNow": "Stake Now"
   },
   "common": {
     "welcome": "Welcome to ONE OLYONE",

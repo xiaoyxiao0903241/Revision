@@ -2,6 +2,7 @@ import { NextIntlClientProvider } from "next-intl"
 import "../global.css"
 import { Sidebar } from "./components/sidebar"
 import { Header } from "./components/header"
+import { LocaleDetector } from "~/widgets/locale-detector"
 
 export default async function LocaleLayout({
   children,
@@ -16,6 +17,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <NextIntlClientProvider>
+        <LocaleDetector />
         <body className="flex flex-col text-foreground/70">
           {/* 顶部导航栏 */}
           <Header />

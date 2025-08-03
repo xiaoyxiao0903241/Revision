@@ -1,9 +1,8 @@
 import { useCountDown } from "ahooks"
-import dayjs from "dayjs"
 import { useTranslations } from "next-intl"
-import { FC, useMemo } from "react"
+import { FC } from "react"
 import { Button, Countdown, Icon, RoundedLogo, View } from "~/components"
-import { formatCurrency } from "~/lib/utils"
+import { dayjs, formatCurrency } from "~/lib/utils"
 
 const CountdownCard: FC<{
   endAt: Date
