@@ -3,6 +3,7 @@ import { Button, Card, CardHeader, List, Statistics } from "~/components"
 import Logo from "~/assets/logo.svg"
 import { FC } from "react"
 import { formatCurrency } from "~/lib/utils"
+import { infoItems } from "~/hooks/useMock"
 export const WalletSummary: FC<{
   data: {
     availableToStake: number
@@ -31,6 +32,16 @@ export const WalletSummary: FC<{
               title={t("stakedAmount")}
               value={`${formatCurrency(data.stakedAmount, false)} OLY`}
               desc={formatCurrency(data.stakedAmountDesc)}
+              info={
+                <div className="flex flex-col space-y-2">
+                  {infoItems.map((item) => (
+                    <div key={item.label} className="flex justify-between">
+                      <span className="text-foreground/50">{item.label}</span>
+                      <span className="text-secondary">{item.value}</span>
+                    </div>
+                  ))}
+                </div>
+              }
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -40,6 +51,16 @@ export const WalletSummary: FC<{
               title={t("rebaseRewards")}
               value={`${formatCurrency(data.rebaseRewards, false)} OLY`}
               desc={formatCurrency(data.rebaseRewardsDesc)}
+              info={
+                <div className="flex flex-col space-y-2">
+                  {infoItems.map((item) => (
+                    <div key={item.label} className="flex justify-between">
+                      <span className="text-foreground/50">{item.label}</span>
+                      <span className="text-secondary">{item.value}</span>
+                    </div>
+                  ))}
+                </div>
+              }
             />
           </div>
         </div>

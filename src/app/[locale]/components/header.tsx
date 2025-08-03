@@ -1,5 +1,8 @@
 "use client"
-import { useTranslations } from "next-intl"
+import { useLocale } from "next-intl"
+import { usePathname, useRouter } from "next/navigation"
+import AppName from "~/assets/app-name.svg"
+import Logo from "~/assets/logo.svg"
 import { Button } from "~/components"
 import {
   DropdownMenu,
@@ -7,13 +10,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/dropdown-menu"
-import Logo from "~/assets/logo.svg"
-import AppName from "~/assets/app-name.svg"
-import { useLocale } from "next-intl"
-import { useRouter, usePathname } from "next/navigation"
 
 export function Header() {
-  const t = useTranslations("header")
   const locale = useLocale()
   const router = useRouter()
   const pathname = usePathname()

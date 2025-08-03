@@ -71,7 +71,7 @@ export default function CalculatorPage() {
               {t("latestOlyPrice", { amount: formatDecimal(olyPrice) })}
             </p>
           </View>
-          <View className="flex flex-col space-y-6 bg-secondary/20 p-4">
+          <View className="flex flex-col space-y-9 bg-secondary/20 p-4">
             {/* 质押期限滑块 */}
             <div className="flex flex-col space-y-4">
               <div className="flex items-center justify-between">
@@ -158,7 +158,7 @@ export default function CalculatorPage() {
             </div>
 
             {/* 计算结果 */}
-            <div className="space-y-3 pt-4 border-t border-gray-700">
+            <div className="space-y-3 pt-6">
               <List>
                 <List.Item>
                   <List.Label>{t("duration")}</List.Label>

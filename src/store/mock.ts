@@ -6,4 +6,4 @@ interface MockStore {
   decimal?: string
 }
 
-export const useMockStore = createWithEqualityFn<MockStore>()((set) => ({}))
+export const useMockStore = createWithEqualityFn<MockStore>()(() => ({}))

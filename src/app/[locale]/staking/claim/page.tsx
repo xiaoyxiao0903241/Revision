@@ -11,9 +11,14 @@ import {
   Notification,
   Segments,
 } from "~/components"
-import { amountOptions, durationOptions, useMock } from "~/hooks/useMock"
+import {
+  amountOptions,
+  durationOptions,
+  infoItems,
+  useMock,
+} from "~/hooks/useMock"
 import { formatCurrency, formatDecimal } from "~/lib/utils"
-import { WalletSummary } from "~/widgets"
+import { WalletSummary, InfoPopover } from "~/widgets"
 import { AmountCard } from "~/widgets/amount-card"
 import { AmountSelect, DurationSelect } from "~/widgets/select"
 
@@ -72,6 +77,21 @@ export default function ClaimPage() {
                 <List.Item>
                   <List.Label className="flex items-center gap-1">
                     {t("youWillReceive")}
+                    <InfoPopover>
+                      <div className="flex flex-col space-y-2">
+                        {infoItems.map((item) => (
+                          <div
+                            key={item.label}
+                            className="flex justify-between"
+                          >
+                            <span className="text-foreground/50">
+                              {item.label}
+                            </span>
+                            <span className="text-secondary">{item.value}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </InfoPopover>
                   </List.Label>
                   <List.Value className="text-xl font-mono">
                     {formatCurrency(85, false)} OLY

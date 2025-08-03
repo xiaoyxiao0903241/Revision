@@ -8,6 +8,13 @@ export const amountOptions = [
   { value: 300, desc: "30 Days" },
 ]
 
+export const infoItems = [
+  { label: "30 Days", value: "0.00 OLY" },
+  { label: "90 Days", value: "0.00 OLY" },
+  { label: "180 Days", value: "0.00 OLY" },
+  { label: "360 Days", value: "0.00 OLY" },
+]
+
 export const stakingRecords = [
   {
     id: 1,

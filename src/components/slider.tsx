@@ -56,45 +56,46 @@ const Slider = React.forwardRef<
         style={{ paddingLeft: "11px", paddingRight: "11px" }}
       >
         <SliderPrimitive.Range className="absolute h-full rounded-full gradient" />
+        <div className="absolute top-0 left-[11px] right-[11px]">
+          {/* 指示器 */}
+          {processedIndicators.map((indicator, index) => {
+            const min = props.min || 0
+            const max = props.max || 1
+            const isActive = internalValue[0] >= indicator.value
+            // 根据传入的数值、min 和 max 属性计算百分比位置
+            const normalizedValue = (indicator.value - min) / (max - min)
+            const position = normalizedValue * 100
 
-        {/* 指示器 */}
-        {processedIndicators.map((indicator, index) => {
-          const min = props.min || 0
-          const max = props.max || 1
-          const isActive = internalValue[0] >= indicator.value
-          // 根据传入的数值、min 和 max 属性计算百分比位置
-          const normalizedValue = (indicator.value - min) / (max - min)
-          const position = normalizedValue * 100
-
-          return (
-            <div
-              key={index}
-              className="absolute top-0 flex flex-col items-center gap-4"
-              style={{
-                left: `${position}%`,
-                transform: "translateX(-50%)",
-                pointerEvents: "none", // 防止指示器干扰 slider 交互
-              }}
-            >
-              {/* 指示器圆点 */}
+            return (
               <div
-                className={cn(
-                  "w-[2px] h-[2px] rounded-full mt-[1px]",
-                  isActive ? "bg-white" : "bg-gray-600"
-                )}
-              />
-              {/* 标签 */}
-              <div
-                className={cn(
-                  "text-xs whitespace-nowrap",
-                  isActive ? "text-white" : "text-gray-400"
-                )}
+                key={index}
+                className="absolute top-0 flex flex-col items-center gap-4"
+                style={{
+                  left: `${position}%`,
+                  transform: "translateX(-50%)",
+                  pointerEvents: "none", // 防止指示器干扰 slider 交互
+                }}
               >
-                {indicator.label}
+                {/* 指示器圆点 */}
+                <div
+                  className={cn(
+                    "w-[2px] h-[2px] rounded-full mt-[1px]",
+                    isActive ? "bg-white" : "bg-gray-600"
+                  )}
+                />
+                {/* 标签 */}
+                <div
+                  className={cn(
+                    "text-xs whitespace-nowrap",
+                    isActive ? "text-white" : "text-gray-400"
+                  )}
+                >
+                  {indicator.label}
+                </div>
               </div>
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </SliderPrimitive.Track>
 
       <SliderPrimitive.Thumb className="block h-7 w-[22px] cursor-pointer bg-[url('/images/background/slider-thumb.png')] bg-contain bg-center border-none outline-none" />
