@@ -44,29 +44,36 @@ const Slider = React.forwardRef<
     <SliderPrimitive.Root
       ref={ref}
       className={cn(
-        "relative flex w-full touch-none select-none items-center pb-2",
+        "relative flex w-full touch-none select-none items-center pb-4",
         className
       )}
       value={internalValue}
       onValueChange={handleValueChange}
       {...props}
     >
-      <SliderPrimitive.Track className="relative h-1 w-full grow rounded-full bg-[#868686]">
+      <SliderPrimitive.Track
+        className="relative h-1 w-full grow rounded-full bg-[#868686]"
+        style={{ paddingLeft: "11px", paddingRight: "11px" }}
+      >
         <SliderPrimitive.Range className="absolute h-full rounded-full gradient" />
 
         {/* 指示器 */}
         {processedIndicators.map((indicator, index) => {
+          const min = props.min || 0
+          const max = props.max || 1
           const isActive = internalValue[0] >= indicator.value
-          // 根据传入的数值和 max 属性计算百分比位置
-          const position = (indicator.value / (props.max || 1)) * 100
+          // 根据传入的数值、min 和 max 属性计算百分比位置
+          const normalizedValue = (indicator.value - min) / (max - min)
+          const position = normalizedValue * 100
 
           return (
             <div
               key={index}
-              className="absolute top-0 flex flex-col items-center gap-2"
+              className="absolute top-0 flex flex-col items-center gap-4"
               style={{
                 left: `${position}%`,
                 transform: "translateX(-50%)",
+                pointerEvents: "none", // 防止指示器干扰 slider 交互
               }}
             >
               {/* 指示器圆点 */}

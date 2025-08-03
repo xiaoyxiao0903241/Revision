@@ -81,7 +81,20 @@
     "recordsCount": "条记录",
     "lastUpdate": "前更新",
     "noRecords": "请连接钱包或输入钱包地址查看详细统计",
-    "stakeNow": "立即质押"
+    "stakeNow": "立即质押",
+    "calculatorTitle": "计算器",
+    "calculatorDescription": "您可以模拟和计算长期质押获得的收益。",
+    "calculate": "计算",
+    "latestOlyPrice": "最新 OLY 价格: ${amount}",
+    "stakingDuration": "质押期限 (月)",
+    "rebaseApy": "重基 APY: {value}%",
+    "olyPrice": "OLY 价格: ${value}",
+    "current": "(当前)",
+    "rebaseApyLabel": "重基 APY",
+    "yourStake": "您的质押",
+    "yourReward": "您的奖励",
+    "months": "个月",
+    "roi": "ROI"
   },
   "common": {
     "welcome": "欢迎来到 ONE OLYONE",

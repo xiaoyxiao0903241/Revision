@@ -81,7 +81,20 @@
     "recordsCount": "records",
     "lastUpdate": "ago",
     "noRecords": "Please connect your wallet or enter a wallet address to view the detailed statistics",
-    "stakeNow": "Stake Now"
+    "stakeNow": "Stake Now",
+    "calculatorTitle": "Calculator",
+    "calculatorDescription": "You can simulate and calculate the income you get from long-term staking.",
+    "calculate": "Calculate",
+    "latestOlyPrice": "Latest OLY price: ${amount}",
+    "stakingDuration": "Staking Duration (months)",
+    "rebaseApy": "Rebase APY: {value}%",
+    "olyPrice": "OLY Price: ${value}",
+    "current": "(Current)",
+    "rebaseApyLabel": "Rebase APY",
+    "yourStake": "Your Stake",
+    "yourReward": "Your Reward",
+    "months": "Months",
+    "roi": "ROI"
   },
   "common": {
     "welcome": "Welcome to ONE OLYONE",
