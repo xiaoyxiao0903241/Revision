@@ -36,18 +36,22 @@ export const stakingRecords = [
 ]
 
 export const useMock = () => {
-  const { amount, duration } = useMockStore()
+  const { amount, duration, decimal } = useMockStore()
   const setDuration = (duration?: number) => {
     useMockStore.setState({ duration })
   }
   const setAmount = (amount?: number) => {
     useMockStore.setState({ amount })
   }
+  const setDecimal = (decimal?: string) => {
+    useMockStore.setState({ decimal })
+  }
   useUnmount(() => {
     useMockStore.setState({
       amount: undefined,
       duration: undefined,
+      decimal: undefined,
     })
   })
-  return { amount, duration, setDuration, setAmount }
+  return { amount, duration, decimal, setDuration, setAmount, setDecimal }
 }

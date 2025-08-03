@@ -5,7 +5,7 @@ import { formatCurrency } from "~/lib/utils"
 
 export const AmountCard: FC<{
   data: {
-    value: number
+    value?: string
     desc: number
     balance: number
   }

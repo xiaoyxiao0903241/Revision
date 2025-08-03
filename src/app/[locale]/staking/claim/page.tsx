@@ -19,7 +19,8 @@ import { AmountSelect, DurationSelect } from "~/widgets/select"
 
 export default function ClaimPage() {
   const t = useTranslations("staking")
-  const { amount, setAmount, duration, setDuration } = useMock()
+  const { amount, setAmount, duration, setDuration, decimal, setDecimal } =
+    useMock()
   const [selectedClaimType, setSelectedClaimType] =
     useState<string>("rebaseReward")
 
@@ -55,10 +56,11 @@ export default function ClaimPage() {
               />
               <AmountCard
                 data={{
-                  value: 123,
+                  value: decimal,
                   desc: 456,
                   balance: 789,
                 }}
+                onChange={setDecimal}
               />
               <Notification>{t("claimInfo")}</Notification>
               <DurationSelect
