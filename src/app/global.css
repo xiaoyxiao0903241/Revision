@@ -253,6 +253,17 @@
       margin-bottom: -16px;
     }
   }
+  .community-body {
+    border-width: 32px 32px 32px 192px;
+    border-image: url("/images/background/community-body.png");
+    border-image-slice: 32 32 32 192 fill;
+    /* 直接子元素样式 */
+    & > div {
+      margin: -32px;
+      margin-left: -192px;
+      margin-bottom: -16px;
+    }
+  }
   /* 卡片头部 */
   .card-header {
     border-width: 32px 192px 32 32px;

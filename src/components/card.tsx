@@ -3,11 +3,20 @@ import * as React from "react"
 
 import { cn } from "~/lib/utils"
 
-function Card({ className, ...props }: React.ComponentProps<"div">) {
+function Card({
+  className,
+  containerClassName,
+  ...props
+}: React.ComponentProps<"div"> & {
+  containerClassName?: string
+}) {
   return (
     <div
       data-slot="card"
-      className="nine-patch-frame card-body relative w-full"
+      className={cn(
+        "nine-patch-frame card-body relative w-full",
+        containerClassName
+      )}
     >
       <div className="absolute top-0 left-0 right-0">
         <Image

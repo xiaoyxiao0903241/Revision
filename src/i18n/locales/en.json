@@ -196,6 +196,8 @@
     "totalCommunityLocked": "Total Community Locked",
     "communityRewards": "Community Rewards",
     "referralBy": "Referral By",
+    "referralDescription": "Please enter the referral address to confirm that they can receive appropriate rewards.",
+    "referralInputPlaceholder": "Enter referral code",
     "referralLink": "Referral Link",
     "copyLink": "Copy Link",
     "inviteFriends": "Invite friends, enjoy 5 major income systems",
@@ -206,7 +208,8 @@
     "address": "Address",
     "netHolding": "Net Holding",
     "totalCommunityPerformance": "Total Community Performance",
-    "joinTime": "Join Time"
+    "joinTime": "Join Time",
+    "submit": "Submit"
   },
   "common": {
     "welcome": "Welcome to ONE OLYONE",

@@ -166,15 +166,15 @@
     "protocolDescription": "OLY ONE 是一项面向未来的去中心化金融 (DeFi 3.0) 协议,由全球多个国家的社区共同发起、协作建设与治理,旨在打造一个可持续、透明且高度安全的DeFi生态,推动全球用户真正实现去中心化金融的价值共识,不容错过!",
     "howToGetRewards": "如何获得社区奖励?",
     "step1": {
-      "title": "1 存入资产",
+      "title": "存入资产",
       "description": "将OLY质押到平台,或使用USDT购买债券,即可开始赚取基础收益。最低$100份额即可开始。"
     },
     "step2": {
-      "title": "2 推荐好友",
+      "title": "推荐好友",
       "description": "通过你的邀请链接邀请好友注册并完成质押,你和好友均可获得额外奖励。"
     },
     "step3": {
-      "title": "3 创办社区",
+      "title": "创办社区",
       "description": "创建自己的质押社区,吸引更多成员加入,或加入高活跃度的社区。平台会根据社区锁仓总量发放额外奖励。"
     },
     "referralProgram": "推荐计划",
@@ -182,6 +182,8 @@
     "totalCommunityLocked": "社区锁仓总量",
     "communityRewards": "社区奖励",
     "referralBy": "推荐人",
+    "referralDescription": "请输入推荐码来确认他们能够获得适当的奖励。",
+    "referralInputPlaceholder": "请输入推荐码",
     "referralLink": "推荐链接",
     "copyLink": "复制链接",
     "inviteFriends": "邀请好友,畅享5大收益体系",
@@ -192,7 +194,11 @@
     "address": "地址",
     "netHolding": "净持仓",
     "totalCommunityPerformance": "社区总业绩",
-    "joinTime": "加入时间"
+    "joinTime": "加入时间",
+    "submit": "提交",
+    "gain20ReferralRewards": "获得20%推荐奖励",
+    "myReferralLink": "我的推荐链接",
+    "referralLinkDescription": "分享此链接给朋友,他们通过此链接注册并完成质押,你将获得20%的推荐奖励。"
   },
   "common": {
     "welcome": "欢迎来到 ONE OLYONE",
