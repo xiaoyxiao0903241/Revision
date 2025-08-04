@@ -31,27 +31,82 @@ export const generateMockCandlestickData = (
 ): CandlestickData[] => {
   const data: CandlestickData[] = []
   let basePrice = 100
+  let momentum = 0 // 价格动量
 
   for (let i = 0; i < days; i++) {
     const date = new Date()
     date.setDate(date.getDate() - (days - i - 1))
 
-    // 生成更真实的股票数据
-    const volatility = 0.02 // 2% 波动率
-    const trend = Math.sin(i * 0.1) * 0.01 // 添加趋势
+    // 动态波动率 - 模拟不同市场环境
+    const baseVolatility = 0.015 // 基础波动率
+    const marketStress = Math.sin(i * 0.03) * 0.01 // 市场压力周期
+    const volatility = Math.max(
+      0.005,
+      Math.min(0.05, baseVolatility + marketStress + Math.random() * 0.01)
+    )
 
-    const open = basePrice * (1 + (Math.random() - 0.5) * volatility + trend)
-    const close = open * (1 + (Math.random() - 0.5) * volatility)
-    const low = Math.min(open, close) * (1 - Math.random() * 0.01)
-    const high = Math.max(open, close) * (1 + Math.random() * 0.01)
-    const volume = Math.floor(Math.random() * 1000000) + 100000
+    // 价格趋势和动量
+    const longTermTrend = Math.sin(i * 0.02) * 0.008 // 长期趋势
+    const shortTermTrend = Math.sin(i * 0.1) * 0.005 // 短期趋势
+
+    // 更新动量
+    momentum = momentum * 0.7 + (Math.random() - 0.5) * 0.02
+    momentum = Math.max(-0.03, Math.min(0.03, momentum))
+
+    // 生成开盘价
+    const openGap = (Math.random() - 0.5) * volatility * 2
+    const open = basePrice * (1 + openGap)
+
+    // 生成收盘价 - 考虑趋势、动量和随机性
+    const priceChange =
+      longTermTrend +
+      shortTermTrend +
+      momentum +
+      (Math.random() - 0.5) * volatility
+    const close = open * (1 + priceChange)
+
+    // 生成最高价和最低价 - 增加多样性
+    const priceRange = Math.abs(close - open)
+    const minRange = basePrice * volatility * 0.5 // 最小波动范围
+
+    // 随机决定蜡烛形状
+    const candleType = Math.random()
+    let high, low
+
+    if (candleType < 0.3) {
+      // 30% 概率：长上影线（锤子线）
+      high = Math.max(open, close) + Math.random() * priceRange * 3 + minRange
+      low = Math.min(open, close) - Math.random() * priceRange * 0.5
+    } else if (candleType < 0.6) {
+      // 30% 概率：长下影线（上吊线）
+      high = Math.max(open, close) + Math.random() * priceRange * 0.5
+      low = Math.min(open, close) - Math.random() * priceRange * 3 - minRange
+    } else if (candleType < 0.8) {
+      // 20% 概率：十字星
+      high = Math.max(open, close) + Math.random() * priceRange * 2
+      low = Math.min(open, close) - Math.random() * priceRange * 2
+    } else {
+      // 20% 概率：实体蜡烛
+      high = Math.max(open, close) + Math.random() * priceRange * 1.5
+      low = Math.min(open, close) - Math.random() * priceRange * 1.5
+    }
+
+    // 确保价格合理性
+    const finalHigh = Math.max(high, Math.max(open, close) * 1.001)
+    const finalLow = Math.min(low, Math.min(open, close) * 0.999)
+
+    // 生成成交量 - 与价格波动相关
+    const priceVolatility = Math.abs(close - open) / open
+    const baseVolume = 800000
+    const volumeMultiplier = 1 + priceVolatility * 8 + Math.random() * 1.5
+    const volume = Math.floor(baseVolume * volumeMultiplier)
 
     data.push({
       time: date.toISOString().split("T")[0],
       open: Number(open.toFixed(2)),
       close: Number(close.toFixed(2)),
-      low: Number(low.toFixed(2)),
-      high: Number(high.toFixed(2)),
+      low: Number(finalLow.toFixed(2)),
+      high: Number(finalHigh.toFixed(2)),
       volume,
     })
 
