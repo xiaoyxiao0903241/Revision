@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl"
 import { FC, ReactNode, useState } from "react"
 import { Button, Card, CardContent, Icon, Tabs } from "~/components"
 import { stakingRecords, useMock } from "~/hooks/useMock"
-import { cn, dayjs, formatDecimal } from "~/lib/utils"
+import { cn, dayjs, formatDecimal, formatHash } from "~/lib/utils"
 
 // 事件颜色映射
 const eventColors = {
@@ -98,12 +98,7 @@ export const StakingRecords: FC<{
                         className="underline text-sm"
                         title={record.transactionHash}
                       >
-                        {record.transactionHash.length > 10
-                          ? `${record.transactionHash.slice(
-                              0,
-                              6
-                            )}...${record.transactionHash.slice(-4)}`
-                          : record.transactionHash}
+                        {formatHash(record.transactionHash)}
                       </a>
                     </Cell>
                     <Cell title={t("amount")} className="w-1/5">

@@ -51,3 +51,7 @@ export const formatDecimal = (value: number, decimals = 2) => {
     maximumFractionDigits: decimals,
   }).format(value)
 }
+
+export const formatHash = (hash: string) => {
+  return hash.length > 10 ? `${hash.slice(0, 6)}...${hash.slice(-4)}` : hash
+}
