@@ -10,7 +10,8 @@
     "iconfont",
     "unstake",
     "oxanium",
-    "ahooks"
+    "ahooks",
+    "OLYONE"
   ],
   "ignorePaths": ["node_modules", "dist", "build", ".git", "package-lock.json"]
 }

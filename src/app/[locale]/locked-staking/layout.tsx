@@ -10,11 +10,11 @@ interface StakingLayoutProps {
 export default function StakingLayout({ children }: StakingLayoutProps) {
   const t = useTranslations("staking")
   const items = [
-    { label: t("stake"), href: "/staking" },
-    { label: t("unstake"), href: "/staking/unstake" },
-    { label: t("claim"), href: "/staking/claim" },
-    { label: t("records"), href: "/staking/records" },
-    { label: t("calculator"), href: "/staking/calculator" },
+    { label: t("stake"), href: "/locked-staking" },
+    { label: t("unstake"), href: "/locked-staking/unstake" },
+    { label: t("claim"), href: "/locked-staking/claim" },
+    { label: t("records"), href: "/locked-staking/records" },
+    { label: t("calculator"), href: "/locked-staking/calculator" },
   ]
 
   return (

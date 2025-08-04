@@ -1,17 +1,34 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { Alert, Button, Card, CardContent, Notification } from "~/components"
-import { durationOptions, useMock } from "~/hooks/useMock"
+import { useState } from "react"
+import {
+  Alert,
+  Button,
+  Card,
+  CardContent,
+  Notification,
+  Segments,
+} from "~/components"
+import { amountOptions, durationOptions, useMock } from "~/hooks/useMock"
 import { WalletSummary } from "~/widgets"
 import { AmountCard } from "~/widgets/amount-card"
 import { ClaimSummary } from "~/widgets/claim-summary"
-import { DurationSelect } from "~/widgets/select"
+import { AmountSelect, DurationSelect } from "~/widgets/select"
 
 export default function ClaimPage() {
   const t = useTranslations("staking")
-  const { duration, setDuration, decimal, setDecimal } = useMock()
-  const tNoLockedStaking = useTranslations("noLockedStaking")
+  const tLockedStaking = useTranslations("lockedStaking")
+  const { amount, setAmount, duration, setDuration, decimal, setDecimal } =
+    useMock()
+  const [selectedClaimType, setSelectedClaimType] =
+    useState<string>("rebaseReward")
+
+  // 定义领取类型选项
+  const claimOptions = [
+    { value: "rebaseReward", label: t("rebaseReward") },
+    { value: "rebaseBoost", label: t("rebaseBoost") },
+  ]
 
   return (
     <div className="space-y-6">
@@ -27,6 +44,16 @@ export default function ClaimPage() {
           {/* 分段控制器 */}
           <Card>
             <CardContent className="space-y-6">
+              <Segments
+                options={claimOptions}
+                value={selectedClaimType}
+                onChange={setSelectedClaimType}
+              />
+              <AmountSelect
+                options={amountOptions}
+                value={amount}
+                onChange={setAmount}
+              />
               <AmountCard
                 data={{
                   value: decimal,
@@ -35,11 +62,10 @@ export default function ClaimPage() {
                 }}
                 onChange={setDecimal}
               />
-              <Notification>{tNoLockedStaking("claimInfo")}</Notification>
+              <Notification>{tLockedStaking("claimInfo")}</Notification>
               <DurationSelect
                 options={durationOptions}
                 value={duration}
-                placeholder={tNoLockedStaking("selectReleasePeriod")}
                 onChange={setDuration}
               />
               <ClaimSummary

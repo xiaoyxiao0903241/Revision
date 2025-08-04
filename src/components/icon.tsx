@@ -25,6 +25,17 @@ export type IconFontName =
   | "stake"
   | "clock"
   | "record"
+  | "setting"
+  | "refresh"
+  | "arrow"
+  | "sphere"
+  | "pie"
+  | "blocks"
+  | "diamond"
+  | "water"
+  | "usdt"
+  | "medal"
+  | "bag"
 
 // 图标映射表 - 从 iconfont.css 中提取的 unicode 编码
 export const ICON_MAP: Record<IconFontName, string> = {
@@ -48,6 +59,17 @@ export const ICON_MAP: Record<IconFontName, string> = {
   claim: "\ue736",
   stake: "\ue737",
   clock: "\ue738",
+  setting: "\ue73b",
+  refresh: "\ue73c",
+  arrow: "\ue73d",
+  sphere: "\ue739",
+  pie: "\ue740",
+  blocks: "\ue741",
+  diamond: "\ue742",
+  water: "\ue743",
+  usdt: "\ue73a",
+  medal: "\ue73e",
+  bag: "\ue73f",
 }
 
 interface IconFontProps {

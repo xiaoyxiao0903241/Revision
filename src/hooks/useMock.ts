@@ -8,6 +8,13 @@ export const amountOptions = [
   { value: 300, desc: "30 Days" },
 ]
 
+export const infoItems = [
+  { label: "30 Days", value: "0.00 OLY" },
+  { label: "90 Days", value: "0.00 OLY" },
+  { label: "180 Days", value: "0.00 OLY" },
+  { label: "360 Days", value: "0.00 OLY" },
+]
+
 export const stakingRecords = [
   {
     id: 1,
@@ -36,18 +43,35 @@ export const stakingRecords = [
 ]
 
 export const useMock = () => {
-  const { amount, duration } = useMockStore()
+  const { amount, duration, decimal, walletConnected } = useMockStore()
   const setDuration = (duration?: number) => {
     useMockStore.setState({ duration })
   }
   const setAmount = (amount?: number) => {
     useMockStore.setState({ amount })
   }
+  const setDecimal = (decimal?: string) => {
+    useMockStore.setState({ decimal })
+  }
+  const setWalletConnected = (walletConnected?: boolean) => {
+    useMockStore.setState({ walletConnected })
+  }
   useUnmount(() => {
     useMockStore.setState({
       amount: undefined,
       duration: undefined,
+      decimal: undefined,
+      walletConnected: undefined,
     })
   })
-  return { amount, duration, setDuration, setAmount }
+  return {
+    amount,
+    duration,
+    decimal,
+    walletConnected,
+    setDuration,
+    setAmount,
+    setDecimal,
+    setWalletConnected,
+  }
 }

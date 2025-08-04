@@ -2,26 +2,32 @@
 
 import { useTranslations } from "next-intl"
 import { Alert, Button, Card } from "~/components"
-import { useMock } from "~/hooks/useMock"
+import { durationOptions, useMock } from "~/hooks/useMock"
 import { WalletSummary } from "~/widgets"
 import { AmountCard } from "~/widgets/amount-card"
+import { DurationSelect } from "~/widgets/select"
 import { StakingSummary } from "~/widgets/staking-summary"
 export default function StakingPage() {
   const t = useTranslations("staking")
-  const tNoLockedStaking = useTranslations("noLockedStaking")
-  const { decimal, setDecimal } = useMock()
+  const tLockedStaking = useTranslations("lockedStaking")
+  const { duration, setDuration, decimal, setDecimal } = useMock()
   return (
     <div className="space-y-6">
       <Alert
         icon="stake"
-        title={t("stake")}
-        description={tNoLockedStaking("alertDescription")}
+        title={tLockedStaking("alertTitle")}
+        description={tLockedStaking("alertDescription")}
       />
 
       {/* 主要内容区域 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
           <Card>
+            <DurationSelect
+              options={durationOptions}
+              value={duration}
+              onChange={setDuration}
+            />
             <AmountCard
               data={{
                 value: decimal,
@@ -33,6 +39,7 @@ export default function StakingPage() {
             <StakingSummary
               data={{
                 rebaseRewardRate: "0.3%-1%",
+                rebaseBoost: "0.3%-1%",
                 nextRebaseRewardRate: "0.38%",
                 endAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
               }}
@@ -63,10 +70,4 @@ export default function StakingPage() {
       </div>
     </div>
   )
-
 }
-
-
-
-
-

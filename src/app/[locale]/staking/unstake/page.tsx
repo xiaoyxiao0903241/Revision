@@ -1,41 +1,110 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { Alert, Card, Notification } from "~/components"
+import { useState } from "react"
+import {
+  Alert,
+  Button,
+  Card,
+  Countdown,
+  List,
+  Notification,
+  Segments,
+} from "~/components"
 import { amountOptions, useMock } from "~/hooks/useMock"
-import { WalletSummary } from "~/widgets"
+import { formatDecimal } from "~/lib/utils"
+import { AmountCard, WalletSummary } from "~/widgets"
 import { AmountTicker } from "~/widgets/amount-ticker"
 import { AmountSelect } from "~/widgets/select"
+import { StakingSummary } from "~/widgets/staking-summary"
 
 export default function UnstakePage() {
   const t = useTranslations("staking")
+  const tNoLockedStaking = useTranslations("noLockedStaking")
   const { amount, setAmount } = useMock()
+  const [disabled] = useState(true)
+  const [selectedStakeType, setSelectedStakeType] = useState<
+    "release" | "unstake"
+  >("release")
+  const stakeOptions = [
+    { value: "release", label: tNoLockedStaking("release") },
+    { value: "unstake", label: t("unstake") },
+  ]
   return (
     <div className="space-y-6">
       <Alert
         icon="unstake"
         title={t("unstakeTitle")}
-        description={t("unstakeDescription")}
+        description={tNoLockedStaking("unstakeDescription")}
       />
 
       {/* 主要内容区域 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
           <Card>
-            <AmountSelect
-              options={amountOptions}
-              value={amount}
-              onChange={setAmount}
+            <Segments
+              options={stakeOptions}
+              value={selectedStakeType}
+              onChange={(value) =>
+                setSelectedStakeType(value as "release" | "unstake")
+              }
             />
-            <AmountTicker
-              data={{
-                value: 100,
-                desc: 100,
-                endAt: new Date(Date.now() + 10000),
-              }}
-            />
-            {/* 信息提示 */}
-            <Notification>{t("unstakeInfo")}</Notification>
+            {selectedStakeType === "release" ? (
+              <>
+                <AmountTicker
+                  data={{
+                    value: 100,
+                    desc: 100,
+                    endAt: new Date(Date.now() + 10000),
+                  }}
+                />
+                {/* 信息提示 */}
+                <Notification>
+                  {tNoLockedStaking(
+                    disabled ? "unstakeDisabledInfo" : "unstakeInfo"
+                  )}
+                </Notification>
+              </>
+            ) : (
+              <>
+                <AmountCard
+                  data={{
+                    value: "100",
+                    desc: 100,
+                    balance: 100,
+                  }}
+                />
+                <List>
+                  <List.Item>
+                    <List.Label>{t("youWillReceive")}</List.Label>
+                    <List.Value className="text-xl font-mono">{`${formatDecimal(
+                      100,
+                      2
+                    )} OLY`}</List.Value>
+                  </List.Item>
+                  <List.Item>
+                    <List.Label>{t("nextRebaseRewardRate")}</List.Label>
+                    <List.Value className="text-success">0.38</List.Value>
+                  </List.Item>
+                  <List.Item>
+                    <List.Label>{t("nextRebaseReward")}</List.Label>
+                    <List.Value className="font-mono">{`${formatDecimal(
+                      100,
+                      6
+                    )} OLY`}</List.Value>
+                  </List.Item>
+                  <List.Item>
+                    <List.Label>{t("countdownToNextRebase")}</List.Label>
+                    <List.Value className="font-mono">
+                      <Countdown endAt={new Date(Date.now() + 10000)} />
+                    </List.Value>
+                  </List.Item>
+                </List>
+                <Button clipDirection="topRight-bottomLeft">
+                  {t("unstake")}
+                </Button>
+              </>
+            )}
           </Card>
         </div>
         <div>

@@ -24,10 +24,6 @@
     "wallet": "钱包"
   },
   "staking": {
-    "title": "质押",
-    "description": "长期质押通过爆块奖励加成激励用户延长质押周期,加成幅度与质押时长成正比。",
-    "alertTitle": "质押",
-    "alertDescription": "您可以随时存入或解除质押，无锁定期限，每12小时发放爆块奖励",
     "stake": "质押",
     "unstake": "解质押",
     "claim": "领取",
@@ -61,7 +57,6 @@
     "unstakeButton": "解除质押",
     "claimTitle": "领取奖励",
     "claimDescription": "领取您的质押奖励和重基加成。奖励将直接发送到您的钱包地址。",
-    "claimInfo": "您可以随时领取已累积的奖励。领取后，奖励将立即发送到您的钱包。",
     "claimButton": "领取奖励",
     "rebaseReward": "重基奖励",
     "claimableRewards": "可领取奖励",
@@ -79,8 +74,9 @@
     "duration": "时长",
     "dateTime": "日期时间",
     "recordsCount": "条记录",
-    "lastUpdate": "前更新",
-    "noRecords": "请连接钱包或输入钱包地址查看详细统计",
+    "noRecords": "此地址没有质押的代币。您现在可以质押并获得每日奖励。",
+    "walletNotConnected": "请连接您的钱包或输入钱包地址以查看详细统计信息",
+    "connectWallet": "连接钱包",
     "stakeNow": "立即质押",
     "calculatorTitle": "计算器",
     "calculatorDescription": "您可以模拟和计算长期质押获得的收益。",
@@ -139,6 +135,69 @@
     "connect": "請先連接錢包",
     "noSupport": "未知網絡",
     "NotConnected": "未連接網絡"
+  },
+  "lockedStaking": {
+    "title": "锁定质押",
+    "alertTitle": "锁定质押",
+    "alertDescription": "长期质押通过爆块奖励加成激励用户延长质押周期，加成幅度与质押时长成正比。",
+    "unstakeDescription": "质押本金将按区块线性释放,用户可随时提取已解锁部分,同时继续享受剩余本金的增益收益。",
+    "unstakeInfo": "您可以随时解除已释放的质押金额。如果仍有质押，这些资金将继续产生区块奖励。",
+    "calculatorDescription": "您可以模拟和计算长期质押获得的收益。",
+    "claimInfo": "您可以随时领取重基奖励。如果未领取，这些奖励将自动复利并继续产生额外的重基奖励。"
+  },
+  "noLockedStaking": {
+    "title": "无锁定期质押",
+    "alertTitle": "无锁定期质押",
+    "alertDescription": "您可以随时存入或解除质押，无锁定期限，每12小时发放爆块奖励",
+    "unstakeDescription": "您可以随时解除质押，部分提取或全部提取您的质押份额",
+    "unstakeInfo": "完成质押后，您的资产将进入24小时冷却期。冷却时间结束后，资金即可进行释放。",
+    "unstakeDisabledInfo": "在解除质押前，您需先对这笔资产进行释放。\\n系统将在您发起新的质押时自动释放已解冻的资产。\\n请注意，只有成功释放该笔资产后，方可领取这笔资产所产生的爆块奖励。",
+    "calculatorDescription": "您可以模拟计算您通过活期质押获得的收益。",
+    "claimInfo": "您可以随时领取已累积的奖励。领取后，奖励将立即发送到您的钱包。",
+    "selectReleasePeriod": "选择释放周期",
+    "release": "释放",
+    "nextRebaseReward": "下次重基奖励"
+  },
+  "swap": {
+    "title": "交换",
+    "alertTitle": "交换",
+    "alertDescription": "搜索最佳价格，包括gas费用和交换费用。一键执行。",
+    "searchBestPrice": "搜索最佳价格，包括gas费用和交换费用。一键执行。",
+    "myWallet": "我的钱包",
+    "allowableSlippage": "允许滑点",
+    "swapButton": "交换",
+    "swapInformation": "交换信息",
+    "amountToSend": "发送金额",
+    "minToReceive": "最少接收",
+    "yakSwapFee": "Yak交换费用",
+    "contractSpender": "合约支出者",
+    "recipient": "接收者",
+    "tokenIn": "输入代币",
+    "tokenOut": "输出代币",
+    "priceChart": "OLY价格图表",
+    "usdtDescription": "Tether USD",
+    "olyDescription": "OLYONE Token",
+    "chartInfo": {
+      "open": "开",
+      "high": "高",
+      "low": "低",
+      "close": "收",
+      "volume": "成交量",
+      "volumeSMA": "成交量(Volume) SMA",
+      "poweredBy": "由GeckoTerminal 支持"
+    },
+    "percentageButtons": {
+      "25": "25%",
+      "50": "50%",
+      "75": "75%",
+      "100": "100%"
+    },
+    "slippageButtons": {
+      "1": "1%",
+      "3": "3%",
+      "5": "5%",
+      "custom": "1.2%"
+    }
   },
   "common": {
     "welcome": "欢迎来到 ONE OLYONE",
