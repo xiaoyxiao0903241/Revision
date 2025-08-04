@@ -99,7 +99,10 @@
     "unstakeDescription": "质押本金将按区块线性释放,用户可随时提取已解锁部分,同时继续享受剩余本金的增益收益。",
     "unstakeInfo": "您可以随时解除已释放的质押金额。如果仍有质押，这些资金将继续产生区块奖励。",
     "calculatorDescription": "您可以模拟和计算长期质押获得的收益。",
-    "claimInfo": "您可以随时领取重基奖励。如果未领取，这些奖励将自动复利并继续产生额外的重基奖励。"
+    "claimInfo": "您可以随时领取重基奖励。如果未领取，这些奖励将自动复利并继续产生额外的重基奖励。",
+    "release": "释放",
+    "pendingAmount": "待释放金额",
+    "releasedAmount": "释放金额"
   },
   "noLockedStaking": {
     "title": "无锁定期质押",
@@ -154,6 +157,42 @@
       "5": "5%",
       "custom": "1.2%"
     }
+  },
+  "community": {
+    "title": "社区",
+    "description": "社区功能开发中...",
+    "selectFeature": "请使用右侧导航栏选择具体的社区功能",
+    "protocolTitle": "全球共治的Defi3.0社区协议",
+    "protocolDescription": "OLY ONE 是一项面向未来的去中心化金融 (DeFi 3.0) 协议,由全球多个国家的社区共同发起、协作建设与治理,旨在打造一个可持续、透明且高度安全的DeFi生态,推动全球用户真正实现去中心化金融的价值共识,不容错过!",
+    "howToGetRewards": "如何获得社区奖励?",
+    "step1": {
+      "title": "1 存入资产",
+      "description": "将OLY质押到平台,或使用USDT购买债券,即可开始赚取基础收益。最低$100份额即可开始。"
+    },
+    "step2": {
+      "title": "2 推荐好友",
+      "description": "通过你的邀请链接邀请好友注册并完成质押,你和好友均可获得额外奖励。"
+    },
+    "step3": {
+      "title": "3 创办社区",
+      "description": "创建自己的质押社区,吸引更多成员加入,或加入高活跃度的社区。平台会根据社区锁仓总量发放额外奖励。"
+    },
+    "referralProgram": "推荐计划",
+    "totalReferralLocked": "推荐锁仓总量",
+    "totalCommunityLocked": "社区锁仓总量",
+    "communityRewards": "社区奖励",
+    "referralBy": "推荐人",
+    "referralLink": "推荐链接",
+    "copyLink": "复制链接",
+    "inviteFriends": "邀请好友,畅享5大收益体系",
+    "referralBenefits": "成功推荐好友参与,即可解锁直接返佣、十代矩阵收益、社区布道奖、全球分红权及越级穿透奖励,多重收益叠加,持续获得被动收入!",
+    "referralList": "推荐列表",
+    "records": "条记录",
+    "secondsAgo": "秒前",
+    "address": "地址",
+    "netHolding": "净持仓",
+    "totalCommunityPerformance": "社区总业绩",
+    "joinTime": "加入时间"
   },
   "common": {
     "welcome": "欢迎来到 ONE OLYONE",

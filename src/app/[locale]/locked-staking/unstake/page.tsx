@@ -10,7 +10,7 @@ import { AmountSelect } from "~/widgets/select"
 export default function UnstakePage() {
   const t = useTranslations("staking")
   const tLockedStaking = useTranslations("lockedStaking")
-  const { amount, setAmount } = useMock()
+  const { amount, setAmount, decimal, setDecimal } = useMock()
   return (
     <div className="space-y-6">
       <Alert
@@ -30,10 +30,20 @@ export default function UnstakePage() {
             />
             <AmountTicker
               data={{
-                value: 100,
+                title: t("amount"),
+                value: decimal,
                 desc: 100,
                 endAt: new Date(Date.now() + 10000),
               }}
+              disabled
+            />
+            <AmountTicker
+              data={{
+                title: t("amount"),
+                value: decimal,
+                desc: 100,
+              }}
+              onChange={setDecimal}
             />
             {/* 信息提示 */}
             <Notification>{tLockedStaking("unstakeInfo")}</Notification>

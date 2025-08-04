@@ -1,5 +1,6 @@
 "use client"
 
+import { useCountDown } from "ahooks"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
 import {
@@ -11,17 +12,15 @@ import {
   Notification,
   Segments,
 } from "~/components"
-import { amountOptions, useMock } from "~/hooks/useMock"
+import { useMock } from "~/hooks/useMock"
 import { formatDecimal } from "~/lib/utils"
 import { AmountCard, WalletSummary } from "~/widgets"
 import { AmountTicker } from "~/widgets/amount-ticker"
-import { AmountSelect } from "~/widgets/select"
-import { StakingSummary } from "~/widgets/staking-summary"
 
 export default function UnstakePage() {
   const t = useTranslations("staking")
+  const { decimal, setDecimal } = useMock()
   const tNoLockedStaking = useTranslations("noLockedStaking")
-  const { amount, setAmount } = useMock()
   const [disabled] = useState(true)
   const [selectedStakeType, setSelectedStakeType] = useState<
     "release" | "unstake"
@@ -30,6 +29,10 @@ export default function UnstakePage() {
     { value: "release", label: tNoLockedStaking("release") },
     { value: "unstake", label: t("unstake") },
   ]
+  const targetDate = new Date(Date.now() + 10000)
+  const [countDown] = useCountDown({
+    targetDate: targetDate,
+  })
   return (
     <div className="space-y-6">
       <Alert
@@ -53,10 +56,12 @@ export default function UnstakePage() {
               <>
                 <AmountTicker
                   data={{
-                    value: 100,
+                    title: t("amount"),
+                    value: decimal,
                     desc: 100,
-                    endAt: new Date(Date.now() + 10000),
+                    endAt: countDown ? targetDate : undefined,
                   }}
+                  onChange={setDecimal}
                 />
                 {/* 信息提示 */}
                 <Notification>
