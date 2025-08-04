@@ -13,7 +13,7 @@ export const InfoPopover: FC<{
       <PopoverTrigger asChild>
         <InfoIcon
           className={cn(
-            "text-foreground/50 w-6 h-6 cursor-pointer",
+            "text-foreground/50 w-3 h-3 cursor-pointer",
             triggerClassName
           )}
         />

@@ -114,6 +114,61 @@
     "release": "Release",
     "nextRebaseReward": "Next Rebase Reward"
   },
+  "swap": {
+    "title": "Swap",
+    "alertTitle": "Swap",
+    "alertDescription": "Search for the best price, including gas costs and swap fees. Execute with one click.",
+    "searchBestPrice": "Search for the best price, including gas costs and swap fees. Execute with one click.",
+    "myWallet": "My Wallet",
+    "allowableSlippage": "Allowable Slippage",
+    "swapButton": "Swap",
+    "swapInformation": "Swap Information",
+    "amountToSend": "Amount to Send",
+    "minToReceive": "Min. to Receive",
+    "yakSwapFee": "Yak Swap Fee",
+    "contractSpender": "Contract Spender",
+    "recipient": "Recipient",
+    "tokenIn": "Token In",
+    "tokenOut": "Token Out",
+    "priceChart": "OLY Price Chart",
+    "timeIntervals": {
+      "1s": "1s",
+      "1m": "1m",
+      "5m": "5m",
+      "15m": "15m",
+      "1h": "1h",
+      "4h": "4h",
+      "1d": "1d",
+      "5y": "5y",
+      "1y": "1y",
+      "6m": "6m",
+      "3m": "3m",
+      "1m": "1m",
+      "5d": "5d",
+      "1d": "1d"
+    },
+    "chartInfo": {
+      "open": "Open",
+      "high": "High",
+      "low": "Low",
+      "close": "Close",
+      "volume": "Volume",
+      "volumeSMA": "Volume SMA",
+      "poweredBy": "Powered by GeckoTerminal"
+    },
+    "percentageButtons": {
+      "25": "25%",
+      "50": "50%",
+      "75": "75%",
+      "100": "100%"
+    },
+    "slippageButtons": {
+      "1": "1%",
+      "3": "3%",
+      "5": "5%",
+      "custom": "1.2%"
+    }
+  },
   "common": {
     "welcome": "Welcome to ONE OLYONE",
     "description": "DeFi Staking Platform",

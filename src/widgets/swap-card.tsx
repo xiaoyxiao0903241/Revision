@@ -1,0 +1,68 @@
+import _ from "lodash"
+import { FC } from "react"
+import { InfoPopover, Input, View } from "~/components"
+import { cn, formatDecimal } from "~/lib/utils"
+
+export interface Balance {
+  symbol: "USDT" | "OLY"
+  description: string
+  icon: React.ReactNode
+  value?: string
+  balance: number
+  profit?: number
+  address: string
+}
+
+export const SwapCard: FC<{
+  data: Balance & {
+    type: "source" | "destination"
+  }
+  onChange: (value: string) => void
+  children?: React.ReactNode
+}> = ({ data, onChange, children }) => {
+  const { value } = data
+  return (
+    <View className="bg-[#22285E] font-mono">
+      {/* Token Header */}
+      <div className="flex items-center space-x-2 p-4 border-b border-border/20">
+        {data.icon}
+        <div className="flex-1 flex flex-col gap-2">
+          <span className="font-semibold text-lg">{data.symbol}</span>
+          <span className="text-sm text-gray-400 font-chakrapetch">
+            {data.description}
+          </span>
+        </div>
+        <div className="space-y-2">
+          <Input.Number
+            value={value}
+            onChange={onChange}
+            disabled={data.type === "destination"}
+            placeholder="0.0"
+            className="text-xl font-bold text-right disabled:opacity-100"
+          />
+          <div className="flex justify-end items-center text-sm text-gray-400">
+            <span>
+              ≈{formatDecimal(Number(data.value ?? 0) * (data.profit ?? 0))}
+            </span>
+            {_.isUndefined(data.profit) ? null : (
+              <>
+                <span
+                  className={cn("ml-2", {
+                    "text-destructive": data.profit < 0,
+                    "text-success": data.profit > 0,
+                  })}
+                >
+                  ({`${formatDecimal(data.profit)}%`})
+                </span>
+                <InfoPopover triggerClassName="w-4 h-4 ml-2 text-warning">
+                  <div className="w-40">{data.description}</div>
+                </InfoPopover>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+      {children}
+    </View>
+  )
+}

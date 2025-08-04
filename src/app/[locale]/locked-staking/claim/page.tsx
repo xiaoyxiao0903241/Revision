@@ -7,18 +7,11 @@ import {
   Button,
   Card,
   CardContent,
-  List,
   Notification,
   Segments,
 } from "~/components"
-import {
-  amountOptions,
-  durationOptions,
-  infoItems,
-  useMock,
-} from "~/hooks/useMock"
-import { formatCurrency, formatDecimal } from "~/lib/utils"
-import { WalletSummary, InfoPopover } from "~/widgets"
+import { amountOptions, durationOptions, useMock } from "~/hooks/useMock"
+import { WalletSummary } from "~/widgets"
 import { AmountCard } from "~/widgets/amount-card"
 import { ClaimSummary } from "~/widgets/claim-summary"
 import { AmountSelect, DurationSelect } from "~/widgets/select"

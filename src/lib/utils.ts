@@ -30,6 +30,9 @@ export function getClipPath(clipDirection: string, clipSize: number) {
 }
 
 export const formatCurrency = (value: number, symbolShown = true) => {
+  if (!value) {
+    return symbolShown ? "$0.00" : "0.00"
+  }
   if (symbolShown) {
     return Intl.NumberFormat("en-US", {
       style: "currency",
@@ -45,6 +48,9 @@ export const formatCurrency = (value: number, symbolShown = true) => {
 }
 
 export const formatDecimal = (value: number, decimals = 2) => {
+  if (!value) {
+    return "0.00"
+  }
   return Intl.NumberFormat("en-US", {
     style: "decimal",
     minimumFractionDigits: decimals,

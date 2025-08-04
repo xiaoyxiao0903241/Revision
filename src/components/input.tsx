@@ -40,7 +40,7 @@ function InputNumber({
 }: InputNumberProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value
-
+    console.log(inputValue)
     // 允许空字符串
     if (inputValue === "") {
       onChange?.(inputValue)

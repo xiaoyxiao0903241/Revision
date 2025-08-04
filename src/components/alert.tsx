@@ -34,7 +34,7 @@ export function Notification({ children }: { children: string }) {
   const parts = children.split("\\n")
   return (
     <div className="flex gap-1 w-full text-warning">
-      <Info className="w-4 h-4 text-warning" />
+      <Info className="w-3 h-3 text-warning mt-1" />
       <div className="flex flex-col gap-1">
         {parts.map((part, index) => (
           <span key={index} className="text-xs flex-1 text-warning">
