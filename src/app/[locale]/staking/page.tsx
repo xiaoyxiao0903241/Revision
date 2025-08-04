@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import {
   Alert,
@@ -10,10 +10,8 @@ import {
   View,
   Card,
   Countdown,
-  CardHeader,
-  
+  CountdownDisplay
 } from "~/components";
-import Logo from "~/assets/logo.svg";
 import { demandStaking } from "~/wallet/constants/tokens";
 import { useUserAddress } from "~/contexts/UserAddressContext";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -31,22 +29,51 @@ import { OLY, staking } from "~/wallet/constants/tokens";
 import { useWriteContractWithGasBuffer } from "~/hooks/useWriteContractWithGasBuffer";
 import { usePublicClient } from "wagmi";
 import { Abi, erc20Abi, parseUnits } from "viem";
-import { getTokenBalance } from "~/wallet/lib/web3/bond";
+import { getTokenBalance, getTokenPrice } from "~/wallet/lib/web3/bond";
 import { getCurrentBlock } from "~/lib/multicall";
 import { durationOptions, useMock } from "~/hooks/useMock"
 import { WalletSummary } from "~/widgets"
 import { AmountCard } from "~/widgets/amount-card"
 import { DurationSelect } from "~/widgets/select"
+import { formatNumbedecimalScale } from "~/lib/utils";
+import ConnectWalletButton from "~/components/web3/ConnectWalletButton";
+import DemandStakingAbi from "~/wallet/constants/DemandStakingAbi.json";
+import { getInviteInfo } from "~/wallet/lib/web3/invite";
 
 
+interface StakInfo {
+  stakNum: number;
+}
 export default function StakingPage() {
-  const { duration, setDuration, amount, setAmount } = useMock()
   const t = useTranslations("staking")
   const { userAddress } = useUserAddress();
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
   const publicClient = usePublicClient();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [stakeAmount, setStakeAmount] = useState("0");
+  const [hotDataInfo, setStakeInfo] = useState<StakInfo>({ stakNum: 0 }); //热身期数据
+  const [olyPrice, setTokenPrice] = useState(0)
+  const [apy, setApy] = useState<string>("0");
+  const [cutDownTime, setCutDownTime] = useState<number>(0);
+  const [allowanceNum, setAllowanceNum] = useState<number>(0);
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const queryClient = useQueryClient();
 
+  const { data: inviteInfo, refetch: refetchInviteInfo } = useQuery({
+    queryKey: ["inviteInfo", userAddress],
+    queryFn: () => getInviteInfo({ address: userAddress as `0x${string}` }),
+    enabled: Boolean(userAddress),
+    retry: 1,
+  });
+  // oly单价
+  const { data: TokenPrice } = useQuery({
+    queryKey: ["getTokenPrice"],
+    queryFn: getTokenPrice,
+    enabled: true,
+    retry: 1,
+    retryDelay: 10000,
+  });
+  console.log(TokenPrice, 'TokenPrice')
 
   // 获取授权长度
   const { data: allowanceLynkLength, refetch: refetchAllowanceLynk } = useQuery({
@@ -79,7 +106,7 @@ export default function StakingPage() {
       });
       const result = await publicClient.waitForTransactionReceipt({ hash });
       if (result.status === "success") {
-        toast.success(t("toast.approve_success"));
+        toast.success("授权成功");
         await refetchAllowanceLynk();
       }
     } catch (error: unknown) {
@@ -97,6 +124,8 @@ export default function StakingPage() {
     enabled: Boolean(userAddress),
     refetchInterval: 25000,
   });
+
+
 
   //获取全网质押的的oly数量
   const { data: allAsStakeNum } = useQuery({
@@ -136,97 +165,107 @@ export default function StakingPage() {
     retry: 1,
     refetchInterval: 10000,
   });
-  <div className="space-y-6">
-    <Alert
-      icon="stake"
-      title={t("alertTitle")}
-      description={t("alertDescription")}
-    />
 
-    {/* 主要内容区域 */}
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div>
-        <Card>
-          <View
-            className="bg-[#22285E] px-4"
-            clipDirection="topRight-bottomLeft"
-          >
-            <div className="flex items-center justify-between border-b border-border/20 py-4">
-              <Statistics title={t("amount")} value={"0.0"} />
-              <div className="flex items-center gap-1">
-                <RoundedLogo />
-                <span className="text-white mono">OLY</span>
-              </div>
-            </div>
-            <div className="flex items-center justify-between text-xs text-foreground/70 py-4">
-              <span className="mono">$0.00</span>
-              <div className="flex items-center gap-2">
-                <span className="mono">{t("balance")}</span>
-                <span className="mono text-white">0.00 OLY</span>
-                <span className="mono gradient-text">{t("useMax")}</span>
-              </div>
-            </div>
-          </View>
-          <DurationSelect
-            options={durationOptions}
-            value={duration}
-            onChange={setDuration}
-          />
-          <AmountCard
-            data={{
-              value: amount ?? 100,
-              desc: 456,
-              balance: 789,
-            }}
-            onChange={(value) => setAmount(Number(value))}
-          />
-          <List>
-            <List.Item>
-              <List.Label>{t("rebaseRewardRate")}</List.Label>
-              <List.Value>0.3%-1%</List.Value>
-            </List.Item>
-            <List.Item>
-              <List.Label>{t("rebaseBoost")}</List.Label>
-              <List.Value>0.3%-1%</List.Value>
-            </List.Item>
-            <List.Item>
-              <List.Label>{t("nextRebaseRewardRate")}</List.Label>
-              <List.Value className="text-secondary">0.38%</List.Value>
-            </List.Item>
-            <List.Item>
-              <List.Label>{t("countdownToNextRebase")}</List.Label>
-              <List.Value>
-                <Countdown
-                  endAt={new Date(Date.now() + 1000 * 60 * 60 * 24)}
-                />
-              </List.Value>
-            </List.Item>
-          </List>
-          <Button
-            clipDirection="topRight-bottomLeft"
-            className="w-full font-mono"
-          >
-            {t("stake")}
-          </Button>
-        </Card>
-      </div>
-      <div>
-        <WalletSummary
-          data={{
-            availableToStake: 100,
-            stakedAmount: 100,
-            stakedAmountDesc: 12345,
-            apr: 100,
-            rebaseRewards: 12345678,
-            rebaseRewardsDesc: 12345678,
-            totalStaked: 100,
-            stakers: 100,
-            olyMarketCap: 100,
-          }}
-        />
-      </div>
-    </div>
-  </div>
+  // 质押
+  const toStaking = async () => {
+    if (!publicClient || !userAddress) return;
+    await refetchInviteInfo();
+    if (!inviteInfo?.isActive) {
+      toast.warning("您的账户需要绑定推荐人地址");
+      return;
+    }
+    if (!balance || Number(balance) === 0) {
+      toast.error("数量不足");
+      return;
+    }
+    if (Number(stakeAmount) === 0) {
+      toast.error("请输入质押数量");
+      return;
+    }
+    if (allowanceNum === undefined) return;
+    if (!allowanceNum || allowanceNum < Number(stakeAmount)) {
+      handApprove();
+      return;
+    }
+    const toastId = toast.loading("请在钱包中确认交易...");
+    setIsDisabled(true);
+    try {
+      setIsLoading(true);
+      const hash = await writeContractAsync({
+        abi: DemandStakingAbi as Abi,
+        address: demandStaking as `0x${string}`,
+        functionName: "stake",
+        args: [parseUnits(stakeAmount, 9)],
+      });
+      toast.loading("交易确认中...", {
+        id: toastId,
+      });
+      const result = await publicClient.waitForTransactionReceipt({ hash });
+      if (result.status === "success") {
+        toast.success("质押成功", {
+          id: toastId,
+        });
+        await Promise.all([
+          queryClient.invalidateQueries({
+            queryKey: ["depositTokenBalance", userAddress],
+          })
+        ]);
+        setStakeAmount("");
+      } else {
+        toast.error("质押失败", {
+          id: toastId,
+        });
+      }
+    } catch (error: unknown) {
+      console.log(error);
+      toast.error("error", {
+        id: toastId,
+      });
+    } finally {
+      setIsLoading(false);
+      setIsDisabled(false);
+    }
+  };
+  useEffect(() => {
+    if (TokenPrice) {
+      console.log()
+      setTokenPrice(Number(TokenPrice))
+    }
+
+  }, [TokenPrice])
+
+  useEffect(() => {
+    if (allnetReabalseNum) {
+      const rate = formatNumbedecimalScale(
+        (Number(allnetReabalseNum) / Number(allAsStakeNum)) * 100,
+        4
+      );
+      setApy(rate);
+    }
+  }, [apy, allnetReabalseNum, allAsStakeNum]);
+
+  //下次爆块时间计算
+  useEffect(() => {
+    const getCutDownTime = async () => {
+      if (nextBlock) {
+        const curBlock = Number(await getCurrentBlock());
+        console.log(curBlock, 'curBlock')
+        console.log(nextBlock, 'nextBlock')
+        const time = nextBlock - curBlock < 0 ? 0 : nextBlock - curBlock;
+        console.log(time, 'time')
+        setCutDownTime(time);
+      }
+    };
+    getCutDownTime();
+  }, [getCureentBlock, nextBlock]);
+
+  useEffect(() => {
+    if (allowanceLynkLength) {
+      setAllowanceNum(Number(allowanceLynkLength));
+    }
+  }, [allowanceLynkLength]);
+
+
   return (
     <div className="space-y-6">
       <Alert
@@ -239,67 +278,70 @@ export default function StakingPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
           <Card>
-            <View
-              className="bg-[#22285E] px-4"
-              clipDirection="topRight-bottomLeft"
-            >
-              <div className="flex items-center justify-between border-b border-border/20 py-4">
-                <Statistics title={t("amount")} value={"0.0"} />
-                <div className="flex items-center gap-1">
-                  <RoundedLogo />
-                  <span className="text-white mono">OLY</span>
-                </div>
-              </div>
-              <div className="flex items-center justify-between text-xs text-foreground/70 py-4">
-                <span className="mono">$0.00</span>
-                <div className="flex items-center gap-2">
-                  <span className="mono">{t("balance")}</span>
-                  <span className="mono text-white">0.00 OLY</span>
-                  <span className="mono gradient-text">{t("useMax")}</span>
-                </div>
-              </div>
-            </View>
-            <DurationSelect
-              options={durationOptions}
-              value={duration}
-              onChange={setDuration}
-            />
             <AmountCard
               data={{
-                value: amount ?? 100,
-                desc: 456,
-                balance: 789,
+                value: stakeAmount,
+                desc: (olyPrice * Number(stakeAmount)).toFixed(2),
+                balance: (balance && Number(balance)) || 0,
               }}
-              onChange={(value) => setAmount(Number(value))}
+              onChange={(value) => {
+                setStakeAmount(value)
+              }}
             />
             <List>
               <List.Item>
                 <List.Label>{t("rebaseRewardRate")}</List.Label>
                 <List.Value>0.3%-1%</List.Value>
               </List.Item>
-              <List.Item>
-                <List.Label>{t("rebaseBoost")}</List.Label>
-                <List.Value>0.3%-1%</List.Value>
-              </List.Item>
+
               <List.Item>
                 <List.Label>{t("nextRebaseRewardRate")}</List.Label>
-                <List.Value className="text-secondary">0.38%</List.Value>
+                <List.Value className="text-secondary">{Number(apy) > 0 ? apy : 0}%</List.Value>
               </List.Item>
               <List.Item>
                 <List.Label>{t("countdownToNextRebase")}</List.Label>
                 <List.Value>
-                  <Countdown
-                    endAt={new Date(Date.now() + 1000 * 60 * 60 * 24)}
+                  <CountdownDisplay
+                    blocks={BigInt(cutDownTime)} isShowDay={false}
                   />
                 </List.Value>
               </List.Item>
             </List>
-            <Button
-              clipDirection="topRight-bottomLeft"
-              className="w-full font-mono"
-            >
-              {t("stake")}
-            </Button>
+            {
+              !userAddress ? <ConnectWalletButton className="bg-[#FF8908] text-xl py-3 cursor-pointer px-6 !text-white text-5   hover:bg-[#FF8908]/80 h-[48px] min-w-[160px]   mx-auto" /> :
+                (
+                  <div className="flex items-center justify-center w-full gap-x-4">
+
+                    {
+                      (allowanceNum === 0 || allowanceNum < Number(stakeAmount)) &&
+                      <Button
+                        clipDirection="topRight-bottomLeft"
+                        className="font-mono w-[50%]"
+                        variant={(isDisabled || Number(stakeAmount) === 0 || Number(balance) === 0) ? "disabled" : "primary"}
+                        disabled={isDisabled || Number(stakeAmount) === 0 || Number(balance) === 0}
+                        onClick={toStaking}
+                      >
+                        {isLoading ? '授权中...' : '授权'}
+                      </Button>
+                    }
+                    {
+                      <Button
+                       clipDirection="topRight-bottomLeft"
+                        className="font-mono flex-1"
+                        variant={(isDisabled || allowanceNum === 0 || allowanceNum < Number(stakeAmount) || Number(stakeAmount) === 0 || Number(balance) === 0) ? "disabled" : "primary"}
+                        disabled={isDisabled || allowanceNum === 0 || allowanceNum < Number(stakeAmount) || Number(stakeAmount) === 0 || Number(balance) === 0}
+                        onClick={toStaking}
+                      >
+                        {
+                          isLoading && allowanceNum > 0 && allowanceNum > Number(stakeAmount)
+                            ? '质押中...' : '质押'
+                        }
+                      </Button>
+                    }
+                  </div>
+                )
+            }
+
           </Card>
         </div>
         <div>

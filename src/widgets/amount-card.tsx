@@ -5,8 +5,8 @@ import { formatCurrency } from "~/lib/utils"
 
 export const AmountCard: FC<{
   data: {
-    value: number
-    desc: number
+    value: number|string
+    desc: number|string
     balance: number
   }
   onChange?: (value: string) => void
@@ -35,13 +35,13 @@ export const AmountCard: FC<{
         </div>
       </div>
       <div className="flex items-center justify-between text-xs text-foreground/70 py-4">
-        <span className="font-mono">{formatCurrency(data.desc)}</span>
+        <span className="font-mono">{formatCurrency(Number(data.desc))}</span>
         <div className="flex items-center gap-2">
           <span className="font-mono">{t("balance")}</span>
           <span className="font-mono text-white">
             {`${formatCurrency(data.balance, false)} OLY`}
           </span>
-          <span className="font-mono gradient-text">{t("useMax")}</span>
+          <span className="font-mono gradient-text cursor-pointer" onClick={()=>{onChange?.(data.balance+'')}}>{t("useMax")}</span>
         </div>
       </div>
     </View>
