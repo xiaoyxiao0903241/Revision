@@ -30,7 +30,7 @@ export default function UnstakePage() {
             />
             <AmountTicker
               data={{
-                title: t("amount"),
+                title: tLockedStaking("pendingAmount"),
                 value: decimal,
                 desc: 100,
                 endAt: new Date(Date.now() + 10000),
@@ -39,7 +39,7 @@ export default function UnstakePage() {
             />
             <AmountTicker
               data={{
-                title: t("amount"),
+                title: tLockedStaking("releasedAmount"),
                 value: decimal,
                 desc: 100,
               }}
