@@ -25,7 +25,7 @@ import {
   getEnchBlock,
   getBalanceToken
 } from "~/wallet/lib/web3/stake";
-import { OLY, staking } from "~/wallet/constants/tokens";
+import { OLY, staking,matrixNetwork } from "~/wallet/constants/tokens";
 import { useWriteContractWithGasBuffer } from "~/hooks/useWriteContractWithGasBuffer";
 import { usePublicClient } from "wagmi";
 import { Abi, erc20Abi, parseUnits } from "viem";
@@ -41,6 +41,7 @@ import DemandStakingAbi from "~/wallet/constants/DemandStakingAbi.json";
 import { getInviteInfo } from "~/wallet/lib/web3/invite";
 
 
+
 interface StakInfo {
   stakNum: number;
 }
@@ -50,7 +51,7 @@ export default function StakingPage() {
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
   const publicClient = usePublicClient();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [stakeAmount, setStakeAmount] = useState("0");
+  const [stakeAmount, setStakeAmount] = useState("");
   const [hotDataInfo, setStakeInfo] = useState<StakInfo>({ stakNum: 0 }); //热身期数据
   const [olyPrice, setTokenPrice] = useState(0)
   const [apy, setApy] = useState<string>("0");
@@ -58,7 +59,6 @@ export default function StakingPage() {
   const [allowanceNum, setAllowanceNum] = useState<number>(0);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const queryClient = useQueryClient();
-
   const { data: inviteInfo, refetch: refetchInviteInfo } = useQuery({
     queryKey: ["inviteInfo", userAddress],
     queryFn: () => getInviteInfo({ address: userAddress as `0x${string}` }),
@@ -75,9 +75,12 @@ export default function StakingPage() {
   });
   console.log(TokenPrice, 'TokenPrice')
 
+
+ 
+
   // 获取授权长度
-  const { data: allowanceLynkLength, refetch: refetchAllowanceLynk } = useQuery({
-    queryKey: ["allowanceAS"],
+  const { data: allowanceLynkLength, refetch: refetchAllowanceOly } = useQuery({
+    queryKey: ["allowanceOly"],
     queryFn: () =>
       getAllowance({
         address: userAddress as `0x${string}`,
@@ -107,7 +110,7 @@ export default function StakingPage() {
       const result = await publicClient.waitForTransactionReceipt({ hash });
       if (result.status === "success") {
         toast.success("授权成功");
-        await refetchAllowanceLynk();
+        await refetchAllowanceOly();
       }
     } catch (error: unknown) {
       console.log(error);
