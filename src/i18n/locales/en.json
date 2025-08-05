@@ -40,7 +40,7 @@
     "nextRebaseRewardRate": "Next Rebase Reward Rate",
     "countdownToNextRebase": "Countdown to Next Rebase",
     "availableToStake": "Available to stake",
-    "apr": "APR",
+    "apr": "APY",
     "stakedAmount": "Staked amount",
     "rebaseRewards": "Rebase Rewards",
     "addToMetaMask": "Add to MetaMask",
@@ -143,7 +143,10 @@
     "unstakeDescription": "The pledged principal will be released linearly according to the block. Users can withdraw the unlocked portion at any time, while continuing to enjoy the increased returns on the remaining principal.",
     "unstakeInfo": "You may unstake the released staking amount at any time. If remaining staked, these funds will continue to generate block rewards.",
     "calculatorDescription": "You can simulate and calculate the income you get from long-term staking.",
-    "claimInfo": "You may claim rebase rewards at any time. If unclaimed, these rewards will automatically compound and continue to generate additional rebase rewards."
+    "claimInfo": "You may claim rebase rewards at any time. If unclaimed, these rewards will automatically compound and continue to generate additional rebase rewards.",
+    "release": "Release",
+    "pendingAmount": "Pending Amount",
+    "releasedAmount": "Released Amount"
   },
   "noLockedStaking": {
     "title": "No-Lock Staking",
@@ -210,6 +213,45 @@
       "5": "5%",
       "custom": "1.2%"
     }
+  },
+  "community": {
+    "title": "Community",
+    "description": "Community features are under development...",
+    "selectFeature": "Please use the right navigation bar to select specific community features",
+    "protocolTitle": "Globally Governed DeFi 3.0 Community Protocol",
+    "protocolDescription": "OLY ONE is a future-oriented decentralized finance (DeFi 3.0) protocol, jointly initiated, collaboratively built, and governed by communities from multiple countries, aiming to create a sustainable, transparent, and highly secure DeFi ecosystem, promoting the value consensus of truly decentralized finance among global users. Don't miss out!",
+    "howToGetRewards": "How to Get Community Rewards?",
+    "step1": {
+      "title": "1 Deposit Assets",
+      "description": "Stake OLY on the platform, or use USDT to purchase bonds, to start earning basic income. A minimum of $100 share is required to start."
+    },
+    "step2": {
+      "title": "2 Refer Friends",
+      "description": "Invite friends to register and complete staking through your invitation link, and both you and your friends can receive additional rewards."
+    },
+    "step3": {
+      "title": "3 Create Community",
+      "description": "Create your own staking community, attract more members to join, or join a highly active community. The platform will distribute additional rewards based on the total locked amount of the community."
+    },
+    "referralProgram": "Referral Program",
+    "totalReferralLocked": "Total Referral Locked",
+    "totalCommunityLocked": "Total Community Locked",
+    "communityRewards": "Community Rewards",
+    "referralBy": "Referral By",
+    "referralDescription": "Please enter the referral address to confirm that they can receive appropriate rewards.",
+    "referralInputPlaceholder": "Enter referral code",
+    "referralLink": "Referral Link",
+    "copyLink": "Copy Link",
+    "inviteFriends": "Invite friends, enjoy 5 major income systems",
+    "referralBenefits": "Successfully inviting friends to participate can unlock direct commissions, ten-level matrix income, community evangelist rewards, global dividend rights, and cross-level penetration rewards, accumulating multiple benefits for continuous passive income!",
+    "referralList": "Referral List",
+    "records": "records",
+    "secondsAgo": "seconds ago",
+    "address": "Address",
+    "netHolding": "Net Holding",
+    "totalCommunityPerformance": "Total Community Performance",
+    "joinTime": "Join Time",
+    "submit": "Submit"
   },
   "common": {
     "welcome": "Welcome to ONE OLYONE",
