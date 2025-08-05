@@ -2,7 +2,6 @@
 
 import { useTranslations } from "next-intl"
 import { Alert, Button, Card, Notification, Statistics } from "~/components"
-import { Countdown } from "~/components/count-down"
 import {
   Select,
   SelectContent,
@@ -12,9 +11,9 @@ import {
 } from "~/components/select"
 import { AmountCard } from "~/widgets"
 import { ClaimSummary } from "~/widgets/claim-summary"
-import { MatrixBonusRecords } from "~/widgets/dao-records"
+import { ReferralBonusRecords } from "~/widgets"
 
-export default function DaoPage() {
+export default function ReferralBonusPage() {
   const t = useTranslations("dao")
   const tStaking = useTranslations("staking")
 
@@ -23,9 +22,9 @@ export default function DaoPage() {
       {/* 顶部Alert */}
       <Alert
         icon="blocks"
-        title={t("matrix_bonus")}
         iconSize={24}
-        description={t("matrix_bonus_description")}
+        title={t("referral_bonus_title")}
+        description={t("referral_bonus_description")}
       />
 
       {/* 主要内容区域 */}
@@ -33,21 +32,6 @@ export default function DaoPage() {
         {/* 左侧：领取区域 */}
         <div className="space-y-6">
           <Card>
-            {/* 倒计时 */}
-            <div className="flex items-center text-sm gap-2">
-              <p className="text-foreground/50">{t("next_payout_in")}:</p>
-              <Countdown
-                endAt={
-                  new Date(
-                    Date.now() +
-                      11 * 60 * 60 * 1000 +
-                      32 * 60 * 1000 +
-                      29 * 1000
-                  )
-                }
-                className="font-chakrapetch"
-              />
-            </div>
             <AmountCard
               data={{
                 value: "0.0",
@@ -81,9 +65,9 @@ export default function DaoPage() {
 
             <ClaimSummary
               data={{
-                amount: 0.0,
-                taxRate: 0.0,
-                incomeTax: 0.0,
+                amount: 85.0,
+                taxRate: 0.38,
+                incomeTax: 0.079948,
               }}
             />
             {/* 领取按钮 */}
@@ -99,23 +83,22 @@ export default function DaoPage() {
                 value="0.00 OLY"
                 desc="$0.00"
               />
-              <Statistics title={t("direct_referral_count")} value="0.00 OLY" />
-            </div>
-            <div className="border-t border-foreground/20 w-full"></div>
-            <div className="grid grid-cols-2 gap-4">
-              <Statistics title={t("unlock_layers")} value="0.00 OLY" />
               <Statistics
                 title={t("total_bonus_amount")}
                 value="0.00 OLY"
                 desc="$0.00"
               />
             </div>
+            <div className="border-t border-foreground/20 w-full"></div>
+            <div className="grid grid-cols-2 gap-4">
+              <Statistics title={t("evangelist_level")} value="V4" />
+            </div>
           </Card>
         </div>
       </div>
 
       {/* 底部：记录表格 */}
-      <MatrixBonusRecords />
+      <ReferralBonusRecords />
     </div>
   )
 }

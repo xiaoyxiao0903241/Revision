@@ -264,9 +264,9 @@
       margin-bottom: -16px;
     }
   }
-  .turbine-body {
+  .flat-body {
     border-width: 32px 32px 32px 192px;
-    border-image: url("/images/background/turbine-body.png");
+    border-image: url("/images/background/flat-body.png");
     border-image-slice: 32 32 32 192 fill;
     /* 直接子元素样式 */
     & > div {

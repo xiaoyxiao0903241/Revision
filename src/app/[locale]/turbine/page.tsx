@@ -127,7 +127,7 @@ export default function TurbinePage() {
         <div>
           <Card
             className="flex flex-col gap-4 pb-6 pt-10 px-[2px]"
-            containerClassName="turbine-body"
+            containerClassName="flat-body"
           >
             <ClaimTicker
               lockedAmount={0.0}
