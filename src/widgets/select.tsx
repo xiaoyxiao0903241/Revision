@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl"
 import { FC } from "react"
+import type { periodItem } from "~/wallet/lib/web3/claim";
 import {
   RoundedLogo,
   Select,
@@ -11,31 +12,34 @@ import {
 import { formatCurrency } from "~/lib/utils"
 
 export const DurationSelect: FC<{
-  options: number[]
+  options: periodItem[]
   value?: number
   onChange: (value: number) => void
   placeholder?: string
 }> = ({ options, value, onChange, placeholder }) => {
   const t = useTranslations("staking")
-  const selectedOption = options.find((it) => it === value)
+  const selectedOption = options.find((it,index) => index === value)
   return (
     <Select
       value={value?.toString()}
-      onValueChange={(value) => onChange(Number(value))}
+      onValueChange={(value) => {
+        const index = options.findIndex((it) => it.day === Number(value))
+        onChange(index)
+      }}
     >
       <SelectTrigger>
         <SelectValue
           placeholder={placeholder || t("selectDurationPlaceholder")}
         >
           {selectedOption
-            ? `${selectedOption} ${t("days")}`
+            ? `${selectedOption.day} ${t("days")}`
             : placeholder || t("selectDurationPlaceholder")}
         </SelectValue>
       </SelectTrigger>
       <SelectContent>
         {options.map((it) => (
-          <SelectItem key={it} value={it.toString()}>
-            {it} {t("days")}
+          <SelectItem key={it.day} value={it.day?.toString() || ''}>
+            {it.day} {t("days")}
           </SelectItem>
         ))}
       </SelectContent>

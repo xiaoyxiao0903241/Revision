@@ -1,6 +1,6 @@
 import { authFetch, publicFetch } from '../index';
 import { toast } from 'sonner';
-import { clearToken, getWeekday } from '@/lib/utils';
+import { clearToken, getWeekday } from '~/lib/utils';
 
 interface historyItem {
   amount: string;

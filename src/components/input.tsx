@@ -33,7 +33,7 @@ interface InputNumberProps
 
 function InputNumber({
   className,
-  value = "",
+  value,
   onChange,
   maxDecimals = 6,
   ...props
@@ -47,21 +47,68 @@ function InputNumber({
       return
     }
 
+    // 允许单个负号
+    if (inputValue === "-") {
+      onChange?.(inputValue)
+      return
+    }
+
+    // 允许单个小数点
+    if (inputValue === ".") {
+      onChange?.(inputValue)
+      return
+    }
+
+    // 允许负号开头的小数点
+    if (inputValue === "-.") {
+      onChange?.(inputValue)
+      return
+    }
+
+    // 检查是否只包含数字、小数点和负号
+    const validChars = /^[-.\d]+$/
+    if (!validChars.test(inputValue)) {
+      console.log("Invalid chars:", inputValue)
+      return
+    }
+
+    // 防止多个负号
+    const minusCount = (inputValue.match(/-/g) || []).length
+    if (minusCount > 1) {
+      console.log("Multiple minus signs")
+      return
+    }
+
+    // 防止负号不在开头
+    if (minusCount === 1 && !inputValue.startsWith("-")) {
+      console.log("Minus not at start")
+      return
+    }
+
+    // 防止多个小数点
+    const dotCount = (inputValue.match(/\./g) || []).length
+    if (dotCount > 1) {
+      console.log("Multiple dots")
+      return
+    }
+
     // 检查小数位数（只有当小数点后有数字时才检查）
     if (inputValue.includes(".")) {
       const parts = inputValue.split(".")
       if (parts.length === 2 && parts[1] && parts[1].length > maxDecimals) {
+        console.log("Too many decimals")
         return
       }
     }
 
-    // 浏览器原生 number 类型已经处理了其他验证
+    // 允许所有有效的数字格式
+    console.log("Valid input:", inputValue)
     onChange?.(inputValue)
   }
 
   return (
     <InputBase
-      type="number"
+      type="text"
       inputMode="decimal"
       value={value}
       onChange={handleChange}

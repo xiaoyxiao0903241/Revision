@@ -38,11 +38,11 @@ export const getClaimPeriod = async () => {
         },
       ],
     })) as { success: boolean; data: periodItem[] }[];
-
+    console.log(res,'00000')
     if (res.length && res[0].data.length) {
       const list = res[0].data;
       list.map((it: periodItem) => {
-        it['day'] = Number(it.releasedBlocks) / 43200;
+        it['day'] = Number(it.releasedBlocks) / 57600;
         it['rate'] = Number(it.feeRate) / 100 + '%';
       });
       return list;

@@ -387,6 +387,7 @@ export const demandProfit = async ({ address }: { address: Address }) => {
         allProfit,
         normalProfit,
         isClaim,
+        rebalseProfit
       };
     }
   } catch (err: unknown) {
@@ -414,6 +415,7 @@ export const getBalanceToken = async ({
       },
     ],
   })) as { success: boolean; data: bigint }[];
+  
   if (res.length) {
     const balance = Number(formatUnits(res[0].data, decimal));
     return balance || 0;
