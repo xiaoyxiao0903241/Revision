@@ -33,6 +33,7 @@ export default function ClaimPage() {
                   desc: 456,
                   balance: 789,
                 }}
+                description={t("balance")}
                 onChange={setDecimal}
               />
               <Notification>{tNoLockedStaking("claimInfo")}</Notification>

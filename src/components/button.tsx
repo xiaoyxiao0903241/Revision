@@ -43,7 +43,7 @@ export function Button({
     accent: "bg-warning",
     disabled: "bg-gray-500 hover:opacity-100 active:opacity-100",
     outlined:
-      "bg-transparent border-2 border-white/20 text-white hover:bg-white/10",
+      "bg-transparent border-2 border-[#434c8c] text-white hover:bg-white/10  shadow-[inset_0_0_20px_rgba(84,119,247,0.5)]",
     link: "bg-transparent text-white hover:bg-white/10",
   }
 

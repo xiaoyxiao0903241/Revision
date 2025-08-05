@@ -9,8 +9,9 @@ export const AmountCard: FC<{
     desc: number
     balance: number
   }
+  description: string
   onChange?: (value: string) => void
-}> = ({ data, onChange }) => {
+}> = ({ data, description, onChange }) => {
   const t = useTranslations("staking")
   return (
     <View className="bg-[#22285E] px-4" clipDirection="topRight-bottomLeft">
@@ -37,7 +38,7 @@ export const AmountCard: FC<{
       <div className="flex items-center justify-between text-xs text-foreground/70 py-4">
         <span className="font-mono">{formatCurrency(data.desc)}</span>
         <div className="flex items-center gap-2">
-          <span className="font-mono">{t("balance")}</span>
+          <span className="font-mono">{description}</span>
           <span className="font-mono text-white">
             {`${formatCurrency(data.balance, false)} OLY`}
           </span>

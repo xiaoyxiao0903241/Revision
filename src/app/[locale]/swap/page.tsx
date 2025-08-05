@@ -9,6 +9,7 @@ import { Button } from "~/components/button"
 import { Card } from "~/components/card"
 import { useMock } from "~/hooks/useMock"
 import { formatDecimal, formatHash } from "~/lib/utils"
+import { useMockStore } from "~/store/mock"
 import { BalanceCard } from "~/widgets/balance-card"
 import { CandlestickChart } from "~/widgets/charts"
 import { RateCard } from "~/widgets/rate-card"
@@ -17,8 +18,18 @@ import { Balance, SwapCard } from "~/widgets/swap-card"
 import { SwapSummary } from "~/widgets/swap-summary"
 export default function SwapPage() {
   const t = useTranslations("swap")
-  const { decimal, setDecimal } = useMock()
+  const { decimal, setDecimal, walletConnected: isLoading } = useMock()
   const [source, setSource] = React.useState<"USDT" | "OLY">("USDT")
+
+  const onToggle = async () => {
+    useMockStore.setState({
+      walletConnected: true,
+    })
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+    useMockStore.setState({
+      walletConnected: false,
+    })
+  }
 
   const options: Balance[] = [
     {
@@ -107,7 +118,13 @@ export default function SwapPage() {
               </SwapCard>
             </View>
 
-            <RateCard />
+            <RateCard
+              description="1 USDT= 0.025548 OLY"
+              isLoading={isLoading}
+              onRefresh={onToggle}
+            >
+              <div className="w-40">1 USDT= 0.025548 OLY</div>
+            </RateCard>
 
             {/* 滑点设置 */}
             <Slippage

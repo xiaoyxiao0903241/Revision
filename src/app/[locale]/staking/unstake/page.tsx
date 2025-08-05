@@ -78,6 +78,7 @@ export default function UnstakePage() {
                     desc: 100,
                     balance: 100,
                   }}
+                  description={t("balance")}
                 />
                 <List>
                   <List.Item>

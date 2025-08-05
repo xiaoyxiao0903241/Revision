@@ -34,6 +34,7 @@ export default function StakingPage() {
                 desc: 456,
                 balance: 789,
               }}
+              description={t("balance")}
               onChange={setDecimal}
             />
             <StakingSummary

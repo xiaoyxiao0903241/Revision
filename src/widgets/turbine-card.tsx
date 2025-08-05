@@ -1,0 +1,63 @@
+"use client"
+
+import { useTranslations } from "next-intl"
+import Logo from "~/assets/logo.svg"
+import { Button } from "~/components/button"
+import { formatCurrency, formatDecimal } from "~/lib/utils"
+interface ClaimTickerProps {
+  lockedAmount: number
+  usdValue: number
+  title: string
+  onClick?: () => void
+}
+
+export function TurbineCard({
+  lockedAmount,
+  title,
+  usdValue,
+  onClick,
+}: ClaimTickerProps) {
+  const t = useTranslations("turbine")
+  const tStaking = useTranslations("staking")
+  return (
+    <div className="relative px-4">
+      <div className="flex items-center justify-between">
+        {/* 左侧：锁定金额显示 */}
+        <div className="flex flex-col">
+          {/* 标题 */}
+          <div className="text-gray-400 text-xs font-mono uppercase tracking-wider">
+            {title}
+          </div>
+          {/* 金额显示 */}
+          <div className="flex items-baseline gap-1">
+            <span className="text-white font-mono text-2xl font-bold">
+              {formatDecimal(lockedAmount, 2)} OLY
+            </span>
+            <span className="text-foreground/50 text-xs">
+              {formatCurrency(usdValue)}
+            </span>
+          </div>
+        </div>
+
+        {/* 右侧：按钮 */}
+        {onClick && (
+          <div className="flex flex-col items-end space-y-2">
+            {/* 领取按钮 */}
+            <Button
+              variant="accent"
+              size="sm"
+              clipSize={8}
+              className="gap-2"
+              clipDirection="topLeft-bottomRight"
+            >
+              <div className="w-4 h-4 rounded-full bg-white flex items-center justify-center">
+                <Logo className="w-4" />
+              </div>
+              <span className="text-black">{tStaking("addToMetaMask")}</span>
+            </Button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
