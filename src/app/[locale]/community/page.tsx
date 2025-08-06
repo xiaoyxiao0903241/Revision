@@ -19,6 +19,7 @@ import {
 } from "~/components"
 import { useMock } from "~/hooks/useMock"
 import { cn, dayjs, formatDecimal, formatHash } from "~/lib/utils"
+import InviteJoin from "./components/InviteJoin"
 
 const Step: FC<{
   index: number
@@ -111,113 +112,7 @@ export default function CommunityPage() {
       </Card>
 
       {/* 推荐计划 */}
-      <Card>
-        <div className="flex items-center gap-2">
-          <Trend className="w-6 h-6" />
-          <span className="text-xl font-bold text-white">
-            {t("referralProgram")}
-          </span>
-        </div>
-        <CardContent className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-          <div className="flex flex-col gap-6  h-full">
-            {/* 左侧数据 */}
-            <div className="space-y-4 flex-1">
-              <div className="flex items-center">
-                <div className="flex flex-col flex-1">
-                  <span className="text-xs text-foreground/50">
-                    {t("totalReferralLocked")}
-                  </span>
-                  <span className="text-white font-mono text-lg">0.00 OLY</span>
-                </div>
-                <div className="flex flex-col flex-1">
-                  <span className="text-xs text-foreground/50">
-                    {t("totalCommunityLocked")}
-                  </span>
-                  <span className="text-white font-mono text-lg">0.00 OLY</span>
-                </div>
-                <div className="flex flex-col flex-1">
-                  <span className="text-xs text-foreground/50">
-                    {t("communityRewards")}
-                  </span>
-                  <span className="text-white font-mono text-lg">0.00 OLY</span>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-gray-300 text-sm">
-                  {t("referralBy")}
-                </label>
-                <div className="bg-[#1b1f48] items-center flex shadow-[inset_0_0_20px_rgba(84,119,247,0.5)] px-3 py-4 w-full xl:w-5/6">
-                  {walletConnected ? (
-                    formatHash("0x2323...ewrew2")
-                  ) : (
-                    <>
-                      <Input
-                        value={decimal ?? ""}
-                        className="flex-1"
-                        onChange={(e) => {
-                          setDecimal(e.target.value)
-                        }}
-                      />
-                      <button
-                        className="bg-transparent gradient-text font-bold text-sm"
-                        onClick={() => setWalletConnected(true)}
-                      >
-                        {t("submit")}
-                      </button>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-          <View
-            clipDirection="topRight-bottomLeft"
-            className="bg-gradient-to-b from-[#333E8E]/30 to-[#576AF4]/30 p-4"
-          >
-            {/* 右侧推荐链接 */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <div className="space-y-1 flex-1">
-                  <label className="text-foreground/50 text-xs">
-                    {t("referralLink")}
-                  </label>
-                  <div className="flex gap-2 items-center">
-                    <span className="text-white font-mono text-sm">
-                      https://oIYonedao.com/d453DE
-                    </span>
-                    <InfoPopover className="w-80">
-                      <Link
-                        target="_blank"
-                        href="https://olyonedao.com/invite?address=0x44966c2EE09D39D8568970adD528Fa0dc4d453DE"
-                        className="text-white font-mono text-sm break-all whitespace-normal underline"
-                      >
-                        https://olyonedao.com/invite?address=0x44966c2EE09D39D8568970adD528Fa0dc4d453DE
-                      </Link>
-                    </InfoPopover>
-                  </div>
-                </div>
-                <Button
-                  onClick={() => navigator.clipboard.writeText("")}
-                  className="px-4 h-8"
-                  clipSize={8}
-                  clipDirection="topLeft-bottomRight"
-                >
-                  {t("copyLink")}
-                </Button>
-              </div>
-              <div className="space-y-2 text-xs">
-                <h4 className="text-white font-semibold">
-                  {t("inviteFriends")}
-                </h4>
-                <p className="text-foreground/50 text-xs leading-relaxed">
-                  {t("referralBenefits")}
-                </p>
-              </div>
-            </div>
-          </View>
-        </CardContent>
-      </Card>
+      <InviteJoin />
 
       {/* 推荐列表 */}
       <Card>

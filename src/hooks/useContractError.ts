@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl';
-import { errorMap } from '@/src/lib/web3/contractErrors';
+import { errorMap } from '~/wallet/lib/web3/contractErrors';
 
 /**
  * 处理合约错误的Hook
