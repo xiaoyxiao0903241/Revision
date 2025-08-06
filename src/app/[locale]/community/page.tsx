@@ -3,23 +3,14 @@
 import _ from "lodash"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
-import Link from "next/link"
-import { FC, useState } from "react"
-import List from "~/assets/list.svg"
-import Trend from "~/assets/trend.svg"
+import { FC } from "react"
 import {
-  Button,
   Card,
-  CardContent,
-  CardTitle,
-  InfoPopover,
-  Input,
-  Pager,
   View,
 } from "~/components"
-import { useMock } from "~/hooks/useMock"
-import { cn, dayjs, formatDecimal, formatHash } from "~/lib/utils"
+import { cn } from "~/lib/utils"
 import InviteJoin from "./components/InviteJoin"
+import InviteRecord from "./components/InviteRecord"
 
 const Step: FC<{
   index: number
@@ -55,8 +46,6 @@ const Step: FC<{
 
 export default function CommunityPage() {
   const t = useTranslations("community")
-  const { walletConnected, setWalletConnected, decimal, setDecimal } = useMock()
-  const [currentPage, setCurrentPage] = useState(1)
   return (
     <div className="space-y-6">
       {/* 协议介绍横幅 */}
@@ -115,76 +104,7 @@ export default function CommunityPage() {
       <InviteJoin />
 
       {/* 推荐列表 */}
-      <Card>
-        <div className="flex justify-between items-center">
-          <CardTitle className="text-xl font-bold text-white flex items-center gap-2">
-            <List className="w-6 h-6" />
-            {t("referralList")}
-          </CardTitle>
-          <div className="flex flex-col gap-1 text-right">
-            <span className="text-white">22,197 {t("records")}</span>
-            <span className="text-xs text-foreground/50">
-              {dayjs().fromNow()}
-            </span>
-          </div>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <tbody className="space-y-2">
-              {_.times(10).map((item, index) => (
-                <tr
-                  key={index}
-                  className="grid grid-cols-4  p-6 bg-foreground/5 rounded-md"
-                >
-                  <td className="py-3 px-4 flex flex-col gap-1">
-                    <span className="text-xs text-foreground/50">
-                      {t("address")}
-                    </span>
-                    <span className="text-blue-400 cursor-pointer hover:underline font-mono">
-                      {formatHash("0x2323...ewrew2")}
-                    </span>
-                  </td>
-                  <td className="py-3 px-4 text-white font-mono flex flex-col gap-1">
-                    <span className="text-xs text-foreground/50">
-                      {t("netHolding")}
-                    </span>
-                    <span>
-                      {formatDecimal(85)}{" "}
-                      <span className="gradient-text"> OLY</span>
-                    </span>
-                  </td>
-                  <td className="py-3 px-4 text-white font-mono flex flex-col gap-1">
-                    <span className="text-xs text-foreground/50">
-                      {t("totalCommunityPerformance")}
-                    </span>
-                    <span>
-                      {formatDecimal(85)}{" "}
-                      <span className="gradient-text"> OLY</span>
-                    </span>
-                  </td>
-                  <td className="py-3 px-4 text-gray-300 font-mono flex flex-col gap-1">
-                    <span className="text-xs text-foreground/50">
-                      {t("joinTime")}
-                    </span>
-                    <span>{dayjs().format("YYYY/MM/DD HH:mm:ss")}</span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-            <tfoot className="col-span-4">
-              <tr>
-                <td colSpan={4} className="text-center">
-                  <Pager
-                    currentPage={currentPage}
-                    totalPages={20}
-                    onPageChange={(page) => setCurrentPage(page)}
-                  />
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-      </Card>
+      <InviteRecord />
     </div>
   )
 }
