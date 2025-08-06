@@ -356,5 +356,10 @@
     "success": "Success",
     "cancel": "Cancel",
     "confirm": "Confirm"
+  },
+  "notFound": {
+    "comingSoon": "New version launching soon.",
+    "title": "Stay tuned",
+    "description": "Estimated launch: August 15, 2025."
   }
 }

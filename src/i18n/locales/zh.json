@@ -361,5 +361,10 @@
     "success": "成功",
     "cancel": "取消",
     "confirm": "确认"
+  },
+  "notFound": {
+    "comingSoon": "新版本即将推出。",
+    "title": "敬请期待",
+    "description": "预计上线时间：2025年8月15日"
   }
 }
