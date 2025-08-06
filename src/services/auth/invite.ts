@@ -1,7 +1,7 @@
 import { authFetch } from '../index';
 
 // 邀请信息
-export const inviteInfo = async (address: string, tokenAddress: string) => {
+export const inviterInfo = async (address: string, tokenAddress: string) => {
   const params = {
     address: address,
   };

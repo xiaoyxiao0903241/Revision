@@ -366,5 +366,61 @@
       "please_sign": "請簽名登入",
       "assets": "資產"
     }
+  },
+  "contract": {
+    "error": {
+      "ownable": {
+        "zero_address": "新所有者不能為零地址",
+        "must_be_new_owner": "必須是新所有者才能拉取",
+        "not_owner": "調用者不是所有者"
+      },
+      "tax": {
+        "zero_amount": "金額必須大於零",
+        "zero_address": "不允許零地址"
+      },
+      "fee": {
+        "unauthorized": "調用者未授權"
+      },
+      "node": {
+        "maintenance": "維護期間不允許質押",
+        "invalid_data": "無效數據",
+        "stake_failed": "質押失敗",
+        "no_record": "質押記錄不存在",
+        "warmup": "仍在鎖定期階段",
+        "subtraction_overflow": "減法溢出",
+        "interest_exceeded": "金額超出可用利息"
+      },
+	  "sales": {
+		"paused": "已暫停",
+		"not_started": "銷售未開始",
+		"ended": "銷售已結束",
+		"not_active": "未啟用",
+		"invalid_sale": "無效的銷售",
+		"already_paused": "已暫停",
+		"not_paused": "未暫停",
+		"zero_address": "零地址",
+		"already_claimed": "已領取",
+		"invalid_initialization": "初始化無效",
+		"not_initializing": "未初始化",
+		"ownable_invalid_owner": "無效的擁有者",
+		"ownable_unauthorized_account": "未授權帳戶",
+		"reward_not_claimable": "獎勵不可領取",
+		"safe_erc20_failed_operation": "ERC20操作失敗",
+		"sale_ended": "銷售已結束",
+		"sale_not_started": "銷售未開始"
+	  },
+	  "matrix": {
+		"already_actived": "已啟用",
+		"invalid_address": "無效的地址",
+		"invalid_initialization": "無效的初始化",
+		"invalid_length": "無效的長度",
+		"not_activated": "未啟用",
+		"not_initializing": "未初始化",
+		"ownable_invalid_owner": "無效的擁有者地址",
+		"ownable_unauthorized_account": "未授權的帳戶操作"
+      },
+      "user_rejected": "用戶取消了交易"
+    },
+    "invite_not_active": "您的賬戶需要綁定推薦人地址"
   }
 }

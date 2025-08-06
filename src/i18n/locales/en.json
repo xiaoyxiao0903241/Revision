@@ -396,5 +396,61 @@
       "please_sign": "Please sign to login",
       "assets": "Assets"
     }
+  },
+  "contract": {
+    "error": {
+      "ownable": {
+        "zero_address": "New owner cannot be zero address",
+        "must_be_new_owner": "Must be new owner to pull",
+        "not_owner": "Caller is not owner"
+      },
+      "tax": {
+        "zero_amount": "Amount must be greater than zero",
+        "zero_address": "Zero address not allowed"
+      },
+      "fee": {
+        "unauthorized": "Caller unauthorized"
+      },
+      "node": {
+        "maintenance": "Staking not allowed during maintenance",
+        "invalid_data": "Invalid data",
+        "stake_failed": "Staking failed",
+        "no_record": "Staking record not found",
+        "warmup": "Still in lock-up period",
+        "subtraction_overflow": "Subtraction overflow",
+        "interest_exceeded": "Amount exceeds available interest"
+      },
+      "sales": {
+        "paused": "Paused",
+        "not_started": "Sale not started",
+        "ended": "Sale ended",
+        "not_active": "Inactive",
+        "invalid_sale": "Invalid sale",
+        "already_paused": "Already paused",
+        "not_paused": "Not paused",
+        "zero_address": "Zero address",
+		"already_claimed": "Claimed",
+		"invalid_initialization": "Invalid initialization",
+		"not_initializing": "Not initializing",
+		"ownable_invalid_owner": "Invalid owner",
+		"ownable_unauthorized_account": "Unauthorized account",
+		"reward_not_claimable": "Reward not claimable",
+		"safe_erc20_failed_operation": "ERC20 operation failed",
+		"sale_ended": "Sale ended",
+		"sale_not_started": "Sale not started"
+  },
+  "matrix": {
+		"already_actived": "Activated",
+		"invalid_address": "Invalid address",
+		"invalid_initialization": "Invalid initialization",
+		"invalid_length": "Invalid length",
+		"not_activated": "Not activated",
+		"not_initializing": "Not initializing",
+		"ownable_invalid_owner": "Invalid owner address",
+		"ownable_unauthorized_account": "Unauthorized account operation"
+      },
+      "user_rejected": "User rejected transaction"
+    },
+    "invite_not_active": "Your account needs to bind a referrer"
   }
 }
