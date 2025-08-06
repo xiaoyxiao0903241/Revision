@@ -1,53 +1,25 @@
 "use client"
 
-import { cn } from "~/lib/utils"
-import { FileText, BarChart3, Settings, TrendingUp } from "lucide-react"
-import { Link, usePathname } from "~/i18n/navigation"
+import { useTranslations } from "next-intl"
+import { Navigator } from "~/widgets"
 
 interface DaoLayoutProps {
   children: React.ReactNode
 }
 
 export default function DaoLayout({ children }: DaoLayoutProps) {
-  const pathname = usePathname()
-
-  const subNavItems = [
-    { label: "提案", href: "dao/proposals", icon: FileText },
-    { label: "投票", href: "dao/voting", icon: BarChart3 },
-    { label: "治理", href: "dao/governance", icon: Settings },
-    { label: "历史", href: "dao/history", icon: TrendingUp },
+  const t = useTranslations("dao")
+  const items = [
+    { label: t("matrix_bonus"), href: "/dao" },
+    { label: t("evangelist_bonus"), href: "/dao/evangelist-bonus" },
+    { label: t("super_bonus"), href: "/dao/super-bonus" },
+    { label: t("referral_bonus"), href: "/dao/referral-bonus" },
   ]
 
   return (
     <div className="space-y-6">
       {/* 次级导航栏 */}
-      <div className="border-b border-gray-800 pb-4">
-        <nav className="flex space-x-8">
-          {subNavItems.map((item) => {
-            const Icon = item.icon
-            const isActive =
-              pathname.endsWith(item.href) ||
-              pathname.includes(`/${item.href}/`)
-
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "flex items-center space-x-2 px-3 py-2 text-sm font-medium transition-colors",
-                  isActive
-                    ? "text-purple-400 border-b-2 border-purple-400"
-                    : "text-gray-300 hover:text-white"
-                )}
-              >
-                <Icon className="h-4 w-4" />
-                <span>{item.label}</span>
-              </Link>
-            )
-          })}
-        </nav>
-      </div>
-
+      <Navigator items={items} />
       {/* 页面内容 */}
       {children}
     </div>

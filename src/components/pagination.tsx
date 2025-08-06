@@ -104,7 +104,7 @@ const Pager = ({
   className,
   showPreviousNext = true,
 }: PagerProps) => {
-  const paginationItems = generatePaginationItems(currentPage, totalPages)
+  const paginationItems =  generatePaginationItems(currentPage, totalPages)
 
   const handlePageClick = (page: number) => {
     if (page >= 1 && page <= totalPages && page !== currentPage) {
@@ -176,7 +176,7 @@ const Pager = ({
           <li>
             <button
               onClick={handleNext}
-              disabled={currentPage >= totalPages}
+              disabled={currentPage === totalPages}
               className={cn(
                 "flex h-9 w-9 items-center justify-center bg-transparent text-sm font-medium transition-colors hover:text-foreground/80 disabled:pointer-events-none disabled:opacity-50",
                 "text-foreground/50"

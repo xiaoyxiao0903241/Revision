@@ -1,5 +1,5 @@
 import { authFetch } from '../index';
-import { clearToken } from '@/lib/utils';
+import { clearToken } from '~/lib/utils';
 import { toast } from 'sonner';
 
 //涡轮记录

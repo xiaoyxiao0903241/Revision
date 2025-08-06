@@ -11,6 +11,21 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    rules: {
+      "@typescript-eslint/no-unused-vars": ["error", {
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": false,
+        "varsIgnorePattern": "^_",
+        "argsIgnorePattern": "^_"
+      }],
+      "no-unused-vars": "off" // 关闭基础规则，使用 TypeScript 版本的规则
+    }
+  },
+  {
+    ignores: ['src/components/common/providers/**','src/hooks/useWriteContractWithGasBuffer.ts'],
+  }
 ];
 
 export default eslintConfig;

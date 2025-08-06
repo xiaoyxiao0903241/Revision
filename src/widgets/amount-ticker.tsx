@@ -1,52 +1,52 @@
-import { useCountDown } from "ahooks"
+// import { useCountDown } from "ahooks"
 import { useTranslations } from "next-intl"
 import { FC } from "react"
-import { Button, Countdown, Icon, RoundedLogo, View } from "~/components"
-import { dayjs, formatCurrency } from "~/lib/utils"
+import {  RoundedLogo, View } from "~/components"
+import {  formatCurrency } from "~/lib/utils"
 
-const CountdownCard: FC<{
-  endAt: Date
-  disabled?: boolean
-}> = ({ endAt, disabled}) => {
-  const [countDown] = useCountDown({
-    targetDate: dayjs(endAt).format("YYYY-MM-DD HH:mm:ss"),
-  })
-  return countDown ? (
-    <View
-      clipDirection="topRight-bottomLeft"
-      border
-      borderColor="rgba(87,106,244,0.2)"
-      borderWidth={1}
-      className="bg-[#22285E] px-3 py-1 flex flex-row items-center gap-2"
-    >
-      <Icon name="clock" size={16} />
-      <Countdown
-        endAt={endAt}
-        className="text-base font-chakrapetch tabular-nums"
-        daysShown
-      />
-    </View>
-  ) : (
-    <Button
-      className="h-10"
-      disabled={disabled}
-      clipDirection="topRight-bottomLeft"
-      variant="primary"
-    >
-      Release
-    </Button>
-  )
-}
+// const CountdownCard: FC<{
+//   endAt: Date
+//   disabled?: boolean
+// }> = ({ endAt, disabled}) => {
+//   const [countDown] = useCountDown({
+//     targetDate: dayjs(endAt).format("YYYY-MM-DD HH:mm:ss"),
+//   })
+//   return countDown ? (
+//     <View
+//       clipDirection="topRight-bottomLeft"
+//       border
+//       borderColor="rgba(87,106,244,0.2)"
+//       borderWidth={1}
+//       className="bg-[#22285E] px-3 py-1 flex flex-row items-center gap-2"
+//     >
+//       <Icon name="clock" size={16} />
+//       <Countdown
+//         endAt={endAt}
+//         className="text-base font-chakrapetch tabular-nums"
+//         daysShown
+//       />
+//     </View>
+//   ) : (
+//     <Button
+//       className="h-10"
+//       disabled={disabled}
+//       clipDirection="topRight-bottomLeft"
+//       variant="primary"
+//     >
+//       Release
+//     </Button>
+//   )
+// }
 
 export const AmountTicker: FC<{
   data: {
     value: number
     desc: number
-    endAt: string|number
+    title:string
   }
   disabled?: boolean
   children?: React.ReactNode
-}> = ({ data, disabled,children }) => {
+}> = ({ data,children }) => {
   const t = useTranslations("staking")
   return (
     <View className="bg-[#22285E] px-4" clipDirection="topRight-bottomLeft">

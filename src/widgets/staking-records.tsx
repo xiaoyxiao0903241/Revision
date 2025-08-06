@@ -1,14 +1,15 @@
 import { useTranslations } from "next-intl"
 import { FC, ReactNode, useState } from "react"
 import { Button, Card, CardContent, Icon, Tabs } from "~/components"
-import { stakingRecords, useMock } from "~/hooks/useMock"
-import { cn, dayjs, formatDecimal, formatHash } from "~/lib/utils"
+import { cn, formatDecimal, formatHash } from "~/lib/utils"
+import { useUserAddress } from "~/contexts/UserAddressContext";
+
 
 // 事件颜色映射
 const eventColors = {
-  Claim: "text-secondary",
-  Unstake: "text-destructive",
-  Stake: "text-success",
+  deposit: "text-secondary",
+  principal: "text-destructive",
+  rebase: "text-success",
 }
 
 const Cell = ({
@@ -20,6 +21,8 @@ const Cell = ({
   title: string
   children: ReactNode
 }) => {
+  
+
   return (
     <td
       className={cn(
@@ -32,44 +35,56 @@ const Cell = ({
     </td>
   )
 }
+interface recordType  {
+  id: string;
+  amount: string;
+  createdAt: string;
+  hash: string;
+  lockIndex: number;
+  recordType: string;
+}
 
 export const StakingRecords: FC<{
-  records: typeof stakingRecords
-}> = ({ records }) => {
+  records: recordType[],
+  changeTab:(type:string) => void;
+  total:number
+}> = ({ records,changeTab,total}) => {
   const t = useTranslations("staking")
   const [activeTab, setActiveTab] = useState(0)
-  const { walletConnected } = useMock()
+  const { userAddress } = useUserAddress();
   // 标签页数据
   const tabData = [
-    { label: t("allEvent"), href: "#" },
-    { label: t("stake"), href: "#" },
-    { label: t("unstake"), href: "#" },
-    { label: t("claim"), href: "#" },
+    { label: t("allEvent"), href: "#",type:"" },
+    { label: t("stake"), href: "#",type:"deposit" },
+    { label: t("unstake"), href: "#",type:"principal" },
+    { label: t("claim"), href: "#",type:"rebalse" },
   ]
 
   // 过滤记录
-  const filteredRecords =
-    activeTab === 0
-      ? records
-      : records.filter((record) => {
-          if (activeTab === 1) return record.event === "Stake"
-          if (activeTab === 2) return record.event === "Unstake"
-          if (activeTab === 3) return record.event === "Claim"
-          return true
-        })
-
+  // const filteredRecords =
+  //   activeTab === 0
+  //     ? records
+  //     : records.filter((record) => {
+  //         if (activeTab === 1) return record.event === "Stake"
+  //         if (activeTab === 2) return record.event === "Unstake"
+  //         if (activeTab === 3) return record.event === "Claim"
+  //         return true
+  //       })
   return (
     <Card>
       <CardContent className="space-y-6">
         {/* 标签页 */}
-        <Tabs data={tabData} activeIndex={activeTab} onChange={setActiveTab}>
+        <Tabs data={tabData} activeIndex={activeTab} onChange={(value)=>{
+          changeTab(tabData[value].type)
+          setActiveTab(value)
+        }}>
           <div className="flex-1 flex flex-col items-end">
             <div className="text-base text-foreground">
-              {formatDecimal(22197, 0)} {t("recordsCount")}
+              {total} {t("recordsCount")}
             </div>
-            <div className="text-xs text-foreground/50">
+            {/* <div className="text-xs text-foreground/50">
               {dayjs(dayjs().subtract(200, "seconds")).fromNow()}
-            </div>
+            </div> */}
           </div>
         </Tabs>
 
@@ -77,37 +92,39 @@ export const StakingRecords: FC<{
         <div className="overflow-x-auto">
           <table className="w-full">
             <tbody className="flex flex-col gap-1">
-              {filteredRecords?.length > 0 ? (
-                filteredRecords.map((record) => (
+              {records?.length > 0 ? (
+                records.map((record,index) => (
                   <tr
-                    key={record.id}
+                    key={index}
                     className="bg-foreground/5 mb-2 rounded-lg flex flex-row w-full"
                   >
                     <Cell
                       title={t("event")}
                       className={
-                        eventColors[record.event as keyof typeof eventColors]
+                        eventColors[record.recordType as keyof typeof eventColors]
                       }
                     >
                       <Icon name="event" size={16} />
-                      {record.event}
+                      {record.recordType}
                     </Cell>
-                    <Cell title={t("transactionHash")} className="w-1/5">
-                      <a
-                        href="#"
+                    <Cell title={t("transactionHash")} className="w-1/4" >
+                      <span
                         className="underline text-sm"
-                        title={record.transactionHash}
+                        title={record.hash}
+                        onClick={()=>{
+                          window.open(`https://bscscan.com/tx/${record.hash}`)
+                        }}
                       >
-                        {formatHash(record.transactionHash)}
-                      </a>
+                        {formatHash(record.hash)}
+                      </span>
                     </Cell>
-                    <Cell title={t("amount")} className="w-1/5">
-                      {formatDecimal(record.amount, 2)}
+                    <Cell title={t("amount")} className="w-1/4">
+                      {formatDecimal(Number(record.amount), 2)}
                     </Cell>
-                    <Cell title={t("period")} className="w-1/5 uppercase">
+                    {/* <Cell title={t("period")} className="w-1/5 uppercase">
                       {record.period ? `${record.period} ${t("days")}` : "  "}
-                    </Cell>
-                    <Cell title={t("dateTime")}>{record.dateTime}</Cell>
+                    </Cell> */}
+                    <Cell title={t("dateTime")} className="w-1/4">{record.createdAt}</Cell>
                   </tr>
                 ))
               ) : (
@@ -116,7 +133,7 @@ export const StakingRecords: FC<{
                     colSpan={5}
                     className="flex flex-col items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-4 gap-2"
                   >
-                    {!walletConnected ? (
+                    {!userAddress ? (
                       <>
                         {t("walletNotConnected")}
                         <Button
@@ -133,7 +150,7 @@ export const StakingRecords: FC<{
                           clipDirection="topRight-bottomLeft"
                           className="w-auto"
                         >
-                          {t("stakeNow")}
+                         暂无数据
                         </Button>
                       </>
                     )}

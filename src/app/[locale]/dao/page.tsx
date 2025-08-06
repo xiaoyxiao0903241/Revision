@@ -1,13 +1,121 @@
+"use client"
+
+import { useTranslations } from "next-intl"
+import { Alert, Button, Card, Notification, Statistics } from "~/components"
+import { Countdown } from "~/components/count-down"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/select"
+import { AmountCard } from "~/widgets"
+import { ClaimSummary } from "~/widgets/claim-summary"
+import { MatrixBonusRecords } from "~/widgets/dao-records"
+
 export default function DaoPage() {
+  const t = useTranslations("dao")
+  const tStaking = useTranslations("staking")
+
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-white">DAO</h1>
-      <div className="rounded-lg bg-gray-800 p-6 text-center text-white">
-        <p className="text-gray-400">DAO功能开发中...</p>
-        <p className="text-sm text-gray-500 mt-2">
-          请使用右侧导航栏选择具体的DAO功能
-        </p>
+      {/* 顶部Alert */}
+      <Alert
+        icon="blocks"
+        title={t("matrix_bonus")}
+        iconSize={24}
+        description={t("matrix_bonus_description")}
+      />
+
+      {/* 主要内容区域 */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* 左侧：领取区域 */}
+        <div className="space-y-6">
+          <Card>
+            {/* 倒计时 */}
+            <div className="flex items-center text-sm gap-2">
+              <p className="text-foreground/50">{t("next_payout_in")}:</p>
+              <Countdown
+                endAt={
+                  new Date(
+                    Date.now() +
+                      11 * 60 * 60 * 1000 +
+                      32 * 60 * 1000 +
+                      29 * 1000
+                  )
+                }
+                className="font-chakrapetch"
+              />
+            </div>
+            <AmountCard
+              data={{
+                value: "0.0",
+                desc: 0.0,
+                balance: 0.0,
+              }}
+              description={t("claimable")}
+              onChange={() => {}}
+            />
+            {/* 信息提示 */}
+            <Notification>
+              {t.rich("max_bonus_info", {
+                rate: "x2.3",
+                highlight: (chunks) => (
+                  <span className="text-white">{chunks}</span>
+                ),
+              })}
+            </Notification>
+
+            {/* 释放期限选择 */}
+            <Select>
+              <SelectTrigger>
+                <SelectValue placeholder={t("select_release_period")} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="30">{`30 ${tStaking("days")}`}</SelectItem>
+                <SelectItem value="60">{`60 ${tStaking("days")}`}</SelectItem>
+                <SelectItem value="90">{`90 ${tStaking("days")}`}</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <ClaimSummary
+              data={{
+                amount: 0.0,
+                taxRate: 0.0,
+                incomeTax: 0.0,
+              }}
+            />
+            {/* 领取按钮 */}
+            <Button clipDirection="topRight-bottomLeft">{t("claim")}</Button>
+          </Card>
+        </div>
+        {/* 右侧：账户摘要 */}
+        <div className="space-y-4">
+          <Card containerClassName="flat-body">
+            <div className="grid grid-cols-2 gap-4">
+              <Statistics
+                title={t("net_holding")}
+                value="0.00 OLY"
+                desc="$0.00"
+              />
+              <Statistics title={t("direct_referral_count")} value="0.00 OLY" />
+            </div>
+            <div className="border-t border-foreground/20 w-full"></div>
+            <div className="grid grid-cols-2 gap-4">
+              <Statistics title={t("unlock_layers")} value="0.00 OLY" />
+              <Statistics
+                title={t("total_bonus_amount")}
+                value="0.00 OLY"
+                desc="$0.00"
+              />
+            </div>
+          </Card>
+        </div>
       </div>
+
+      {/* 底部：记录表格 */}
+      <MatrixBonusRecords />
     </div>
   )
 }

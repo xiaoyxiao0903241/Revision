@@ -1,6 +1,6 @@
 import { authFetch } from '../index';
 import { toast } from 'sonner';
-import { clearToken } from '@/lib/utils';
+import { clearToken } from '~/lib/utils';
 
 // 用户的节点购买记录
 export const myBondRecordList = async (

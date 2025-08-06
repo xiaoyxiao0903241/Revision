@@ -24,10 +24,10 @@ interface HistoryItem {
 }
 export default function StakingLayout({ children }: StakingLayoutProps) {
   const t = useTranslations("staking")
-  const [page, setPage] = useState<number>(1)
+  const [page] = useState<number>(1)
   const { userAddress } = useUserAddress();
-  const [lastStakeTimestamp, setLastStakeTimestamp] = useState(0);
-  const [time,setTime] = useState("");
+  // const [lastStakeTimestamp, setLastStakeTimestamp] = useState(0);
+  // const [time,setTime] = useState("");
 
   const { data: hisData100 } = useQuery({
     queryKey: ["demandStakHisData100", page, userAddress],
@@ -35,13 +35,13 @@ export default function StakingLayout({ children }: StakingLayoutProps) {
       if (!userAddress) {
         throw new Error("Missing address");
       }
-      const response = await demandStakHis(userAddress, page, 200, userAddress);
+      const response = await demandStakHis(userAddress, page, 200, userAddress,"");
 
       return response || [];
     },
     enabled: !!userAddress,
     retry: 1,
-    retryDelay: 30000,
+    retryDelay: 300000,
   });
 
    // oly单价
@@ -50,12 +50,10 @@ export default function StakingLayout({ children }: StakingLayoutProps) {
     queryFn: getTokenPrice,
     enabled: true,
     retry: 1,
-    retryDelay: 10000,
+    retryDelay: 100000,
   });
 
-  useNolockStore.setState({
-    olyPrice:Number(olyPrice)
-  })
+  
 
 
 
@@ -68,9 +66,7 @@ export default function StakingLayout({ children }: StakingLayoutProps) {
     refetchInterval: 30000,
   });
 
-  useNolockStore.setState({
-    currentBlock:getCureentBlock
-  })
+ 
 
 
   // 获取下个块高度
@@ -82,9 +78,7 @@ export default function StakingLayout({ children }: StakingLayoutProps) {
     refetchInterval: 30000,
   });
 
-  useNolockStore.setState({
-    nextBlock:nextBlock
-  })
+  
 
   //获取全网质押的的oly数量
   const { data: AllolyStakeNum } = useQuery({
@@ -97,11 +91,9 @@ export default function StakingLayout({ children }: StakingLayoutProps) {
       }),
     enabled: Boolean(userAddress),
     retry: 1,
-    refetchInterval: 60000,
+    refetchInterval: 600000,
   });
-  useNolockStore.setState({
-    AllolyStakeNum:Number(AllolyStakeNum)
-  })
+ 
 
   // 获取全网oly的rebase数量
   const { data: allnetReabalseNum } = useQuery({
@@ -109,12 +101,10 @@ export default function StakingLayout({ children }: StakingLayoutProps) {
     queryFn: () => getAllnetReabalseNum(),
     enabled: Boolean(userAddress),
     retry: 1,
-    refetchInterval: 60000,
+    refetchInterval: 600000,
   });
 
-  useNolockStore.setState({
-    allnetReabalseNum:Number(allnetReabalseNum)
-  })
+  
 
 
 
@@ -126,9 +116,7 @@ export default function StakingLayout({ children }: StakingLayoutProps) {
     refetchInterval: 25000,
   });
 
-  useNolockStore.setState({
-    olyBalance:Number(balance)
-  })
+  
 
   //热身期后的数据
   const { data: afterHotData } = useQuery({
@@ -139,12 +127,8 @@ export default function StakingLayout({ children }: StakingLayoutProps) {
     refetchInterval: 41000,
   });
 
-  console.log(afterHotData,'afterHotData')
-  useNolockStore.setState({
-    afterHotData:{
-      principal:afterHotData?.principal || 0
-    }
-  })
+  
+ 
 
    //获取静态收益
    const { data: demandProfitInfo } = useQuery({
@@ -155,14 +139,7 @@ export default function StakingLayout({ children }: StakingLayoutProps) {
     refetchInterval: 42000,
   });
 
-  useNolockStore.setState({
-    demandProfitInfo:{
-      rebalseProfit:demandProfitInfo?.rebalseProfit || 0,
-      normalProfit:demandProfitInfo?.normalProfit || 0,
-      allProfit:demandProfitInfo?.allProfit || 0,
-      isClaim:demandProfitInfo?.isClaim || false
-    }
-  })
+  
 
   //热身期的数据
   const { data: hotData } = useQuery({
@@ -173,9 +150,68 @@ export default function StakingLayout({ children }: StakingLayoutProps) {
     refetchInterval: 40000,
   });
 
-  useNolockStore.setState({
-    hotDataStakeNum:Number(hotData?.stakNum)
-  })
+  console.log(hotData,'hotData1111')
+
+  useEffect(() => {
+    useNolockStore.setState({
+      hotDataStakeNum: Number(hotData?.stakNum)
+    });
+  }, [hotData]);
+  
+  useEffect(() => {
+    useNolockStore.setState({
+      demandProfitInfo: {
+        rebalseProfit: demandProfitInfo?.rebalseProfit || 0,
+        normalProfit: demandProfitInfo?.normalProfit || 0,
+        allProfit: demandProfitInfo?.allProfit || 0,
+        isClaim: demandProfitInfo?.isClaim || false
+      }
+    });
+  }, [demandProfitInfo]);
+  
+  useEffect(() => {
+    useNolockStore.setState({
+      afterHotData: {
+        principal: afterHotData?.principal || 0
+      }
+    });
+  }, [afterHotData]);
+  
+  useEffect(() => {
+    useNolockStore.setState({
+      olyBalance: Number(balance)
+    });
+  }, [balance]);
+  
+  useEffect(() => {
+    useNolockStore.setState({
+      allnetReabalseNum: Number(allnetReabalseNum)
+    });
+  }, [allnetReabalseNum]);
+  
+  useEffect(() => {
+    useNolockStore.setState({
+      AllolyStakeNum: Number(AllolyStakeNum)
+    });
+  }, [AllolyStakeNum]);
+  
+  useEffect(() => {
+    useNolockStore.setState({
+      nextBlock: nextBlock
+    });
+  }, [nextBlock]);
+  
+  useEffect(() => {
+    useNolockStore.setState({
+      currentBlock: getCureentBlock
+    });
+  }, [getCureentBlock]);
+  
+  useEffect(() => {
+    useNolockStore.setState({
+      olyPrice: Number(olyPrice)
+    });
+  }, [olyPrice]);
  
   const items = [
     { label: t("stake"), href: "/staking" },
@@ -193,11 +229,11 @@ export default function StakingLayout({ children }: StakingLayoutProps) {
         const target = dayjs(time,'YYYY-MM-DD HH:mm:ss').add(24, 'hour').unix();
         const now = dayjs().unix();
         if (now - target >= 0) {
-          setLastStakeTimestamp(0)
+          // setLastStakeTimestamp(0)
         } else {
           const diff = Number(((target - now)));
-          setLastStakeTimestamp(diff);
-          setTime(time)
+          // setLastStakeTimestamp(diff);
+          // setTime(time)
           console.log(diff,'diff')
           useNolockStore.setState({
             time:time,

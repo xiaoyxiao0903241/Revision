@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react"
 import { useTranslations } from "next-intl"
 import { Alert, Button, Card, CardContent, Notification } from "~/components"
-import { durationOptions, useMock } from "~/hooks/useMock"
 import { WalletSummary } from "~/widgets"
 import { AmountCard } from "~/widgets/amount-card"
 import { ClaimSummary } from "~/widgets/claim-summary"
@@ -27,7 +26,6 @@ interface StakInfo {
 export default function ClaimPage() {
   const t = useTranslations("staking")
   const { demandProfitInfo, olyPrice, hotDataStakeNum } = useNolockStore()
-  const { duration, setDuration, decimal, setDecimal } = useMock()
   const tNoLockedStaking = useTranslations("noLockedStaking")
   const [claimAmount, setClaimAmount] = useState("")
   const [allProfit, setAllProfitAmount] = useState<number>(0);
@@ -41,7 +39,8 @@ export default function ClaimPage() {
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
   const queryClient = useQueryClient();
   const [periodList, setPeriodList] = useState<periodItem[]>([]);
-
+  // const [curPeriod, setCurPeriod] = useState<periodItem | null>(null);
+  const [rate,setRate] = useState(0)
 
 
   const { data: list } = useQuery({
@@ -98,10 +97,11 @@ export default function ClaimPage() {
   };
   useEffect(() => {
     if (list?.length) {
-      console.log(list,'list111')
       setPeriodList(list);
+      // setCurPeriod(list[lockIndex])
+      setRate(Number(list[lockIndex].rate.split("%")[0]))
     }
-  }, [list]);
+  }, [list,lockIndex]);
   useEffect(() => {
     if (demandProfitInfo) {
       setAllProfitAmount(demandProfitInfo.allProfit)
@@ -114,6 +114,14 @@ export default function ClaimPage() {
       setStakeInfo({ stakNum: hotDataStakeNum });
     }
   }, [hotDataStakeNum]);
+
+  // useEffect(()=>{
+  //   if(curPeriod){
+  //     const rate =  curPeriod.rate.split("%")[0]
+
+  //   }
+    
+  // },[claimAmount])
   return (
     <div className="space-y-6">
       <Alert
@@ -132,11 +140,16 @@ export default function ClaimPage() {
                 data={{
                   value: claimAmount,
                   desc: Number(claimAmount) * olyPrice,
-                  balance: allProfit ? Number(formatNumbedecimalScale(allProfit, 4)) : 0,
+                  balance: allProfit ? Number(formatNumbedecimalScale(allProfit, 2)) : 0,
                 }}
                 onChange={(value) => {
-                  setClaimAmount(value)
+                  if (Number(value) > allProfit) {
+                    setClaimAmount(allProfit.toString());
+                  } else {
+                    setClaimAmount(value);
+                  }
                 }}
+                description={t("balance")}
               />
               <Notification>{tNoLockedStaking("claimInfo")}</Notification>
               <DurationSelect
@@ -144,15 +157,15 @@ export default function ClaimPage() {
                 value={lockIndex}
                 placeholder={tNoLockedStaking("selectReleasePeriod")}
                 onChange={(value)=>{
-                  console.log(value,'1111111')
+                  setRate(Number(periodList[value].rate.split("%")[0]))
                   setLockIndex(value)
                 }}
               />
               <ClaimSummary
                 data={{
-                  amount: 85,
-                  taxRate: 0.38,
-                  incomeTax: 0.07994899,
+                  amount: Number(claimAmount)*((100 - rate)/100),
+                  taxRate: rate,
+                  incomeTax: Number(claimAmount)*(rate/100),
                 }}
               />
 

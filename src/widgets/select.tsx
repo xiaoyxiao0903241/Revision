@@ -1,6 +1,8 @@
 import { useTranslations } from "next-intl"
 import { FC } from "react"
 import type { periodItem } from "~/wallet/lib/web3/claim";
+import type { periodlongItem } from "~/wallet/lib/web3/stake"
+
 import {
   RoundedLogo,
   Select,
@@ -12,7 +14,7 @@ import {
 import { formatCurrency } from "~/lib/utils"
 
 export const DurationSelect: FC<{
-  options: periodItem[]
+  options: periodItem[] | periodlongItem[]
   value?: number
   onChange: (value: number) => void
   placeholder?: string
@@ -23,7 +25,8 @@ export const DurationSelect: FC<{
     <Select
       value={value?.toString()}
       onValueChange={(value) => {
-        const index = options.findIndex((it) => it.day === Number(value))
+        
+        const index = options.findIndex((it) => Number(it.day ) === Number(value))
         onChange(index)
       }}
     >
