@@ -83,7 +83,7 @@ export const WalletSummary: FC<{
           <List.Label className="font-chakrapetch text-white text-base">
             {t("statistics")}
           </List.Label>
-          <List.Label className="gradient-text text-base">
+          <List.Label className="text-gradient text-base">
             {t("viewOnBscScan")}
           </List.Label>
         </List.Item>

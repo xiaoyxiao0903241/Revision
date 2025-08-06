@@ -215,7 +215,7 @@
   .gradient {
     @apply bg-gradient-to-r from-[#B408D7] to-[#576AF4];
   }
-  .gradient-text {
+  .text-gradient {
     @apply bg-gradient-to-r from-[#B408D7] to-[#576AF4] text-transparent bg-clip-text;
   }
 }
@@ -361,5 +361,35 @@
   .oxanium-extrabold {
     font-family: "Oxanium", sans-serif;
     font-weight: 800;
+  }
+
+  /* 冷却池齿轮动画 */
+  @keyframes spin-reverse {
+    from {
+      transform: rotate(360deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+
+  .animate-spin-reverse {
+    animation: spin-reverse 3s linear infinite;
+  }
+
+  /* 斜纹动画 */
+  @keyframes stripes {
+    0% {
+      /* background-position: 0 0; */
+      transform: translateX(-8px);
+    }
+    100% {
+      /* background-position: 8px 8px; */
+      transform: translateX(0px);
+    }
+  }
+
+  .animate-stripes {
+    animation: stripes 1s linear infinite;
   }
 }

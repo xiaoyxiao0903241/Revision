@@ -160,7 +160,7 @@ export default function CommunityPage() {
                         }}
                       />
                       <button
-                        className="bg-transparent gradient-text font-bold text-sm"
+                        className="bg-transparent text-gradient font-bold text-sm"
                         onClick={() => setWalletConnected(true)}
                       >
                         {t("submit")}
@@ -255,7 +255,7 @@ export default function CommunityPage() {
                     </span>
                     <span>
                       {formatDecimal(85)}{" "}
-                      <span className="gradient-text"> OLY</span>
+                      <span className="text-gradient"> OLY</span>
                     </span>
                   </td>
                   <td className="py-3 px-4 text-white font-mono flex flex-col gap-1">
@@ -264,7 +264,7 @@ export default function CommunityPage() {
                     </span>
                     <span>
                       {formatDecimal(85)}{" "}
-                      <span className="gradient-text"> OLY</span>
+                      <span className="text-gradient"> OLY</span>
                     </span>
                   </td>
                   <td className="py-3 px-4 text-gray-300 font-mono flex flex-col gap-1">

@@ -24,7 +24,7 @@ const NavigationItem = ({ item }: { item: NavigationItem }) => {
       className={cn(
         "flex w-full items-center space-x-3 px-5 py-4 text-base font-medium transition-colors",
         "hover:bg-foreground/5",
-        isActive && "gradient-text"
+        isActive && "text-gradient"
       )}
     >
       {item.icon.startsWith("/") ? (
@@ -33,13 +33,13 @@ const NavigationItem = ({ item }: { item: NavigationItem }) => {
         <Icon
           name={item.icon as IconFontName}
           size={24}
-          className={cn("text-gray-400", isActive && "gradient-text")}
+          className={cn("text-gray-400", isActive && "text-gradient")}
         />
       )}
       <span
         className={cn(
           "text-gray-300",
-          isActive && "gradient-text",
+          isActive && "text-gradient",
           item.uppercase && "uppercase"
         )}
       >

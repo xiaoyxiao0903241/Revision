@@ -42,7 +42,7 @@ export const AmountCard: FC<{
           <span className="font-mono text-white">
             {`${formatCurrency(data.balance, false)} OLY`}
           </span>
-          <span className="font-mono gradient-text">{t("useMax")}</span>
+          <span className="font-mono text-gradient">{t("useMax")}</span>
         </div>
       </div>
     </View>
