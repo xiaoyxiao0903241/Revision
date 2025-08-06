@@ -1,6 +1,6 @@
 import { authFetch } from '../index';
 import { toast } from 'sonner';
-import { clearToken } from '@/lib/utils';
+import { clearToken } from '~/lib/utils';
 
 // 收益记录
 // pageType = { referral 共振, title 称号, reverse 反呼, service 服务, lead 引领 }

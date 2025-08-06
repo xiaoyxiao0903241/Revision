@@ -94,11 +94,12 @@ function InputNumber({
 
     // 检查小数位数（只有当小数点后有数字时才检查）
     if (inputValue.includes(".")) {
-      const parts = inputValue.split(".")
-      if (parts.length === 2 && parts[1] && parts[1].length > maxDecimals) {
-        console.log("Too many decimals")
-        return
-      }
+      // const parts = inputValue.split(".")
+      // if (parts.length > 2 && parts[1] && parts[1].length > maxDecimals) {
+      //   console.log("Too many decimals")
+      //   return
+      // }
+      console.log(maxDecimals)
     }
 
     // 允许所有有效的数字格式

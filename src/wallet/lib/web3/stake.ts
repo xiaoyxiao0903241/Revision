@@ -28,6 +28,18 @@ interface ContractCall {
   period?: string;
 }
 
+export interface periodlongItem extends Record<string, string | number | boolean> {
+  token: string;
+  day: string;
+  period: string;
+  rate: string;
+  addition:string;
+  tvl: number | string;
+  balance: string;
+  isApprove: boolean;
+  amount: number;
+}
+
 export const depositDayList = [
   {
     token: longStaking5,
@@ -54,10 +66,18 @@ export const depositDayList = [
 //收益率 写死
 export const roi = () => {
   return [
-    `(0.3%-1%) *(0.02-0.04)`,
-    `(0.3%-1%) *(0.02-0.06)`,
-    `(0.3%-1%) *(0.02-0.08)`,
-    `(0.3%-1%) *(0.02-0.09)`,
+    {
+      rate:"(0.3%-1%)",
+      addition:"(0.02-0.04)"
+    },
+    {
+      rate:"(0.3%-1%)",
+      addition:"(0.02-0.08)"
+    },
+    {
+      rate:"(0.3%-1%)",
+      addition:"(0.02-0.09)"
+    }
   ];
 };
 export interface StakingItem {
@@ -73,79 +93,6 @@ export interface StakingItem {
   [key: string]: string | number | boolean | undefined;
 }
 
-// const tokens = [longStaking30, longStaking90];
-// export const getUserStakes = async ({ address }: { address: Address }) => {
-//   try {
-//     const allStakingData = await Promise.all(
-//       depositDayList.map(async (it) => {
-//         const indexs = await executeMulticall({
-//           calls: [
-//             {
-//               address: it.token as `0x${string}`,
-//               abi: LongStakingAbi as Abi,
-//               functionName: "getUserStakesCount",
-//               args: [address],
-//             },
-//           ],
-//         });
-//         const times = Number(indexs[0].data);
-//         const list: StakingItem[] = [];
-
-//         if (times) {
-//           for (let i = 0; i < times; i++) {
-//             const result = await executeMulticall({
-//               calls: [
-//                 {
-//                   address: it.token as `0x${string}`,
-//                   abi: LongStakingAbi as Abi,
-//                   functionName: "listStake",
-//                   args: [address, i],
-//                 },
-//               ],
-//             });
-//             if (result.length) {
-//               const newList = {
-//                 pending:
-//                   Number((result[0].data as { pending: bigint }).pending) /
-//                   10 ** 9,
-//                 period: it.day,
-//                 blockReward:
-//                   Number(
-//                     (result[0].data as { blockReward: bigint }).blockReward
-//                   ) /
-//                   10 ** 9,
-//                 interest:
-//                   Number(
-//                     (result[0].data as { extraInterest: bigint }).extraInterest
-//                   ) /
-//                   10 ** 9,
-//                 claimableBalance:
-//                   Number(
-//                     (result[0].data as { claimableBalance: bigint })
-//                       .claimableBalance
-//                   ) /
-//                   10 ** 9,
-//                 index: i,
-//               };
-//               list.push(newList);
-//             }
-//           }
-//         }
-//         return list;
-//       })
-//     );
-
-//     const allStakes = allStakingData.flat();
-//     return {
-//       myStakingList: allStakes,
-//     };
-//   } catch (err: unknown) {
-//     console.log(err);
-//     return {
-//       myStakingList: [],
-//     };
-//   }
-// };
 // 获取我的质押数据(长期质押)
 export const getUserStakes = async ({ address }: { address: Address }) => {
   const calls: ContractCall[] = [];
@@ -304,7 +251,6 @@ export const demandInfo = async ({ address }: { address: Address }) => {
         },
       ],
     })) as { success: boolean; data: [bigint, bigint, bigint] }[];
-
     if (res.length && res[0].data.length) {
       const info = {
         stakNum:

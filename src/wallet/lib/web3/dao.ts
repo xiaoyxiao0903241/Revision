@@ -35,7 +35,6 @@ export const verifySignature = async ({
       },
     ],
   })) as MulticallResult[];
-  console.log('result', result);
   return {
     isUsed: result[0]?.success ? (result[0].data as boolean) : false,
   };

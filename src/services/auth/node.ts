@@ -1,5 +1,5 @@
 import { authFetch } from '../index';
-import { clearToken } from '@/lib/utils';
+import { clearToken } from '~/lib/utils';
 import { toast } from 'sonner';
 // 用户的节点购买记录
 export const myNodeRecordList = async (

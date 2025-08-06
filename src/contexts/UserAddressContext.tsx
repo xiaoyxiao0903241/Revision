@@ -349,6 +349,8 @@ export const UserAddressProvider = ({ children }: { children: ReactNode }) => {
     updateAuthState,
     isRejected,
     SIGN_TIMEOUT,
+    chainId,
+    switchChain
   ]);
 
   // 组件卸载时取消所有进行中的请求

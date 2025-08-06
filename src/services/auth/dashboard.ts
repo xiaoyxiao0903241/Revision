@@ -1,5 +1,5 @@
 import { publicFetch } from '../index';
-import { formatTimeToLocal, getWeekday } from '@/lib/utils';
+import { formatTimeToLocal, getWeekday } from '~/lib/utils';
 
 interface responseItem {
   amount: number;

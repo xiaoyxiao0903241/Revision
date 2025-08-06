@@ -1,5 +1,5 @@
 // components/CountdownTimer.jsx
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import dayjs from 'dayjs';
 import { useTranslations } from "next-intl";
 interface Props{
@@ -7,11 +7,11 @@ interface Props{
 }
 export default function CountdownTimer({time}:Props) {
   const t = useTranslations("common");
-  const getDiffSeconds = () => {
+  const getDiffSeconds = useCallback(() => {
     const now = dayjs();
     const target = dayjs(time, 'YYYY-MM-DD HH:mm:ss').add(24,'hour');
     return Math.max(target.unix() - now.unix(), 0)
-  }
+  }, [time])
 
   const [diffSeconds, setDiffSeconds] = useState(getDiffSeconds());
 

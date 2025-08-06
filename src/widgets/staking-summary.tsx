@@ -6,8 +6,8 @@ export const StakingSummary: FC<{
   data: {
     rebaseRewardRate: string
     rebaseBoost?: string
-    nextRebaseRewardRate: string
-    endAt: Date
+    nextRebaseRewardRate?: string
+    endAt?: Date
   }
 }> = ({ data }) => {
   const t = useTranslations("staking")
@@ -23,18 +23,23 @@ export const StakingSummary: FC<{
           <List.Value className="font-mono">{data.rebaseBoost}</List.Value>
         </List.Item>
       )}
-      <List.Item>
+      {
+      data.nextRebaseRewardRate &&  <List.Item>
         <List.Label>{t("nextRebaseRewardRate")}</List.Label>
         <List.Value className="text-secondary font-mono">
           {data.nextRebaseRewardRate}
         </List.Value>
       </List.Item>
-      <List.Item>
+      }
+      {
+        data.endAt &&  <List.Item>
         <List.Label>{t("countdownToNextRebase")}</List.Label>
         <List.Value className="font-mono">
           <Countdown endAt={data.endAt} />
         </List.Value>
       </List.Item>
+      }
+     
     </List>
   )
 }

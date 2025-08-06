@@ -1,13 +1,12 @@
 "use client"
 
-import { useCountDown } from "ahooks"
+
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 import {
   Alert,
   Button,
   Card,
-  Countdown,
   List,
   Notification,
   Segments,
@@ -19,7 +18,7 @@ import { formatDecimal } from "~/lib/utils"
 import { AmountCard, WalletSummary } from "~/widgets"
 import { useNolockStore } from "~/store/noLock"
 import CountDownTimer from "./component/countDownTimer"
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useUserAddress } from "~/contexts/UserAddressContext";
 import { formatNumbedecimalScale } from "~/lib/utils";
 import { usePublicClient } from "wagmi";
@@ -53,7 +52,7 @@ export default function UnstakePage() {
   const [hotDataInfo, setStakeInfo] = useState<StakInfo>({ stakNum: 0 });
   const [isClaim, setisClaim] = useState<boolean>(false);
   const [apy, setApy] = useState<string>("0");
-  const [myAllStakeNum, setMyAllStakeNum] = useState(0);
+  // const [myAllStakeNum, setMyAllStakeNum] = useState(0);
   const [nextEarnAmount, setNextEarnAmount] = useState<number>(0);
   const [allProfit, setAllProfitAmount] = useState<number>(0);
   const [principal, setPrincipal] = useState<number>(0);
@@ -80,7 +79,7 @@ export default function UnstakePage() {
       toast.success("请输入解除质押的数量");
       return;
     }
-    const toastId = toast.loading(t("toast.confirm_in_wallet"));
+    const toastId = toast.loading("请在钱包中确认交易...");
     setIsDisabled(true);
     setIsLoading(true);
     try {
@@ -91,7 +90,7 @@ export default function UnstakePage() {
         args: [parseUnits(UnstakeAmount, 9)],
       });
       const result = await publicClient.waitForTransactionReceipt({ hash });
-      toast.loading(t("toast.confirming_transaction"), {
+      toast.loading("交易确认中...", {
         id: toastId,
       });
       if (result.status === "success") {
@@ -123,10 +122,67 @@ export default function UnstakePage() {
     }
   };
 
+  //释放
+  const claimToStakes = async () => {
+    if (!publicClient || !userAddress) return;
+    if (!isClaim) {
+      toast.warning("质押锁定期阶段,无法解除");
+      return;
+    }
+
+    const toastId = toast.loading("请在钱包中确认交易...");
+    setIsDisabled(true);
+    setIsLoading(true);
+    try {
+      const hash = await writeContractAsync({
+        abi: DemandStakingAbi as Abi,
+        address: demandStaking as `0x${string}`,
+        functionName: "claim",
+        args: [],
+      });
+      toast.loading("交易确认中...", {
+        id: toastId,
+      });
+      const result = await publicClient.waitForTransactionReceipt({ hash });
+      if (result.status === "success") {
+        toast.success("释放成功", {
+          id: toastId,
+        });
+        await Promise.all([
+          queryClient.invalidateQueries({
+            queryKey: ["DemandAfterHot", userAddress],
+          }),
+          queryClient.invalidateQueries({
+            queryKey: ["UserDemandInfo", userAddress],
+          }),
+          queryClient.invalidateQueries({
+            queryKey: ["UserDemandProfit", userAddress],
+          }),
+        ]);
+        
+      } else {
+        toast.error(t("toast.claim_failed"), {
+          id: toastId,
+        });
+        // toast.dismiss(toastId)
+      }
+    } catch (error: unknown) {
+      console.log(error);
+      console.log(error);
+      toast.error("error", {
+        id: toastId,
+      });
+    } finally {
+      // toast.dismiss(toastId)
+      setIsDisabled(false);
+      setIsLoading(false)
+    }
+  };
+
 
   useEffect(() => {
     const myAsNum = Number(afterHotData?.principal || 0) + Number(hotDataInfo.stakNum || 0);
-    setMyAllStakeNum(myAsNum);
+    // setMyAllStakeNum(myAsNum);
     const NextEarnAmount = formatNumbedecimalScale(
       ((myAsNum + allProfit) * Number(apy)) / 100,
       6
@@ -149,6 +205,7 @@ export default function UnstakePage() {
   }, [demandProfitInfo]);
 
   useEffect(() => {
+    console.log(hotDataStakeNum,'hotDataStakeNum')
     if (hotDataStakeNum ) {
       setStakeInfo({ stakNum: hotDataStakeNum });
     }
@@ -201,11 +258,11 @@ export default function UnstakePage() {
                       <div className="flex items-center gap-2">
                         <RoundedLogo className="w-6 h-6" />
                         <span className="text-foreground text-3xl font-mono">
-                          {hotDataInfo.stakNum ? formatNumbedecimalScale(hotDataInfo.stakNum, 6) : 0}
+                          {hotDataInfo.stakNum ? formatNumbedecimalScale(hotDataInfo.stakNum, 2) : 0}
                         </span>
                       </div>
                       <span className="text-foreground/70 text-sm">
-                      ${ formatNumbedecimalScale(hotDataInfo.stakNum*olyPrice,2)}
+                      ${formatNumbedecimalScale(hotDataInfo.stakNum*olyPrice,2)}
                       </span>
                     </div>
                     {
@@ -217,8 +274,9 @@ export default function UnstakePage() {
                           disabled={hotDataInfo.stakNum === 0 || !isClaim || isDisabled}
                           clipDirection="topRight-bottomLeft"
                           variant="primary"
+                          onClick={claimToStakes}
                         >
-                          Release
+                          {isLoading?"Release...":"Release"}
                         </Button>
                     }
                   </div>
@@ -236,10 +294,14 @@ export default function UnstakePage() {
                   data={{
                     value: UnstakeAmount,
                     desc: Number(UnstakeAmount)*olyPrice,
-                    balance: principal,
+                    balance: principal?Number(formatNumbedecimalScale(principal, 2)):0,
                   }}
                   onChange={(value) => {
-                    Number(value)>principal? setUnstakeAmount(principal.toString()):setUnstakeAmount(value)
+                    if(Number(value)>principal){
+                      setUnstakeAmount(principal.toString())
+                    }else{
+                      setUnstakeAmount(value)
+                    }
                   }}
                 />
                 <List>
@@ -256,7 +318,7 @@ export default function UnstakePage() {
                   </List.Item>
                   <List.Item>
                     <List.Label>下一次爆块奖励</List.Label>
-                    <List.Value className="text-success">{nextEarnAmount > 0 ? formatNumbedecimalScale(nextEarnAmount, 4) : 0} OLY</List.Value>
+                    <List.Value className="text-success">{nextEarnAmount > 0 ? formatNumbedecimalScale(nextEarnAmount, 2) : 0} OLY</List.Value>
                   </List.Item>
 
                   <List.Item>
@@ -272,6 +334,7 @@ export default function UnstakePage() {
                   clipDirection="topRight-bottomLeft"
                   variant={(principal == 0 || isDisabled || Number(UnstakeAmount) === 0)?"disabled":"primary"}
                   disabled={principal == 0 || isDisabled || Number(UnstakeAmount) === 0}
+                  onClick={claimPrincipal}
                   >
                  {isLoading ? "解除中..." : "解除质押"}
                 </Button>

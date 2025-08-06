@@ -5,11 +5,7 @@ import {
   Alert,
   Button,
   List,
-  RoundedLogo,
-  Statistics,
-  View,
   Card,
-  Countdown,
   CountdownDisplay
 } from "~/components";
 import { demandStaking } from "~/wallet/constants/tokens";
@@ -25,12 +21,12 @@ import { usePublicClient } from "wagmi";
 import { Abi, erc20Abi, parseUnits } from "viem";
 import { WalletSummary } from "~/widgets"
 import { AmountCard } from "~/widgets/amount-card"
-import { DurationSelect } from "~/widgets/select"
+// import { DurationSelect } from "~/widgets/select"
 import { formatNumbedecimalScale } from "~/lib/utils";
 import ConnectWalletButton from "~/components/web3/ConnectWalletButton";
 import DemandStakingAbi from "~/wallet/constants/DemandStakingAbi.json";
 import { getInviteInfo } from "~/wallet/lib/web3/invite";
-import { useNolockStore, listItem } from "~/store/noLock"
+import { useNolockStore } from "~/store/noLock"
 
 
 
@@ -148,7 +144,7 @@ export default function StakingPage() {
         });
         await Promise.all([
           queryClient.invalidateQueries({
-            queryKey: ["depositTokenBalance", userAddress],
+            queryKey: ["olyBalance", userAddress],
           })
         ]);
         setStakeAmount("");

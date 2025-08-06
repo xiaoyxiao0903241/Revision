@@ -1,5 +1,5 @@
 import { authFetch } from '../index';
-import { clearToken } from '@/lib/utils';
+import { clearToken } from '~/lib/utils';
 import { toast } from 'sonner';
 
 //收益释放历史记录

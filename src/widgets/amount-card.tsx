@@ -25,6 +25,7 @@ export const AmountCard: FC<{
               onChange={onChange}
               placeholder="0.0"
               step={0.000001}
+              maxDecimals={2}
               className="flex-1 text-white text-3xl font-bold font-mono"
             />
           </div>

@@ -39,7 +39,6 @@ export const getInviteInfo = async ({
       },
     ],
   })) as MulticallResult[];
-  console.log('result', result);
   return {
     isActive: result[0]?.success ? (result[0].data as boolean) : false,
     networkMap: result[1]?.success

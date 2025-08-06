@@ -1,10 +1,10 @@
-import { useTranslations } from "next-intl"
+
 import { Icon, InfoPopover } from "~/components"
 import { cn } from "~/lib/utils"
 import { useMockStore } from "~/store/mock"
 
 export const RateCard = () => {
-  const t = useTranslations("swap")
+  // const t = useTranslations("swap")
   const { walletConnected: isLoading } = useMockStore()
   const toggle = async () => {
     useMockStore.setState({
