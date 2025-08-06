@@ -1,7 +1,7 @@
 import { FC, ReactNode, useState } from "react"
 import InfoIcon from "~/assets/info.svg"
 import { cn } from "~/lib/utils"
-import { Popover, PopoverContent, PopoverTrigger } from "./popover"
+import { Popover, PopoverContent, PopoverTrigger } from "../components/popover"
 export const InfoPopover: FC<{
   children: ReactNode
   className?: string

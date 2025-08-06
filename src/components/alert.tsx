@@ -1,16 +1,19 @@
 import { cn } from "~/lib/utils"
 import { Icon, IconFontName } from "./icon"
 import Info from "~/assets/info.svg"
+import { ReactNode } from "react"
 export function Alert({
   className,
   icon,
   title,
   description,
+  iconSize = 28,
   ...props
 }: React.ComponentProps<"div"> & {
   icon: IconFontName
   title: string
   description: string
+  iconSize?: number
 }) {
   return (
     <div className="nine-patch-frame alert relative w-full">
@@ -18,8 +21,8 @@ export function Alert({
         className={cn("text-foreground flex flex-row gap-6 p-6", className)}
         {...props}
       >
-        <div className="bg-[#6357F4] flex w-10 h-10 items-center justify-center rounded-md">
-          <Icon name={icon} size={30} className="text-white" />
+        <div className="bg-[#6357F4] flex w-10 h-10 min-w-10 min-h-10 items-center justify-center rounded-md">
+          <Icon name={icon} size={iconSize} className="text-white" />
         </div>
         <div>
           <h3 className="text-white font-bold uppercase">{title}</h3>
@@ -30,8 +33,9 @@ export function Alert({
   )
 }
 
-export function Notification({ children }: { children: string }) {
-  const parts = children.split("\\n")
+export function Notification({ children }: { children: string | ReactNode }) {
+  const parts =
+    typeof children === "string" ? children.split("\\n") : [children]
   return (
     <div className="flex gap-1 w-full text-warning">
       <Info className="w-3 h-3 text-warning mt-1" />

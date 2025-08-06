@@ -12,9 +12,9 @@ import {
 } from "~/components/select"
 import { AmountCard } from "~/widgets"
 import { ClaimSummary } from "~/widgets/claim-summary"
-import { MatrixBonusRecords } from "~/widgets/dao-records"
+import { SuperBonusRecords } from "~/widgets"
 
-export default function DaoPage() {
+export default function SuperBonusPage() {
   const t = useTranslations("dao")
   const tStaking = useTranslations("staking")
 
@@ -23,9 +23,9 @@ export default function DaoPage() {
       {/* 顶部Alert */}
       <Alert
         icon="blocks"
-        title={t("matrix_bonus")}
         iconSize={24}
-        description={t("matrix_bonus_description")}
+        title={t("super_bonus_title")}
+        description={t("super_bonus_description")}
       />
 
       {/* 主要内容区域 */}
@@ -40,7 +40,7 @@ export default function DaoPage() {
                 endAt={
                   new Date(
                     Date.now() +
-                      11 * 60 * 60 * 1000 +
+                      12 * 60 * 60 * 1000 +
                       32 * 60 * 1000 +
                       29 * 1000
                   )
@@ -81,9 +81,9 @@ export default function DaoPage() {
 
             <ClaimSummary
               data={{
-                amount: 0.0,
-                taxRate: 0.0,
-                incomeTax: 0.0,
+                amount: 85.0,
+                taxRate: 0.38,
+                incomeTax: 0.079948,
               }}
             />
             {/* 领取按钮 */}
@@ -94,16 +94,14 @@ export default function DaoPage() {
         <div className="space-y-4">
           <Card containerClassName="flat-body">
             <div className="grid grid-cols-2 gap-4">
+              <Statistics title={t("evangelist_level")} value="V4" />
               <Statistics
-                title={t("net_holding")}
-                value="0.00 OLY"
-                desc="$0.00"
+                title={t("v_level_members_within_10_layers")}
+                value="4"
               />
-              <Statistics title={t("direct_referral_count")} value="0.00 OLY" />
             </div>
             <div className="border-t border-foreground/20 w-full"></div>
             <div className="grid grid-cols-2 gap-4">
-              <Statistics title={t("unlock_layers")} value="0.00 OLY" />
               <Statistics
                 title={t("total_bonus_amount")}
                 value="0.00 OLY"
@@ -115,7 +113,7 @@ export default function DaoPage() {
       </div>
 
       {/* 底部：记录表格 */}
-      <MatrixBonusRecords />
+      <SuperBonusRecords />
     </div>
   )
 }

@@ -149,6 +149,7 @@ export default function ClaimPage() {
                     setClaimAmount(value);
                   }
                 }}
+                description={t("balance")}
               />
               <Notification>{tNoLockedStaking("claimInfo")}</Notification>
               <DurationSelect

@@ -1,31 +1,27 @@
 
+import { FC, ReactNode } from "react"
 import { Icon, InfoPopover } from "~/components"
 import { cn } from "~/lib/utils"
-import { useMockStore } from "~/store/mock"
 
-export const RateCard = () => {
-  // const t = useTranslations("swap")
-  const { walletConnected: isLoading } = useMockStore()
-  const toggle = async () => {
-    useMockStore.setState({
-      walletConnected: true,
-    })
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    useMockStore.setState({
-      walletConnected: false,
-    })
-  }
+export const RateCard: FC<{
+  children?: ReactNode
+  description: string
+  isLoading?: boolean
+  onRefresh: () => void
+}> = ({ children, description, isLoading, onRefresh }) => {
   return (
-    <div className="p-4">
+    <div>
       <div className="flex items-center justify-between">
-        <span className="text-sm">1 USDT= 0.025548 OLY</span>
+        <span className="text-sm">{description}</span>
         <div className="flex gap-6 items-center">
-          <InfoPopover triggerClassName="w-4 h-4 text-warning">
-            <div className="w-40">1 USDT= 0.025548 OLY</div>
-          </InfoPopover>
+          {children ? (
+            <InfoPopover triggerClassName="w-4 h-4 text-warning">
+              {children}
+            </InfoPopover>
+          ) : null}
           <div
             className={cn("cursor-pointer", { "animate-spin": isLoading })}
-            onClick={toggle}
+            onClick={onRefresh}
           >
             <Icon name="refresh" className={"w-5 h-5 pointer-events-none"} />
           </div>

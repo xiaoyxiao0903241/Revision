@@ -303,6 +303,7 @@ export default function UnstakePage() {
                       setUnstakeAmount(value)
                     }
                   }}
+                  description={t("balance")}
                 />
                 <List>
                   <List.Item>

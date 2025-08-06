@@ -239,6 +239,7 @@ export default function StakingPage() {
               onChange={(value) => {
                 setStakeAmount(value)
               }}
+              description={t("balance")}
             />
             <StakingSummary
               data={{
