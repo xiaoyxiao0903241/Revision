@@ -271,6 +271,24 @@
     "myReferralLink": "我的推荐链接",
     "referralLinkDescription": "分享此链接给朋友,他们通过此链接注册并完成质押,你将获得20%的推荐奖励。"
   },
+  "analytics": {
+    "title": "分析",
+    "overview": "概览",
+    "analytics_description": "通过可视化图表，深入分析数据趋势，将复杂数据转化为清晰的决策依据。",
+    "total_value_locked": "总锁仓价值",
+    "total": "总计",
+    "tvl": "TVL",
+    "tvl_changes": "TVL变化",
+    "switch": "切换",
+    "oly_market_cap": "OLY流通市值",
+    "oly_circulation": "OLY 流通量",
+    "treasury_risk_free_value": "国库无风险价值",
+    "treasury_unknown": "国库",
+    "no_lock_staking": "无锁定期质押",
+    "locked_staking": "锁定质押",
+    "lp_bonds": "LP债券",
+    "treasury_bonds": "国库债券"
+  },
   "common": {
     "welcome": "欢迎来到 ONE OLYONE",
     "description": "DeFi 质押平台",

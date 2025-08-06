@@ -28,7 +28,7 @@ export default function ReferralBonusPage() {
       />
 
       {/* 主要内容区域 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {/* 左侧：领取区域 */}
         <div className="space-y-6">
           <Card>
@@ -83,15 +83,15 @@ export default function ReferralBonusPage() {
                 value="0.00 OLY"
                 desc="$0.00"
               />
+              <Statistics title={t("evangelist_level")} value="V4" />
+            </div>
+            <div className="border-t border-foreground/20 w-full"></div>
+            <div className="grid grid-cols-2 gap-4">
               <Statistics
                 title={t("total_bonus_amount")}
                 value="0.00 OLY"
                 desc="$0.00"
               />
-            </div>
-            <div className="border-t border-foreground/20 w-full"></div>
-            <div className="grid grid-cols-2 gap-4">
-              <Statistics title={t("evangelist_level")} value="V4" />
             </div>
           </Card>
         </div>

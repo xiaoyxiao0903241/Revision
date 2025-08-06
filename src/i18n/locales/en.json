@@ -266,6 +266,24 @@
     "joinTime": "Join Time",
     "submit": "Submit"
   },
+  "analytics": {
+    "title": "Analytics",
+    "overview": "Overview",
+    "analytics_description": "Through visual charts, deeply analyze data trends, turning complex data into clear decision-making basis.",
+    "total_value_locked": "Total Value Locked",
+    "total": "Total",
+    "tvl": "TVL",
+    "tvl_changes": "TVL changes",
+    "switch": "SWITCH",
+    "oly_market_cap": "OLY Market Cap",
+    "oly_circulation": "OLY Circulation",
+    "treasury_risk_free_value": "Treasury Risk-Free Value",
+    "treasury_unknown": "Treasury",
+    "no_lock_staking": "No-lock Staking",
+    "locked_staking": "Locked Staking",
+    "lp_bonds": "LP Bonds",
+    "treasury_bonds": "Treasury Bonds"
+  },
   "common": {
     "welcome": "Welcome to ONE OLYONE",
     "description": "DeFi Staking Platform",
