@@ -3,6 +3,7 @@
 import React, { useMemo } from "react"
 import ReactECharts from "echarts-for-react"
 import type { EChartsOption } from "echarts"
+import { useChart } from "~/hooks/useChart"
 
 // 生成TVL模拟数据
 const generateTVLData = () => {
@@ -37,7 +38,8 @@ export const TVLChart: React.FC<{
   width?: string | number
   height?: string | number
   className?: string
-}> = ({ width = "100%", height = 300, className = "" }) => {
+}> = ({ className = "" }) => {
+  const { chartRef } = useChart()
   const chartOption = useMemo<EChartsOption>(() => {
     const data = generateTVLData()
 
@@ -152,6 +154,7 @@ export const TVLChart: React.FC<{
     <div className={`tvl-chart w-full h-full ${className}`}>
       <ReactECharts
         option={chartOption}
+        ref={chartRef}
         style={{ width: "100%", height: "100%" }}
         opts={{ renderer: "canvas" }}
       />

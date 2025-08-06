@@ -1,9 +1,9 @@
 "use client"
 
 import { useTranslations } from "next-intl"
+import Image from "next/image"
 import { Alert, Card, InfoPopover, View } from "~/components"
 import { TVLChart, SmallChart, TVLStats } from "~/widgets"
-import Overview from "~/assets/overview.svg"
 export default function AnalyticsPage() {
   const t = useTranslations("analytics")
 
@@ -22,7 +22,12 @@ export default function AnalyticsPage() {
         {/* Overview区域 */}
         <Card className="flex flex-col">
           <div className="flex items-center gap-2">
-            <Overview className="w-6 h-6" />
+            <Image
+              src="/images/icon/overview.png"
+              alt="overview"
+              width={24}
+              height={24}
+            />
             <h3 className="text-xl font-bold text-white">{t("overview")}</h3>
           </div>
           <div className="flex flex-col lg:flex-row gap-6">
@@ -56,7 +61,7 @@ export default function AnalyticsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* OLY流通市值 */}
           <Card>
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 ">
               <h4 className="text-xl font-semibold text-white">
                 {t("oly_market_cap")}
               </h4>
@@ -66,12 +71,12 @@ export default function AnalyticsPage() {
                 </p>
               </InfoPopover>
             </div>
-            <SmallChart title={t("oly_market_cap")} height={180} />
+            <SmallChart className="h-[272px]" title={t("oly_market_cap")} />
           </Card>
 
           {/* OLY流通量 */}
           <Card>
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 ">
               <h4 className="text-xl font-semibold text-white">
                 {t("oly_circulation")}
               </h4>
@@ -81,12 +86,12 @@ export default function AnalyticsPage() {
                 </p>
               </InfoPopover>
             </div>
-            <SmallChart title={t("oly_circulation")} height={180} />
+            <SmallChart className="h-[272px]" title={t("oly_circulation")} />
           </Card>
 
           {/* 国库无风险价值 */}
           <Card>
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 ">
               <h4 className="text-xl font-semibold text-white">
                 {t("treasury_risk_free_value")}
               </h4>
@@ -96,12 +101,15 @@ export default function AnalyticsPage() {
                 </p>
               </InfoPopover>
             </div>
-            <SmallChart title={t("treasury_risk_free_value")} height={180} />
+            <SmallChart
+              className="h-[272px]"
+              title={t("treasury_risk_free_value")}
+            />
           </Card>
 
           {/* 国库??? ① */}
           <Card>
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 ">
               <h4 className="text-xl font-semibold text-white">
                 {t("treasury_unknown")}
               </h4>
@@ -111,7 +119,7 @@ export default function AnalyticsPage() {
                 </p>
               </InfoPopover>
             </div>
-            <SmallChart title={t("treasury_unknown")} height={180} />
+            <SmallChart className="h-[272px]" title={t("treasury_unknown")} />
           </Card>
         </div>
       </div>

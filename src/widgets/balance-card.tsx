@@ -1,10 +1,10 @@
 import { useTranslations } from "next-intl"
 import { FC } from "react"
 import { RadioGroup } from "~/components"
-import Refresh from "~/assets/refresh.svg"
 import { useMock } from "~/hooks/useMock"
 import { useMockStore } from "~/store/mock"
 import { cn } from "~/lib/utils"
+import Image from "next/image"
 
 const toggle = async () => {
   useMockStore.setState({
@@ -32,7 +32,13 @@ export const BalanceCard: FC<{
           {balance} {symbol}
         </span>
         <div className="cursor-pointer" onClick={toggle}>
-          <Refresh className={cn("w-3 h-3", { "animate-spin": isLoading })} />
+          <Image
+            src="/images/icon/refresh.png"
+            alt="refresh"
+            width={12}
+            height={12}
+            className={cn("w-3 h-3", { "animate-spin": isLoading })}
+          />
         </div>
       </div>
       {onChange && (

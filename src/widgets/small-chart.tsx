@@ -4,12 +4,12 @@ import React, { useMemo } from "react"
 import ReactECharts from "echarts-for-react"
 import type { EChartsOption } from "echarts"
 import { useTranslations } from "next-intl"
+import { useChart } from "~/hooks/useChart"
 
 // 生成小型图表模拟数据
 const generateSmallChartData = () => {
   const dates: string[] = []
   const data: number[] = []
-
   // 完全按照注释代码的数据生成方式
   let base = +new Date(1968, 9, 3)
   const oneDay = 24 * 3600 * 1000
@@ -31,10 +31,9 @@ const generateSmallChartData = () => {
 // 小型图表组件
 export const SmallChart: React.FC<{
   title: string
-  width?: string | number
-  height?: string | number
   className?: string
-}> = ({ title, width = "100%", height = 200, className = "" }) => {
+}> = ({ title, className = "" }) => {
+  const { chartRef } = useChart()
   const chartOption = useMemo<EChartsOption>(() => {
     const { dates, data } = generateSmallChartData()
 
@@ -148,8 +147,9 @@ export const SmallChart: React.FC<{
   return (
     <div className={`small-chart ${className}`}>
       <ReactECharts
+        ref={chartRef}
         option={chartOption}
-        style={{ width, height }}
+        style={{ width: "100%", height: "100%" }}
         opts={{ renderer: "canvas" }}
       />
     </div>
@@ -158,12 +158,11 @@ export const SmallChart: React.FC<{
 
 // 圆环图组件
 export const PieChart: React.FC<{
-  width?: string | number
-  height?: string | number
   className?: string
   data: { value: number; name: string }[]
-}> = ({ width = "100%", height = 300, className = "", data }) => {
+}> = ({ className = "", data }) => {
   const t = useTranslations("analytics")
+  const { chartRef } = useChart()
   const chartOption = useMemo<EChartsOption>(() => {
     return {
       backgroundColor: "transparent",
@@ -233,7 +232,8 @@ export const PieChart: React.FC<{
     <div className={`pie-chart ${className}`}>
       <ReactECharts
         option={chartOption}
-        style={{ width, height }}
+        ref={chartRef}
+        style={{ width: "100%", height: "100%" }}
         opts={{ renderer: "canvas" }}
       />
     </div>

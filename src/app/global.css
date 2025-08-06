@@ -275,9 +275,21 @@
       margin-bottom: -16px;
     }
   }
+
+  .grid-body {
+    border-width: 0px 0px 0px 192px;
+    border-image: url("/images/background/grid-body.png");
+    border-image-slice: 0 0 0 192 fill;
+    /* 直接子元素样式 */
+    & > div {
+      margin: 0px;
+      margin-left: -192px;
+      margin-bottom: -16px;
+    }
+  }
   /* 卡片头部 */
   .card-header {
-    border-width: 32px 192px 32 32px;
+    border-width: 32px 192px 32px 32px;
     border-image: url("/images/background/card-header.png");
     border-image-slice: 32 192 32 32 fill;
     & > div {
@@ -288,11 +300,11 @@
   }
 
   .alert {
-    border-width: 0px 0 32px 0px;
+    border-width: 4px 4px 32px 4px;
     border-image: url("/images/background/alert.png");
-    border-image-slice: 0 0 32 0 fill;
+    border-image-slice: 4 4 32 4 fill;
     & > div {
-      margin: 0 0 -32px 0;
+      margin: -4px -4px -32px -4px;
     }
   }
 

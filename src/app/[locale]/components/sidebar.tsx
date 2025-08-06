@@ -55,7 +55,7 @@ export function Sidebar() {
   const navigationItems: NavigationItem[] = [
     {
       label: t("dashboard"),
-      href: "/dashboard",
+      href: "/",
       icon: "dashboard",
       uppercase: true,
     },

@@ -5,8 +5,6 @@ import { useTranslations } from "next-intl"
 import Image from "next/image"
 import Link from "next/link"
 import { FC, useState } from "react"
-import List from "~/assets/list.svg"
-import Trend from "~/assets/trend.svg"
 import {
   Button,
   Card,
@@ -113,7 +111,12 @@ export default function CommunityPage() {
       {/* 推荐计划 */}
       <Card>
         <div className="flex items-center gap-2">
-          <Trend className="w-6 h-6" />
+          <Image
+            src="/images/icon/trend.png"
+            alt="trend"
+            width={24}
+            height={24}
+          />
           <span className="text-xl font-bold text-white">
             {t("referralProgram")}
           </span>
@@ -223,7 +226,12 @@ export default function CommunityPage() {
       <Card>
         <div className="flex justify-between items-center">
           <CardTitle className="text-xl font-bold text-white flex items-center gap-2">
-            <List className="w-6 h-6" />
+            <Image
+              src="/images/icon/list.png"
+              alt="list"
+              width={24}
+              height={24}
+            />
             {t("referralList")}
           </CardTitle>
           <div className="flex flex-col gap-1 text-right">

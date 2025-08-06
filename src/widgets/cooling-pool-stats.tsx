@@ -31,12 +31,12 @@ export const CoolingPoolStats: FC = () => {
     <View
       clipDirection="topRight-bottomLeft"
       clipSize={16}
-      className="flex items-center justify-between  gap-4 bg-gradient-to-b from-[#333E8E]/30 to-[#576AF4]/30"
+      className="flex lg:items-center justify-between flex-col lg:flex-row items-start gap-4 bg-gradient-to-b from-[#333E8E]/30 to-[#576AF4]/30"
     >
       {statsData.map((stat, index) => (
         <div
           key={index}
-          className={cn("px-6 py-4 font-mono", index === 2 && "text-right")}
+          className={cn("px-6 py-4 font-mono", index === 2 && "lg:text-right")}
         >
           <div className="text-xs text-foreground/50">{stat.title}</div>
           <div className="flex items-baseline gap-2">

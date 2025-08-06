@@ -1,5 +1,5 @@
+import Image from "next/image"
 import { FC } from "react"
-import Logo from "~/assets/logo.svg"
 import { cn } from "~/lib/utils"
 export const RoundedLogo: FC<{
   className?: string
@@ -11,7 +11,7 @@ export const RoundedLogo: FC<{
         className
       )}
     >
-      <Logo className="w-11/12" />
+      <Image src="/images/widgets/logo.png" alt="logo" width={24} height={24} />
     </div>
   )
 }

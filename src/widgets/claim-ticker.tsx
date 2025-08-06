@@ -1,11 +1,10 @@
 "use client"
 
-import React from "react"
-import { cn, formatCurrency, formatDecimal } from "~/lib/utils"
-import { Button } from "~/components/button"
-import { Countdown } from "~/components/count-down"
 import { useTranslations } from "next-intl"
 import { RoundedLogo } from "~/components"
+import { Button } from "~/components/button"
+import { Countdown } from "~/components/count-down"
+import { formatCurrency, formatDecimal } from "~/lib/utils"
 
 interface ClaimTickerProps {
   lockedAmount: number

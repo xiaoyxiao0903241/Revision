@@ -17,7 +17,7 @@ const CountdownCard: FC<{
       <Icon name="clock" size={16} />
       <Countdown
         endAt={endAt}
-        className="text-base font-chakrapetch tabular-nums"
+        className="text-base font-chakrapetch tabular-nums text-nowrap"
         daysShown
       />
     </View>

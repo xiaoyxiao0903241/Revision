@@ -59,7 +59,11 @@ export default function CoolingPoolPage() {
   return (
     <div className="space-y-6">
       {/* 描述区域 */}
-      <Alert icon="stake" title={t("title")} description={t("description")} />
+      <Alert
+        icon="cooling-pool"
+        title={t("title")}
+        description={t("description")}
+      />
 
       <div className="grid grid-cols-1">
         <Card>

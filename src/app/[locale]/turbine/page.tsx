@@ -1,7 +1,8 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { Alert, Button, Card, CardAction, CardContent } from "~/components"
+import Image from "next/image"
+import { Alert, Button, Card } from "~/components"
 import { useMock } from "~/hooks/useMock"
 import { cn, formatDecimal } from "~/lib/utils"
 import { useMockStore } from "~/store/mock"
@@ -13,14 +14,10 @@ import {
 } from "~/widgets"
 import { RateCard } from "~/widgets/rate-card"
 import { Slippage } from "~/widgets/slippage"
-import Refresh from "~/assets/refresh.svg"
 import { TurbineCard } from "~/widgets/turbine-card"
 export default function TurbinePage() {
   const t = useTranslations("turbine")
   const { decimal, setDecimal, walletConnected: isLoading } = useMock()
-
-  // 模拟数据
-  const countdown = "38m 50s"
 
   const onToggle = async () => {
     useMockStore.setState({
@@ -50,7 +47,11 @@ export default function TurbinePage() {
               <span>{t("myWallet")}</span>
               <span className="text-white">{formatDecimal(1233, 2)} USDT</span>
               <span className="cursor-pointer" onClick={onToggle}>
-                <Refresh
+                <Image
+                  src="/images/icon/refresh.png"
+                  alt="refresh"
+                  width={12}
+                  height={12}
                   className={cn("w-3 h-3", isLoading && "animate-spin")}
                 />
               </span>

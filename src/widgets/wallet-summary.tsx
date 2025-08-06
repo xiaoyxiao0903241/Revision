@@ -1,9 +1,9 @@
 import { useTranslations } from "next-intl"
 import { Button, Card, CardHeader, List, Statistics } from "~/components"
-import Logo from "~/assets/logo.svg"
 import { FC } from "react"
 import { formatCurrency } from "~/lib/utils"
 import { infoItems } from "~/hooks/useMock"
+import Image from "next/image"
 export const WalletSummary: FC<{
   data: {
     availableToStake: number
@@ -73,7 +73,12 @@ export const WalletSummary: FC<{
           clipDirection="topLeft-bottomRight"
         >
           <div className="w-4 h-4 rounded-full bg-white flex items-center justify-center">
-            <Logo className="w-4" />
+            <Image
+              src="/images/widgets/logo.png"
+              alt="logo"
+              width={16}
+              height={16}
+            />
           </div>
           <span className="text-black">{t("addToMetaMask")}</span>
         </Button>
