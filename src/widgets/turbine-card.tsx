@@ -17,7 +17,7 @@ export function TurbineCard({
   usdValue,
   onClick,
 }: ClaimTickerProps) {
-  const t = useTranslations("turbine")
+  // const t = useTranslations("turbine")
   const tStaking = useTranslations("staking")
   return (
     <div className="relative px-4">

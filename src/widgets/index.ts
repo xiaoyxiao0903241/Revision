@@ -1,4 +1,5 @@
 export * from "./wallet-summary"
+export * from "./wallet-summary-lock"
 export * from "./amount-card"
 export * from "../components/info-popover"
 export * from "./select"

@@ -1,7 +1,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { Alert, Button, Card, CardAction, CardContent } from "~/components"
+import { Alert, Button, Card } from "~/components"
 import { useMock } from "~/hooks/useMock"
 import { cn, formatDecimal } from "~/lib/utils"
 import { useMockStore } from "~/store/mock"
@@ -20,7 +20,7 @@ export default function TurbinePage() {
   const { decimal, setDecimal, walletConnected: isLoading } = useMock()
 
   // 模拟数据
-  const countdown = "38m 50s"
+  // const countdown = "38m 50s"
 
   const onToggle = async () => {
     useMockStore.setState({
@@ -59,7 +59,7 @@ export default function TurbinePage() {
             {/* 金额输入 */}
             <AmountCard
               data={{
-                value: decimal,
+                value: 1,
                 desc: 456,
                 balance: 789,
               }}

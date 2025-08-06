@@ -334,6 +334,7 @@ export default function ClaimPage() {
                     }
                   }
                 }}
+                description={"余额"} 
               />
               <Notification>{tLockedStaking("claimInfo")}</Notification>
               <ClaimSelect

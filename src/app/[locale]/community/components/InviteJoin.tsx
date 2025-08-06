@@ -1,4 +1,4 @@
-import { FC, useState, useCallback, useEffect } from "react"
+import {  useState, useCallback, useEffect } from "react"
 import { useTranslations } from "next-intl"
 import {
   Button,
@@ -8,11 +8,11 @@ import {
   Input,
   View,
 } from "~/components"
-import Image from "next/image"
+// import Image from "next/image"
 import Link from "next/link"
-import List from "~/assets/list.svg"
+// import List from "~/assets/list.svg"
 import Trend from "~/assets/trend.svg"
-import { useMock } from "~/hooks/useMock"
+// import { useMock } from "~/hooks/useMock"
 import { getInviteInfo } from '~/wallet/lib/web3/invite';
 import { useQuery } from '@tanstack/react-query';
 import { useUserAddress } from '~/contexts/UserAddressContext';
@@ -27,22 +27,22 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { getCookieLanguage, formatAddress, fallbackCopyText } from "~/lib/utils"
 
 // 添加以太坊地址验证函数
-const isValidEthereumAddress = (address: string): boolean => {
-  // 检查是否为有效的以太坊地址格式
-  return /^0x[a-fA-F0-9]{40}$/.test(address);
-};
+// const isValidEthereumAddress = (address: string): boolean => {
+//   // 检查是否为有效的以太坊地址格式
+//   return /^0x[a-fA-F0-9]{40}$/.test(address);
+// };
 
-export default () => {
+export default function InviteJoin () {
   const t = useTranslations("community")
   const inviteT = useTranslations("invite")
   const pathname = usePathname();
-  const { walletConnected, setWalletConnected, decimal, setDecimal } = useMock()
+  // const { walletConnected, setWalletConnected, decimal, setDecimal } = useMock()
   const { userAddress } = useUserAddress();
   const publicClient = usePublicClient();
-  const [isJoining, setIsJoining] = useState(false);
+  // const [isJoining, setIsJoining] = useState(false);
   const { handleContractError, isContractError } = useContractError();
   const [code, setCode] = useState('');
-  const [isValidAddress, setIsValidAddress] = useState(true);
+  // const [isValidAddress, setIsValidAddress] = useState(true);
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
   const [link, setLink] = useState('');
   const searchParams = useSearchParams();
@@ -62,15 +62,15 @@ export default () => {
   const handleCodeChange = (value: string) => {
     setCode(value);
     if (value) {
-      setIsValidAddress(isValidEthereumAddress(value));
+      // setIsValidAddress(isValidEthereumAddress(value));
     } else {
-      setIsValidAddress(true);
+      // setIsValidAddress(true);
     }
   };
 
   const resetState = useCallback(() => {
     setCode('');
-    setIsValidAddress(true);
+    // setIsValidAddress(true);
   }, [setCode]);
 
   const generateLink = useCallback(() => {
@@ -83,7 +83,7 @@ export default () => {
       setLink('');
       // setLinkShow("");
     }
-  }, [userAddress]);
+  }, [userAddress,lang]);
   const getInviteCodeFromUrl = useCallback(() => {
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
@@ -115,7 +115,7 @@ export default () => {
       return;
     }
 
-    setIsJoining(true);
+    // setIsJoining(true);
 
     const balance = await publicClient.getBalance({ 
       address: userAddress as `0x${string}` 
@@ -182,7 +182,7 @@ export default () => {
         }
       }
     } finally {
-      setIsJoining(false);
+      // setIsJoining(false);
     }
   };
 

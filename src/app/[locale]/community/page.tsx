@@ -3,21 +3,21 @@
 import _ from "lodash"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
-import Link from "next/link"
+// import Link from "next/link"
 import { FC, useState } from "react"
 import List from "~/assets/list.svg"
-import Trend from "~/assets/trend.svg"
+// import Trend from "~/assets/trend.svg"
 import {
-  Button,
+  // Button,
   Card,
-  CardContent,
+  // CardContent,
   CardTitle,
-  InfoPopover,
-  Input,
+  // InfoPopover,
+  // Input,
   Pager,
   View,
 } from "~/components"
-import { useMock } from "~/hooks/useMock"
+// import { useMock } from "~/hooks/useMock"
 import { cn, dayjs, formatDecimal, formatHash } from "~/lib/utils"
 import InviteJoin from "./components/InviteJoin"
 
@@ -55,7 +55,7 @@ const Step: FC<{
 
 export default function CommunityPage() {
   const t = useTranslations("community")
-  const { walletConnected, setWalletConnected, decimal, setDecimal } = useMock()
+  // const { walletConnected, setWalletConnected, decimal, setDecimal } = useMock()
   const [currentPage, setCurrentPage] = useState(1)
   return (
     <div className="space-y-6">

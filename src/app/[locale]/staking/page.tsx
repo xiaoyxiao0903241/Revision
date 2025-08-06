@@ -230,6 +230,7 @@ export default function StakingPage() {
               onChange={(value) => {
                 setStakeAmount(value)
               }}
+              description={"余额"}                       
             />
             <List>
               <List.Item>
