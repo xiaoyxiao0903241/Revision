@@ -41,7 +41,8 @@ export function Button({
     primary: "bg-gradient-to-r from-[#B408D7] to-[#576AF4]",
     secondary: "bg-secondary",
     accent: "bg-warning",
-    disabled: "bg-gray-500 hover:opacity-100 active:opacity-100",
+    disabled:
+      "bg-gray-500 hover:opacity-100 active:opacity-100 cursor-not-allowed",
     outlined:
       "bg-transparent border-2 border-[#434c8c] text-white hover:bg-white/10  shadow-[inset_0_0_20px_rgba(84,119,247,0.5)]",
     link: "bg-transparent text-white hover:bg-white/10",

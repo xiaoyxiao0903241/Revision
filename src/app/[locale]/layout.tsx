@@ -4,6 +4,13 @@ import { Sidebar } from "./components/sidebar"
 import { Header } from "./components/header"
 import AppProviders from "./components/AppProviders"
 import { LocaleDetector } from "~/widgets/locale-detector"
+import { locales } from '../../i18n/config'
+
+export function generateStaticParams() {
+  return locales.map((locale: string) => ({
+    locale,
+  }))
+}
 
 export default async function LocaleLayout({
   children,

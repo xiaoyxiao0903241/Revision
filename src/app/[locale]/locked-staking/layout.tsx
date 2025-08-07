@@ -7,6 +7,8 @@ import { useLockStore } from "~/store/lock"
 import { useQuery } from "@tanstack/react-query"
 import {  getTokenPrice,getTokenBalance } from "~/wallet/lib/web3/bond";
 import { useUserAddress } from "~/contexts/UserAddressContext";
+import { getBalanceToken } from "~/wallet/lib/web3/stake";
+import { OLY, staking } from "~/wallet/constants/tokens";
 
 interface LockStakingLayoutProps {
   children: React.ReactNode
@@ -52,6 +54,8 @@ export default function LockStakingLayout({ children }: LockStakingLayoutProps) 
       olyBalance:Number(balance)
     })
   },[balance])
+
+  
 
   return (
     <div className="space-y-6">

@@ -65,7 +65,7 @@ export const NavigationTabs: FC<{
               "cursor-pointer font-lg text-2xl uppercase select-none text-nowrap",
               {
                 "hover:text-neutral-300": !isActive,
-                [activeClassName ?? "gradient-text font-bold"]: isActive,
+                [activeClassName ?? "text-gradient font-bold"]: isActive,
               },
               labelClassName
             )}
@@ -141,7 +141,7 @@ export const Tabs: FC<{
               "my-auto cursor-pointer font-lg select-none text-nowrap font-semibold rounded-full text-center",
               {
                 "hover:text-neutral-300 text-foreground/50": !isActive,
-                [activeClassName ?? "gradient-text"]: isActive,
+                [activeClassName ?? "text-gradient"]: isActive,
               },
               labelClassName
             )}

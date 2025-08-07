@@ -10,6 +10,7 @@ interface StatisticsProps {
   desc?: string
   info?: React.ReactNode
   className?: string
+  size?: "sm" | "md" | "lg"
 }
 
 export const Statistics: React.FC<StatisticsProps> = ({
@@ -18,6 +19,7 @@ export const Statistics: React.FC<StatisticsProps> = ({
   desc,
   info,
   className = "",
+  size,
 }) => {
   return (
     <div className={`flex flex-col`}>
@@ -29,7 +31,15 @@ export const Statistics: React.FC<StatisticsProps> = ({
 
       {/* Value Row */}
       <div className="flex items-center space-x-2">
-        <span className="text-white font-mono text-3xl">{value}</span>
+        <span
+          className={cn(
+            "text-white font-mono text-3xl",
+            size === "sm" && "text-lg",
+            size === "md" && "text-2xl"
+          )}
+        >
+          {value}
+        </span>
       </div>
 
       {/* Description Row */}

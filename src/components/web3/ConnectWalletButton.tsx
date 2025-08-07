@@ -278,7 +278,7 @@ export default function ConnectWalletButton({
     return (
       <button
         onClick={openConnectModal}
-        className={` xl:w-[170px] xl:h-[50px] h-[35px] ${from === 'header' ? "bg-transparent bg-[url('/imgs/common/connect.png')] bg-cover xl:leading-[50px]  w-[120px]" : 'bg-[#576AF4] hover:bg-[#576AF4]/80 pt-1'}  text-white rounded-md text-sm xl:text-base  ${className}`}
+        className={`xl:w-[170px] xl:h-[50px] h-[35px] ${from === 'header' ? "bg-transparent bg-[url('/imgs/common/connect.png')] bg-cover xl:leading-[50px]  w-[120px]" : 'bg-[#576AF4] hover:bg-[#576AF4]/80 pt-1'}  text-white rounded-md text-sm xl:text-base  ${className}`}
       >
         <span
           className={`${from === 'header' ? 'xl:leading-[45px] leading-[30px]' : 'xl:leading-[45px] xl:px-3 leading-[30px] lg:text-xl text-[14px]'}  h-full block`}

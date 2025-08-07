@@ -139,6 +139,7 @@ export default function StakingLayout({ children }: StakingLayoutProps) {
     refetchInterval: 42000,
   });
 
+  console.log(demandProfitInfo,'demandProfitInfo222222')
   
 
   //热身期的数据
@@ -147,10 +148,10 @@ export default function StakingLayout({ children }: StakingLayoutProps) {
     queryFn: () => demandInfo({ address: userAddress as `0x${string}` }),
     enabled: Boolean(userAddress),
     retry: 1,
-    refetchInterval: 40000,
+    refetchInterval: 400000,
   });
 
-  console.log(hotData,'hotData1111')
+  
 
   useEffect(() => {
     useNolockStore.setState({

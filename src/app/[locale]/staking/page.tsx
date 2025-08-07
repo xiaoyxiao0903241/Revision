@@ -230,6 +230,7 @@ export default function StakingPage() {
               onChange={(value) => {
                 setStakeAmount(value)
               }}
+              description={"余额"}                       
             />
             <List>
               <List.Item>
@@ -251,7 +252,7 @@ export default function StakingPage() {
               </List.Item>
             </List>
             {
-              !userAddress ? <ConnectWalletButton className="bg-[#FF8908] text-xl py-3 cursor-pointer px-6 !text-white text-5   hover:bg-[#FF8908]/80 h-[48px] min-w-[160px]   mx-auto" /> :
+              !userAddress ? <ConnectWalletButton from={"staking"} className="text-xl py-3 cursor-pointer px-6 !text-white text-5    h-[48px] min-w-[160px]   mx-auto" /> :
                 (
                   <div className="flex items-center justify-center w-full gap-x-4">
 

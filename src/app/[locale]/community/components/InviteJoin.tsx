@@ -36,7 +36,7 @@ const InviteJoin = () => {
   const pathname = usePathname();
   const { userAddress } = useUserAddress();
   const publicClient = usePublicClient();
-  const [isJoining, setIsJoining] = useState(false);
+  const [isJoining] = useState(false);
   const { handleContractError, isContractError } = useContractError()
   const [code, setCode] = useState('')
   const [isValidAddress, setIsValidAddress] = useState(true);
@@ -67,7 +67,7 @@ const InviteJoin = () => {
     if (value) {
       setIsValidAddress(isValidEthereumAddress(value))
     } else {
-      setIsValidAddress(true);
+      // setIsValidAddress(true);
     }
   };
 
@@ -115,7 +115,7 @@ const InviteJoin = () => {
       return;
     }
 
-    setIsJoining(true);
+    // setIsJoining(true);
 
     try {
       // 先模拟
@@ -176,7 +176,7 @@ const InviteJoin = () => {
         }
       }
     } finally {
-      setIsJoining(false);
+      // setIsJoining(false);
     }
   };
 

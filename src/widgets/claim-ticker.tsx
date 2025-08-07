@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { cn, formatCurrency, formatDecimal } from "~/lib/utils"
+import {  formatCurrency, formatDecimal } from "~/lib/utils"
 import { Button } from "~/components/button"
 import { Countdown } from "~/components/count-down"
 import { useTranslations } from "next-intl"

@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react"
 import { useTranslations } from "next-intl"
 import { Alert, Button, Card } from "~/components"
-import { WalletSummary } from "~/widgets"
+import { WalletSummaryLock } from "~/widgets"
 import { AmountCard } from "~/widgets/amount-card"
 import { DurationSelect } from "~/widgets/select"
 import { StakingSummary } from "~/widgets/staking-summary"
@@ -283,7 +283,7 @@ export default function StakingPage() {
           </Card>
         </div>
         <div>
-          <WalletSummary
+          <WalletSummaryLock
             data={{
               availableToStake: 100,
               stakedAmount: 100,
