@@ -134,6 +134,32 @@ export const leadReward = async (tokenAddress: string) => {
 
   return data.data;
 };
+
+// 矩阵奖励
+export const rewardMatrix = async (tokenAddress: string) => {
+  const response = await authFetch(
+    `/api/reward/matrix`,
+    {
+      method: 'GET',
+    },
+    tokenAddress
+  );
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || 'Failed to get node record list');
+  }
+
+  const data = await response.json();
+  if (data.code !== '0') {
+    if (data.code == 401) {
+      clearToken(tokenAddress);
+      toast.error('请先登录');
+    }
+    throw new Error(data.message || 'Failed to get node record list');
+  }
+
+  return data.data;
+};
 // 共振奖励
 // /reward/referral
 export const referralReward = async (tokenAddress: string) => {
