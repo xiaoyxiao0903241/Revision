@@ -139,7 +139,7 @@ export default function StakingLayout({ children }: StakingLayoutProps) {
     refetchInterval: 42000,
   });
 
-  console.log(demandProfitInfo,'demandProfitInfo1111')
+  console.log(demandProfitInfo,'demandProfitInfo222222')
   
 
   //热身期的数据

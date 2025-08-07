@@ -36,7 +36,7 @@ const InviteJoin = () => {
   const pathname = usePathname();
   const { userAddress } = useUserAddress();
   const publicClient = usePublicClient();
-  const [isJoining, setIsJoining] = useState(false);
+  const [isJoining] = useState(false);
   const { handleContractError, isContractError } = useContractError()
   const [code, setCode] = useState('')
   const [isValidAddress, setIsValidAddress] = useState(true);

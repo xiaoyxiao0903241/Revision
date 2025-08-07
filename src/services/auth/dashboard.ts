@@ -1,4 +1,4 @@
-import { publicFetch } from '../index';
+import { publicFetch, authFetch } from '../index';
 import { formatTimeToLocal, getWeekday } from '~/lib/utils';
 
 interface responseItem {
@@ -104,3 +104,63 @@ export const dashMess = async (startTime: string, endTime: string) => {
   }
   return null;
 };
+
+//全网总质押人数
+
+export const stakerNum = async () => {
+  const response = await publicFetch('/api/dashboard/data/staked', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+  if (response.ok) {
+    const data = await response.json()
+    return data.data;
+  }
+}
+
+//个人账户全部质押数量
+export const personStakeAmount = async (tokenAddress:string) => {
+  const response = await authFetch(
+     '/api/reward/rebase', 
+     {
+      method: 'GET',
+    },
+    tokenAddress
+  );
+  
+  if (response.ok) {
+    const data = await response.json()
+    return data.data;
+  }
+}
+
+//个人仪表盘
+
+export const myMess = async (startTime: string, endTime: string,tokenAddress:string) => {
+  const parmas = {
+    startTime: startTime,
+    endTime: endTime,
+    dataType:""
+  };
+  const response = await authFetch(
+     '/api/user/dashboard', 
+     {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(parmas),
+    },
+    tokenAddress
+  );
+ 
+  if (response.ok) {
+    const data = await response.json()
+    return data.data;
+  }
+}
+
+
+

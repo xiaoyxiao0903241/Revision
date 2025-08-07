@@ -238,6 +238,8 @@ export const getEnchBlock = async () => {
   }
 };
 
+
+
 //活期质押数据(热身期)
 export const demandInfo = async ({ address }: { address: Address }) => {
   try {
@@ -366,9 +368,36 @@ export const getBalanceToken = async ({
     const balance = Number(formatUnits(res[0].data, decimal));
     return balance || 0;
   }
-
   return 0;
 };
+
+//获取oly总数量
+export const getTotalSupply = async ({
+  TOKEN_ADDRESSES,
+  decimal,
+}: {
+  TOKEN_ADDRESSES: string;
+  decimal: number;
+}) => {
+  const res = (await executeMulticall({
+    calls: [
+      {
+        address: TOKEN_ADDRESSES as `0x${string}`,
+        abi: erc20Abi,
+        functionName: 'totalSupply',
+        args: [],
+      },
+    ],
+  })) as { success: boolean; data: bigint }[];
+  
+  if (res.length) {
+    const balance = Number(formatUnits(res[0].data, decimal));
+    return balance || 0;
+  }
+  return 0;
+};
+
+
 
 //获取apy(收益率),全网rebalse数量
 export const getAllnetReabalseNum = async () => {
