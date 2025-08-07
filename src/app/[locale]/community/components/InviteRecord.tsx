@@ -1,16 +1,14 @@
-import { useState, useEffect } from "react";
-import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useState } from "react";
+import { useUserAddress } from '~/contexts/UserAddressContext'
 import { useTranslations } from "next-intl"
 import {
   Card,
   CardTitle,
-  Pager,
 } from "~/components"
-import { dayjs, formatHash, formatte2Num } from "~/lib/utils"
-import { useQuery } from '@tanstack/react-query';
+import { formatte2Num } from "~/lib/utils"
 import List from "~/assets/list.svg"
-import { inviteHisList } from "~/services/auth/invite";
-import Link from "next/link";
+import { inviteHisList } from "~/services/auth/invite"
+import ProTable, { ProTableColumn } from "~/components/ProTable";
 
 interface InviteDataSource {
   address: string;
@@ -18,38 +16,57 @@ interface InviteDataSource {
   performance: string;
   stakedAmount: string;
 }
+type InviteDataParams = {
+  currentPage: number
+   pageSizeProp: number
+    userAddress: string
+}
 const InviteRecord = () => {
   const t = useTranslations("community")
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [dataSource, setDataSource] = useState<InviteDataSource[]>([])
   const [total, setTotal] = useState<number>(0)
-  const common = useTranslations()
   const { userAddress } = useUserAddress()
-  const pageSize = 10
 
-  const {
-    data: inviteListData,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ['inviteRecords', currentPage, pageSize, userAddress],
-    queryFn: async () => {
-      if (!userAddress) {
-        throw new Error('Missing address');
-      }
-      const response = await inviteHisList(currentPage, pageSize, userAddress);
-      return response;
+  const formatText = (value: string) => { 
+    return <span>
+      {formatte2Num.format(Number(value || 0))}{" "}
+      <span className="gradient-text"> OLY</span>
+    </span>
+  }
+
+  const columns: ProTableColumn<InviteDataSource>[] = [
+    {
+      title: t("address"),
+      dataIndex: 'address',
+      key: 'address',
+      render: {
+        link: true,
+        href: (value) => `https://bscscan.com/address/${value}`,
+        target: '_blank',
+        valueType: 'hash',
+        // render: (value: string) => value, // 自定义渲染
+      },
     },
-    enabled: !!userAddress,
-    refetchInterval: 38000,
-  })
-
-  useEffect(() => {
-    if (inviteListData) {
-      setDataSource(inviteListData?.records);
-      setTotal(inviteListData?.total);
-    }
-  }, [inviteListData])
+    {
+      title: t("netHolding"),
+      dataIndex: 'stakedAmount',
+      key: 'stakedAmount',
+      render: (value) => formatText(value as string),
+    },
+    {
+      title: t("totalCommunityPerformance"),
+      dataIndex: 'performance',
+      key: 'performance',
+      render: (value) => formatText(value as string),
+    },
+    {
+      title: t("joinTime"),
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: {
+        valueType: 'dateTime', // 自动格式化为日期时间
+      },
+    },
+  ];
 
   return (
     <Card>
@@ -60,74 +77,29 @@ const InviteRecord = () => {
         </CardTitle>
         <div className="flex flex-col gap-1 text-right">
           <span className="text-white">{total} {t("records")}</span>
-          <span className="text-xs text-foreground/50">
+          {/* <span className="text-xs text-foreground/50">
             {dayjs().fromNow()}
-          </span>
+          </span> */}
         </div>
       </div>
-      {dataSource.length === 0 && !isLoading && !isError &&
-        <div className='text-white text-center py-8'>
-          {common('common.nodata')}
-        </div>
-      }
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <tbody className="space-y-2">
-            {dataSource.map((item, index) => (
-              <tr
-                key={index}
-                className="grid grid-cols-4  p-6 bg-foreground/5 rounded-md"
-              >
-                <td className="py-3 px-4 flex flex-col gap-1">
-                  <span className="text-xs text-foreground/50">
-                    {t("address")}
-                  </span>
-                  <Link className="text-blue-400 cursor-pointer hover:underline font-mono" href={`https://bscscan.com/address/${item?.address}`} target="_blank">
-                    {formatHash(item?.address)}
-                  </Link>
-                </td>
-                <td className="py-3 px-4 text-white font-mono flex flex-col gap-1">
-                  <span className="text-xs text-foreground/50">
-                    {t("netHolding")}
-                  </span>
-                  <span>
-                    {formatte2Num.format(Number(item?.stakedAmount || 0))}{" "}
-                    <span className="gradient-text"> OLY</span>
-                  </span>
-                </td>
-                <td className="py-3 px-4 text-white font-mono flex flex-col gap-1">
-                  <span className="text-xs text-foreground/50">
-                    {t("totalCommunityPerformance")}
-                  </span>
-                  <span>
-                    {formatte2Num.format(Number(item?.performance || 0))}{" "}
-                    <span className="gradient-text"> OLY</span>
-                  </span>
-                </td>
-                <td className="py-3 px-4 text-gray-300 font-mono flex flex-col gap-1">
-                  <span className="text-xs text-foreground/50">
-                    {t("joinTime")}
-                  </span>
-                  <span>{dayjs(item?.createdAt).format("YYYY/MM/DD HH:mm:ss")}</span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-          <tfoot className="col-span-4">
-            <tr>
-              <td colSpan={4} className="text-center">
-                {total > pageSize &&
-                  <Pager
-                    currentPage={currentPage}
-                    totalPages={total ? Math.ceil(total / pageSize) : 0}
-                    onPageChange={(page) => setCurrentPage(page)}
-                  />
-                }
-              </td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
+
+      <ProTable
+        columns={columns}
+        queryFn={(params: Record<string, unknown>) => {
+          const { currentPage, pageSizeProp, userAddress  } = params as InviteDataParams;
+          // 请求数据
+          return inviteHisList(currentPage, pageSizeProp, userAddress);
+        }}
+        params={{userAddress}}
+        formatResult={(data) => {
+          const total = data?.total || 0;
+          setTotal(total);
+          return {
+            dataSource: data?.records || [],
+            total
+          }
+        }}
+      />
     </Card>
   )
 }
