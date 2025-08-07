@@ -1,8 +1,7 @@
 "use client"
 import { useLocale } from "next-intl"
+import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
-import AppName from "~/assets/app-name.svg"
-import Logo from "~/assets/logo.svg"
 import { Button } from "~/components"
 import {
   DropdownMenu,
@@ -32,8 +31,12 @@ export function Header() {
   return (
     <header className="flex h-20 items-center justify-between px-9">
       <div className="flex flex-col items-center justify-center">
-        <Logo className="w-24" />
-        <AppName className="w-24" />
+        <Image
+          src="/images/widgets/site-logo.png"
+          alt="logo"
+          width={106}
+          height={60}
+        />
       </div>
       <div className="flex items-center">
         

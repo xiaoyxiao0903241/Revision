@@ -1,7 +1,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import Logo from "~/assets/logo.svg"
+import Image from "next/image"
 import { Button } from "~/components/button"
 import { formatCurrency, formatDecimal } from "~/lib/utils"
 interface ClaimTickerProps {
@@ -17,7 +17,6 @@ export function TurbineCard({
   usdValue,
   onClick,
 }: ClaimTickerProps) {
-  // const t = useTranslations("turbine")
   const tStaking = useTranslations("staking")
   return (
     <div className="relative px-4">
@@ -51,7 +50,12 @@ export function TurbineCard({
               clipDirection="topLeft-bottomRight"
             >
               <div className="w-4 h-4 rounded-full bg-white flex items-center justify-center">
-                <Logo className="w-4" />
+                <Image
+                  src="/images/widgets/logo.png"
+                  alt="logo"
+                  width={16}
+                  height={16}
+                />
               </div>
               <span className="text-black">{tStaking("addToMetaMask")}</span>
             </Button>

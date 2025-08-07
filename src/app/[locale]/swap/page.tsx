@@ -1,9 +1,8 @@
 "use client"
 
 import { useTranslations } from "next-intl"
+import Image from "next/image"
 import * as React from "react"
-import Swap from "~/assets/swap.svg"
-import Usdt from "~/assets/usdt.svg"
 import { Alert, RoundedLogo, View } from "~/components"
 import { Button } from "~/components/button"
 import { Card } from "~/components/card"
@@ -34,7 +33,9 @@ export default function SwapPage() {
   const options: Balance[] = [
     {
       symbol: "USDT",
-      icon: <Usdt className="w-8 h-8" />,
+      icon: (
+        <Image src="/images/icon/usdt.png" alt="usdt" width={32} height={32} />
+      ),
       balance: 1000,
       profit: -10,
       description: t("usdtDescription"),
@@ -68,7 +69,7 @@ export default function SwapPage() {
         <div>
           <Card className="flex flex-col gap-5">
             {/* 交换输入区域 */}
-            <View className="relative space-y-6">
+            <View className="relative -space-y-3">
               {/* USDT 输入 */}
               <SwapCard
                 data={{
@@ -89,7 +90,7 @@ export default function SwapPage() {
 
               {/* 交换图标 - 浮动在两个卡片之间 */}
               <div
-                className="absolute left-1/2 top-[41%] transform -translate-x-1/2 -translate-y-1/2 z-20 cursor-pointer"
+                className="py-1 z-20 cursor-pointer w-full flex items-center justify-center"
                 onClick={() => {
                   setSource((source) =>
                     source === sourceOption?.symbol
@@ -98,7 +99,13 @@ export default function SwapPage() {
                   )
                 }}
               >
-                <Swap className="w-12 h-12 text-gray-300" />
+                <Image
+                  src="/images/icon/swap.png"
+                  alt="swap"
+                  className="z-20"
+                  width={48}
+                  height={48}
+                />
               </div>
 
               {/* OLY 输入 */}

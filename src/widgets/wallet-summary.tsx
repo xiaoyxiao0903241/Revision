@@ -1,6 +1,5 @@
 import { useTranslations } from "next-intl"
 import { Button, Card, CardHeader, List, Statistics } from "~/components"
-import Logo from "~/assets/logo.svg"
 import { FC,useEffect,useState } from "react"
 import { formatCurrency } from "~/lib/utils"
 import { infoItems } from "~/hooks/useMock"
@@ -11,7 +10,7 @@ import { useNolockStore } from "~/store/noLock"
 import { formatNumbedecimalScale } from "~/lib/utils";
 import { stakerNum,personStakeAmount } from  "~/services/auth/dashboard"
 import { OLY } from "~/wallet/constants/tokens";
-
+import Image from "next/image"
 
 export const WalletSummary: FC<{
   data: {
@@ -141,7 +140,12 @@ export const WalletSummary: FC<{
           clipDirection="topLeft-bottomRight"
         >
           <div className="w-4 h-4 rounded-full bg-white flex items-center justify-center">
-            <Logo className="w-4" />
+            <Image
+              src="/images/widgets/logo.png"
+              alt="logo"
+              width={16}
+              height={16}
+            />
           </div>
           <span className="text-black">{t("addToMetaMask")}</span>
         </Button>
@@ -151,7 +155,7 @@ export const WalletSummary: FC<{
           <List.Label className="font-chakrapetch text-white text-base">
             {t("statistics")}
           </List.Label>
-          <List.Label className="gradient-text text-base">
+          <List.Label className="text-gradient text-base">
             {t("viewOnBscScan")}
           </List.Label>
         </List.Item>

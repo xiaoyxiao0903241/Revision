@@ -1,18 +1,18 @@
 import { useTranslations } from "next-intl";
 import { Button, Card, CardHeader, List, Statistics } from "~/components";
-import Logo from "~/assets/logo.svg";
-import { FC, useEffect,useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { formatCurrency } from "~/lib/utils";
 import { infoItems } from "~/hooks/useMock";
 import { useLockStore } from "~/store/lock";
 import { useQuery } from "@tanstack/react-query";
 import { useUserAddress } from "~/contexts/UserAddressContext";
-import { getUserStakes, getNodeStakes,getAllnetReabalseNum,getBalanceToken,getTotalSupply} from "~/wallet/lib/web3/stake";
+import { getUserStakes, getNodeStakes, getAllnetReabalseNum, getBalanceToken, getTotalSupply } from "~/wallet/lib/web3/stake";
 import type { StakingItem } from "~/wallet/lib/web3/stake";
 import { useSafeState } from "ahooks";
 import { OLY, staking } from "~/wallet/constants/tokens";
 import { formatNumbedecimalScale } from "~/lib/utils";
-import { stakerNum,personStakeAmount } from  "~/services/auth/dashboard"
+import { stakerNum, personStakeAmount } from "~/services/auth/dashboard"
+import Image from "next/image"
 
 
 export const WalletSummaryLock: FC<{
@@ -29,9 +29,9 @@ export const WalletSummaryLock: FC<{
   };
 }> = ({ data }) => {
   const t = useTranslations("staking");
-  const { olyBalance,olyPrice } = useLockStore();
+  const { olyBalance, olyPrice } = useLockStore();
   const { userAddress } = useUserAddress();
-  const [allStakeAmount,setAllStakeAmount] = useSafeState(0)
+  const [allStakeAmount, setAllStakeAmount] = useSafeState(0)
   const [yearApy, setYearApy] = useState<string>("0")
   const [yearRate, setYearRate] = useState<string>("0")
 
@@ -48,10 +48,10 @@ export const WalletSummaryLock: FC<{
   });
 
   //oly的总量
-   const { data: totalOlyNum } = useQuery({
-    queryKey: ["totalSupply",userAddress],
+  const { data: totalOlyNum } = useQuery({
+    queryKey: ["totalSupply", userAddress],
     queryFn: async () => {
-      const response = await getTotalSupply({TOKEN_ADDRESSES:OLY,decimal:9});
+      const response = await getTotalSupply({ TOKEN_ADDRESSES: OLY, decimal: 9 });
       return response || null;
     },
     retry: 1,
@@ -60,16 +60,16 @@ export const WalletSummaryLock: FC<{
 
   //我的长期总奖励
   const { data: myStakeAmount } = useQuery({
-    queryKey: ["getMyStakeAmount",userAddress],
+    queryKey: ["getMyStakeAmount", userAddress],
     queryFn: async () => {
       const response = await personStakeAmount(userAddress as `0x${string}`);
       return response || null;
     },
-     enabled: Boolean(userAddress),
+    enabled: Boolean(userAddress),
   });
 
- 
-  
+
+
 
   //质押列表
   const { data: myStakingList } = useQuery({
@@ -89,8 +89,8 @@ export const WalletSummaryLock: FC<{
     refetchInterval: 20000,
   });
 
-   //获取全网质押的的oly数量
-   const { data: AllolyStakeNum } = useQuery({
+  //获取全网质押的的oly数量
+  const { data: AllolyStakeNum } = useQuery({
     queryKey: ["AllolyStakeNum", userAddress],
     queryFn: () =>
       getBalanceToken({
@@ -103,7 +103,7 @@ export const WalletSummaryLock: FC<{
     refetchInterval: 600000,
   });
 
-  
+
 
   // 获取全网oly的rebase数量
   const { data: allnetReabalseNum } = useQuery({
@@ -117,13 +117,13 @@ export const WalletSummaryLock: FC<{
   //计算下一次爆块收益率
   useEffect(() => {
     if (allnetReabalseNum && AllolyStakeNum) {
-      const rate = (allnetReabalseNum /AllolyStakeNum)
-      const yearApy =  (Math.pow(1+ Number(rate), 720) - 1)*100
-      const yearRate = rate*2*360*100
-      setYearApy(formatNumbedecimalScale(yearApy,2))
-      setYearRate(formatNumbedecimalScale(yearRate,2))
+      const rate = (allnetReabalseNum / AllolyStakeNum)
+      const yearApy = (Math.pow(1 + Number(rate), 720) - 1) * 100
+      const yearRate = rate * 2 * 360 * 100
+      setYearApy(formatNumbedecimalScale(yearApy, 2))
+      setYearRate(formatNumbedecimalScale(yearRate, 2))
     }
-  }, [allnetReabalseNum,AllolyStakeNum]);
+  }, [allnetReabalseNum, AllolyStakeNum]);
 
   //获取质押总数量
   useEffect(() => {
@@ -136,12 +136,12 @@ export const WalletSummaryLock: FC<{
           : [];
 
         const allList = [...nodeList, ...list];
-        allList.forEach((it)=>allStakeAmount+=it.pending )
+        allList.forEach((it) => allStakeAmount += it.pending)
         setAllStakeAmount(allStakeAmount)
       }
     };
     updateList();
-  }, [myStakingList?.myStakingList, myStakingList,setAllStakeAmount,myStakingList]);
+  }, [myStakingList?.myStakingList, myStakingList, setAllStakeAmount, myStakingList]);
 
 
   return (
@@ -157,7 +157,7 @@ export const WalletSummaryLock: FC<{
             <Statistics
               title={t("stakedAmount")}
               value={`${formatCurrency(allStakeAmount, false)} OLY`}
-              desc={formatCurrency(olyPrice*allStakeAmount)}
+              desc={formatCurrency(olyPrice * allStakeAmount)}
               info={
                 <div className="flex flex-col space-y-2">
                   {infoItems.map((item) => (
@@ -176,7 +176,7 @@ export const WalletSummaryLock: FC<{
             <Statistics
               title={t("rebaseRewards")}
               value={`${formatCurrency(myStakeAmount?.lockReward, false)} OLY`}
-              desc={formatCurrency(Number(myStakeAmount?.lockReward*olyPrice))}
+              desc={formatCurrency(Number(myStakeAmount?.lockReward * olyPrice))}
               info={
                 <div className="flex flex-col space-y-2">
                   {infoItems.map((item) => (
@@ -199,7 +199,12 @@ export const WalletSummaryLock: FC<{
           clipDirection="topLeft-bottomRight"
         >
           <div className="w-4 h-4 rounded-full bg-white flex items-center justify-center">
-            <Logo className="w-4" />
+            <Image
+              src="/images/widgets/logo.png"
+              alt="logo"
+              width={16}
+              height={16}
+            />
           </div>
           <span className="text-black">{t("addToMetaMask")}</span>
         </Button>
@@ -225,12 +230,12 @@ export const WalletSummaryLock: FC<{
         </List.Item>
         <List.Item>
           <List.Label>{t("stakers")}</List.Label>
-          <List.Value>{(stakerAmount?.lockUniqueCount+stakerAmount?.nodeUniqueCount)||0}</List.Value>
+          <List.Value>{(stakerAmount?.lockUniqueCount + stakerAmount?.nodeUniqueCount) || 0}</List.Value>
         </List.Item>
         <List.Item>
           <List.Label>{t("olyMarketCap")}</List.Label>
           <List.Value>
-           {totalOlyNum?formatCurrency(totalOlyNum*olyPrice):0}
+            {totalOlyNum ? formatCurrency(totalOlyNum * olyPrice) : 0}
           </List.Value>
         </List.Item>
       </List>
