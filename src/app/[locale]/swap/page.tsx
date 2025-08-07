@@ -141,7 +141,7 @@ export default function SwapPage() {
     setSource((source) =>
       source === sourceOption?.symbol
         ? destinationOption!.symbol
-        : sourceOption!.symbol
+        : sourceOption!.symbol,
     );
     setClosePer(true);
   };
@@ -150,7 +150,7 @@ export default function SwapPage() {
   const needsApproval = checkNeedsApproval(
     allowance,
     amount,
-    fromTokenDecimals
+    fromTokenDecimals,
   );
 
   // 处理授权
@@ -342,7 +342,7 @@ export default function SwapPage() {
           const minOutput = calculateMinOutput(data.rateData[1], slippageValue);
           console.log(minOutput, "minOutput");
           setEstimatedOutput(
-            formatTokenBalance(minOutput, data.toTokenDecimals)
+            formatTokenBalance(minOutput, data.toTokenDecimals),
           );
         }
       } catch (error) {
@@ -385,11 +385,11 @@ export default function SwapPage() {
   // 格式化余额显示
   const formattedFromBalance = formatTokenBalance(
     fromTokenBalance,
-    fromTokenDecimals
+    fromTokenDecimals,
   );
   const formattedToBalance = formatTokenBalance(
     toTokenBalance,
-    toTokenDecimals
+    toTokenDecimals,
   );
 
   useEffect(() => {
@@ -404,7 +404,7 @@ export default function SwapPage() {
             amount: estimatedOutput,
             usdt: formatNumbedecimalScale(
               Number(estimatedOutput) * Number(olyPrice),
-              2
+              2,
             ),
           },
           rate: "0",
@@ -418,21 +418,21 @@ export default function SwapPage() {
           recive: {
             amount: formatNumbedecimalScale(
               Number(amount) * Number(olyPrice) * 0.97,
-              2
+              2,
             ),
             usdt: formatNumbedecimalScale(
               Number(amount) * Number(olyPrice) * 0.97,
-              2
+              2,
             ),
           },
           rate: formatNumbedecimalScale(
             Number(amount) * Number(olyPrice) * 0.03,
-            2
+            2,
           ),
         });
       }
     }
-  }, [fromToken, amount]);
+  }, [fromToken, amount, estimatedOutput, olyPrice, sourceOption?.symbol]);
 
   return (
     <div className="space-y-6">
@@ -499,7 +499,7 @@ export default function SwapPage() {
                   ...destinationOption!,
                   olyPrice: Number(olyPrice) || 0,
                 }}
-                onChange={() => { }}
+                onChange={() => {}}
               >
                 <BalanceCard
                   balance={formattedToBalance}
@@ -563,15 +563,17 @@ export default function SwapPage() {
                 ),
                 minToReceive: (
                   <span className="uppercase">
-                    {`${exchangeMess.recive.amount}  ${destinationOption?.symbol
-                      }`}
+                    {`${exchangeMess.recive.amount}  ${
+                      destinationOption?.symbol
+                    }`}
                     <span className="text-foreground/50 pl-2">
                       {`$${exchangeMess.recive.usdt}`}
                     </span>
                   </span>
                 ),
-                yakSwapFee: `${formatDecimal(Number(decimal))} ${sourceOption?.symbol
-                  }`,
+                yakSwapFee: `${formatDecimal(Number(decimal))} ${
+                  sourceOption?.symbol
+                }`,
                 contractSpender: formatHash(sourceOption!.address),
                 recipient: formatHash(destinationOption!.address),
                 tokenIn: sourceOption!.description,
