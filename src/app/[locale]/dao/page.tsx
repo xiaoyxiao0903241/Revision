@@ -149,7 +149,7 @@ export default function DaoPage() {
               }}
             />
             {/* 领取按钮 */}
-            <Button clipDirection="topRight-bottomLeft">{t("claim")}</Button>
+            <Button clipDirection="topRight-bottomLeft" disabled={Number(rewardMatrixData?.unclaimedAmount || 0) === 0 || currentPeriodInfo?.day < 5}>{t("claim")}</Button>
           </Card>
         </div>
         {/* 右侧：账户摘要 */}
