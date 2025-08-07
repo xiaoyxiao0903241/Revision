@@ -7,8 +7,10 @@ export const RateCard: FC<{
   children?: ReactNode
   description: string
   isLoading?: boolean
+  value:boolean
   onRefresh: () => void
-}> = ({ children, description, isLoading, onRefresh }) => {
+  onTogle:(value:boolean)=>void
+}> = ({ children, description, isLoading, onRefresh,onTogle,value }) => {
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -25,8 +27,8 @@ export const RateCard: FC<{
           >
             <Icon name="refresh" className={"w-5 h-5 pointer-events-none"} />
           </div>
-          <div>
-            <Icon name="setting" className="w-5 h-5 cursor-pointer" />
+          <div onClick={()=>{onTogle(!value)}}>
+            <Icon name="setting" className="w-5 h-5 !cursor-pointer" />
           </div>
         </div>
       </div>

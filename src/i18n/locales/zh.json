@@ -504,5 +504,44 @@
       "user_rejected": "用戶取消了交易"
     },
     "invite_not_active": "您的賬戶需要綁定推薦人地址"
+  },
+  "exchange": {
+    "title": "兑换",
+    "transmission": "跳转到 Dexscreener →",
+    "transmission2": "跳转到 AVE →",
+    "transmission3": "跳转到 QuickSwap →",
+    "from": "支付",
+    "to": "接收",
+    "balance": "余额",
+    "max": "最大",
+    "swap": "兑换",
+    "swapping": "兑换中...",
+    "approve": "授权",
+    "approving": "授权中...",
+    "checking_approval": "检查授权中...",
+    "fate": "交易手续费",
+    "enter_amount": "输入数量",
+    "connect_wallet": {
+      "title": "连接钱包以继续",
+      "description": "请先连接您的钱包来进行交易"
+    },
+    "liquidity_provider": "交易流动性由 QuickSwap 提供",
+    "toast": {
+      "enter_valid_amount": "请输入有效金额",
+      "confirm_in_wallet": "请在钱包中确认交易...",
+      "confirming": "交易确认中...",
+      "swap_success": "兑换成功",
+      "swap_failed": "交易失败，请检查交易详情",
+      "user_rejected": "用户取消了交易",
+      "insufficient_balance": "余额不足",
+      "slippage_too_high": "滑点过大，请重试",
+      "transaction_expired": "交易超时，请重试",
+      "swap_error": "兑换失败，请检查钱包余额或网络状态",
+      "approval_success": "授权成功",
+      "approval_failed": "授权失败",
+      "user_rejected_approval": "用户取消了授权"
+    },
+    "slippage": "滑点",
+    "price": "价格"
   }
 }

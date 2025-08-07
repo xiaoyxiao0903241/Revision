@@ -169,6 +169,9 @@ devDependencies:
   eslint-config-next:
     specifier: 15.4.5
     version: 15.4.5(eslint@9.32.0)(typescript@5.9.2)
+  husky:
+    specifier: ^9.1.7
+    version: 9.1.7
   postcss:
     specifier: ^8.5.6
     version: 8.5.6
@@ -6779,6 +6782,12 @@ packages:
       domutils: 3.2.2
       entities: 4.5.0
     dev: false
+
+  /husky@9.1.7:
+    resolution: {integrity: sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==}
+    engines: {node: '>=18'}
+    hasBin: true
+    dev: true
 
   /idb-keyval@6.2.1:
     resolution: {integrity: sha512-8Sb3veuYCyrZL+VBt9LJfZjLUPWVvqn8tG28VqYNFCo43KHcKuq+b4EiXGeuaLAQWL2YmyDgMp2aSpH9JHsEQg==}

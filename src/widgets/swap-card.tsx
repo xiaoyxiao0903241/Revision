@@ -1,16 +1,16 @@
 import _ from "lodash"
 import { FC } from "react"
 import { InfoPopover, Input, View } from "~/components"
-import { cn, formatDecimal } from "~/lib/utils"
+import { cn, formatDecimal,formatNumbedecimalScale } from "~/lib/utils"
 
 export interface Balance {
   symbol: "USDT" | "OLY"
   description: string
   icon: React.ReactNode
   value?: string
-  balance: number
   profit?: number
-  address: string
+  address: string,
+  olyPrice?:number
 }
 
 export const SwapCard: FC<{
@@ -42,23 +42,23 @@ export const SwapCard: FC<{
           />
           <div className="flex justify-end items-center text-sm text-gray-400">
             <span>
-              ≈{formatDecimal(Number(data.value ?? 0) * (data.profit ?? 0))}
+              ≈{data.symbol==='USDT'?formatNumbedecimalScale(data && data.value||0,2): formatNumbedecimalScale(data && (Number(data.value)*(data && data.olyPrice||0)),2)}
             </span>
-            {_.isUndefined(data.profit) ? null : (
+            {data && data.symbol ==='USDT' && data.type === "destination" ? (
               <>
                 <span
                   className={cn("ml-2", {
-                    "text-destructive": data.profit < 0,
-                    "text-success": data.profit > 0,
+                    "text-destructive": data.profit != null && data.profit < 0,
+                    "text-success": data.profit != null && data.profit > 0,
                   })}
                 >
-                  ({`${formatDecimal(data.profit)}%`})
+                  ({`${formatDecimal(data.profit ?? 0)}%`})
                 </span>
                 <InfoPopover triggerClassName="w-4 h-4 ml-2 text-warning">
-                  <div className="w-40">{data.description}</div>
+                  <div className="w-40">交易手续费</div>
                 </InfoPopover>
               </>
-            )}
+            ) : null}
           </div>
         </div>
       </div>

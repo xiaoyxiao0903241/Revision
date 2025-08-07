@@ -534,5 +534,44 @@
       "user_rejected": "User rejected transaction"
     },
     "invite_not_active": "Your account needs to bind a referrer"
+  },
+  "exchange": {
+    "title": "Swap",
+    "transmission": "Go to Dexscreener →",
+    "transmission2": "Go to AVE →",
+    "transmission3": "Go to QuickSwap →",
+    "from": "Pay",
+    "to": "Receive",
+    "balance": "Balance",
+    "max": "Max",
+    "swap": "Swap",
+    "swapping": "Swapping...",
+    "approve": "Approve",
+    "approving": "Approving...",
+    "checking_approval": "Checking Approval...",
+    "fate": "TX Fee",
+    "enter_amount": "Enter Amount",
+    "connect_wallet": {
+      "title": "Connect Wallet to Continue",
+      "description": "Please connect your wallet to trade"
+    },
+    "liquidity_provider": "Trading liquidity provided by QuickSwap",
+    "toast": {
+      "enter_valid_amount": "Please enter a valid amount",
+      "confirm_in_wallet": "Please confirm the transaction in your wallet...",
+      "confirming": "Transaction confirming...",
+      "swap_success": "Swap successful",
+      "swap_failed": "SWAP failed, please check transaction details",
+      "user_rejected": "User rejected the transaction",
+      "insufficient_balance": "Insufficient balance",
+      "slippage_too_high": "Slippage too high, please try again",
+      "transaction_expired": "Transaction timed out, please try again",
+      "swap_error": "Swap failed, please check wallet balance or network status",
+      "approval_success": "Approval successful",
+      "approval_failed": "Approval failed",
+      "user_rejected_approval": "User rejected the approval"
+    },
+    "slippage": "Slippage",
+    "price": "Price"
   }
 }

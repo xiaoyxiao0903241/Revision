@@ -59,7 +59,6 @@ export const fetchTokenData = async ({
     ];
 
     // 这里不检查 ts和 eslint 错误
-
     // 只有在有输入金额时才获取兑换比例
     if (amount && parseFloat(amount) > 0) {
       calls.push({
@@ -81,6 +80,8 @@ export const fetchTokenData = async ({
     const results = await executeMulticall({
       calls,
     });
+
+    console.log(results,'swap的数据')
 
     // 处理基础数据
     const fromTokenBalance = results[0].success

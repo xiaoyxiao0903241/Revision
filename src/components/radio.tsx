@@ -3,12 +3,13 @@ import { cn } from "~/lib/utils"
 
 export const RadioGroup: FC<{
   value?: string
-  onChange: (value: string) => void
+  onChange: (value: string,) => void
   options: {
     label: string
     value: string
   }[]
 }> = ({ value, onChange, options }) => {
+  console.log(value,'22222')
   return (
     <div className="flex gap-2">
       {options.map((option) => (
