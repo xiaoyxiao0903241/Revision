@@ -1,37 +1,19 @@
 "use client"
-import { useLocale, useTranslations } from "next-intl"
+import { useTranslations } from "next-intl"
 import Image from "next/image"
-import { usePathname, useRouter } from "next/navigation"
 import { Button, Icon, View } from "~/components"
-import { WalletDropdown } from "~/widgets"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "~/components/dropdown-menu"
 import { useMock } from "~/hooks/useMock"
+import { WalletDropdown } from "~/widgets"
+import { LanguageSwitcher } from "./language-switcher"
 
 interface HeaderProps {
   onMenuClick?: () => void
 }
 
 export function Header({ onMenuClick }: HeaderProps) {
-  const locale = useLocale()
-  const router = useRouter()
-  const pathname = usePathname()
   const t = useTranslations("common")
-  const languages = [
-    { code: "en", name: "English" },
-    { code: "zh", name: "中文" },
-  ]
+
   const { walletConnected, setWalletConnected } = useMock()
-  const handleLanguageChange = (newLocale: string) => {
-    // 构造新的路径来切换语言
-    const newPath = pathname.replace(`/${locale}`, `/${newLocale}`)
-    router.replace(newPath)
-  }
-  console.log(walletConnected)
 
   return (
     <header className="flex h-20 items-center justify-between px-4 md:px-9 w-full">
@@ -48,33 +30,7 @@ export function Header({ onMenuClick }: HeaderProps) {
       </div>
       {/* 移动端菜单按钮 */}
       <div className="md:flex items-center gap-4 hidden">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div className="flex items-center gap-2 cursor-pointer">
-              <Icon
-                name="sphere"
-                size={32}
-                className="text-foreground pointer-events-none"
-              />
-              <Icon
-                name="arrow"
-                size={20}
-                className="text-foreground/50 pointer-events-none"
-              />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-40">
-            {languages.map((language) => (
-              <DropdownMenuItem
-                key={language.code}
-                onClick={() => handleLanguageChange(language.code)}
-                className={locale === language.code ? "text-foreground" : ""}
-              >
-                {language.name}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <LanguageSwitcher />
         {walletConnected ? (
           <>
             <View
@@ -118,28 +74,7 @@ export function Header({ onMenuClick }: HeaderProps) {
         )}
       </div>
       <div className="md:hidden items-center gap-4 flex">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div className="flex items-center gap-2 cursor-pointer">
-              <Icon
-                name="sphere"
-                size={32}
-                className="text-foreground pointer-events-none"
-              />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-40">
-            {languages.map((language) => (
-              <DropdownMenuItem
-                key={language.code}
-                onClick={() => handleLanguageChange(language.code)}
-                className={locale === language.code ? "text-foreground" : ""}
-              >
-                {language.name}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <LanguageSwitcher />
         {walletConnected ? (
           <>
             <div className="items-center gap-2 h-8 w-8 border border-[#434c8c] rounded-full cursor-pointer">

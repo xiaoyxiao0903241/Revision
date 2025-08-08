@@ -1,65 +1,11 @@
 "use client"
-import Image from "next/image"
 import { useEffect } from "react"
-import { Icon, IconFontName } from "~/components"
-import { Link, usePathname } from "~/i18n/navigation"
 import { cn } from "~/lib/utils"
 import { SidebarContent } from "./sidebar"
-
-interface NavigationItem {
-  label: string
-  href: string
-  icon: string
-  section?: string
-  uppercase?: boolean
-}
 
 interface MobileSidebarProps {
   isOpen: boolean
   onClose: () => void
-}
-
-const NavigationItem = ({
-  item,
-  onClose,
-}: {
-  item: NavigationItem
-  onClose: () => void
-}) => {
-  const pathname = usePathname()
-  const isActive =
-    pathname === item.href || pathname.startsWith(`${item.href}/`)
-
-  return (
-    <Link
-      href={item.href}
-      onClick={onClose}
-      className={cn(
-        "flex w-full items-center space-x-3 px-5 py-4 text-base font-medium transition-colors",
-        "hover:bg-foreground/5",
-        isActive && "text-gradient"
-      )}
-    >
-      {item.icon.startsWith("/") ? (
-        <Image src={item.icon} alt={item.label} width={24} height={24} />
-      ) : (
-        <Icon
-          name={item.icon as IconFontName}
-          size={24}
-          className={cn("text-gray-400", isActive && "text-gradient")}
-        />
-      )}
-      <span
-        className={cn(
-          "text-gray-300",
-          isActive && "text-gradient",
-          item.uppercase && "uppercase"
-        )}
-      >
-        {item.label}
-      </span>
-    </Link>
-  )
 }
 
 export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {

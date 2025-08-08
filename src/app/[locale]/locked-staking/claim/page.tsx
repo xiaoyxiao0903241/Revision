@@ -2,14 +2,7 @@
 
 import { useTranslations } from "next-intl"
 import { useState } from "react"
-import {
-  Alert,
-  Button,
-  Card,
-  CardContent,
-  Notification,
-  Segments,
-} from "~/components"
+import { Alert, Button, Card, Notification, Segments } from "~/components"
 import { amountOptions, durationOptions, useMock } from "~/hooks/useMock"
 import { WalletSummary } from "~/widgets"
 import { AmountCard } from "~/widgets/amount-card"
