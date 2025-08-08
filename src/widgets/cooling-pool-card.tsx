@@ -1,49 +1,104 @@
-import { useTranslations } from "next-intl"
-import { FC } from "react"
-import { Button, View } from "~/components"
-import { cn, formatDecimal } from "~/lib/utils"
+import { useState } from "react";
+import { useTranslations } from "next-intl";
+import { FC } from "react";
+import { Button, View } from "~/components";
+import { cn } from "~/lib/utils";
+import { usePublicClient } from "wagmi";
+import { useUserAddress } from "~/contexts/UserAddressContext";
+import { toast } from "sonner";
+import YielodLockAbi from "~/wallet/constants/YielodLockAbi.json";
+import { useQueryClient } from "@tanstack/react-query";
+import { useWriteContractWithGasBuffer } from "~/hooks/useWriteContractWithGasBuffer";
+import { yieldLocker } from "~/wallet/constants/tokens";
+import { Abi } from "viem";
 
 interface CoolingPoolCardProps {
   data: {
-    released: number
-    waiting: number
-    waitingPercent: number
-    period: number
-    className: string
-    bgClassName: string
-    disabled?: boolean
-    active?: boolean
-  }
-  children: React.ReactNode
-  onClick?: () => void
+    claimable: string;
+    remainingRewards: string;
+    waitingPercent: number;
+    period: number;
+    className: string;
+    bgClassName: string;
+    disabled?: boolean;
+    waiting: number;
+    active: number;
+    periodIndex: number;
+  };
+  children: React.ReactNode;
+  onClick?: () => void;
 }
 
 export const CoolingPoolCard: FC<CoolingPoolCardProps> = ({
   data,
-  onClick,
   children,
 }) => {
-  const t = useTranslations("coolingPool")
-  const tStaking = useTranslations("staking")
+  const t = useTranslations("coolingPool");
+  const tStaking = useTranslations("staking");
+  const publicClient = usePublicClient();
+  const { userAddress } = useUserAddress();
+  const [current, setCurrent] = useState<number>(10000);
+  const queryClient = useQueryClient();
+  const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
+  const pageSize = 10;
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  const claimReward = async () => {
+    if (!publicClient || !userAddress) return;
+    const toastId = toast.loading("请在钱包中确认交易...");
+    setIsDisabled(true);
+    setCurrent(data.period);
+    try {
+      const hash = await writeContractAsync({
+        abi: YielodLockAbi as Abi,
+        address: yieldLocker as `0x${string}`,
+        functionName: "claimForIndex",
+        args: [data.periodIndex],
+      });
+      toast.loading("交易确认中...", {
+        id: toastId,
+      });
+      const result = await publicClient.waitForTransactionReceipt({ hash });
+      if (result.status === "success") {
+        toast.success("领取成功", {
+          id: toastId,
+        });
+        await queryClient.invalidateQueries({
+          queryKey: ["getRewardList", userAddress],
+        });
+        await queryClient.invalidateQueries({
+          queryKey: ["getRewardRecord", userAddress, 1, pageSize],
+        });
+      } else {
+        toast.error("领取失败", {
+          id: toastId,
+        });
+      }
+    } catch (error: unknown) {
+      console.log(error);
+      toast.error("error", {
+        id: toastId,
+      });
+    } finally {
+      setIsDisabled(false);
+      setCurrent(10000);
+    }
+  };
   return (
     <View
       className="bg-[#22285E] px-4 py-6"
       clipDirection="topLeft-bottomRight"
       clipSize={16}
     >
-      <div className={cn("flex flex-col items-center", data.className)}>
+      <div className={cn("flex flex-col items-center")}>
         {/* 动画齿轮图标 */}
         <div className="w-2/3 aspect-square flex items-center justify-center">
           {children}
         </div>
 
         {/* 已释放数量 */}
-        <div
-          className={cn("text-2xl font-bold font-mono", data.className, {
-            "text-gradient": data.active,
-          })}
-        >
-          {formatDecimal(data.released, 2)}
+        <div className={cn("text-2xl font-bold font-mono", data.className)}>
+          {data.claimable}
         </div>
         <div className="text-xs text-foreground/50">{t("released")}</div>
 
@@ -53,7 +108,7 @@ export const CoolingPoolCard: FC<CoolingPoolCardProps> = ({
             {t("waitingToBeReleased")}
           </div>
           <div className="text-xs font-mono text-white">
-            {formatDecimal(data.waiting, 2)} ({data.waitingPercent.toFixed(2)}%)
+            {data.waiting} ({data.waitingPercent.toFixed(2)}%)
           </div>
         </div>
         {/* 进度条 */}
@@ -68,7 +123,7 @@ export const CoolingPoolCard: FC<CoolingPoolCardProps> = ({
             <div
               className={cn(
                 "absolute inset-0",
-                data.active && "animate-stripes"
+                data.active && "animate-stripes",
               )}
               style={{
                 width: "calc(100% + 8px)",
@@ -97,13 +152,13 @@ export const CoolingPoolCard: FC<CoolingPoolCardProps> = ({
         {/* 领取按钮 */}
         <Button
           className="w-full"
-          disabled={data.disabled}
-          onClick={onClick}
+          disabled={data.disabled || isDisabled}
+          onClick={claimReward}
           clipDirection="topLeft-bottomRight"
         >
-          {t("claim")}
+          {current === data.period ? "领取中..." : "领取"}
         </Button>
       </div>
     </View>
-  )
-}
+  );
+};

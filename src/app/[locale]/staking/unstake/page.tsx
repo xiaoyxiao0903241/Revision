@@ -1,8 +1,7 @@
-"use client"
+"use client";
 
-
-import { useTranslations } from "next-intl"
-import { useEffect, useState } from "react"
+import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 import {
   Alert,
   Button,
@@ -12,12 +11,12 @@ import {
   Segments,
   RoundedLogo,
   View,
-  CountdownDisplay
-} from "~/components"
-import { formatDecimal } from "~/lib/utils"
-import { AmountCard, WalletSummary } from "~/widgets"
-import { useNolockStore } from "~/store/noLock"
-import CountDownTimer from "./component/countDownTimer"
+  CountdownDisplay,
+} from "~/components";
+import { formatDecimal } from "~/lib/utils";
+import { AmountCard, WalletSummary } from "~/widgets";
+import { useNolockStore } from "~/store/noLock";
+import CountDownTimer from "./component/countDownTimer";
 import { useQueryClient } from "@tanstack/react-query";
 import { useUserAddress } from "~/contexts/UserAddressContext";
 import { formatNumbedecimalScale } from "~/lib/utils";
@@ -28,27 +27,36 @@ import DemandStakingAbi from "~/wallet/constants/DemandStakingAbi.json";
 import { demandStaking } from "~/wallet/constants/tokens";
 import { Abi, parseUnits } from "viem";
 
-
-
 interface StakInfo {
   stakNum: number;
 }
 
 export default function UnstakePage() {
-  const t = useTranslations("staking")
-  const {olyPrice, time, lastStakeTimestamp,nextBlock,currentBlock,AllolyStakeNum,allnetReabalseNum,hotDataStakeNum,demandProfitInfo,afterHotData} = useNolockStore();
-  const tNoLockedStaking = useTranslations("noLockedStaking")
- 
+  const t = useTranslations("staking");
+  const {
+    olyPrice,
+    time,
+    lastStakeTimestamp,
+    nextBlock,
+    currentBlock,
+    AllolyStakeNum,
+    allnetReabalseNum,
+    hotDataStakeNum,
+    demandProfitInfo,
+    afterHotData,
+  } = useNolockStore();
+  const tNoLockedStaking = useTranslations("noLockedStaking");
+
   const { userAddress } = useUserAddress();
-  const [disabled] = useState(true)
-  const [isDisabled, setIsDisabled] = useState<boolean>(false)
+  const [disabled] = useState(true);
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [selectedStakeType, setSelectedStakeType] = useState<
     "release" | "unstake"
-  >("release")
+  >("release");
   const stakeOptions = [
     { value: "release", label: tNoLockedStaking("release") },
     { value: "unstake", label: t("unstake") },
-  ]
+  ];
   const [hotDataInfo, setStakeInfo] = useState<StakInfo>({ stakNum: 0 });
   const [isClaim, setisClaim] = useState<boolean>(false);
   const [apy, setApy] = useState<string>("0");
@@ -56,13 +64,12 @@ export default function UnstakePage() {
   const [nextEarnAmount, setNextEarnAmount] = useState<number>(0);
   const [allProfit, setAllProfitAmount] = useState<number>(0);
   const [principal, setPrincipal] = useState<number>(0);
-  const [UnstakeAmount, setUnstakeAmount] = useState("")
+  const [UnstakeAmount, setUnstakeAmount] = useState("");
   const [cutDownTime, setCutDownTime] = useState<number>(0);
   const publicClient = usePublicClient();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
   const queryClient = useQueryClient();
-
 
   //领取本金
   const claimPrincipal = async () => {
@@ -94,7 +101,7 @@ export default function UnstakePage() {
         id: toastId,
       });
       if (result.status === "success") {
-        toast.success(("解除质押成功"), {
+        toast.success("解除质押成功", {
           id: toastId,
         });
         await Promise.all([
@@ -106,7 +113,7 @@ export default function UnstakePage() {
           }),
           queryClient.invalidateQueries({
             queryKey: ["UserDemandProfit", userAddress],
-          })
+          }),
         ]);
         setUnstakeAmount("");
       }
@@ -159,7 +166,6 @@ export default function UnstakePage() {
             queryKey: ["UserDemandProfit", userAddress],
           }),
         ]);
-        
       } else {
         toast.error(t("toast.claim_failed"), {
           id: toastId,
@@ -175,17 +181,17 @@ export default function UnstakePage() {
     } finally {
       // toast.dismiss(toastId)
       setIsDisabled(false);
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
-
   useEffect(() => {
-    const myAsNum = Number(afterHotData?.principal || 0) + Number(hotDataInfo.stakNum || 0);
+    const myAsNum =
+      Number(afterHotData?.principal || 0) + Number(hotDataInfo.stakNum || 0);
     // setMyAllStakeNum(myAsNum);
     const NextEarnAmount = formatNumbedecimalScale(
       ((myAsNum + allProfit) * Number(apy)) / 100,
-      6
+      6,
     );
     setNextEarnAmount(Number(NextEarnAmount));
     if (afterHotData?.principal) {
@@ -195,8 +201,6 @@ export default function UnstakePage() {
     setPrincipal(0);
   }, [afterHotData, apy, hotDataInfo.stakNum, allProfit]);
 
-
-
   useEffect(() => {
     if (demandProfitInfo) {
       setAllProfitAmount(demandProfitInfo.allProfit);
@@ -205,8 +209,8 @@ export default function UnstakePage() {
   }, [demandProfitInfo]);
 
   useEffect(() => {
-    console.log(hotDataStakeNum,'hotDataStakeNum')
-    if (hotDataStakeNum ) {
+    console.log(hotDataStakeNum, "hotDataStakeNum");
+    if (hotDataStakeNum) {
       setStakeInfo({ stakNum: hotDataStakeNum });
     }
   }, [hotDataStakeNum]);
@@ -216,7 +220,7 @@ export default function UnstakePage() {
     if (allnetReabalseNum && AllolyStakeNum) {
       const rate = formatNumbedecimalScale(
         (allnetReabalseNum / AllolyStakeNum) * 100,
-        4
+        4,
       );
       setApy(rate);
     }
@@ -228,7 +232,7 @@ export default function UnstakePage() {
       const time = nextBlock - currentBlock < 0 ? 0 : nextBlock - currentBlock;
       setCutDownTime(time);
     }
-  }, [currentBlock, nextBlock])
+  }, [currentBlock, nextBlock]);
 
   return (
     <div className="space-y-6">
@@ -251,40 +255,57 @@ export default function UnstakePage() {
             />
             {selectedStakeType === "release" ? (
               <>
-                <View className="bg-[#22285E] px-4" clipDirection="topRight-bottomLeft">
+                <View
+                  className="bg-[#22285E] px-4"
+                  clipDirection="topRight-bottomLeft"
+                >
                   <div className="flex items-center justify-between py-4">
                     <div className="flex flex-col gap-2">
-                      <span className="text-foreground/70 text-sm">{t("amount")}</span>
+                      <span className="text-foreground/70 text-sm">
+                        {t("amount")}
+                      </span>
                       <div className="flex items-center gap-2">
                         <RoundedLogo className="w-6 h-6" />
                         <span className="text-foreground text-3xl font-mono">
-                          {hotDataInfo.stakNum ? formatNumbedecimalScale(hotDataInfo.stakNum, 2) : 0}
+                          {hotDataInfo.stakNum
+                            ? formatNumbedecimalScale(hotDataInfo.stakNum, 2)
+                            : 0}
                         </span>
                       </div>
                       <span className="text-foreground/70 text-sm">
-                      ${formatNumbedecimalScale(hotDataInfo.stakNum*olyPrice,2)}
+                        $
+                        {formatNumbedecimalScale(
+                          hotDataInfo.stakNum * olyPrice,
+                          2,
+                        )}
                       </span>
                     </div>
-                    {
-                      lastStakeTimestamp && lastStakeTimestamp > 0 && hotDataInfo.stakNum > 0 && !isClaim ?
-                        <span className="text-white">
-                          <CountDownTimer time={time}></CountDownTimer>
-                        </span> : <Button
-                          className="h-10"
-                          disabled={hotDataInfo.stakNum === 0 || !isClaim || isDisabled}
-                          clipDirection="topRight-bottomLeft"
-                          variant="primary"
-                          onClick={claimToStakes}
-                        >
-                          {isLoading?"Release...":"Release"}
-                        </Button>
-                    }
+                    {lastStakeTimestamp &&
+                    lastStakeTimestamp > 0 &&
+                    hotDataInfo.stakNum > 0 &&
+                    !isClaim ? (
+                      <span className="text-white">
+                        <CountDownTimer time={time}></CountDownTimer>
+                      </span>
+                    ) : (
+                      <Button
+                        className="h-10"
+                        disabled={
+                          hotDataInfo.stakNum === 0 || !isClaim || isDisabled
+                        }
+                        clipDirection="topRight-bottomLeft"
+                        variant="primary"
+                        onClick={claimToStakes}
+                      >
+                        {isLoading ? "Release..." : "Release"}
+                      </Button>
+                    )}
                   </div>
                 </View>
                 {/* 信息提示 */}
                 <Notification>
                   {tNoLockedStaking(
-                    disabled ? "unstakeDisabledInfo" : "unstakeInfo"
+                    disabled ? "unstakeDisabledInfo" : "unstakeInfo",
                   )}
                 </Notification>
               </>
@@ -293,14 +314,16 @@ export default function UnstakePage() {
                 <AmountCard
                   data={{
                     value: UnstakeAmount,
-                    desc: Number(UnstakeAmount)*olyPrice,
-                    balance: principal?Number(formatNumbedecimalScale(principal, 2)):0,
+                    desc: Number(UnstakeAmount) * olyPrice,
+                    balance: principal
+                      ? Number(formatNumbedecimalScale(principal, 2))
+                      : 0,
                   }}
                   onChange={(value) => {
-                    if(Number(value)>principal){
-                      setUnstakeAmount(principal.toString())
-                    }else{
-                      setUnstakeAmount(value)
+                    if (Number(value) > principal) {
+                      setUnstakeAmount(principal.toString());
+                    } else {
+                      setUnstakeAmount(value);
                     }
                   }}
                   description={t("balance")}
@@ -310,55 +333,57 @@ export default function UnstakePage() {
                     <List.Label>{t("youWillReceive")}</List.Label>
                     <List.Value className="text-xl font-mono">{`${formatDecimal(
                       Number(UnstakeAmount),
-                      4
+                      4,
                     )} OLY`}</List.Value>
                   </List.Item>
                   <List.Item>
                     <List.Label>下一次爆块收益率</List.Label>
-                    <List.Value className="font-mono">{Number(apy) > 0 ? apy : 0}%</List.Value>
+                    <List.Value className="font-mono">
+                      {Number(apy) > 0 ? apy : 0}%
+                    </List.Value>
                   </List.Item>
                   <List.Item>
                     <List.Label>下一次爆块奖励</List.Label>
-                    <List.Value className="text-success">{nextEarnAmount > 0 ? formatNumbedecimalScale(nextEarnAmount, 2) : 0} OLY</List.Value>
+                    <List.Value className="text-success">
+                      {nextEarnAmount > 0
+                        ? formatNumbedecimalScale(nextEarnAmount, 2)
+                        : 0}{" "}
+                      OLY
+                    </List.Value>
                   </List.Item>
 
                   <List.Item>
                     <List.Label>{t("countdownToNextRebase")}</List.Label>
                     <List.Value className="font-mono">
                       <CountdownDisplay
-                        blocks={BigInt(cutDownTime)} isShowDay={false}
+                        blocks={BigInt(cutDownTime)}
+                        isShowDay={false}
                       />
                     </List.Value>
                   </List.Item>
                 </List>
-                <Button 
+                <Button
                   clipDirection="topRight-bottomLeft"
-                  variant={(principal == 0 || isDisabled || Number(UnstakeAmount) === 0)?"disabled":"primary"}
-                  disabled={principal == 0 || isDisabled || Number(UnstakeAmount) === 0}
+                  variant={
+                    principal == 0 || isDisabled || Number(UnstakeAmount) === 0
+                      ? "disabled"
+                      : "primary"
+                  }
+                  disabled={
+                    principal == 0 || isDisabled || Number(UnstakeAmount) === 0
+                  }
                   onClick={claimPrincipal}
-                  >
-                 {isLoading ? "解除中..." : "解除质押"}
+                >
+                  {isLoading ? "解除中..." : "解除质押"}
                 </Button>
               </>
             )}
           </Card>
         </div>
         <div>
-          <WalletSummary
-            data={{
-              availableToStake: 100,
-              stakedAmount: 100,
-              stakedAmountDesc: 12345,
-              apr: 100,
-              rebaseRewards: 12345678,
-              rebaseRewardsDesc: 12345678,
-              totalStaked: 100,
-              stakers: 100,
-              olyMarketCap: 100,
-            }}
-          />
+          <WalletSummary />
         </div>
       </div>
     </div>
-  )
+  );
 }

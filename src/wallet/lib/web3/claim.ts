@@ -99,14 +99,13 @@ export const newRewardList = async ({ address }: { address: string }) => {
         if (res && res.length) {
           const profit = formatUnits(res[1].data as bigint, 9);
           allClaimable += Number(formatUnits(res[1].data as bigint, 9));
-
           const pending = formatNumbedecimalScale(
             Number(formatUnits(res[0].data as bigint, 9)) - Number(profit),
             9,
           );
           allPending += Number(pending);
           rewardArr.push({
-            day: Number(list[i].releasedBlocks) / 43200,
+            day: Number(list[i].releasedBlocks) / 57600,
             periodIndex: i,
             claimable: profit,
             remainingRewards: pending.toString(),
@@ -114,6 +113,7 @@ export const newRewardList = async ({ address }: { address: string }) => {
           });
         }
       }
+      console.log(rewardArr, "rewardArr111");
       return {
         rewardArr: rewardArr,
         allClaimable: allClaimable,

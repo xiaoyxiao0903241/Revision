@@ -1,62 +1,55 @@
-"use client"
+"use client";
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import {
-  Alert,
-  Button,
-  List,
-  Card,
-  CountdownDisplay
-} from "~/components";
+import { Alert, Button, List, Card, CountdownDisplay } from "~/components";
 import { demandStaking } from "~/wallet/constants/tokens";
 import { useUserAddress } from "~/contexts/UserAddressContext";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import {
-  getAllowance
-} from "~/wallet/lib/web3/stake";
-import { OLY,} from "~/wallet/constants/tokens";
+import { getAllowance } from "~/wallet/lib/web3/stake";
+import { OLY } from "~/wallet/constants/tokens";
 import { useWriteContractWithGasBuffer } from "~/hooks/useWriteContractWithGasBuffer";
 import { usePublicClient } from "wagmi";
 import { Abi, erc20Abi, parseUnits } from "viem";
-import { WalletSummary } from "~/widgets"
-import { AmountCard } from "~/widgets/amount-card"
+import { WalletSummary } from "~/widgets";
+import { AmountCard } from "~/widgets/amount-card";
 // import { DurationSelect } from "~/widgets/select"
 import { formatNumbedecimalScale } from "~/lib/utils";
 import ConnectWalletButton from "~/components/web3/ConnectWalletButton";
 import DemandStakingAbi from "~/wallet/constants/DemandStakingAbi.json";
 import { getInviteInfo } from "~/wallet/lib/web3/invite";
-import { useNolockStore } from "~/store/noLock"
-
-
-
+import { useNolockStore } from "~/store/noLock";
 
 export default function StakingPage() {
-  const t = useTranslations("staking")
+  const t = useTranslations("staking");
   const { userAddress } = useUserAddress();
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
   const publicClient = usePublicClient();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [stakeAmount, setStakeAmount] = useState("");
- 
+
   const [apy, setApy] = useState<string>("0");
   const [cutDownTime, setCutDownTime] = useState<number>(0);
   const [allowanceNum, setAllowanceNum] = useState<number>(0);
-  const [myolybalance, seMyolybalance] = useState<string>('0');
+  const [myolybalance, seMyolybalance] = useState<string>("0");
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const queryClient = useQueryClient();
-  const [olyToUsdt,setolyToUsdt] = useState('0')
+  const [olyToUsdt, setolyToUsdt] = useState("0");
 
-  const { olyBalance,olyPrice,allnetReabalseNum,AllolyStakeNum,currentBlock,nextBlock } = useNolockStore()
+  const {
+    olyBalance,
+    olyPrice,
+    allnetReabalseNum,
+    AllolyStakeNum,
+    currentBlock,
+    nextBlock,
+  } = useNolockStore();
   const { data: inviteInfo, refetch: refetchInviteInfo } = useQuery({
     queryKey: ["inviteInfo", userAddress],
     queryFn: () => getInviteInfo({ address: userAddress as `0x${string}` }),
     enabled: Boolean(userAddress),
     retry: 1,
   });
-
-
- 
 
   // 获取授权长度
   const { data: allowanceLynkLength, refetch: refetchAllowanceOly } = useQuery({
@@ -66,7 +59,7 @@ export default function StakingPage() {
         address: userAddress as `0x${string}`,
         fromAddress: OLY,
         toAddress: demandStaking,
-        decimal: 9
+        decimal: 9,
       }),
     enabled: Boolean(userAddress),
     retry: 1,
@@ -99,9 +92,6 @@ export default function StakingPage() {
       setIsLoading(false);
     }
   };
-
- 
-
 
   // 质押
   const toStaking = async () => {
@@ -145,7 +135,7 @@ export default function StakingPage() {
         await Promise.all([
           queryClient.invalidateQueries({
             queryKey: ["olyBalance", userAddress],
-          })
+          }),
         ]);
         setStakeAmount("");
       } else {
@@ -165,27 +155,23 @@ export default function StakingPage() {
   };
 
   //计算rebase倒计时
-  useEffect(()=>{
-    if(nextBlock && currentBlock){
-     const time = nextBlock - currentBlock < 0 ? 0 : nextBlock - currentBlock;
-     setCutDownTime(time);
+  useEffect(() => {
+    if (nextBlock && currentBlock) {
+      const time = nextBlock - currentBlock < 0 ? 0 : nextBlock - currentBlock;
+      setCutDownTime(time);
     }
-  },[currentBlock,nextBlock])
-
- 
+  }, [currentBlock, nextBlock]);
 
   //计算下一次爆块收益率
   useEffect(() => {
     if (allnetReabalseNum && AllolyStakeNum) {
       const rate = formatNumbedecimalScale(
-        (allnetReabalseNum /AllolyStakeNum) * 100,
-        4
+        (allnetReabalseNum / AllolyStakeNum) * 100,
+        4,
       );
       setApy(rate);
     }
-  }, [allnetReabalseNum,AllolyStakeNum]);
-
-  
+  }, [allnetReabalseNum, AllolyStakeNum]);
 
   useEffect(() => {
     if (allowanceLynkLength) {
@@ -194,27 +180,28 @@ export default function StakingPage() {
   }, [allowanceLynkLength]);
 
   //计算质押的价值
-  useEffect(()=>{
-    const amount = Number(stakeAmount)
-    if(amount && olyPrice){
-      const all = formatNumbedecimalScale(amount*olyPrice,2)
-      setolyToUsdt(all)
+  useEffect(() => {
+    const amount = Number(stakeAmount);
+    if (amount && olyPrice) {
+      const all = formatNumbedecimalScale(amount * olyPrice, 2);
+      setolyToUsdt(all);
     }
-
-  },[olyPrice,stakeAmount])
+  }, [olyPrice, stakeAmount]);
 
   //余额
-  useEffect(()=>{
-    const myBalance = formatNumbedecimalScale(olyBalance,2)
-    seMyolybalance(myBalance)
-  },[olyBalance])
+  useEffect(() => {
+    const myBalance = formatNumbedecimalScale(olyBalance, 2);
+    seMyolybalance(myBalance);
+  }, [olyBalance]);
 
   return (
     <div className="space-y-6">
       <Alert
         icon="stake"
         title={"STAKE"}
-        description={"I您可以随时存入或解除质押,无锁定期限,每12小时发放爆块奖励"}
+        description={
+          "I您可以随时存入或解除质押,无锁定期限,每12小时发放爆块奖励"
+        }
       />
 
       {/* 主要内容区域 */}
@@ -228,9 +215,9 @@ export default function StakingPage() {
                 balance: (myolybalance && Number(myolybalance)) || 0,
               }}
               onChange={(value) => {
-                setStakeAmount(value)
+                setStakeAmount(value);
               }}
-              description={"余额"}                       
+              description={"余额"}
             />
             <List>
               <List.Item>
@@ -240,76 +227,85 @@ export default function StakingPage() {
 
               <List.Item>
                 <List.Label>{t("nextRebaseRewardRate")}</List.Label>
-                <List.Value className="text-secondary">{Number(apy) > 0 ? apy : 0}%</List.Value>
+                <List.Value className="text-secondary">
+                  {Number(apy) > 0 ? apy : 0}%
+                </List.Value>
               </List.Item>
               <List.Item>
                 <List.Label>{t("countdownToNextRebase")}</List.Label>
                 <List.Value>
                   <CountdownDisplay
-                    blocks={BigInt(cutDownTime)} isShowDay={false}
+                    blocks={BigInt(cutDownTime)}
+                    isShowDay={false}
                   />
                 </List.Value>
               </List.Item>
             </List>
-            {
-              !userAddress ? <ConnectWalletButton from={"staking"} className="text-xl py-3 cursor-pointer px-6 !text-white text-5    h-[48px] min-w-[160px]   mx-auto" /> :
-                (
-                  <div className="flex items-center justify-center w-full gap-x-4">
-
-                    {
-                      (allowanceNum === 0 || allowanceNum < Number(stakeAmount)) &&
-                      <Button
-                        clipDirection="topRight-bottomLeft"
-                        className="font-mono w-[50%]"
-                        variant={(isDisabled || Number(stakeAmount) === 0 || Number(myolybalance) === 0) ? "disabled" : "primary"}
-                        disabled={isDisabled || Number(stakeAmount) === 0 || Number(myolybalance) === 0}
-                        onClick={toStaking}
-                      >
-                        {isLoading ? '授权中...' : '授权'}
-                      </Button>
+            {!userAddress ? (
+              <ConnectWalletButton
+                from={"staking"}
+                className="text-xl py-3 cursor-pointer px-6 !text-white text-5    h-[48px] min-w-[160px]   mx-auto"
+              />
+            ) : (
+              <div className="flex items-center justify-center w-full gap-x-4">
+                {(allowanceNum === 0 || allowanceNum < Number(stakeAmount)) && (
+                  <Button
+                    clipDirection="topRight-bottomLeft"
+                    className="font-mono w-[50%]"
+                    variant={
+                      isDisabled ||
+                      Number(stakeAmount) === 0 ||
+                      Number(myolybalance) === 0
+                        ? "disabled"
+                        : "primary"
                     }
-                    {
-                      <Button
-                       clipDirection="topRight-bottomLeft"
-                        className="font-mono flex-1"
-                        variant={(isDisabled || allowanceNum === 0 || allowanceNum < Number(stakeAmount) || Number(stakeAmount) === 0 || Number(myolybalance) === 0) ? "disabled" : "primary"}
-                        disabled={isDisabled || allowanceNum === 0 || allowanceNum < Number(stakeAmount) || Number(stakeAmount) === 0 || Number(myolybalance) === 0}
-                        onClick={toStaking}
-                      >
-                        {
-                          isLoading && allowanceNum > 0 && allowanceNum > Number(stakeAmount)
-                            ? '质押中...' : '质押'
-                        }
-                      </Button>
+                    disabled={
+                      isDisabled ||
+                      Number(stakeAmount) === 0 ||
+                      Number(myolybalance) === 0
                     }
-                  </div>
-                )
-            }
-
+                    onClick={toStaking}
+                  >
+                    {isLoading ? "授权中..." : "授权"}
+                  </Button>
+                )}
+                {
+                  <Button
+                    clipDirection="topRight-bottomLeft"
+                    className="font-mono flex-1"
+                    variant={
+                      isDisabled ||
+                      allowanceNum === 0 ||
+                      allowanceNum < Number(stakeAmount) ||
+                      Number(stakeAmount) === 0 ||
+                      Number(myolybalance) === 0
+                        ? "disabled"
+                        : "primary"
+                    }
+                    disabled={
+                      isDisabled ||
+                      allowanceNum === 0 ||
+                      allowanceNum < Number(stakeAmount) ||
+                      Number(stakeAmount) === 0 ||
+                      Number(myolybalance) === 0
+                    }
+                    onClick={toStaking}
+                  >
+                    {isLoading &&
+                    allowanceNum > 0 &&
+                    allowanceNum > Number(stakeAmount)
+                      ? "质押中..."
+                      : "质押"}
+                  </Button>
+                }
+              </div>
+            )}
           </Card>
         </div>
         <div>
-          <WalletSummary
-            data={{
-              availableToStake: 100,
-              stakedAmount: 100,
-              stakedAmountDesc: 12345,
-              apr: 100,
-              rebaseRewards: 12345678,
-              rebaseRewardsDesc: 12345678,
-              totalStaked: 100,
-              stakers: 100,
-              olyMarketCap: 100,
-            }}
-          />
+          <WalletSummary />
         </div>
       </div>
     </div>
-  )
-
+  );
 }
-
-
-
-
-

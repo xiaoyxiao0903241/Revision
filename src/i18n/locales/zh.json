@@ -472,34 +472,34 @@
         "subtraction_overflow": "減法溢出",
         "interest_exceeded": "金額超出可用利息"
       },
-	  "sales": {
-		"paused": "已暫停",
-		"not_started": "銷售未開始",
-		"ended": "銷售已結束",
-		"not_active": "未啟用",
-		"invalid_sale": "無效的銷售",
-		"already_paused": "已暫停",
-		"not_paused": "未暫停",
-		"zero_address": "零地址",
-		"already_claimed": "已領取",
-		"invalid_initialization": "初始化無效",
-		"not_initializing": "未初始化",
-		"ownable_invalid_owner": "無效的擁有者",
-		"ownable_unauthorized_account": "未授權帳戶",
-		"reward_not_claimable": "獎勵不可領取",
-		"safe_erc20_failed_operation": "ERC20操作失敗",
-		"sale_ended": "銷售已結束",
-		"sale_not_started": "銷售未開始"
-	  },
-	  "matrix": {
-		"already_actived": "已啟用",
-		"invalid_address": "無效的地址",
-		"invalid_initialization": "無效的初始化",
-		"invalid_length": "無效的長度",
-		"not_activated": "未啟用",
-		"not_initializing": "未初始化",
-		"ownable_invalid_owner": "無效的擁有者地址",
-		"ownable_unauthorized_account": "未授權的帳戶操作"
+      "sales": {
+        "paused": "已暫停",
+        "not_started": "銷售未開始",
+        "ended": "銷售已結束",
+        "not_active": "未啟用",
+        "invalid_sale": "無效的銷售",
+        "already_paused": "已暫停",
+        "not_paused": "未暫停",
+        "zero_address": "零地址",
+        "already_claimed": "已領取",
+        "invalid_initialization": "初始化無效",
+        "not_initializing": "未初始化",
+        "ownable_invalid_owner": "無效的擁有者",
+        "ownable_unauthorized_account": "未授權帳戶",
+        "reward_not_claimable": "獎勵不可領取",
+        "safe_erc20_failed_operation": "ERC20操作失敗",
+        "sale_ended": "銷售已結束",
+        "sale_not_started": "銷售未開始"
+      },
+      "matrix": {
+        "already_actived": "已啟用",
+        "invalid_address": "無效的地址",
+        "invalid_initialization": "無效的初始化",
+        "invalid_length": "無效的長度",
+        "not_activated": "未啟用",
+        "not_initializing": "未初始化",
+        "ownable_invalid_owner": "無效的擁有者地址",
+        "ownable_unauthorized_account": "未授權的帳戶操作"
       },
       "user_rejected": "用戶取消了交易"
     },
@@ -543,5 +543,31 @@
     },
     "slippage": "滑点",
     "price": "价格"
+  },
+  "historyTable": {
+    "title": "交易记录",
+    "time": "时间",
+    "amount": "数量(AS)",
+    "record_type": "类型",
+    "hash": "交易哈希",
+    "record_types": {
+      "buy": "购买",
+      "redeem": "赎回",
+      "claim": "领取",
+      "stake": "质押",
+      "unstake": "解除质押",
+      "deposit": "质押",
+      "rebase": "领取(Rebase)",
+      "extra": "领取(Boost)",
+      "principal": "解除质押",
+      "received": "接收",
+      "redeemed": "赎回",
+      "flexible": "活期",
+      "longTerm": "长期",
+      "locked": "接收",
+      "claimed": "领取",
+      "stable": "国库债券",
+      "liquidity": "流动性债券"
+    }
   }
 }

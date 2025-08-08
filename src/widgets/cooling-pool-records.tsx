@@ -1,98 +1,111 @@
-import { useTranslations } from "next-intl"
-import { FC, ReactNode, useState } from "react"
-import { Button, Card, CardContent, Icon, Pager, Tabs } from "~/components"
-import { useMock } from "~/hooks/useMock"
-import { cn, dayjs, formatDecimal, formatHash } from "~/lib/utils"
-
-// 冷却池交易记录数据
-const coolingPoolRecords = [
-  {
-    id: 1,
-    event: "Claim",
-    amount: 85.0,
-    transactionHash: "0X1ert...f9",
-    dateTime: "2025/12/30 12:30:22",
-  },
-  {
-    id: 2,
-    event: "Receive",
-    amount: 85.0,
-    transactionHash: "0X1ert...f9",
-    dateTime: "2025/12/30 12:30:22",
-  },
-  {
-    id: 3,
-    event: "Claim",
-    amount: 85.0,
-    transactionHash: "0X1ert...f9",
-    dateTime: "2025/12/30 12:30:22",
-  },
-  {
-    id: 4,
-    event: "Claim",
-    amount: 85.0,
-    transactionHash: "0X1ert...f9",
-    dateTime: "2025/12/30 12:30:22",
-  },
-  {
-    id: 5,
-    event: "Claim",
-    amount: 85.0,
-    transactionHash: "0X1ert...f9",
-    dateTime: "2025/12/30 12:30:22",
-  },
-]
+import { FC, ReactNode, useState, useEffect } from "react";
+import { Button, Card, CardContent, Icon, Pager, Tabs } from "~/components";
+import { cn, formatHash } from "~/lib/utils";
+import { rewardRecord } from "~/services/auth/claim";
+import { useQuery } from "@tanstack/react-query";
+import { useUserAddress } from "~/contexts/UserAddressContext";
+import { formatNumbedecimalScale } from "~/lib/utils";
+import { getClaimPeriod } from "~/wallet/lib/web3/claim";
+import { useTranslations } from "next-intl";
 
 // 事件颜色映射
 const eventColors = {
-  Claim: "text-secondary",
-  Receive: "text-success",
-}
+  locked: "text-secondary",
+  received: "text-success",
+};
 
 const Cell = ({
   children,
   className,
   title,
 }: {
-  className?: string
-  title: string
-  children: ReactNode
+  className?: string;
+  title: string;
+  children: ReactNode;
 }) => {
   return (
     <td
       className={cn(
         "py-3 px-4 gap-1 flex flex-col w-1/4 justify-start",
-        className
+        className,
       )}
     >
       <div className="text-xs text-foreground/50">{title}</div>
       <div className="flex flex-row items-center gap-2">{children}</div>
     </td>
-  )
+  );
+};
+interface ReciveItem extends Record<string, unknown> {
+  time: string;
+  type: string;
+  amount: string;
+  hash: string;
+  lockIndex: number;
+  yieldType: string;
+  createdAt: string;
+  day?: string;
+  roi?: string;
 }
 
 export const CoolingPoolRecords: FC = () => {
-  const t = useTranslations("coolingPool")
-  const [activeTab, setActiveTab] = useState(0)
-  const { walletConnected } = useMock()
+  const t = useTranslations("coolingPool");
+  // const t1 = useTranslations("historyTable")
+  const [activeTab, setActiveTab] = useState(0);
+  const [page, setPage] = useState<number>(1);
+  const { userAddress } = useUserAddress();
+  const [history, setHistory] = useState([]);
+  const [total, setTotal] = useState<number>(0);
+  const pageSize = 10;
+  const [pages, setPages] = useState(0);
 
   // 标签页数据
   const tabData = [
     { label: t("allEvent"), href: "#" },
     { label: t("receive"), href: "#" },
     { label: t("claimEvent"), href: "#" },
-  ]
+  ];
 
-  // 过滤记录
-  const filteredRecords =
-    activeTab === 0
-      ? coolingPoolRecords
-      : coolingPoolRecords.filter((record) => {
-          if (activeTab === 1) return record.event === "Receive"
-          if (activeTab === 2) return record.event === "Claim"
-          return true
-        })
+  // 获取记录
+  const { data: rewardHisInfo } = useQuery({
+    queryKey: ["getRewardRecord", userAddress, page, pageSize, activeTab],
+    queryFn: async () => {
+      if (!userAddress) {
+        throw new Error("Missing address");
+      }
+      const response = await rewardRecord(
+        page,
+        pageSize,
+        userAddress,
+        activeTab == 0 ? "" : activeTab == 1 ? "locked" : "claimed",
+      );
+      return response || [];
+    },
+    enabled: !!userAddress,
+    retry: 1,
+    retryDelay: 1000,
+  });
 
+  //获取锁定周期
+  const { data: claimPeriodList } = useQuery({
+    queryKey: ["claimPeriod"],
+    queryFn: () => getClaimPeriod(),
+    enabled: Boolean(userAddress),
+    retry: 1,
+  });
+  useEffect(() => {
+    if (rewardHisInfo && claimPeriodList?.length) {
+      const list = rewardHisInfo.history;
+      list.map((it: ReciveItem) => {
+        it["day"] = claimPeriodList[it.lockIndex].day + " " + "天";
+        it["roi"] = claimPeriodList[it.lockIndex].rate;
+      });
+      console.log(list, "list11");
+      setHistory(list);
+      setTotal(rewardHisInfo.total);
+      const pages = Math.ceil(rewardHisInfo.total / 10);
+      setPages(pages);
+    }
+  }, [rewardHisInfo, claimPeriodList, t]);
   return (
     <Card>
       <CardContent className="space-y-6">
@@ -100,10 +113,7 @@ export const CoolingPoolRecords: FC = () => {
         <Tabs data={tabData} activeIndex={activeTab} onChange={setActiveTab}>
           <div className="flex-1 flex flex-col items-end">
             <div className="text-base text-foreground">
-              {formatDecimal(22197, 0)} {t("recordsCount")}
-            </div>
-            <div className="text-xs text-foreground/50">
-              {dayjs(dayjs().subtract(20, "seconds")).fromNow()}
+              {total} {t("recordsCount")}
             </div>
           </div>
         </Tabs>
@@ -112,41 +122,47 @@ export const CoolingPoolRecords: FC = () => {
         <div className="overflow-x-auto">
           <table className="w-full">
             <tbody className="flex flex-col gap-1">
-              {filteredRecords?.length > 0 ? (
-                filteredRecords.map((record) => (
+              {history.length > 0 ? (
+                history.map((record: ReciveItem) => (
                   <tr
-                    key={record.id}
+                    key={record.hash}
                     className="bg-foreground/5 mb-2 rounded-lg flex flex-row w-full"
                   >
                     <Cell
                       title={t("event")}
                       className={
-                        eventColors[record.event as keyof typeof eventColors]
+                        eventColors[
+                          record.yieldType as keyof typeof eventColors
+                        ]
                       }
                     >
                       <Icon
-                        name={record.event === "Claim" ? "event" : "record"}
+                        name={record.yieldType === "Claim" ? "event" : "record"}
                         size={16}
                       />
                       {record.event === "Claim"
                         ? t("claimEvent")
                         : t("receive")}
                     </Cell>
-                    <Cell title={t("quantity")} className="w-1/4">
-                      {formatDecimal(record.amount, 2)} OLY
+                    <Cell title={"释放数量"} className="w-1/6">
+                      {formatNumbedecimalScale(record.amount, 2)} OLY
                     </Cell>
-                    <Cell title={t("transactionHash")} className="w-1/4">
+                    <Cell title={"释放天数"} className="w-1/6">
+                      {record.day as string}
+                    </Cell>
+                    <Cell title={"税率"} className="w-1/6">
+                      {record.roi as string}
+                    </Cell>
+                    <Cell title={t("transactionHash")} className="w-1/6">
                       <a
                         href="#"
                         className="underline text-sm"
-                        title={record.transactionHash}
+                        title={record.hash}
                       >
-                        {formatHash(record.transactionHash)}
+                        {formatHash(record.hash)}
                       </a>
                     </Cell>
-                    <Cell title={t("dateTime")} className="w-1/4">
-                      {record.dateTime}
-                    </Cell>
+                    <Cell title={t("dateTime")}>{record.createdAt}</Cell>
                   </tr>
                 ))
               ) : (
@@ -155,7 +171,7 @@ export const CoolingPoolRecords: FC = () => {
                     colSpan={4}
                     className="flex flex-col items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-4 gap-2"
                   >
-                    {!walletConnected ? (
+                    {!userAddress ? (
                       <>
                         {t("walletNotConnected")}
                         <Button
@@ -172,7 +188,7 @@ export const CoolingPoolRecords: FC = () => {
                           clipDirection="topRight-bottomLeft"
                           className="w-auto"
                         >
-                          {t("stakeNow")}
+                          暂无数据
                         </Button>
                       </>
                     )}
@@ -181,20 +197,24 @@ export const CoolingPoolRecords: FC = () => {
               )}
             </tbody>
             {/* 分页 */}
-            <tfoot>
-              <tr>
-                <td colSpan={4} className="flex justify-center items-center">
-                  <Pager
-                    currentPage={1}
-                    totalPages={20}
-                    onPageChange={() => {}}
-                  />
-                </td>
-              </tr>
-            </tfoot>
+            {pages > 0 && (
+              <tfoot>
+                <tr>
+                  <td colSpan={4} className="flex justify-center items-center">
+                    <Pager
+                      currentPage={page}
+                      totalPages={pages}
+                      onPageChange={() => {
+                        setPage;
+                      }}
+                    />
+                  </td>
+                </tr>
+              </tfoot>
+            )}
           </table>
         </div>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
