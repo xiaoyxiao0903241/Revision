@@ -1,21 +1,26 @@
 "use client"
-
 import { useTranslations } from "next-intl"
-import { Alert, Button, Card, Notification, Statistics } from "~/components"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/select"
-import { AmountCard } from "~/widgets"
-import { ClaimSummary } from "~/widgets/claim-summary"
-import { ReferralBonusRecords } from "~/widgets"
+import { Alert, Card, Statistics } from "~/components"
+import { useQuery } from "@tanstack/react-query"
+import { useUserAddress } from '~/contexts/UserAddressContext'
+import { useNolockStore } from "~/store/noLock"
+import { serviceReward } from "~/services/auth/dao"
+import { formatNumbedecimalScale, formatte2Num } from "~/lib/utils"
+import { ClaimSection } from "../components/ClaimSection"
+import DaoRecords from "../components/DaoRecords"
 
-export default function ReferralBonusPage() {
+export default function SuperBonusPage() {
   const t = useTranslations("dao")
-  const tStaking = useTranslations("staking")
+  const { userAddress } = useUserAddress()
+  const { olyPrice } = useNolockStore();
+
+  // 奖励信息
+  const { data: serviceRewardData, refetch } = useQuery({
+    queryKey: ["leadReward", userAddress],
+    queryFn: () => serviceReward(userAddress as `0x${string}`),
+    enabled: Boolean(userAddress),
+  })
+  console.log(serviceRewardData, 'serviceRewardData')
 
   return (
     <div className="space-y-6">
@@ -31,48 +36,11 @@ export default function ReferralBonusPage() {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {/* 左侧：领取区域 */}
         <div className="space-y-6">
-          <Card>
-            <AmountCard
-              data={{
-                value: "0.0",
-                desc: 0.0,
-                balance: 0.0,
-              }}
-              description={t("claimable")}
-              onChange={() => {}}
-            />
-            {/* 信息提示 */}
-            <Notification>
-              {t.rich("max_bonus_info", {
-                rate: "x2.3",
-                highlight: (chunks) => (
-                  <span className="text-white">{chunks}</span>
-                ),
-              })}
-            </Notification>
-
-            {/* 释放期限选择 */}
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder={t("select_release_period")} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="30">{`30 ${tStaking("days")}`}</SelectItem>
-                <SelectItem value="60">{`60 ${tStaking("days")}`}</SelectItem>
-                <SelectItem value="90">{`90 ${tStaking("days")}`}</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <ClaimSummary
-              data={{
-                amount: 85.0,
-                taxRate: 0.38,
-                incomeTax: 0.079948,
-              }}
-            />
-            {/* 领取按钮 */}
-            <Button clipDirection="topRight-bottomLeft">{t("claim")}</Button>
-          </Card>
+          <ClaimSection
+            refetch={refetch} 
+            rewardData={serviceRewardData}
+            type="service"
+          />
         </div>
         {/* 右侧：账户摘要 */}
         <div className="space-y-4">
@@ -80,17 +48,17 @@ export default function ReferralBonusPage() {
             <div className="grid grid-cols-2 gap-4">
               <Statistics
                 title={t("net_holding")}
-                value="0.00 OLY"
-                desc="$0.00"
+                value={`${formatte2Num.format(serviceRewardData?.totalDepositAmount || 0)} OLY`}
+                desc={`$${formatNumbedecimalScale((serviceRewardData?.totalDepositAmount || 0) * olyPrice, 2)}`}
               />
-              <Statistics title={t("evangelist_level")} value="V4" />
+              <Statistics title={t("evangelist_level")} value={`V${serviceRewardData?.communityLevel ? (serviceRewardData?.communityLevel <= 10 ? serviceRewardData?.communityLevel : 10) : 0}`} />
             </div>
             <div className="border-t border-foreground/20 w-full"></div>
             <div className="grid grid-cols-2 gap-4">
               <Statistics
                 title={t("total_bonus_amount")}
-                value="0.00 OLY"
-                desc="$0.00"
+                value={`${formatte2Num.format(serviceRewardData?.totalBonus || 0)} OLY`}
+                desc={`$${formatNumbedecimalScale((serviceRewardData?.totalBonus || 0) * olyPrice, 2)}`}
               />
             </div>
           </Card>
@@ -98,7 +66,7 @@ export default function ReferralBonusPage() {
       </div>
 
       {/* 底部：记录表格 */}
-      <ReferralBonusRecords />
+      <DaoRecords type="service" />
     </div>
   )
 }

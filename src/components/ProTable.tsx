@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from "@tanstack/react-query"
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { useTranslations } from "next-intl"
@@ -8,6 +8,7 @@ import {
 } from "~/components"
 import { dayjs, formatHash } from "~/lib/utils"
 import Link from 'next/link';
+import _ from 'lodash';
 
 
 export type valueType = 'text' | 'date' | 'dateTime' | 'hash'
@@ -54,7 +55,21 @@ export interface ProTableProps<T> {
   params?: Record<string, unknown> // 参数
   manualRequest?: boolean // 是否手动请求
 }
-
+/**
+ * ProTable通用表格组件
+ * 提供分页、数据格式化、链接渲染等功能
+ * 
+ * @template T 数据类型
+ * @param columns 表格列配置
+ * @param queryFn 数据请求函数
+ * @param params 请求参数
+ * @param rowKey 行唯一标识字段
+ * @param showPagination 是否显示分页
+ * @param pageSize 每页显示条数
+ * @param formatResult 数据结果格式化函数
+ * @param manualRequest 是否手动触发请求
+ * @param appendNotDataText 暂无数据顶部追加文案
+ */
 const ProTable = <T,>({ 
   columns, 
   queryFn, 
@@ -69,6 +84,16 @@ const ProTable = <T,>({
   const [currentPage, setCurrentPage] = useState<number>(1);
   const common = useTranslations()
   const userAddress = useUserAddress()
+  // 保存上一次的params用于比较
+  const [prevParams, setPrevParams] = useState<Record<string, unknown> | undefined>(params);
+
+  // 监听params变化，如果变化则重置到第一页
+  useEffect(() => {
+    if (!_.isEqual(params, prevParams)) {
+      setCurrentPage(1);
+      setPrevParams(params);
+    }
+  }, [params, prevParams]);
 
   // , isLoading, isError, error
   const { data } = useQuery({

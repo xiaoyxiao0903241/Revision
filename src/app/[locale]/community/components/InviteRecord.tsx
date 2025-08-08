@@ -18,8 +18,8 @@ interface InviteDataSource {
 }
 type InviteDataParams = {
   currentPage: number
-   pageSizeProp: number
-    userAddress: string
+  pageSizeProp: number
+  userAddress: string
 }
 const InviteRecord = () => {
   const t = useTranslations("community")
