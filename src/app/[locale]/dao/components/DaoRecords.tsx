@@ -16,18 +16,21 @@ type DaoRecordsParams = {
 
 // 在文件顶部或其他合适位置定义数据项类型
 type DaoRecordItem = {
-  event: string;
-  hash: string;
-  amount: string;
-  lockIndex: number;
-  lockIndex_n: number;
+  event?: string;
+  hash?: string;
+  amount?: string;
+  lockIndex?: number;
+  lockIndex_n?: number;
   createdAt: string;
-  actBonus: string;
-  unlockNum: number;
-  stakeAmount: string;
-  lossBonus: string;
-  createTime: string;
-  sourceNum: number;
+  actBonus?: string;
+  unlockNum?: number;
+  stakeAmount?: string;
+  lossBonus?: string;
+  createTime?: string;
+  sourceNum?: number;
+  benefitLevel?: number;
+  market?: string;
+  smallMarket?: string;
 };
 const DaoRecords = ({ type }: { type: string }) => {
   const t = useTranslations("dao");
@@ -43,10 +46,10 @@ const DaoRecords = ({ type }: { type: string }) => {
     { label: t("claim_record"), href: "#" },
   ];
 
-  const evnetColumn = {
+  const evnetColumn: ProTableColumn<DaoRecordItem> = {
     title: t("event"),
-    dataIndex: "event",
-    key: "event",
+    dataIndex: "event", // 修改为 DaoRecordItem 中存在的字段
+    key: "event", // key 也应与 dataIndex 一致或确保唯一性
     render: () => {
       return (
         <span className="text-secondary">
@@ -64,7 +67,8 @@ const DaoRecords = ({ type }: { type: string }) => {
       key: "hash",
       render: {
         link: true,
-        href: (value: string) => `https://bscscan.com/address/${value}`,
+        href: (value: string | number | boolean | undefined) =>
+          `https://bscscan.com/address/${value}`,
         target: "_blank",
         valueType: "hash",
       },
@@ -73,7 +77,7 @@ const DaoRecords = ({ type }: { type: string }) => {
       title: tStaking("amount"),
       dataIndex: "amount",
       key: "amount",
-      render: (value: string) => {
+      render: (value: string | number | boolean | undefined) => {
         return <>{formatDecimal(Number(value), 2)} OLY</>;
       },
     },
@@ -107,7 +111,7 @@ const DaoRecords = ({ type }: { type: string }) => {
             title: t("net_holding"),
             dataIndex: "actBonus",
             key: "actBonus",
-            render: (value: string) => {
+            render: (value: string | number | boolean | undefined) => {
               return <>{formatDecimal(Number(value), 2)} OLY</>;
             },
           },
@@ -120,7 +124,7 @@ const DaoRecords = ({ type }: { type: string }) => {
             title: t("net_holding_amount"),
             dataIndex: "stakeAmount",
             key: "stakeAmount",
-            render: (value: string) => {
+            render: (value: string | number | boolean | undefined) => {
               return <>{formatDecimal(Number(value), 2)} OLY</>;
             },
           },
@@ -128,7 +132,7 @@ const DaoRecords = ({ type }: { type: string }) => {
             title: t("loss_bonus_amount"),
             dataIndex: "lossBonus",
             key: "lossBonus",
-            render: (value: string) => {
+            render: (value: string | number | boolean | undefined) => {
               return <>{formatDecimal(Number(value), 2)} OLY</>;
             },
           },
@@ -150,7 +154,7 @@ const DaoRecords = ({ type }: { type: string }) => {
             title: t("net_holding"),
             dataIndex: "actBonus",
             key: "actBonus",
-            render: (value: string) => {
+            render: (value: string | number | boolean | undefined) => {
               return <>{formatDecimal(Number(value), 2)} OLY</>;
             },
           },
@@ -158,7 +162,7 @@ const DaoRecords = ({ type }: { type: string }) => {
             title: t("total_performance"),
             dataIndex: "market",
             key: "market",
-            render: (value: string) => {
+            render: (value: string | number | boolean | undefined) => {
               return <>{formatDecimal(Number(value), 2)} OLY</>;
             },
           },
@@ -166,7 +170,7 @@ const DaoRecords = ({ type }: { type: string }) => {
             title: t("small_team_performance"),
             dataIndex: "smallMarket",
             key: "smallMarket",
-            render: (value: string) => {
+            render: (value: string | number | boolean | undefined) => {
               return <>{formatDecimal(Number(value), 2)} OLY</>;
             },
           },
@@ -193,7 +197,7 @@ const DaoRecords = ({ type }: { type: string }) => {
             title: t("net_holding"),
             dataIndex: "actBonus",
             key: "actBonus",
-            render: (value: string) => {
+            render: (value: string | number | boolean | undefined) => {
               return <>{formatDecimal(Number(value), 2)} OLY</>;
             },
           },
