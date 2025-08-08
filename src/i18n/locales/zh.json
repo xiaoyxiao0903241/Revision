@@ -199,7 +199,8 @@
     "noRecords": "此地址没有布道奖相关的交易记录。",
     "superNoRecords": "此地址没有平超奖相关的交易记录。",
     "referralNoRecords": "此地址没有推荐奖相关的交易记录。",
-    "stakeNow": "立即质押"
+    "stakeNow": "立即质押",
+    "currentlyReceiving": "正在領取中..."
   },
   "noLockedStaking": {
     "title": "无锁定期质押",
