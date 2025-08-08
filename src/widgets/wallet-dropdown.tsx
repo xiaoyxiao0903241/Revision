@@ -127,7 +127,7 @@ export function WalletDropdown({ children }: WalletDropdownProps) {
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="w-[412px] p-0 bg-gradient-to-b from-[#1a1d4a] to-[#0f1235] border-[#434c8c] text-white"
+        className="w-full md:w-[412px] p-0 bg-gradient-to-b from-[#1a1d4a] to-[#0f1235] border-[#434c8c] text-white"
       >
         {/* Header */}
         <div className="flex flex-col p-6 gap-6">

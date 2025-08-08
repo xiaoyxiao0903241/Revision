@@ -61,8 +61,16 @@ export const StakingRecords: FC<{
   return (
     <Card>
       {/* 标签页 */}
+      <div className="flex md:hidden flex-row items-center justify-between">
+        <div className="text-base text-foreground">
+          {formatDecimal(22197, 0)} {t("recordsCount")}
+        </div>
+        <div className="text-xs text-foreground/50">
+          {dayjs(dayjs().subtract(200, "seconds")).fromNow()}
+        </div>
+      </div>
       <Tabs data={tabData} activeIndex={activeTab} onChange={setActiveTab}>
-        <div className="flex-1 flex flex-col items-end">
+        <div className="flex-1 flex-col items-end hidden md:flex">
           <div className="text-base text-foreground">
             {formatDecimal(22197, 0)} {t("recordsCount")}
           </div>

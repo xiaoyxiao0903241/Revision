@@ -209,6 +209,7 @@ export const SidebarContent = () => {
         </div>
       )}
 
+      <div className="flex-1"></div>
       {footerItems && (
         <div className="space-y-2">
           {footerItems.map((item) => {
@@ -252,8 +253,8 @@ export const SidebarContent = () => {
 export const Sidebar = () => {
   return (
     <div className="hidden md:flex px-4 lg:px-9 flex-col">
-      <div className="sidebar w-[260px]">
-        <nav className="flex-1 space-y-6 py-6">
+      <div className="sidebar w-[260px] min-h-[calc(100vh-128px)]">
+        <nav className="h-full flex flex-col gap-6 pt-6">
           <SidebarContent />
         </nav>
       </div>
