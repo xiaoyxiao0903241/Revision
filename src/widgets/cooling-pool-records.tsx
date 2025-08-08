@@ -204,9 +204,7 @@ export const CoolingPoolRecords: FC = () => {
                     <Pager
                       currentPage={page}
                       totalPages={pages}
-                      onPageChange={() => {
-                        setPage;
-                      }}
+                      onPageChange={setPage}
                     />
                   </td>
                 </tr>
