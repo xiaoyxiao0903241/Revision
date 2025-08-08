@@ -60,7 +60,7 @@ export const ClaimSection = ({
   type,
 }: ClaimSectionProps) => {
   const t = useTranslations("dao");
-  // const commonT = useTranslations("common");
+  const commonT = useTranslations("common");
   const tStaking = useTranslations("staking");
   const { userAddress } = useUserAddress();
   const periodListData = usePeriods();
@@ -206,7 +206,7 @@ export const ClaimSection = ({
         }
         onClick={handleClaimReward}
       >
-        {claimRewardMutation.isPending ? t("claiming") : t("claim")}
+        {claimRewardMutation.isPending ? commonT("claiming") : t("claim")}
       </Button>
     </Card>
   );

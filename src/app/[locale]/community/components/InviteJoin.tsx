@@ -252,7 +252,7 @@ const InviteJoin = () => {
                       value={code}
                       className="flex-1"
                       onChange={(e) => handleCodeChange(e.target.value)}
-                      placeholder={t("enterReferralId")}
+                      placeholder={inviteT("enterReferralId")}
                     />
                     <button
                       className="bg-transparent gradient-text font-bold text-sm"

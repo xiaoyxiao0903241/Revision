@@ -1,28 +1,26 @@
-"use client"
+"use client";
 
-import _ from "lodash"
-import { useTranslations } from "next-intl"
-import Image from "next/image"
-import { FC } from "react"
-import {
-  Card,
-  View,
-} from "~/components"
-import { cn } from "~/lib/utils"
-import InviteJoin from "./components/InviteJoin"
-import InviteRecord from "./components/InviteRecord"
+import _ from "lodash";
+import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { FC } from "react";
+import { Card, View } from "~/components";
+import { cn } from "~/lib/utils";
+import InviteJoin from "./components/InviteJoin";
+import InviteRecord from "./components/InviteRecord";
 
 const Step: FC<{
-  index: number
-  title: string
-  description: string
-  className?: string
-}> = ({ index, title, description, className }) => {
+  index: number;
+  title: string;
+  description: string;
+  className?: string;
+  isHiddenLine?: boolean;
+}> = ({ index, title, description, className, isHiddenLine }) => {
   return (
     <div
       className={cn(
         "flex flex-col py-4 my-4 h-full gap-2 pl-6 xl:pl-0 pr-4 lg:pr-0",
-        className
+        className,
       )}
     >
       <div className="flex w-full items-center gap-2">
@@ -36,16 +34,21 @@ const Step: FC<{
         >
           <span className="text-[18px] font-bold text-white">{index + 1}</span>
         </View>
-        <div className="border-t border-dashed border-foreground/50 w-full"></div>
+        <div
+          className={cn(
+            "border-t border-dashed border-foreground/50 w-full",
+            isHiddenLine && "hidden",
+          )}
+        ></div>
       </div>
       <h3 className="text-base font-bold text-white">{title}</h3>
       <p className="text-sm text-foreground/50">{description}</p>
     </div>
-  )
-}
+  );
+};
 
 export default function CommunityPage() {
-  const t = useTranslations("community")
+  const t = useTranslations("community");
   return (
     <div className="space-y-6">
       {/* 协议介绍横幅 */}
@@ -97,6 +100,7 @@ export default function CommunityPage() {
           title={t("step3.title")}
           description={t("step3.description")}
           className="pr-4 lg:pr-4"
+          isHiddenLine
         />
       </Card>
 
@@ -106,5 +110,5 @@ export default function CommunityPage() {
       {/* 推荐列表 */}
       <InviteRecord />
     </div>
-  )
+  );
 }

@@ -305,11 +305,13 @@ const DaoRecords = ({ type }: { type: string }) => {
               params={{ userAddress, type }}
               formatResult={(data) => {
                 const total = data?.total || 0;
-                setTotal(total);
                 return {
                   dataSource: data?.records || [],
                   total,
                 };
+              }}
+              onSuccess={(data) => {
+                setTotal(data?.total || 0);
               }}
             />
           </div>
@@ -331,11 +333,13 @@ const DaoRecords = ({ type }: { type: string }) => {
               params={{ userAddress, type }}
               formatResult={(data) => {
                 const total = data?.total || 0;
-                setTotal(total);
                 return {
                   dataSource: data?.records || [],
                   total,
                 };
+              }}
+              onSuccess={(data) => {
+                setTotal(data?.total || 0);
               }}
             />
           </div>
