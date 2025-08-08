@@ -199,7 +199,9 @@
     "noRecords": "This address has no evangelist bonus-related transaction records.",
     "superNoRecords": "This address has no super bonus-related transaction records.",
     "referralNoRecords": "This address has no referral bonus-related transaction records.",
-    "stakeNow": "Stake Now"
+    "stakeNow": "Stake Now",
+    "currentlyReceiving": "Currently Receiving...",
+    "lockingCycle": "Locking cycle"
   },
   "noLockedStaking": {
     "title": "No-Lock Staking",
@@ -473,7 +475,7 @@
       "view_explorer": "View on Explorer",
       "sign_success": "Signature successful！",
       "sign_failed": "Network error, please retry",
-      "rejectedSign":"The user rejected the signature",
+      "rejectedSign": "The user rejected the signature",
       "signing": "Signing...",
       "please_sign": "Please sign to login",
       "assets": "Assets"
@@ -511,25 +513,25 @@
         "already_paused": "Already paused",
         "not_paused": "Not paused",
         "zero_address": "Zero address",
-		"already_claimed": "Claimed",
-		"invalid_initialization": "Invalid initialization",
-		"not_initializing": "Not initializing",
-		"ownable_invalid_owner": "Invalid owner",
-		"ownable_unauthorized_account": "Unauthorized account",
-		"reward_not_claimable": "Reward not claimable",
-		"safe_erc20_failed_operation": "ERC20 operation failed",
-		"sale_ended": "Sale ended",
-		"sale_not_started": "Sale not started"
-  },
-  "matrix": {
-		"already_actived": "Activated",
-		"invalid_address": "Invalid address",
-		"invalid_initialization": "Invalid initialization",
-		"invalid_length": "Invalid length",
-		"not_activated": "Not activated",
-		"not_initializing": "Not initializing",
-		"ownable_invalid_owner": "Invalid owner address",
-		"ownable_unauthorized_account": "Unauthorized account operation"
+        "already_claimed": "Claimed",
+        "invalid_initialization": "Invalid initialization",
+        "not_initializing": "Not initializing",
+        "ownable_invalid_owner": "Invalid owner",
+        "ownable_unauthorized_account": "Unauthorized account",
+        "reward_not_claimable": "Reward not claimable",
+        "safe_erc20_failed_operation": "ERC20 operation failed",
+        "sale_ended": "Sale ended",
+        "sale_not_started": "Sale not started"
+      },
+      "matrix": {
+        "already_actived": "Activated",
+        "invalid_address": "Invalid address",
+        "invalid_initialization": "Invalid initialization",
+        "invalid_length": "Invalid length",
+        "not_activated": "Not activated",
+        "not_initializing": "Not initializing",
+        "ownable_invalid_owner": "Invalid owner address",
+        "ownable_unauthorized_account": "Unauthorized account operation"
       },
       "user_rejected": "User rejected transaction"
     },

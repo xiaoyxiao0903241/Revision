@@ -1,64 +1,76 @@
-import React, { useEffect, useState } from 'react';
-import { useQuery } from "@tanstack/react-query"
-import { useUserAddress } from '~/contexts/UserAddressContext';
-import { useTranslations } from "next-intl"
-import {
-  Button,
-  Pager,
-} from "~/components"
-import { dayjs, formatHash } from "~/lib/utils"
-import Link from 'next/link';
-import _ from 'lodash';
+import React, { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useUserAddress } from "~/contexts/UserAddressContext";
+import { useTranslations } from "next-intl";
+import { Button, Pager } from "~/components";
+import { cn, dayjs, formatHash } from "~/lib/utils";
+import Link from "next/link";
+import _ from "lodash";
 
+export type valueType = "text" | "date" | "dateTime" | "hash";
 
-export type valueType = 'text' | 'date' | 'dateTime' | 'hash'
-
-export type targetType = '_blank' | '_parent' | '_self' | '_top' | string
+export type targetType = "_blank" | "_parent" | "_self" | "_top" | string;
 
 export interface ProTableRender<T> {
-  link?: boolean
-  target?: targetType
-  href?: string | ((value: string | number | undefined, record: T, index: number) => string)
-  valueType?: valueType
-  icon?: React.ReactNode
-  render?: (value: string | number | boolean | undefined, record: T, index: number) => React.ReactNode
+  link?: boolean;
+  target?: targetType;
+  href?:
+    | string
+    | ((
+        value: string | number | undefined,
+        record: T,
+        index: number,
+      ) => string);
+  valueType?: valueType;
+  icon?: React.ReactNode;
+  render?: (
+    value: string | number | boolean | undefined,
+    record: T,
+    index: number,
+  ) => React.ReactNode;
 }
 
 export interface ProTableColumn<T> {
-  title: string
-  dataIndex: keyof T
-  key: string
-  dataSource?: Array<Record<string, unknown>>
-  render?: ProTableRender<T> | ((value: string | number | boolean | undefined, record: T, index: number) => React.ReactNode)
+  title: string;
+  dataIndex: keyof T;
+  key: string;
+  dataSource?: Array<Record<string, unknown>>;
+  render?:
+    | ProTableRender<T>
+    | ((
+        value: string | number | boolean | undefined,
+        record: T,
+        index: number,
+      ) => React.ReactNode);
 }
 
 export interface ProTableData<T> {
-  dataSource: T[]
-  records?: T[]
-  total: number
+  dataSource: T[];
+  records?: T[];
+  total: number;
 }
 
 export type ProTableDataType = {
-  dataSource: []
-  records?: []
-  total: number
-}
+  dataSource: [];
+  records?: [];
+  total: number;
+};
 
 export interface ProTableProps<T> {
-  columns: ProTableColumn<T>[]  // 表格列配置
-  pageSize?: number // 每页条数，默认为10
-  showPagination?: boolean  // 是否开启分页功能
-  rowKey?: keyof T // 行的唯一标识，默认为 'address'
-  queryFn: (params: Record<string, unknown>) => Promise<ProTableData<T>> // 自定义请求
-  formatResult?: (data: ProTableData<T>) => unknown // 自定义返回结果
-  appendNotDataText?: string // 暂无数据顶部追加文案
-  params?: Record<string, unknown> // 参数
-  manualRequest?: boolean // 是否手动请求
+  columns: ProTableColumn<T>[]; // 表格列配置
+  pageSize?: number; // 每页条数，默认为10
+  showPagination?: boolean; // 是否开启分页功能
+  rowKey?: keyof T; // 行的唯一标识，默认为 'address'
+  queryFn: (params: Record<string, unknown>) => Promise<ProTableData<T>>; // 自定义请求
+  formatResult?: (data: ProTableData<T>) => unknown; // 自定义返回结果
+  appendNotDataText?: string; // 暂无数据顶部追加文案
+  params?: Record<string, unknown>; // 参数
+  manualRequest?: boolean; // 是否手动请求
 }
 /**
  * ProTable通用表格组件
  * 提供分页、数据格式化、链接渲染等功能
- * 
+ *
  * @template T 数据类型
  * @param columns 表格列配置
  * @param queryFn 数据请求函数
@@ -70,11 +82,11 @@ export interface ProTableProps<T> {
  * @param manualRequest 是否手动触发请求
  * @param appendNotDataText 暂无数据顶部追加文案
  */
-const ProTable = <T,>({ 
-  columns, 
-  queryFn, 
-  params, 
-  rowKey = 'address' as keyof T,
+const ProTable = <T,>({
+  columns,
+  queryFn,
+  params,
+  rowKey = "address" as keyof T,
   showPagination = true,
   pageSize: pageSizeProp = 10,
   formatResult,
@@ -82,10 +94,12 @@ const ProTable = <T,>({
   appendNotDataText: appendNotDataText = "",
 }: ProTableProps<T>) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const common = useTranslations()
-  const userAddress = useUserAddress()
+  const common = useTranslations();
+  const userAddress = useUserAddress();
   // 保存上一次的params用于比较
-  const [prevParams, setPrevParams] = useState<Record<string, unknown> | undefined>(params);
+  const [prevParams, setPrevParams] = useState<
+    Record<string, unknown> | undefined
+  >(params);
 
   // 监听params变化，如果变化则重置到第一页
   useEffect(() => {
@@ -98,22 +112,22 @@ const ProTable = <T,>({
   // , isLoading, isError, error
   const { data } = useQuery({
     queryKey: ["proTable", params, currentPage, pageSizeProp],
-    queryFn: () => queryFn({...params, currentPage, pageSizeProp}),
+    queryFn: () => queryFn({ ...params, currentPage, pageSizeProp }),
     enabled: !manualRequest,
   });
 
   // 格式化值的函数
   const formatValue = (value: unknown, valueType?: valueType): string => {
-    if (value === null || value === undefined) return '';
+    if (value === null || value === undefined) return "";
     const strValue = String(value);
     switch (valueType) {
-      case 'date':
-        return dayjs(strValue).format('YYYY/MM/DD');
-      case 'dateTime':
-        return dayjs(strValue).format('YYYY/MM/DD HH:mm:ss');
-      case 'hash':
+      case "date":
+        return dayjs(strValue).format("YYYY/MM/DD");
+      case "dateTime":
+        return dayjs(strValue).format("YYYY/MM/DD HH:mm:ss");
+      case "hash":
         return formatHash(strValue);
-      case 'text':
+      case "text":
       default:
         return strValue;
     }
@@ -121,10 +135,10 @@ const ProTable = <T,>({
 
   // 渲染表格数据
   const processedData = data
-  ? formatResult
-    ? (formatResult(data) as ProTableData<T>)
-    : (data as ProTableData<T>)
-  : null;
+    ? formatResult
+      ? (formatResult(data) as ProTableData<T>)
+      : (data as ProTableData<T>)
+    : null;
 
   const tableData = processedData?.dataSource || processedData?.records || [];
   const total = processedData?.total || data?.total || 0;
@@ -134,66 +148,96 @@ const ProTable = <T,>({
       <table className="w-full">
         <tbody className="space-y-2">
           {tableData.map((record: T, index: number) => {
-            const key = (record)[rowKey] || index;
+            const key = record[rowKey] || index;
             return (
               <tr
                 key={`${key}-${index}`}
-                className="grid grid-cols-4 p-6 bg-foreground/5 rounded-md"
+                className={cn("grid p-6 bg-foreground/5 rounded-md")}
+                style={{
+                  gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
+                }}
               >
                 {columns.map((column, colIndex) => {
                   // 获取单元格的值
-                  const value = (record)[column.dataIndex];
-                  
+                  const value = record[column.dataIndex];
+
                   // 处理渲染逻辑
-                  let renderedValue: React.ReactNode = value === null || value === undefined ? null : String(value);
-                  
+                  let renderedValue: React.ReactNode =
+                    value === null || value === undefined
+                      ? null
+                      : String(value);
+
                   if (column.render) {
                     // 如果是函数形式的render
-                    if (typeof column.render === 'function') {
-                      const safeValue = value as string | number | boolean | undefined;
+                    if (typeof column.render === "function") {
+                      const safeValue = value as
+                        | string
+                        | number
+                        | boolean
+                        | undefined;
                       renderedValue = column.render(safeValue, record, index);
-                    } 
+                    }
                     // 如果是ProTableRender配置对象
-                    else if (typeof column.render === 'object') {
+                    else if (typeof column.render === "object") {
                       const renderConfig = column.render;
-                      
+
                       // 使用自定义render函数
                       if (renderConfig.render) {
-                        const safeValue = value as string | number | boolean | undefined;
-                        renderedValue = renderConfig.render(safeValue, record, index);
-                      } 
+                        const safeValue = value as
+                          | string
+                          | number
+                          | boolean
+                          | undefined;
+                        renderedValue = renderConfig.render(
+                          safeValue,
+                          record,
+                          index,
+                        );
+                      }
                       // 处理链接类型
                       else if (renderConfig.link) {
-                        const href = typeof renderConfig.href === 'function' 
-                        ? renderConfig.href(
-                            (typeof value === 'string' || typeof value === 'number') ? value : undefined,
-                            record,
-                            index
-                          ) 
-                        : renderConfig.href;
-                          
-                        const formattedValue = formatValue(value, renderConfig.valueType);
-                        
+                        const href =
+                          typeof renderConfig.href === "function"
+                            ? renderConfig.href(
+                                typeof value === "string" ||
+                                  typeof value === "number"
+                                  ? value
+                                  : undefined,
+                                record,
+                                index,
+                              )
+                            : renderConfig.href;
+
+                        const formattedValue = formatValue(
+                          value,
+                          renderConfig.valueType,
+                        );
+
                         renderedValue = (
-                          <Link 
-                            href={href || '#'} 
-                            target={renderConfig.target || '_blank'}
+                          <Link
+                            href={href || "#"}
+                            target={renderConfig.target || "_blank"}
                             className="text-blue-400 cursor-pointer hover:underline"
                           >
                             {formattedValue}
-                            {renderConfig.icon && <span className="ml-1">{renderConfig.icon}</span>}
+                            {renderConfig.icon && (
+                              <span className="ml-1">{renderConfig.icon}</span>
+                            )}
                           </Link>
                         );
-                      } 
+                      }
                       // 格式化值类型
                       else {
-                        const formattedValue = formatValue(value, renderConfig.valueType);
+                        const formattedValue = formatValue(
+                          value,
+                          renderConfig.valueType,
+                        );
                         if (renderConfig.icon) {
                           renderedValue = (
                             <span className="flex items-center">
                               {formattedValue}
                               <span className="ml-1">{renderConfig.icon}</span>
-                            </span>  
+                            </span>
                           );
                         } else {
                           renderedValue = formattedValue;
@@ -204,19 +248,21 @@ const ProTable = <T,>({
 
                   return (
                     <td
-                      key={column.key} 
+                      key={column.key}
                       className="py-3 px-4 flex flex-col gap-1"
                     >
                       <span className="text-xs text-foreground/50">
                         {column.title}
                       </span>
-                      <span className={
-                        colIndex === 1 || colIndex === 2 
-                          ? "text-white font-mono" 
-                          : colIndex === 3 
-                            ? "text-gray-300 font-mono"
-                            : ""
-                      }>
+                      <span
+                        className={
+                          colIndex === 1 || colIndex === 2
+                            ? "text-white font-mono"
+                            : colIndex === 3
+                              ? "text-gray-300 font-mono"
+                              : ""
+                        }
+                      >
                         {renderedValue}
                       </span>
                     </td>
@@ -227,36 +273,36 @@ const ProTable = <T,>({
           })}
           {tableData.length === 0 && (
             <tr className="w-full p-6">
-            <td
-              colSpan={5}
-              className="flex flex-col items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-5 gap-2 mt-2"
-            >
-              {!userAddress ? (
-                <>
-                  {common("walletNotConnected")}
-                  <Button
-                    clipDirection="topRight-bottomLeft"
-                    className="w-auto"
-                  >
-                    {common("connectWallet")}
-                  </Button>
-                </>
-              ) : (
-                <>
-                  {appendNotDataText && appendNotDataText}
-                  <Button
-                    clipDirection="topRight-bottomLeft"
-                    className="w-auto"
-                  >
-                    {common('common.nodata')}
-                  </Button>
-                </>
-              )}
-            </td>
-          </tr>
+              <td
+                colSpan={5}
+                className="flex flex-col items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-5 gap-2 mt-2"
+              >
+                {!userAddress ? (
+                  <>
+                    {common("walletNotConnected")}
+                    <Button
+                      clipDirection="topRight-bottomLeft"
+                      className="w-auto"
+                    >
+                      {common("connectWallet")}
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    {appendNotDataText && appendNotDataText}
+                    <Button
+                      clipDirection="topRight-bottomLeft"
+                      className="w-auto"
+                    >
+                      {common("common.nodata")}
+                    </Button>
+                  </>
+                )}
+              </td>
+            </tr>
           )}
         </tbody>
-        {(showPagination && total > pageSizeProp) && (
+        {showPagination && total > pageSizeProp && (
           <tfoot className="col-span-4">
             <tr>
               <td colSpan={columns.length} className="text-center">
@@ -272,7 +318,6 @@ const ProTable = <T,>({
       </table>
     </div>
   );
-    
 };
 
 export default ProTable;
