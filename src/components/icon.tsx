@@ -36,6 +36,8 @@ export type IconFontName =
   | "usdt"
   | "medal"
   | "bag"
+  | "copy"
+  | "share"
 
 // 图标映射表 - 从 iconfont.css 中提取的 unicode 编码
 export const ICON_MAP: Record<IconFontName, string> = {
@@ -70,6 +72,8 @@ export const ICON_MAP: Record<IconFontName, string> = {
   usdt: "\ue73a",
   medal: "\ue73e",
   bag: "\ue73f",
+  copy: "\ue745",
+  share: "\ue744",
 }
 
 interface IconFontProps {

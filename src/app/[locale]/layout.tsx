@@ -1,7 +1,7 @@
 import { NextIntlClientProvider } from "next-intl"
 import "../global.css"
-import { Sidebar } from "./components/sidebar"
-import { Header } from "./components/header"
+import { Sidebar } from "../../widgets/sidebar"
+import { Header } from "../../widgets/header"
 import { LocaleDetector } from "~/widgets/locale-detector"
 
 export default async function LocaleLayout({

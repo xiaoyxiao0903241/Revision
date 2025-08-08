@@ -31,7 +31,7 @@ export function View({
       <div className="relative">
         {/* 边框层 */}
         <div
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0 pointer-events-none backdrop-blur-sm"
           style={{
             top: `-${borderWidth}px`,
             left: `-${borderWidth}px`,

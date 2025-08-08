@@ -50,6 +50,30 @@ export function Button({
 
   const clipPath = getClipPath(clipDirection, clipSize)
 
+  if (variant === "outlined") {
+    return (
+      <button
+        className={cn(
+          "relative px-4 bg-gradient-to-r from-primary to-secondary cursor-pointer flex items-center justify-center hover:opacity-80 active:opacity-70",
+          className
+        )}
+        style={{
+          clipPath,
+        }}
+        disabled={disabled}
+        {...props}
+      >
+        {/* 渐变边框背景 */}
+        <div
+          className="absolute top-[1px] left-[1px] right-[1px] bottom-[1px] bg-[#1a1d4a]"
+          style={{
+            clipPath,
+          }}
+        ></div>
+        {children}
+      </button>
+    )
+  }
   return (
     <button
       className={cn(
