@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Alert, Card } from "~/components";
@@ -11,67 +11,35 @@ import {
 } from "~/widgets";
 import { newRewardList } from "~/wallet/lib/web3/claim";
 import { useUserAddress } from "~/contexts/UserAddressContext";
-// import YielodLockAbi from "~/wallet/constants/YielodLockAbi.json";
-// import { toast } from "sonner";
-// import { usePublicClient } from "wagmi";
-// import { useWriteContractWithGasBuffer } from "~/hooks/useWriteContractWithGasBuffer";
 import { useQuery } from "@tanstack/react-query";
-// import { formatNumbedecimalScale } from "~/lib/utils";
+import { formatNumbedecimalScale } from "~/lib/utils";
+import { getTokenPrice } from "~/wallet/lib/web3/bond";
+import { coolAllCLaimAmount } from "~/services/auth/claim";
 
-// interface ExtendedRewardItem extends rewardItem, Record<string, unknown> {
-//   operate?: string;
-// }
+interface CoolingPoolCardData {
+  claimable: string;
+  remainingRewards: string;
+  waitingPercent: number;
+  className: string;
+  bgClassName: string;
+  disabled?: boolean;
+  waiting: number;
+  period: number;
+  active: number;
+  periodIndex: number;
+}
+interface coolMessItem {
+  title: string;
+  value: string;
+  unit: string;
+  usdValue: string;
+}
 export default function CoolingPoolPage() {
   const t = useTranslations("coolingPool");
-  // const queryClient = useQueryClient();
-  // const [isDisabled,setIsDisabled] = useState<boolean>(false);
   const { userAddress } = useUserAddress();
-  // const [myRewardList, setMyRewardList] = useState<ExtendedRewardItem[]>([]);
-  // const [allClaimNum, setAllClaimNum] = useState<string>("0");
-  // const [allPending,setAllPending] = useState<string>("0");
-  // 冷却池卡片数据
-  const coolingPoolCards = [
-    {
-      released: 112.78,
-      waiting: 999.86,
-      waitingPercent: 85.65,
-      period: 5,
-      className: "text-white",
-      bgClassName: "gradient",
-      disabled: false,
-      active: true,
-    },
-    {
-      released: 112.78,
-      waiting: 999.86,
-      waitingPercent: 15.65,
-      period: 10,
-      className: "text-warning",
-      bgClassName: "bg-warning",
-      disabled: false,
-      active: false,
-    },
-    {
-      released: 112.78,
-      waiting: 999.86,
-      waitingPercent: 85.65,
-      period: 15,
-      className: "text-success",
-      bgClassName: "bg-success",
-      disabled: false,
-      active: false,
-    },
-    {
-      released: 0.0,
-      waiting: 0.0,
-      waitingPercent: 0.0,
-      period: 20,
-      className: "text-secondary",
-      bgClassName: "bg-secondary",
-      disabled: true,
-      active: false,
-    },
-  ];
+  const [myRewardList, setMyRewardList] = useState<CoolingPoolCardData[]>([]);
+  const [coolMessList, setCoolMessList] = useState<coolMessItem[]>([]);
+
   const { data: myReward } = useQuery({
     queryKey: ["getRewardList", userAddress],
     queryFn: () => newRewardList({ address: userAddress as string }),
@@ -80,13 +48,106 @@ export default function CoolingPoolPage() {
     refetchInterval: 30000,
   });
 
+  // oly单价
+  const { data: olyPrice } = useQuery({
+    queryKey: ["olyPrice"],
+    queryFn: getTokenPrice,
+    enabled: true,
+    retry: 1,
+    retryDelay: 100000,
+  });
+
+  //获取总领取的
+  // 获取记录
+  const { data: coolAllCLaimAmountData } = useQuery({
+    queryKey: ["getCoolAllCLaimAmount", userAddress],
+    queryFn: async () => {
+      if (!userAddress) {
+        throw new Error("Missing address");
+      }
+      const response = await coolAllCLaimAmount(userAddress);
+      return response || [];
+    },
+    enabled: !!userAddress,
+    retry: 1,
+    retryDelay: 42000,
+  });
+
   useEffect(() => {
-    // if (myReward && myReward.rewardArr.length) {
-    //   setMyRewardList(myReward.rewardArr as ExtendedRewardItem[]);
-    //   setAllClaimNum(myReward?.allClaimable?formatNumbedecimalScale(myReward?.allClaimable):'0');
-    //   setAllPending(myReward?.allPending?formatNumbedecimalScale(myReward?.allPending,4):'0');
-    // }
-  }, [myReward, t]);
+    if (myReward && myReward.rewardArr.length && olyPrice) {
+      const rewardList = myReward.rewardArr.map((it, index) => ({
+        claimable: it.claimable || "0",
+        remainingRewards: it.remainingRewards || "0",
+        waitingPercent: Number(
+          (Number(it.claimable || 0) / (it.all || 1)).toFixed(2),
+        ),
+        className:
+          index === 0
+            ? "text-gradient"
+            : index === 1
+              ? "text-warning"
+              : index === 2
+                ? "text-success"
+                : "text-secondary",
+        bgClassName:
+          index === 0
+            ? "gradient"
+            : index === 1
+              ? "bg-warning"
+              : index === 2
+                ? "bg-success"
+                : "bg-secondary",
+        disabled: Number(it.claimable) < 0.0001,
+        waiting: Number(it.remainingRewards || 0),
+        period: Number(it.day || 0),
+        active: 1,
+        periodIndex: it.periodIndex,
+      }));
+      setMyRewardList(rewardList);
+      const list = [
+        {
+          title: t("rewardsInPool"),
+          value: myReward?.allClaimable
+            ? formatNumbedecimalScale(myReward?.allClaimable, 4)
+            : "0",
+          unit: "OLY",
+          usdValue: myReward?.allClaimable
+            ? formatNumbedecimalScale(
+                myReward?.allClaimable * Number(olyPrice),
+                2,
+              )
+            : "0",
+        },
+        {
+          title: t("releasedRewards"),
+          value: myReward?.allPending
+            ? formatNumbedecimalScale(myReward?.allPending, 4)
+            : "0",
+          unit: "OLY",
+          usdValue: myReward?.allPending
+            ? formatNumbedecimalScale(
+                myReward?.allPending * Number(olyPrice),
+                2,
+              )
+            : "0",
+        },
+        {
+          title: t("totalClaimedRewards"),
+          value: Number(coolAllCLaimAmountData)
+            ? formatNumbedecimalScale(coolAllCLaimAmountData, 4)
+            : "0",
+          unit: "OLY",
+          usdValue: Number(coolAllCLaimAmountData)
+            ? formatNumbedecimalScale(
+                Number(coolAllCLaimAmountData) * Number(olyPrice),
+                2,
+              )
+            : "0",
+        },
+      ];
+      setCoolMessList(list);
+    }
+  }, [myReward, t, olyPrice, coolAllCLaimAmountData]);
 
   return (
     <div className="space-y-6">
@@ -100,16 +161,17 @@ export default function CoolingPoolPage() {
       <div className="grid grid-cols-1">
         <Card>
           {/* 统计卡片 */}
-          <CoolingPoolStats />
+          <CoolingPoolStats coolMessList={coolMessList} />
           {/* 冷却池卡片 */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {coolingPoolCards.map((card, index) => (
-              <CoolingPoolCard key={index} data={card} onClick={() => {}}>
+            {myRewardList.map((item, index) => (
+              <CoolingPoolCard key={index} data={item}>
                 <Image
                   src={`/images/widgets/pool-${index + 1}.png`}
                   alt="gear"
                   width={140}
                   height={140}
+                  className={`${Number(item.claimable) && "animate-spin-slow"}`}
                 />
               </CoolingPoolCard>
             ))}

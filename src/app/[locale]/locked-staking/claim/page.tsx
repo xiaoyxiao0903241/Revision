@@ -437,19 +437,7 @@ export default function ClaimPage() {
 
         {/* 右侧钱包摘要 */}
         <div>
-          <WalletSummary
-            data={{
-              availableToStake: 100,
-              stakedAmount: 100,
-              stakedAmountDesc: 12345,
-              apr: 100,
-              rebaseRewards: 12345678,
-              rebaseRewardsDesc: 12345678,
-              totalStaked: 100,
-              stakers: 100,
-              olyMarketCap: 100,
-            }}
-          />
+          <WalletSummary />
         </div>
       </div>
     </div>

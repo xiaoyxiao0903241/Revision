@@ -1,11 +1,17 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { useTranslations } from "next-intl"
-import { Alert, Card, Notification, CountdownDisplay, Button } from "~/components"
-import { WalletSummary } from "~/widgets"
-import { AmountTicker } from "~/widgets/amount-ticker"
-import { DurationSelect } from "~/widgets/select-lockMyList"
+import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import {
+  Alert,
+  Card,
+  Notification,
+  CountdownDisplay,
+  Button,
+} from "~/components";
+import { WalletSummary } from "~/widgets";
+import { AmountTicker } from "~/widgets/amount-ticker";
+import { DurationSelect } from "~/widgets/select-lockMyList";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useUserAddress } from "~/contexts/UserAddressContext";
 import {
@@ -16,7 +22,7 @@ import {
 import { getCurrentBlock } from "~/lib/multicall";
 import { blocks as blocksNum, nodeStaking } from "~/wallet/constants/tokens";
 import type { StakingItem } from "~/wallet/lib/web3/stake";
-import { useLockStore } from "~/store/lock"
+import { useLockStore } from "~/store/lock";
 import { usePublicClient } from "wagmi";
 import { toast } from "sonner";
 import { useWriteContractWithGasBuffer } from "~/hooks/useWriteContractWithGasBuffer";
@@ -24,22 +30,19 @@ import longStaking from "~/wallet/constants/LongStakingAbi.json";
 import { Abi } from "viem";
 import NodeStakingAbi from "~/wallet/constants/NodeStaking.json";
 
-
-
 export default function UnstakePage() {
-  const t = useTranslations("staking")
-  const tLockedStaking = useTranslations("lockedStaking")
+  const t = useTranslations("staking");
+  const tLockedStaking = useTranslations("lockedStaking");
   const { userAddress } = useUserAddress();
   const [stakList, setstakList] = useState<StakingItem[]>([]);
-  const [curStakeItem, setCurStakeItem] = useState<StakingItem>()
-  const [lockIndex, setLockIndex] = useState<"" | number>("")
-  const { olyPrice } = useLockStore()
+  const [curStakeItem, setCurStakeItem] = useState<StakingItem>();
+  const [lockIndex, setLockIndex] = useState<"" | number>("");
+  const { olyPrice } = useLockStore();
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const publicClient = usePublicClient();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
   const queryClient = useQueryClient();
-
 
   //质押列表
   const { data: myStakingList } = useQuery({
@@ -65,10 +68,10 @@ export default function UnstakePage() {
   });
 
   //领取长期本金
-  const claimLongPending = async ( type: string) => {
+  const claimLongPending = async (type: string) => {
     if (!publicClient || !userAddress) return;
     //长期质押
-    
+
     if (curStakeItem && curStakeItem.claimableBalance === 0) {
       toast.warning("没有可解除的金额");
       return;
@@ -114,8 +117,8 @@ export default function UnstakePage() {
       setIsLoading(false);
     }
   };
-   // node提取本金
-   const claimNodePending = async () => {
+  // node提取本金
+  const claimNodePending = async () => {
     if (!publicClient || !userAddress) return;
     setIsDisabled(true);
     setIsLoading(true);
@@ -135,7 +138,7 @@ export default function UnstakePage() {
         toast.success("领取成功", {
           id: toastId,
         });
-        
+
         queryClient.invalidateQueries({
           queryKey: ["UserNodeStakes", 1, userAddress],
         });
@@ -176,14 +179,14 @@ export default function UnstakePage() {
           time: String(
             Number(it.expiry) - curBlock < 0
               ? "0"
-              : Number(it.expiry) - curBlock
+              : Number(it.expiry) - curBlock,
           ),
           isShow: false,
         }));
-        console.log(updatedList, 'updatedList99999')
+        console.log(updatedList, "updatedList99999");
         setstakList(updatedList);
-        if(lockIndex != ""){
-           setCurStakeItem(updatedList[lockIndex])
+        if (lockIndex != "") {
+          setCurStakeItem(updatedList[lockIndex]);
         }
       }
     };
@@ -192,7 +195,7 @@ export default function UnstakePage() {
     myStakingList?.myStakingList,
     currentBlock,
     myNodeStakingList,
-    lockIndex
+    lockIndex,
   ]);
   return (
     <div className="space-y-6">
@@ -210,68 +213,70 @@ export default function UnstakePage() {
               options={stakList}
               value={lockIndex}
               onChange={(value) => {
-                const curItem = stakList[value]
-                setCurStakeItem(curItem)
-                setLockIndex(value)
+                const curItem = stakList[value];
+                setCurStakeItem(curItem);
+                setLockIndex(value);
               }}
             />
             <AmountTicker
               data={{
                 title: tLockedStaking("pendingAmount"),
-                value: curStakeItem && Number(curStakeItem?.pending) || 0,
-                desc: curStakeItem && Number(curStakeItem?.pending) * olyPrice || 0,
+                value: (curStakeItem && Number(curStakeItem?.pending)) || 0,
+                desc:
+                  (curStakeItem && Number(curStakeItem?.pending) * olyPrice) ||
+                  0,
               }}
               disabled
             >
-              {
-                curStakeItem && <CountdownDisplay blocks={BigInt(Number(curStakeItem.time))}></CountdownDisplay>
-              }
+              {curStakeItem && (
+                <CountdownDisplay
+                  blocks={BigInt(Number(curStakeItem.time))}
+                ></CountdownDisplay>
+              )}
             </AmountTicker>
             <AmountTicker
               data={{
                 title: tLockedStaking("releasedAmount"),
-                value: curStakeItem && Number(curStakeItem?.claimableBalance) || 0,
-                desc: curStakeItem && Number(curStakeItem?.claimableBalance) * olyPrice || 0,
+                value:
+                  (curStakeItem && Number(curStakeItem?.claimableBalance)) || 0,
+                desc:
+                  (curStakeItem &&
+                    Number(curStakeItem?.claimableBalance) * olyPrice) ||
+                  0,
               }}
             >
-              {
-                curStakeItem && <Button
+              {curStakeItem && (
+                <Button
                   clipDirection="topRight-bottomLeft"
                   className="font-mono w-40"
-                  variant={(isDisabled || Number(curStakeItem.claimableBalance) < 0.01) ? "disabled" : "primary"}
-                  disabled={(isDisabled || Number(curStakeItem.claimableBalance) < 0.01)}
-                  onClick={() => { 
-                    if(curStakeItem && curStakeItem.type === "longStake"){
-                      claimLongPending(curStakeItem.period)
-                    }else{
-                      claimNodePending()
+                  variant={
+                    isDisabled || Number(curStakeItem.claimableBalance) < 0.01
+                      ? "disabled"
+                      : "primary"
+                  }
+                  disabled={
+                    isDisabled || Number(curStakeItem.claimableBalance) < 0.01
+                  }
+                  onClick={() => {
+                    if (curStakeItem && curStakeItem.type === "longStake") {
+                      claimLongPending(curStakeItem.period);
+                    } else {
+                      claimNodePending();
                     }
-                   }}
+                  }}
                 >
-                 {isLoading?"解除中...":"解除质押"} 
+                  {isLoading ? "解除中..." : "解除质押"}
                 </Button>
-              }
+              )}
             </AmountTicker>
             {/* 信息提示 */}
             <Notification>{tLockedStaking("unstakeInfo")}</Notification>
           </Card>
         </div>
         <div>
-          <WalletSummary
-            data={{
-              availableToStake: 100,
-              stakedAmount: 100,
-              stakedAmountDesc: 12345,
-              apr: 100,
-              rebaseRewards: 12345678,
-              rebaseRewardsDesc: 12345678,
-              totalStaked: 100,
-              stakers: 100,
-              olyMarketCap: 100,
-            }}
-          />
+          <WalletSummary />
         </div>
       </div>
     </div>
-  )
+  );
 }

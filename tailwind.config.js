@@ -9,6 +9,9 @@ module.exports = {
         chakrapetch: ["ChakraPetch", "sans-serif"],
         mono: ["VCR-OSD-Mono", "monospace"],
       },
+      animation: {
+        "spin-slow": "spin 6s linear infinite",
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
@@ -60,4 +63,4 @@ module.exports = {
       },
     },
   },
-}
+};

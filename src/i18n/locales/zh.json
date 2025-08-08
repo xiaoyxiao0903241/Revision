@@ -545,5 +545,31 @@
     },
     "slippage": "滑点",
     "price": "价格"
+  },
+  "historyTable": {
+    "title": "交易记录",
+    "time": "时间",
+    "amount": "数量(AS)",
+    "record_type": "类型",
+    "hash": "交易哈希",
+    "record_types": {
+      "buy": "购买",
+      "redeem": "赎回",
+      "claim": "领取",
+      "stake": "质押",
+      "unstake": "解除质押",
+      "deposit": "质押",
+      "rebase": "领取(Rebase)",
+      "extra": "领取(Boost)",
+      "principal": "解除质押",
+      "received": "接收",
+      "redeemed": "赎回",
+      "flexible": "活期",
+      "longTerm": "长期",
+      "locked": "接收",
+      "claimed": "领取",
+      "stable": "国库债券",
+      "liquidity": "流动性债券"
+    }
   }
 }

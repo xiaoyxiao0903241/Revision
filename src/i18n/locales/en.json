@@ -575,5 +575,31 @@
     },
     "slippage": "Slippage",
     "price": "Price"
+  },
+  "historyTable": {
+    "title": "Transaction History",
+    "time": "Time",
+    "amount": "Amount(AS)",
+    "record_type": "Type",
+    "hash": "Transaction Hash",
+    "record_types": {
+      "buy": "Purchase",
+      "redeem": "Redeem",
+      "claim": "Claim",
+      "stake": "Stake",
+      "unstake": "Unstake",
+      "deposit": "Staking",
+      "rebase": "Claim(Rebase)",
+      "extra": "Claim(Boost)",
+      "principal": "Unstake",
+      "received": "Received",
+      "redeemed": "Redeemed",
+      "flexible": "Flexible",
+      "longTerm": "Long-term",
+      "locked": "Locked",
+      "claimed": "Claim",
+      "stable": "Treasury Bond",
+      "liquidity": "Liquidity Bond"
+    }
   }
 }

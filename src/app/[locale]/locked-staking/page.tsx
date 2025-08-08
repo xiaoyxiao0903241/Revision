@@ -1,23 +1,23 @@
-"use client"
-import { useState, useEffect } from "react"
-import { useTranslations } from "next-intl"
-import { Alert, Button, Card } from "~/components"
-import { WalletSummaryLock } from "~/widgets"
-import { AmountCard } from "~/widgets/amount-card"
-import { DurationSelect } from "~/widgets/select"
-import { StakingSummary } from "~/widgets/staking-summary"
-import { useQuery,useQueryClient } from "@tanstack/react-query";
+"use client";
+import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
+import { Alert, Button, Card } from "~/components";
+import { WalletSummaryLock } from "~/widgets";
+import { AmountCard } from "~/widgets/amount-card";
+import { DurationSelect } from "~/widgets/select";
+import { StakingSummary } from "~/widgets/staking-summary";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useUserAddress } from "~/contexts/UserAddressContext";
 import {
   longStakList,
   longStakStatus,
   longAllowance,
   roi,
-  depositDayList
+  depositDayList,
 } from "~/wallet/lib/web3/stake";
-import type { periodlongItem } from "~/wallet/lib/web3/stake"
+import type { periodlongItem } from "~/wallet/lib/web3/stake";
 import { formatNumbedecimalScale } from "~/lib/utils";
-import { useLockStore } from "~/store/lock"
+import { useLockStore } from "~/store/lock";
 import ConnectWalletButton from "~/components/web3/ConnectWalletButton";
 import { usePublicClient } from "wagmi";
 import { toast } from "sonner";
@@ -27,25 +27,21 @@ import { OLY } from "~/wallet/constants/tokens";
 import { getInviteInfo } from "~/wallet/lib/web3/invite";
 import longStakingAbi from "~/wallet/constants/LongStakingAbi.json";
 
-
-
 export default function StakingPage() {
-  const t = useTranslations("staking")
-  const tLockedStaking = useTranslations("lockedStaking")
-  const [lockIndex, setLockIndex] = useState<number>(0)
+  const t = useTranslations("staking");
+  const tLockedStaking = useTranslations("lockedStaking");
+  const [lockIndex, setLockIndex] = useState<number>(0);
   const { userAddress } = useUserAddress();
-  const [periodLongList, setPeriodLongList] = useState<periodlongItem[]>([])
+  const [periodLongList, setPeriodLongList] = useState<periodlongItem[]>([]);
   const [curPeriod, setCurPeriod] = useState<periodlongItem | null>(null);
-  const { olyBalance, olyPrice } = useLockStore()
+  const { olyBalance, olyPrice } = useLockStore();
   const [stakeAmount, setStakeAmount] = useState("");
-  const [myolybalance, seMyolybalance] = useState<string>('0');
+  const [myolybalance, seMyolybalance] = useState<string>("0");
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const publicClient = usePublicClient();
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
   const queryClient = useQueryClient();
-
-
 
   //获取长期质押状态列表
   const { data: stakingStatusList } = useQuery({
@@ -107,7 +103,7 @@ export default function StakingPage() {
           parseUnits(Number.MAX_SAFE_INTEGER.toString(), 9),
         ],
       });
-      
+
       const result = await publicClient.waitForTransactionReceipt({ hash });
       if (result.status === "success") {
         toast.success("授权成功");
@@ -150,14 +146,13 @@ export default function StakingPage() {
         abi: longStakingAbi as Abi,
         address: stakToken as `0x${string}`,
         functionName: "stake",
-        args: [parseUnits(stakeAmount, 9)]
+        args: [parseUnits(stakeAmount, 9)],
       });
       toast.loading("交易确认中...", {
         id: toastId,
       });
       const result = await publicClient.waitForTransactionReceipt({ hash });
       if (result.status === "success") {
-        
         toast.success("质押成功", {
           id: toastId,
         });
@@ -192,7 +187,7 @@ export default function StakingPage() {
         ...it,
         period: it.day,
         addition: roi()[index].addition,
-        rate:roi()[index].rate,
+        rate: roi()[index].rate,
         balance: "0",
         isApprove: false,
         tvl: formatNumbedecimalScale(it.amount, 2),
@@ -200,16 +195,16 @@ export default function StakingPage() {
         allowanceNum: longAllowanceList[index].allowanceNum,
       })) as periodlongItem[];
       setPeriodLongList(updatedList);
-      setCurPeriod(updatedList[lockIndex])
-      console.log(updatedList,'updatedList11111')
+      setCurPeriod(updatedList[lockIndex]);
+      console.log(updatedList, "updatedList11111");
     }
-  }, [longStakListData, stakingStatusList, longAllowanceList,lockIndex]);
+  }, [longStakListData, stakingStatusList, longAllowanceList, lockIndex]);
 
   //余额
   useEffect(() => {
-    const myBalance = formatNumbedecimalScale(olyBalance, 2)
-    seMyolybalance(myBalance)
-  }, [olyBalance])
+    const myBalance = formatNumbedecimalScale(olyBalance, 2);
+    seMyolybalance(myBalance);
+  }, [olyBalance]);
   return (
     <div className="space-y-6">
       <Alert
@@ -225,79 +220,99 @@ export default function StakingPage() {
             <DurationSelect
               options={periodLongList || []}
               value={lockIndex}
-              onChange={(value)=>{
-                setLockIndex(value)
-                setCurPeriod(periodLongList[value])
+              onChange={(value) => {
+                setLockIndex(value);
+                setCurPeriod(periodLongList[value]);
               }}
             />
             <AmountCard
               data={{
                 value: stakeAmount,
-                desc: (Number(stakeAmount) * olyPrice),
+                desc: Number(stakeAmount) * olyPrice,
                 balance: (myolybalance && Number(myolybalance)) || 0,
               }}
               onChange={(value) => {
-                setStakeAmount(value)
+                setStakeAmount(value);
               }}
               description={t("balance")}
             />
             <StakingSummary
               data={{
-                rebaseRewardRate: curPeriod && curPeriod?.rate||"0.3%-1%",
-                rebaseBoost: curPeriod && curPeriod?.addition||"0.02-0.04"
+                rebaseRewardRate: (curPeriod && curPeriod?.rate) || "0.3%-1%",
+                rebaseBoost: (curPeriod && curPeriod?.addition) || "0.02-0.04",
               }}
             />
-            {
-              !userAddress ? <ConnectWalletButton className="bg-[#FF8908] text-xl py-3 cursor-pointer px-6 !text-white text-5   hover:bg-[#FF8908]/80 h-[48px] min-w-[160px]   mx-auto" /> :
-                (
-                  <div className="flex items-center justify-center w-full gap-x-4">
-
-                    {
-                    curPeriod &&  !curPeriod.isApprove && (curPeriod.allowanceNum === 0 || Number(curPeriod.allowanceNum)  < Number(stakeAmount)) &&
-                      <Button
-                        clipDirection="topRight-bottomLeft"
-                        className="font-mono w-[50%]"
-                        variant={(isDisabled || Number(stakeAmount) === 0 || Number(myolybalance) === 0 || !curPeriod.status ) ? "disabled" : "primary"}
-                        disabled={isDisabled || Number(stakeAmount) === 0 || Number(myolybalance) === 0 || !curPeriod.status}
-                        onClick={()=>{handApprove(lockIndex)}}
-                      >
-                        {isLoading ? '授权中...' : '授权'}
-                      </Button>
+            {!userAddress ? (
+              <ConnectWalletButton className="bg-[#FF8908] text-xl py-3 cursor-pointer px-6 !text-white text-5   hover:bg-[#FF8908]/80 h-[48px] min-w-[160px]   mx-auto" />
+            ) : (
+              <div className="flex items-center justify-center w-full gap-x-4">
+                {curPeriod &&
+                  !curPeriod.isApprove &&
+                  (curPeriod.allowanceNum === 0 ||
+                    Number(curPeriod.allowanceNum) < Number(stakeAmount)) && (
+                    <Button
+                      clipDirection="topRight-bottomLeft"
+                      className="font-mono w-[50%]"
+                      variant={
+                        isDisabled ||
+                        Number(stakeAmount) === 0 ||
+                        Number(myolybalance) === 0 ||
+                        !curPeriod.status
+                          ? "disabled"
+                          : "primary"
+                      }
+                      disabled={
+                        isDisabled ||
+                        Number(stakeAmount) === 0 ||
+                        Number(myolybalance) === 0 ||
+                        !curPeriod.status
+                      }
+                      onClick={() => {
+                        handApprove(lockIndex);
+                      }}
+                    >
+                      {isLoading ? "授权中..." : "授权"}
+                    </Button>
+                  )}
+                {curPeriod && (
+                  <Button
+                    clipDirection="topRight-bottomLeft"
+                    className="font-mono flex-1"
+                    variant={
+                      isDisabled ||
+                      Number(curPeriod.allowanceNum) === 0 ||
+                      Number(curPeriod.allowanceNum) < Number(stakeAmount) ||
+                      Number(stakeAmount) === 0 ||
+                      Number(myolybalance) === 0
+                        ? "disabled"
+                        : "primary"
                     }
-                    {
-                     curPeriod && <Button
-                       clipDirection="topRight-bottomLeft"
-                        className="font-mono flex-1"
-                        variant={(isDisabled ||Number(curPeriod.allowanceNum)=== 0 ||Number(curPeriod.allowanceNum) < Number(stakeAmount) || Number(stakeAmount) === 0 || Number(myolybalance) === 0) ? "disabled" : "primary"}
-                        disabled={isDisabled || Number(curPeriod.allowanceNum)=== 0 || Number(curPeriod.allowanceNum) < Number(stakeAmount) || Number(stakeAmount) === 0 || Number(myolybalance) === 0}
-                        onClick={()=>{staking(lockIndex)}}
-                      >
-                        {
-                          isLoading && Number(curPeriod.allowanceNum) > 0 && Number(curPeriod.allowanceNum) > Number(stakeAmount) ? '质押中...' : '质押'
-                        }
-                      </Button>
+                    disabled={
+                      isDisabled ||
+                      Number(curPeriod.allowanceNum) === 0 ||
+                      Number(curPeriod.allowanceNum) < Number(stakeAmount) ||
+                      Number(stakeAmount) === 0 ||
+                      Number(myolybalance) === 0
                     }
-                  </div>
-                )
-            }
+                    onClick={() => {
+                      staking(lockIndex);
+                    }}
+                  >
+                    {isLoading &&
+                    Number(curPeriod.allowanceNum) > 0 &&
+                    Number(curPeriod.allowanceNum) > Number(stakeAmount)
+                      ? "质押中..."
+                      : "质押"}
+                  </Button>
+                )}
+              </div>
+            )}
           </Card>
         </div>
         <div>
-          <WalletSummaryLock
-            data={{
-              availableToStake: 100,
-              stakedAmount: 100,
-              stakedAmountDesc: 12345,
-              apr: 100,
-              rebaseRewards: 12345678,
-              rebaseRewardsDesc: 12345678,
-              totalStaked: 100,
-              stakers: 100,
-              olyMarketCap: 100,
-            }}
-          />
+          <WalletSummaryLock />
         </div>
       </div>
     </div>
-  )
+  );
 }
