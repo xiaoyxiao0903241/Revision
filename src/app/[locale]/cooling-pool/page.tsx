@@ -1,17 +1,34 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
-import Image from "next/image"
-import { Alert, Card } from "~/components"
+import React, { useEffect } from "react";
+import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { Alert, Card } from "~/components";
 import {
   CoolingPoolStats,
   CoolingPoolCard,
   CoolingPoolRecords,
-} from "~/widgets"
+} from "~/widgets";
+import { newRewardList } from "~/wallet/lib/web3/claim";
+import { useUserAddress } from "~/contexts/UserAddressContext";
+// import YielodLockAbi from "~/wallet/constants/YielodLockAbi.json";
+// import { toast } from "sonner";
+// import { usePublicClient } from "wagmi";
+// import { useWriteContractWithGasBuffer } from "~/hooks/useWriteContractWithGasBuffer";
+import { useQuery } from "@tanstack/react-query";
+// import { formatNumbedecimalScale } from "~/lib/utils";
 
+// interface ExtendedRewardItem extends rewardItem, Record<string, unknown> {
+//   operate?: string;
+// }
 export default function CoolingPoolPage() {
-  const t = useTranslations("coolingPool")
-
+  const t = useTranslations("coolingPool");
+  // const queryClient = useQueryClient();
+  // const [isDisabled,setIsDisabled] = useState<boolean>(false);
+  const { userAddress } = useUserAddress();
+  // const [myRewardList, setMyRewardList] = useState<ExtendedRewardItem[]>([]);
+  // const [allClaimNum, setAllClaimNum] = useState<string>("0");
+  // const [allPending,setAllPending] = useState<string>("0");
   // 冷却池卡片数据
   const coolingPoolCards = [
     {
@@ -54,7 +71,22 @@ export default function CoolingPoolPage() {
       disabled: true,
       active: false,
     },
-  ]
+  ];
+  const { data: myReward } = useQuery({
+    queryKey: ["getRewardList", userAddress],
+    queryFn: () => newRewardList({ address: userAddress as string }),
+    enabled: Boolean(userAddress),
+    retry: 1,
+    refetchInterval: 30000,
+  });
+
+  useEffect(() => {
+    // if (myReward && myReward.rewardArr.length) {
+    //   setMyRewardList(myReward.rewardArr as ExtendedRewardItem[]);
+    //   setAllClaimNum(myReward?.allClaimable?formatNumbedecimalScale(myReward?.allClaimable):'0');
+    //   setAllPending(myReward?.allPending?formatNumbedecimalScale(myReward?.allPending,4):'0');
+    // }
+  }, [myReward, t]);
 
   return (
     <div className="space-y-6">
@@ -88,5 +120,5 @@ export default function CoolingPoolPage() {
       {/* 事件记录 */}
       <CoolingPoolRecords />
     </div>
-  )
+  );
 }

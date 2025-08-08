@@ -1,7 +1,7 @@
-import { useTranslations } from "next-intl"
-import { FC } from "react"
+import { useTranslations } from "next-intl";
+import { FC } from "react";
 import type { periodItem } from "~/wallet/lib/web3/claim";
-import type { periodlongItem } from "~/wallet/lib/web3/stake"
+import type { periodlongItem } from "~/wallet/lib/web3/stake";
 
 import {
   RoundedLogo,
@@ -10,24 +10,25 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "~/components"
-import { formatCurrency } from "~/lib/utils"
+} from "~/components";
+import { formatCurrency } from "~/lib/utils";
 
 export const DurationSelect: FC<{
-  options: periodItem[] | periodlongItem[]
-  value?: number
-  onChange: (value: number) => void
-  placeholder?: string
+  options: periodItem[] | periodlongItem[];
+  value?: number;
+  onChange: (value: number) => void;
+  placeholder?: string;
 }> = ({ options, value, onChange, placeholder }) => {
-  const t = useTranslations("staking")
-  const selectedOption = options.find((it,index) => index === value)
+  const t = useTranslations("staking");
+  const selectedOption = options.find((it, index) => index === value);
   return (
     <Select
       value={value?.toString()}
       onValueChange={(value) => {
-        
-        const index = options.findIndex((it) => Number(it.day ) === Number(value))
-        onChange(index)
+        const index = options.findIndex(
+          (it) => Number(it.day) === Number(value),
+        );
+        onChange(index);
       }}
     >
       <SelectTrigger>
@@ -41,23 +42,29 @@ export const DurationSelect: FC<{
       </SelectTrigger>
       <SelectContent>
         {options.map((it) => (
-          <SelectItem key={it.day} value={it.day?.toString() || ''}>
-            {it.day} {t("days")}
+          <SelectItem key={it.day} value={it.day?.toString() || ""}>
+            <div className="flex justify-between w-full">
+              <span>
+                {" "}
+                {it.day} {t("days")}
+              </span>
+              <span>{it.rate}</span>
+            </div>
           </SelectItem>
         ))}
       </SelectContent>
     </Select>
-  )
-}
+  );
+};
 
 export const AmountSelect: FC<{
-  options: { value: number; desc: string }[]
-  value: number | undefined
-  onChange: (value: number | undefined) => void
-  placeholder?: string
+  options: { value: number; desc: string }[];
+  value: number | undefined;
+  onChange: (value: number | undefined) => void;
+  placeholder?: string;
 }> = ({ options, value, onChange, placeholder }) => {
-  const t = useTranslations("staking")
-  const selectedOption = options.find((it) => it.value === value)
+  const t = useTranslations("staking");
+  const selectedOption = options.find((it) => it.value === value);
   return (
     <Select
       value={value?.toString()}
@@ -90,5 +97,5 @@ export const AmountSelect: FC<{
         ))}
       </SelectContent>
     </Select>
-  )
-}
+  );
+};

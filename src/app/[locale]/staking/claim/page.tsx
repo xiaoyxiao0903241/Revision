@@ -1,12 +1,12 @@
-"use client"
-import { useEffect, useState } from "react"
-import { useTranslations } from "next-intl"
-import { Alert, Button, Card, CardContent, Notification } from "~/components"
-import { WalletSummary } from "~/widgets"
-import { AmountCard } from "~/widgets/amount-card"
-import { ClaimSummary } from "~/widgets/claim-summary"
-import { DurationSelect } from "~/widgets/select"
-import { useNolockStore } from "~/store/noLock"
+"use client";
+import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { Alert, Button, Card, CardContent, Notification } from "~/components";
+import { WalletSummary } from "~/widgets";
+import { AmountCard } from "~/widgets/amount-card";
+import { ClaimSummary } from "~/widgets/claim-summary";
+import { DurationSelect } from "~/widgets/select";
+import { useNolockStore } from "~/store/noLock";
 import { formatNumbedecimalScale } from "~/lib/utils";
 import { useUserAddress } from "~/contexts/UserAddressContext";
 import { usePublicClient } from "wagmi";
@@ -15,33 +15,31 @@ import { useWriteContractWithGasBuffer } from "~/hooks/useWriteContractWithGasBu
 import DemandStakingAbi from "~/wallet/constants/DemandStakingAbi.json";
 import { demandStaking } from "~/wallet/constants/tokens";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Abi } from "viem";
+import { Abi, parseUnits } from "viem";
 import { getClaimPeriod } from "~/wallet/lib/web3/claim";
 import type { periodItem } from "~/wallet/lib/web3/claim";
-
 
 interface StakInfo {
   stakNum: number;
 }
 export default function ClaimPage() {
-  const t = useTranslations("staking")
-  const { demandProfitInfo, olyPrice, hotDataStakeNum } = useNolockStore()
-  const tNoLockedStaking = useTranslations("noLockedStaking")
-  const [claimAmount, setClaimAmount] = useState("")
+  const t = useTranslations("staking");
+  const { demandProfitInfo, olyPrice, hotDataStakeNum } = useNolockStore();
+  const tNoLockedStaking = useTranslations("noLockedStaking");
+  const [claimAmount, setClaimAmount] = useState("");
   const [allProfit, setAllProfitAmount] = useState<number>(0);
   const [normalProfit, setNormalProfit] = useState<number>(0);
   const [rebalseProfit, setRebalseProfit] = useState<number>(0);
   const [hotDataInfo, setStakeInfo] = useState<StakInfo>({ stakNum: 0 });
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
-  const [lockIndex, setLockIndex] = useState<number>(0)
+  const [lockIndex, setLockIndex] = useState<number>(0);
   const { userAddress } = useUserAddress();
   const publicClient = usePublicClient();
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
   const queryClient = useQueryClient();
   const [periodList, setPeriodList] = useState<periodItem[]>([]);
   // const [curPeriod, setCurPeriod] = useState<periodItem | null>(null);
-  const [rate,setRate] = useState(0)
-
+  const [rate, setRate] = useState(0);
 
   const { data: list } = useQuery({
     queryKey: ["claimPeriod"],
@@ -61,7 +59,7 @@ export default function ClaimPage() {
         abi: DemandStakingAbi as Abi,
         address: demandStaking as `0x${string}`,
         functionName: "claimInterest",
-        args: [lockIndex, claimAmount],
+        args: [lockIndex, parseUnits(claimAmount || "0", 9).toString()],
       });
       toast.loading(t("toast.confirming_transaction"), {
         id: toastId,
@@ -99,14 +97,14 @@ export default function ClaimPage() {
     if (list?.length) {
       setPeriodList(list);
       // setCurPeriod(list[lockIndex])
-      setRate(Number(list[lockIndex].rate.split("%")[0]))
+      setRate(Number(list[lockIndex].rate.split("%")[0]));
     }
-  }, [list,lockIndex]);
+  }, [list, lockIndex]);
   useEffect(() => {
     if (demandProfitInfo) {
-      setAllProfitAmount(demandProfitInfo.allProfit)
-      setNormalProfit(demandProfitInfo.normalProfit)
-      setRebalseProfit(demandProfitInfo.rebalseProfit)
+      setAllProfitAmount(demandProfitInfo.allProfit);
+      setNormalProfit(demandProfitInfo.normalProfit);
+      setRebalseProfit(demandProfitInfo.rebalseProfit);
     }
   }, [demandProfitInfo]);
   useEffect(() => {
@@ -120,7 +118,7 @@ export default function ClaimPage() {
   //     const rate =  curPeriod.rate.split("%")[0]
 
   //   }
-    
+
   // },[claimAmount])
   return (
     <div className="space-y-6">
@@ -140,7 +138,9 @@ export default function ClaimPage() {
                 data={{
                   value: claimAmount,
                   desc: Number(claimAmount) * olyPrice,
-                  balance: allProfit ? Number(formatNumbedecimalScale(allProfit, 2)) : 0,
+                  balance: normalProfit
+                    ? Number(formatNumbedecimalScale(normalProfit, 2))
+                    : 0,
                 }}
                 onChange={(value) => {
                   if (Number(value) > allProfit) {
@@ -156,16 +156,16 @@ export default function ClaimPage() {
                 options={periodList}
                 value={lockIndex}
                 placeholder={tNoLockedStaking("selectReleasePeriod")}
-                onChange={(value)=>{
-                  setRate(Number(periodList[value].rate.split("%")[0]))
-                  setLockIndex(value)
+                onChange={(value) => {
+                  setRate(Number(periodList[value].rate.split("%")[0]));
+                  setLockIndex(value);
                 }}
               />
               <ClaimSummary
                 data={{
-                  amount: Number(claimAmount)*((100 - rate)/100),
+                  amount: Number(claimAmount) * ((100 - rate) / 100),
                   taxRate: rate,
-                  incomeTax: Number(claimAmount)*(rate/100),
+                  incomeTax: Number(claimAmount) * (rate / 100),
                 }}
               />
 
@@ -173,8 +173,20 @@ export default function ClaimPage() {
               <Button
                 clipDirection="topRight-bottomLeft"
                 className="w-full"
-                variant={(  normalProfit < 0.0001 || isDisabled || (rebalseProfit > 0 && hotDataInfo.stakNum > 0)) ? "disabled" : "primary"}
-                disabled={ normalProfit < 0.0001 || isDisabled || (rebalseProfit > 0 && hotDataInfo.stakNum > 0)}
+                variant={
+                  normalProfit < 0.0001 ||
+                  isDisabled ||
+                  (rebalseProfit > 0 && hotDataInfo.stakNum > 0) ||
+                  Number(claimAmount) === 0
+                    ? "disabled"
+                    : "primary"
+                }
+                disabled={
+                  normalProfit < 0.0001 ||
+                  isDisabled ||
+                  (rebalseProfit > 0 && hotDataInfo.stakNum > 0) ||
+                  Number(claimAmount) === 0
+                }
                 onClick={claimInterest}
               >
                 {t("claimButton")}
@@ -201,5 +213,5 @@ export default function ClaimPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
