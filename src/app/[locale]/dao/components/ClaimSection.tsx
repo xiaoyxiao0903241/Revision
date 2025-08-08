@@ -6,12 +6,12 @@ import _ from "lodash";
 import { useUserAddress } from "~/contexts/UserAddressContext";
 import { usePeriods } from "~/hooks/userPeriod";
 import { claimReward, rewardClaimed } from "~/services/auth/dao";
-import { formatte2Num } from "~/lib/utils";
+import { dayjs, formatte2Num } from "~/lib/utils";
+import { useNolockStore } from "~/store/noLock";
 import {
   Card,
   Button,
   Notification,
-  Countdown,
   View,
   RoundedLogo,
   Select,
@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "~/components";
 import { ClaimSummary } from "~/widgets/claim-summary";
+import CountdownTimer from "~/app/[locale]/staking/unstake/component/countDownTimer";
 
 interface PeriodInfo {
   day: number;
@@ -66,14 +67,30 @@ export const ClaimSection = ({
   const [currentPeriodInfo, setCurrentPeriodInfo] =
     useState<PeriodInfo>(defaultPeriodInfo);
   const [currentRate, setCurrentRate] = useState<number>(0);
+  // const [cutDownTime, setCutDownTime] = useState<number>(0);
+  const {
+    time,
+    lastStakeTimestamp,
+    // nextBlock,
+    // currentBlock,
+  } = useNolockStore();
 
   useEffect(() => {
     setCurrentRate(Number(currentPeriodInfo?.rate?.split("%")[0]));
   }, [currentPeriodInfo]);
 
+  //计算rebase倒计时
+  // useEffect(() => {
+  //   if (nextBlock && currentBlock) {
+  //     const time = nextBlock - currentBlock < 0 ? 0 : nextBlock - currentBlock + 600
+  //     setCutDownTime(time);
+  //   }
+  // }, [currentBlock, nextBlock]);
+
+  let toastId: string | number | undefined;
   const claimRewardMutation = useMutation({
     mutationFn: async () => {
-      toast.loading(t("currentlyReceiving"));
+      toastId = toast.loading(t("currentlyReceiving"));
       // 调用claimReward获取数据
       const claimData = await claimReward(type, userAddress as `0x${string}`);
       // 在claimReward成功后，将结果传递给rewardClaimed
@@ -85,12 +102,14 @@ export const ClaimSection = ({
       return { claimData, claimedData };
     },
     onSuccess: (data) => {
-      toast.success(t("toast.claim_success"));
+      toast.dismiss(toastId);
+      toast.success(t("toast.claim_success"), { id: toastId });
       console.log("奖励领取成功:", data);
       refetch();
     },
     onError: (error) => {
-      toast.error(error.message || t("toast.claim_failed"));
+      toast.dismiss(toastId);
+      toast.error(error.message || t("toast.claim_failed"), { id: toastId });
       console.error("奖励领取失败:", error);
     },
   });
@@ -104,14 +123,13 @@ export const ClaimSection = ({
       {/* 倒计时 */}
       <div className="flex items-center text-sm gap-2">
         <p className="text-foreground/50">{t("next_payout_in")}:</p>
-        <Countdown
-          endAt={
-            new Date(
-              Date.now() + 11 * 60 * 60 * 1000 + 32 * 60 * 1000 + 29 * 1000,
-            )
-          }
-          className="font-chakrapetch"
-        />
+        {lastStakeTimestamp > 0 ? (
+          <CountdownTimer
+            time={dayjs(time).add(10, "minutes").format("YYYY-MM-DD HH:mm:ss")}
+          />
+        ) : (
+          <CountdownTimer time={String(0)} />
+        )}
       </div>
       <View className="bg-[#22285E] px-4" clipDirection="topRight-bottomLeft">
         <div className="flex items-center justify-between  py-4">

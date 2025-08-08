@@ -14,7 +14,6 @@ type DaoRecordsParams = {
   type: string;
 };
 
-// 在文件顶部或其他合适位置定义数据项类型
 type DaoRecordItem = {
   event?: string;
   hash?: string;
@@ -31,6 +30,8 @@ type DaoRecordItem = {
   benefitLevel?: number;
   market?: string;
   smallMarket?: string;
+  fromAddress?: string;
+  interest?: string;
 };
 const DaoRecords = ({ type }: { type: string }) => {
   const t = useTranslations("dao");
@@ -39,6 +40,7 @@ const DaoRecords = ({ type }: { type: string }) => {
   const { userAddress } = useUserAddress();
   const [total, setTotal] = useState<number>(0);
   const [columns, setColumns] = useState<ProTableColumn<DaoRecordItem>[]>([]);
+  // const [historyColumns, setHistoryColumns] = useState<ProTableColumn<DaoRecordItem>[]>([]);
 
   // 标签页数据
   const tabData = [
@@ -48,8 +50,8 @@ const DaoRecords = ({ type }: { type: string }) => {
 
   const evnetColumn: ProTableColumn<DaoRecordItem> = {
     title: t("event"),
-    dataIndex: "event", // 修改为 DaoRecordItem 中存在的字段
-    key: "event", // key 也应与 dataIndex 一致或确保唯一性
+    dataIndex: "event",
+    key: "event",
     render: () => {
       return (
         <span className="text-secondary">
@@ -108,7 +110,7 @@ const DaoRecords = ({ type }: { type: string }) => {
         list = [
           evnetColumn,
           {
-            title: t("net_holding"),
+            title: t("bonus_amount"),
             dataIndex: "actBonus",
             key: "actBonus",
             render: (value: string | number | boolean | undefined) => {
@@ -149,9 +151,8 @@ const DaoRecords = ({ type }: { type: string }) => {
       case "promotion":
         list = [
           evnetColumn,
-          // 时间(createTime)	社区级别(benefitLevel)	小区业绩(smallMarket)	总业绩(market)	奖金(actBonus)
           {
-            title: t("net_holding"),
+            title: t("bonus_amount"),
             dataIndex: "actBonus",
             key: "actBonus",
             render: (value: string | number | boolean | undefined) => {
@@ -192,9 +193,8 @@ const DaoRecords = ({ type }: { type: string }) => {
       case "lead":
         list = [
           evnetColumn,
-          // 时间(createTime)	解锁称号会员数量(sourceNum)	奖金(actBonus)
           {
-            title: t("net_holding"),
+            title: t("bonus_amount"),
             dataIndex: "actBonus",
             key: "actBonus",
             render: (value: string | number | boolean | undefined) => {
@@ -202,9 +202,61 @@ const DaoRecords = ({ type }: { type: string }) => {
             },
           },
           {
-            title: t("evangelist_level"),
+            title: t("v_level_members_within_10_layers"),
             dataIndex: "sourceNum",
             key: "sourceNum",
+          },
+          {
+            title: t("date_time"),
+            dataIndex: "createTime",
+            key: "createTime",
+            render: {
+              valueType: "dateTime",
+            },
+          },
+        ];
+        break;
+      case "service":
+        list = [
+          evnetColumn,
+          {
+            title: t("bonus_amount"),
+            dataIndex: "actBonus",
+            key: "actBonus",
+            render: (value: string | number | boolean | undefined) => {
+              return <>{formatDecimal(Number(value), 2)} OLY</>;
+            },
+          },
+          {
+            title: t("source_address"),
+            dataIndex: "fromAddress",
+            key: "fromAddress",
+            render: {
+              link: true,
+              href: (value) => `https://bscscan.com/address/${value}`,
+              target: "_blank",
+              valueType: "hash",
+            },
+          },
+          {
+            title: t("source_address_transaction_amount"),
+            dataIndex: "interest",
+            key: "interest",
+            render: (value: string | number | boolean | undefined) => {
+              return <>{formatDecimal(Number(value), 2)} OLY</>;
+            },
+          },
+          {
+            title: t("transaction_hash"),
+            dataIndex: "hash",
+            key: "hash",
+            render: {
+              link: true,
+              href: (value: string | number | boolean | undefined) =>
+                `https://bscscan.com/address/${value}`,
+              target: "_blank",
+              valueType: "hash",
+            },
           },
           {
             title: t("date_time"),
