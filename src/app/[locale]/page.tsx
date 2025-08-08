@@ -1,23 +1,16 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
-import Image from "next/image"
-import { useState } from "react"
-import GrayLogo from "~/assets/gray-logo.svg"
-import {
-  Alert,
-  Button,
-  Card,
-  CardContent,
-  Statistics,
-  View,
-} from "~/components"
-import { cn } from "~/lib/utils"
-import { PerformanceChart } from "~/widgets"
-import { PositionDetails } from "~/widgets/position-details"
+import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { useState } from "react";
+import GrayLogo from "~/assets/gray-logo.svg";
+import { Alert, Button, Card, Statistics, View } from "~/components";
+import { cn } from "~/lib/utils";
+import { PerformanceChart } from "~/widgets";
+import { PositionDetails } from "~/widgets/position-details";
 export default function DashboardPage() {
-  const t = useTranslations("dashboard")
-  const [selectedTimeFilter, setSelectedTimeFilter] = useState("all")
+  const t = useTranslations("dashboard");
+  const [selectedTimeFilter, setSelectedTimeFilter] = useState("all");
 
   const timeFilters = [
     { key: "all", label: t("timeFilters.all") },
@@ -25,7 +18,7 @@ export default function DashboardPage() {
     { key: "3m", label: t("timeFilters.3m") },
     { key: "6m", label: t("timeFilters.6m") },
     { key: "1y", label: t("timeFilters.1y") },
-  ]
+  ];
 
   return (
     <div className="space-y-6">
@@ -252,7 +245,7 @@ export default function DashboardPage() {
                   {
                     "shadow-[inset_0_0_20px_rgba(84,119,247,0.5)] text-foreground":
                       selectedTimeFilter === filter.key,
-                  }
+                  },
                 )}
               >
                 {filter.label}
@@ -397,5 +390,5 @@ export default function DashboardPage() {
         </div>
       </Card>
     </div>
-  )
+  );
 }
