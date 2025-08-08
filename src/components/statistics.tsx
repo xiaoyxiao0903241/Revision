@@ -33,9 +33,9 @@ export const Statistics: React.FC<StatisticsProps> = ({
       <div className="flex items-center space-x-2">
         <span
           className={cn(
-            "text-white font-mono text-3xl",
-            size === "sm" && "text-lg",
-            size === "md" && "text-2xl"
+            "text-white font-mono text-xl md:text-3xl",
+            size === "sm" && "text-base md:text-lg",
+            size === "md" && "text-lg md:text-2xl"
           )}
         >
           {value}

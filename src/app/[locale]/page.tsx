@@ -285,9 +285,9 @@ export default function DashboardPage() {
         </div>
 
         {/* 奖金卡片网格 */}
-        <div className="grid grid-cols-1 lg:grid-cols-4">
+        <div className="hidden lg:grid grid-cols-4">
           {/* 奖金池 - 占据左侧整个高度 */}
-          <div className="lg:row-span-3 nine-patch-frame grid-body relative w-full h-full flex flex-col items-center justify-center">
+          <div className="row-span-3 nine-patch-frame grid-body relative w-full h-full flex flex-col items-center justify-center">
             <div className="flex flex-col gap-2 items-center justify-center">
               <div>{t("rewardPool")}</div>
               <div className="font-mono text-2xl font-bold text-gradient">
@@ -298,7 +298,7 @@ export default function DashboardPage() {
           </div>
 
           {/* 可领取的奖金数量 */}
-          <div className="lg:row-span-3 relative gap-2 bg-[#1E204C] flex flex-col items-start justify-center px-6 py-7">
+          <div className="row-span-3 relative gap-2 bg-[#1E204C] flex flex-col items-start justify-center px-6 py-7">
             <Statistics
               title={t("claimableRewardsAmount")}
               value="133,456 OLY"
@@ -331,7 +331,7 @@ export default function DashboardPage() {
           </div>
 
           {/* 已经释放的奖金数量 */}
-          <div className="lg:row-span-2 relative">
+          <div className="row-span-2 relative">
             <div className="px-6 w-full h-full bg-[#1E204C] py-7 flex gap-4 items-center justify-between">
               <Statistics
                 title={t("releasedRewardsAmount")}
@@ -386,6 +386,105 @@ export default function DashboardPage() {
               </Button>
             </div>
             <div className="absolute left-0 top-0 bottom-0 w-[5px] bg-gradient-to-b from-primary to-secondary"></div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:hidden gap-4">
+          {/* 奖金池 - 占据左侧整个高度 */}
+          <div className="relative w-full h-full flex flex-col items-center justify-center">
+            <div className="flex flex-col gap-2 items-center justify-center">
+              <div>{t("rewardPool")}</div>
+              <div className="font-mono text-2xl font-bold text-gradient">
+                600.00 OLY
+              </div>
+              <div className="text-foreground/50 text-xs">$1,636,541.12</div>
+            </div>
+          </div>
+
+          {/* 可领取的奖金数量 */}
+          <div className="relative gap-2 bg-[#1E204C] flex flex-col items-start justify-center px-6 py-7">
+            <Statistics
+              title={t("claimableRewardsAmount")}
+              value="133,456 OLY"
+              desc="$1,636,541.12"
+              size="sm"
+            />
+            <Button
+              variant="primary"
+              clipSize={8}
+              clipDirection="topLeft-bottomRight"
+              className="h-6 px-3"
+            >
+              {t("claim")}
+            </Button>
+          </div>
+
+          {/* 释放中的奖金数量 */}
+          <div className="relative">
+            <div className="px-6 py-7 bg-[#1E204C] flex flex-col items-start justify-center w-full">
+              <div className="text-foreground/50 text-xs">
+                {t("rewardsInRelease")}
+              </div>
+              <div className="text-foreground/50 font-mono text-xl">
+                133,456 OLY
+              </div>
+              <div className="text-foreground/50 text-xs">$1,636,541.12</div>
+            </div>
+          </div>
+
+          {/* 已经释放的奖金数量 */}
+          <div className="elative">
+            <div className="px-6 w-full h-full bg-[#1E204C] py-7 flex gap-4 items-center justify-between">
+              <Statistics
+                title={t("releasedRewardsAmount")}
+                value="133,456 OLY"
+                desc="$1,636,541.12"
+                size="sm"
+              />
+              <Button
+                variant="primary"
+                size="sm"
+                clipDirection="topRight-bottomLeft"
+              >
+                {t("claim")}
+              </Button>
+            </div>
+          </div>
+
+          {/* 涡轮中的奖金数量 */}
+
+          <div className="relative">
+            <div className="px-6 py-7 bg-[#1E204C] flex flex-col items-start justify-center">
+              <div className="text-foreground/50 text-xs">
+                {t("turbineRewardsAmount")}
+              </div>
+              <div className="text-foreground/50 font-mono text-xl">
+                133,456 OLY
+              </div>
+              <div className="text-foreground/50 text-xs">$1,636,541.12</div>
+            </div>
+          </div>
+
+          {/* 已解锁的奖金数量 */}
+          <div className="relative">
+            <div className="px-6 w-full h-full bg-[#1E204C] py-7 flex gap-4 items-center justify-between">
+              <div>
+                <div className="text-foreground/50 text-xs">
+                  {t("turbineRewardsAmount")}
+                </div>
+                <div className="text-foreground/50 font-mono text-xl">
+                  133,456 OLY
+                </div>
+                <div className="text-foreground/50 text-xs">$1,636,541.12</div>
+              </div>
+              <Button
+                variant="primary"
+                size="sm"
+                clipDirection="topRight-bottomLeft"
+              >
+                {t("claim")}
+              </Button>
+            </div>
           </div>
         </div>
       </Card>

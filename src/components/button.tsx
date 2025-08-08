@@ -34,7 +34,7 @@ export function Button({
   const sizeClasses = {
     sm: "px-2 h-6 text-sm font-normal",
     md: "px-6 h-12 text-base",
-    lg: "px-8 py-4 text-lg",
+    lg: "px-8 py-4 text-base md:text-lg",
   }
 
   const variantClasses = {

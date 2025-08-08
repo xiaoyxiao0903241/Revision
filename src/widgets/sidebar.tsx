@@ -49,7 +49,7 @@ const NavigationItem = ({ item }: { item: NavigationItem }) => {
   )
 }
 
-export function Sidebar() {
+export const SidebarContent = () => {
   const t = useTranslations("navigation")
 
   const navigationItems: NavigationItem[] = [
@@ -163,91 +163,98 @@ export function Sidebar() {
   }, {} as Record<string, NavigationItem[]>)
 
   return (
-    <div className="flex px-9 flex-col">
-      {/* Navigation */}
-      <div className="sidebar">
-        <nav className="flex-1 space-y-6 py-6">
-          {/* Main Navigation */}
-          {groupedItems.main && (
-            <div className="space-y-2">
-              {groupedItems.main.map((item) => {
-                return <NavigationItem key={item.href} item={item} />
-              })}
-            </div>
-          )}
-          <div className="border-t border-gray-800 mx-5"></div>
-          {/* Staking Section */}
-          {groupedItems.staking && (
-            <div className="space-y-2">
-              <h3 className="px-5 text-xs font-semibold uppercase tracking-wider text-gray-400">
-                {t("staking")}
-              </h3>
-              {groupedItems.staking.map((item) => {
-                return <NavigationItem key={item.href} item={item} />
-              })}
-            </div>
-          )}
-          <div className="border-t border-gray-800 mx-5"></div>
-          {/* Bonds Section */}
-          {groupedItems.bonds && (
-            <div className="space-y-2">
-              <h3 className="px-5 text-xs font-semibold uppercase tracking-wider text-gray-400">
-                {t("bonds")}
-              </h3>
-              {groupedItems.bonds.map((item) => {
-                return <NavigationItem key={item.href} item={item} />
-              })}
-            </div>
-          )}
-          <div className="border-t border-gray-800 mx-5"></div>
-          {/* Tools Section */}
-          {groupedItems.tools && (
-            <div className="space-y-2">
-              <h3 className="px-5 text-xs font-semibold uppercase tracking-wider text-gray-400">
-                {t("tools")}
-              </h3>
-              {groupedItems.tools.map((item) => {
-                return <NavigationItem key={item.href} item={item} />
-              })}
-            </div>
-          )}
+    <>
+      {/* Main Navigation */}
+      {groupedItems.main && (
+        <div className="space-y-2">
+          {groupedItems.main.map((item) => {
+            return <NavigationItem key={item.href} item={item} />
+          })}
+        </div>
+      )}
+      <div className="border-t border-gray-800 mx-5"></div>
+      {/* Staking Section */}
+      {groupedItems.staking && (
+        <div className="space-y-2">
+          <h3 className="px-5 text-xs font-semibold uppercase tracking-wider text-gray-400">
+            {t("staking")}
+          </h3>
+          {groupedItems.staking.map((item) => {
+            return <NavigationItem key={item.href} item={item} />
+          })}
+        </div>
+      )}
+      <div className="border-t border-gray-800 mx-5"></div>
+      {/* Bonds Section */}
+      {groupedItems.bonds && (
+        <div className="space-y-2">
+          <h3 className="px-5 text-xs font-semibold uppercase tracking-wider text-gray-400">
+            {t("bonds")}
+          </h3>
+          {groupedItems.bonds.map((item) => {
+            return <NavigationItem key={item.href} item={item} />
+          })}
+        </div>
+      )}
+      <div className="border-t border-gray-800 mx-5"></div>
+      {/* Tools Section */}
+      {groupedItems.tools && (
+        <div className="space-y-2">
+          <h3 className="px-5 text-xs font-semibold uppercase tracking-wider text-gray-400">
+            {t("tools")}
+          </h3>
+          {groupedItems.tools.map((item) => {
+            return <NavigationItem key={item.href} item={item} />
+          })}
+        </div>
+      )}
 
-          {footerItems && (
-            <div className="space-y-2">
-              {footerItems.map((item) => {
-                return <NavigationItem key={item.href} item={item} />
-              })}
-            </div>
-          )}
-          {/* Social Links */}
-          <div>
-            <div className="flex gap-6 px-5">
-              <a href="#" aria-label="x">
-                <Image
-                  src="/images/icon/x.png"
-                  alt="Twitter"
-                  width={32}
-                  height={32}
-                />
-              </a>
-              <a href="#" aria-label="Telegram">
-                <Image
-                  src="/images/icon/telegram.png"
-                  alt="Telegram"
-                  width={32}
-                  height={32}
-                />
-              </a>
-              <a href="#" aria-label="YouTube">
-                <Image
-                  src="/images/icon/youtube.png"
-                  alt="YouTube"
-                  width={32}
-                  height={32}
-                />
-              </a>
-            </div>
-          </div>
+      {footerItems && (
+        <div className="space-y-2">
+          {footerItems.map((item) => {
+            return <NavigationItem key={item.href} item={item} />
+          })}
+        </div>
+      )}
+      {/* Social Links */}
+      <div>
+        <div className="flex gap-6 px-5">
+          <a href="#" aria-label="x">
+            <Image
+              src="/images/icon/x.png"
+              alt="Twitter"
+              width={32}
+              height={32}
+            />
+          </a>
+          <a href="#" aria-label="Telegram">
+            <Image
+              src="/images/icon/telegram.png"
+              alt="Telegram"
+              width={32}
+              height={32}
+            />
+          </a>
+          <a href="#" aria-label="YouTube">
+            <Image
+              src="/images/icon/youtube.png"
+              alt="YouTube"
+              width={32}
+              height={32}
+            />
+          </a>
+        </div>
+      </div>
+    </>
+  )
+}
+
+export const Sidebar = () => {
+  return (
+    <div className="hidden md:flex px-4 lg:px-9 flex-col">
+      <div className="sidebar w-[260px]">
+        <nav className="flex-1 space-y-6 py-6">
+          <SidebarContent />
         </nav>
       </div>
     </div>

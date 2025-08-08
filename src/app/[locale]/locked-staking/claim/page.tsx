@@ -43,45 +43,43 @@ export default function ClaimPage() {
         <div className="space-y-6">
           {/* 分段控制器 */}
           <Card>
-            <CardContent className="space-y-6">
-              <Segments
-                options={claimOptions}
-                value={selectedClaimType}
-                onChange={setSelectedClaimType}
-              />
-              <AmountSelect
-                options={amountOptions}
-                value={amount}
-                onChange={setAmount}
-              />
-              <AmountCard
-                data={{
-                  value: decimal,
-                  desc: 456,
-                  balance: 789,
-                }}
-                description={t("balance")}
-                onChange={setDecimal}
-              />
-              <Notification>{tLockedStaking("claimInfo")}</Notification>
-              <DurationSelect
-                options={durationOptions}
-                value={duration}
-                onChange={setDuration}
-              />
-              <ClaimSummary
-                data={{
-                  amount: 85,
-                  taxRate: 0.38,
-                  incomeTax: 0.07994899,
-                }}
-              />
+            <Segments
+              options={claimOptions}
+              value={selectedClaimType}
+              onChange={setSelectedClaimType}
+            />
+            <AmountSelect
+              options={amountOptions}
+              value={amount}
+              onChange={setAmount}
+            />
+            <AmountCard
+              data={{
+                value: decimal,
+                desc: 456,
+                balance: 789,
+              }}
+              description={t("balance")}
+              onChange={setDecimal}
+            />
+            <Notification>{tLockedStaking("claimInfo")}</Notification>
+            <DurationSelect
+              options={durationOptions}
+              value={duration}
+              onChange={setDuration}
+            />
+            <ClaimSummary
+              data={{
+                amount: 85,
+                taxRate: 0.38,
+                incomeTax: 0.07994899,
+              }}
+            />
 
-              {/* 领取按钮 */}
-              <Button clipDirection="topRight-bottomLeft" className="w-full">
-                {t("claimButton")}
-              </Button>
-            </CardContent>
+            {/* 领取按钮 */}
+            <Button clipDirection="topRight-bottomLeft" className="w-full">
+              {t("claimButton")}
+            </Button>
           </Card>
         </div>
 

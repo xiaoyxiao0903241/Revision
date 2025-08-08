@@ -1,7 +1,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { Alert, Button, Card, CardContent, Notification } from "~/components"
+import { Alert, Button, Card, Notification } from "~/components"
 import { durationOptions, useMock } from "~/hooks/useMock"
 import { WalletSummary } from "~/widgets"
 import { AmountCard } from "~/widgets/amount-card"
@@ -26,36 +26,34 @@ export default function ClaimPage() {
         <div className="space-y-6">
           {/* 分段控制器 */}
           <Card>
-            <CardContent className="space-y-6">
-              <AmountCard
-                data={{
-                  value: decimal,
-                  desc: 456,
-                  balance: 789,
-                }}
-                description={t("balance")}
-                onChange={setDecimal}
-              />
-              <Notification>{tNoLockedStaking("claimInfo")}</Notification>
-              <DurationSelect
-                options={durationOptions}
-                value={duration}
-                placeholder={tNoLockedStaking("selectReleasePeriod")}
-                onChange={setDuration}
-              />
-              <ClaimSummary
-                data={{
-                  amount: 85,
-                  taxRate: 0.38,
-                  incomeTax: 0.07994899,
-                }}
-              />
+            <AmountCard
+              data={{
+                value: decimal,
+                desc: 456,
+                balance: 789,
+              }}
+              description={t("balance")}
+              onChange={setDecimal}
+            />
+            <Notification>{tNoLockedStaking("claimInfo")}</Notification>
+            <DurationSelect
+              options={durationOptions}
+              value={duration}
+              placeholder={tNoLockedStaking("selectReleasePeriod")}
+              onChange={setDuration}
+            />
+            <ClaimSummary
+              data={{
+                amount: 85,
+                taxRate: 0.38,
+                incomeTax: 0.07994899,
+              }}
+            />
 
-              {/* 领取按钮 */}
-              <Button clipDirection="topRight-bottomLeft" className="w-full">
-                {t("claimButton")}
-              </Button>
-            </CardContent>
+            {/* 领取按钮 */}
+            <Button clipDirection="topRight-bottomLeft" className="w-full">
+              {t("claimButton")}
+            </Button>
           </Card>
         </div>
 

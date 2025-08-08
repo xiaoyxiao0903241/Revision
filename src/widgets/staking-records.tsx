@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl"
 import { FC, ReactNode, useState } from "react"
-import { Button, Card, CardContent, Icon, Tabs } from "~/components"
+import { Button, Card, Icon, Tabs } from "~/components"
 import { stakingRecords, useMock } from "~/hooks/useMock"
 import { cn, dayjs, formatDecimal, formatHash } from "~/lib/utils"
 
@@ -60,90 +60,88 @@ export const StakingRecords: FC<{
 
   return (
     <Card>
-      <CardContent className="space-y-6">
-        {/* 标签页 */}
-        <Tabs data={tabData} activeIndex={activeTab} onChange={setActiveTab}>
-          <div className="flex-1 flex flex-col items-end">
-            <div className="text-base text-foreground">
-              {formatDecimal(22197, 0)} {t("recordsCount")}
-            </div>
-            <div className="text-xs text-foreground/50">
-              {dayjs(dayjs().subtract(200, "seconds")).fromNow()}
-            </div>
+      {/* 标签页 */}
+      <Tabs data={tabData} activeIndex={activeTab} onChange={setActiveTab}>
+        <div className="flex-1 flex flex-col items-end">
+          <div className="text-base text-foreground">
+            {formatDecimal(22197, 0)} {t("recordsCount")}
           </div>
-        </Tabs>
-
-        {/* 记录表格 */}
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <tbody className="flex flex-col gap-1">
-              {filteredRecords?.length > 0 ? (
-                filteredRecords.map((record) => (
-                  <tr
-                    key={record.id}
-                    className="bg-foreground/5 mb-2 rounded-lg flex flex-row w-full"
-                  >
-                    <Cell
-                      title={t("event")}
-                      className={
-                        eventColors[record.event as keyof typeof eventColors]
-                      }
-                    >
-                      <Icon name="event" size={16} />
-                      {record.event}
-                    </Cell>
-                    <Cell title={t("transactionHash")} className="w-1/5">
-                      <a
-                        href="#"
-                        className="underline text-sm"
-                        title={record.transactionHash}
-                      >
-                        {formatHash(record.transactionHash)}
-                      </a>
-                    </Cell>
-                    <Cell title={t("amount")} className="w-1/5">
-                      {formatDecimal(record.amount, 2)}
-                    </Cell>
-                    <Cell title={t("period")} className="w-1/5 uppercase">
-                      {record.period ? `${record.period} ${t("days")}` : "  "}
-                    </Cell>
-                    <Cell title={t("dateTime")}>{record.dateTime}</Cell>
-                  </tr>
-                ))
-              ) : (
-                <tr className="w-full">
-                  <td
-                    colSpan={5}
-                    className="flex flex-col items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-4 gap-2"
-                  >
-                    {!walletConnected ? (
-                      <>
-                        {t("walletNotConnected")}
-                        <Button
-                          clipDirection="topRight-bottomLeft"
-                          className="w-auto"
-                        >
-                          {t("connectWallet")}
-                        </Button>
-                      </>
-                    ) : (
-                      <>
-                        {t("noRecords")}
-                        <Button
-                          clipDirection="topRight-bottomLeft"
-                          className="w-auto"
-                        >
-                          {t("stakeNow")}
-                        </Button>
-                      </>
-                    )}
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+          <div className="text-xs text-foreground/50">
+            {dayjs(dayjs().subtract(200, "seconds")).fromNow()}
+          </div>
         </div>
-      </CardContent>
+      </Tabs>
+
+      {/* 记录表格 */}
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <tbody className="flex flex-col gap-1">
+            {filteredRecords?.length > 0 ? (
+              filteredRecords.map((record) => (
+                <tr
+                  key={record.id}
+                  className="bg-foreground/5 mb-2 rounded-lg flex flex-row w-full"
+                >
+                  <Cell
+                    title={t("event")}
+                    className={
+                      eventColors[record.event as keyof typeof eventColors]
+                    }
+                  >
+                    <Icon name="event" size={16} />
+                    {record.event}
+                  </Cell>
+                  <Cell title={t("transactionHash")} className="w-1/5">
+                    <a
+                      href="#"
+                      className="underline text-sm"
+                      title={record.transactionHash}
+                    >
+                      {formatHash(record.transactionHash)}
+                    </a>
+                  </Cell>
+                  <Cell title={t("amount")} className="w-1/5">
+                    {formatDecimal(record.amount, 2)}
+                  </Cell>
+                  <Cell title={t("period")} className="w-1/5 uppercase">
+                    {record.period ? `${record.period} ${t("days")}` : "  "}
+                  </Cell>
+                  <Cell title={t("dateTime")}>{record.dateTime}</Cell>
+                </tr>
+              ))
+            ) : (
+              <tr className="w-full">
+                <td
+                  colSpan={5}
+                  className="flex flex-col items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-4 gap-2"
+                >
+                  {!walletConnected ? (
+                    <>
+                      {t("walletNotConnected")}
+                      <Button
+                        clipDirection="topRight-bottomLeft"
+                        className="w-auto"
+                      >
+                        {t("connectWallet")}
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      {t("noRecords")}
+                      <Button
+                        clipDirection="topRight-bottomLeft"
+                        className="w-auto"
+                      >
+                        {t("stakeNow")}
+                      </Button>
+                    </>
+                  )}
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </Card>
   )
 }

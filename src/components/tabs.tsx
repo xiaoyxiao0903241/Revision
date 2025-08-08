@@ -62,7 +62,7 @@ export const NavigationTabs: FC<{
               tabsRef.current[index] = el
             }}
             className={cn(
-              "cursor-pointer font-lg text-2xl uppercase select-none text-nowrap",
+              "cursor-pointer font-lg text-base md:text-2xl uppercase select-none text-nowrap",
               {
                 "hover:text-neutral-300": !isActive,
                 [activeClassName ?? "text-gradient font-bold"]: isActive,

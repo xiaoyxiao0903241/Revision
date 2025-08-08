@@ -8,7 +8,6 @@ import { FC, useState } from "react"
 import {
   Button,
   Card,
-  CardContent,
   CardTitle,
   InfoPopover,
   Input,
@@ -55,7 +54,7 @@ export default function CommunityPage() {
   const { walletConnected, setWalletConnected, decimal, setDecimal } = useMock()
   const [currentPage, setCurrentPage] = useState(1)
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full">
       {/* 协议介绍横幅 */}
       <Card
         className="relative overflow-hidden"
@@ -121,11 +120,11 @@ export default function CommunityPage() {
             {t("referralProgram")}
           </span>
         </div>
-        <CardContent className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-          <div className="flex flex-col gap-6  h-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-6 h-full">
             {/* 左侧数据 */}
-            <div className="space-y-4 flex-1">
-              <div className="flex items-center">
+            <div className="gap-4 flex-1">
+              <div className="flex flex-col md:flex-row items-start md:items-center  md:gap-4">
                 <div className="flex flex-col flex-1">
                   <span className="text-xs text-foreground/50">
                     {t("totalReferralLocked")}
@@ -180,7 +179,7 @@ export default function CommunityPage() {
           >
             {/* 右侧推荐链接 */}
             <div className="space-y-4">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-2">
                 <div className="space-y-1 flex-1">
                   <label className="text-foreground/50 text-xs">
                     {t("referralLink")}
@@ -219,7 +218,7 @@ export default function CommunityPage() {
               </div>
             </div>
           </View>
-        </CardContent>
+        </div>
       </Card>
 
       {/* 推荐列表 */}
@@ -242,7 +241,7 @@ export default function CommunityPage() {
           </div>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[600px]">
             <tbody className="space-y-2">
               {_.times(10).map((item, index) => (
                 <tr
