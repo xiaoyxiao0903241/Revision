@@ -299,7 +299,6 @@ export function WalletDropdown({
                 }}
               >
                 <Icon name="copy" size={16} className="pointer-events-none" />
-                xx
               </div>
               <div className="cursor-pointer hover:text-white/70">
                 <Icon name="share" size={16} className="pointer-events-none" />

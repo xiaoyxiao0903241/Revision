@@ -1,16 +1,22 @@
-
-import { FC, ReactNode } from "react"
-import { Icon, InfoPopover } from "~/components"
-import { cn } from "~/lib/utils"
+import { FC, ReactNode } from "react";
+import { Icon, InfoPopover } from "~/components";
+import { cn } from "~/lib/utils";
 
 export const RateCard: FC<{
-  children?: ReactNode
-  description: string
-  isLoading?: boolean
-  value:boolean
-  onRefresh: () => void
-  onTogle:(value:boolean)=>void
-}> = ({ children, description, isLoading, onRefresh,onTogle,value }) => {
+  children?: ReactNode;
+  description: string;
+  isLoading?: boolean;
+  value: boolean;
+  onRefresh: () => void;
+  onTogleSlippage: (value: boolean) => void;
+}> = ({
+  children,
+  description,
+  isLoading,
+  onRefresh,
+  onTogleSlippage,
+  value,
+}) => {
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -27,11 +33,15 @@ export const RateCard: FC<{
           >
             <Icon name="refresh" className={"w-5 h-5 pointer-events-none"} />
           </div>
-          <div onClick={()=>{onTogle(!value)}}>
+          <div
+            onClick={() => {
+              onTogleSlippage(!value);
+            }}
+          >
             <Icon name="setting" className="w-5 h-5 !cursor-pointer" />
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

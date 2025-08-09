@@ -93,10 +93,7 @@ export const CoolingPoolCard: FC<CoolingPoolCardProps> = ({
       <div className={cn("flex flex-col items-center")}>
         {/* 动画齿轮图标 */}
         <div
-          className={cn(
-            "w-2/3 aspect-square flex items-center justify-center",
-            { "animate-spin [animation-duration:5s]": data.active },
-          )}
+          className={cn("w-2/3 aspect-square flex items-center justify-center")}
         >
           {children}
         </div>
