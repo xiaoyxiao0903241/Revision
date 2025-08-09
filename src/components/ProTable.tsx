@@ -62,10 +62,11 @@ export interface ProTableProps<T> {
   showPagination?: boolean; // 是否开启分页功能
   rowKey?: keyof T; // 行的唯一标识，默认为 'address'
   queryFn: (params: Record<string, unknown>) => Promise<ProTableData<T>>; // 自定义请求
-  formatResult?: (data: ProTableData<T>) => unknown; // 自定义返回结果
+  formatResult?: (data: ProTableData<T>) => void; // 自定义返回结果
   appendNotDataText?: string; // 暂无数据顶部追加文案
   params?: Record<string, unknown>; // 参数
   manualRequest?: boolean; // 是否手动请求
+  onSuccess?: (data: ProTableData<T>) => void; // 数据获取成功回调
 }
 /**
  * ProTable通用表格组件
@@ -92,6 +93,7 @@ const ProTable = <T,>({
   formatResult,
   manualRequest = false,
   appendNotDataText: appendNotDataText = "",
+  onSuccess,
 }: ProTableProps<T>) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const common = useTranslations();
@@ -115,6 +117,12 @@ const ProTable = <T,>({
     queryFn: () => queryFn({ ...params, currentPage, pageSizeProp }),
     enabled: !manualRequest,
   });
+
+  useEffect(() => {
+    if (data && onSuccess) {
+      onSuccess(data);
+    }
+  }, [data, onSuccess]);
 
   // 格式化值的函数
   const formatValue = (value: unknown, valueType?: valueType): string => {

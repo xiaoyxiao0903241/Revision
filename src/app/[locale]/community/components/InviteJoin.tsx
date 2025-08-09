@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect } from "react"
-import { useTranslations } from "next-intl"
+import { useState, useCallback, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import {
   Button,
   Card,
@@ -7,22 +7,27 @@ import {
   InfoPopover,
   Input,
   View,
-} from "~/components"
-import Link from "next/link"
-import Trend from "~/assets/trend.svg"
-import { getInviteInfo } from '~/wallet/lib/web3/invite';
-import { useQuery } from '@tanstack/react-query';
-import { useUserAddress } from '~/contexts/UserAddressContext';
-import { toast } from 'sonner'
-import { usePublicClient } from 'wagmi';
-import { Abi } from 'viem';
-import MaxInviteAbi from '~/wallet/constants/MatrixNetworkAbi.json'
-import { matrixNetwork } from '~/wallet/constants/tokens';
-import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
-import { useContractError } from '~/hooks/useContractError';
-import { usePathname, useSearchParams } from 'next/navigation';
-import { getCookieLanguage, formatAddress, fallbackCopyText, formatte2Num } from "~/lib/utils"
-import { inviterInfo } from "~/services/auth/invite"
+} from "~/components";
+import Link from "next/link";
+import Trend from "~/assets/trend.svg";
+import { getInviteInfo } from "~/wallet/lib/web3/invite";
+import { useQuery } from "@tanstack/react-query";
+import { useUserAddress } from "~/contexts/UserAddressContext";
+import { toast } from "sonner";
+import { usePublicClient } from "wagmi";
+import { Abi } from "viem";
+import MaxInviteAbi from "~/wallet/constants/MatrixNetworkAbi.json";
+import { matrixNetwork } from "~/wallet/constants/tokens";
+import { useWriteContractWithGasBuffer } from "~/hooks/useWriteContractWithGasBuffer";
+import { useContractError } from "~/hooks/useContractError";
+import { usePathname, useSearchParams } from "next/navigation";
+import {
+  getCookieLanguage,
+  formatAddress,
+  fallbackCopyText,
+  formatte2Num,
+} from "~/lib/utils";
+import { inviterInfo } from "~/services/auth/invite";
 
 // 添加以太坊地址验证函数
 const isValidEthereumAddress = (address: string): boolean => {
@@ -31,24 +36,24 @@ const isValidEthereumAddress = (address: string): boolean => {
 };
 
 const InviteJoin = () => {
-  const t = useTranslations("community")
-  const inviteT = useTranslations("invite")
+  const t = useTranslations("community");
+  const inviteT = useTranslations("invite");
   const pathname = usePathname();
   const { userAddress } = useUserAddress();
   const publicClient = usePublicClient();
   const [isJoining] = useState(false);
-  const { handleContractError, isContractError } = useContractError()
-  const [code, setCode] = useState('')
+  const { handleContractError, isContractError } = useContractError();
+  const [code, setCode] = useState("");
   const [isValidAddress, setIsValidAddress] = useState(true);
-  const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0))
-  const [link, setLink] = useState('')
-  const searchParams = useSearchParams()
-  const lang = getCookieLanguage()
-  const urlParamName = 'address';
+  const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
+  const [link, setLink] = useState("");
+  const searchParams = useSearchParams();
+  const lang = getCookieLanguage();
+  const urlParamName = "address";
 
   // 获取邀请信息
   const { data: inviteInfo, refetch } = useQuery({
-    queryKey: ['inviteInfo', userAddress],
+    queryKey: ["inviteInfo", userAddress],
     queryFn: () => getInviteInfo({ address: userAddress as `0x${string}` }),
     enabled: Boolean(userAddress),
     retry: 1,
@@ -57,61 +62,62 @@ const InviteJoin = () => {
 
   // 获取邀请仓位
   const { data: InviterAmountInfo } = useQuery({
-    queryKey: ['inviterInfo', userAddress],
-    queryFn: async () => inviterInfo(userAddress as string, userAddress as string),
+    queryKey: ["inviterInfo", userAddress],
+    queryFn: async () =>
+      inviterInfo(userAddress as string, userAddress as string),
     enabled: Boolean(userAddress),
   });
 
   const handleCodeChange = (value: string) => {
     setCode(value);
     if (value) {
-      setIsValidAddress(isValidEthereumAddress(value))
+      setIsValidAddress(isValidEthereumAddress(value));
     } else {
       // setIsValidAddress(true);
     }
   };
 
   const resetState = useCallback(() => {
-    setCode('')
+    setCode("");
     setIsValidAddress(true);
-  }, [setCode])
+  }, [setCode]);
 
   const generateLink = useCallback(() => {
     if (userAddress) {
-      const link = `${window.location.origin}/${lang}/community?address=${userAddress}`
-      setLink(link)
+      const link = `${window.location.origin}/${lang}/community?address=${userAddress}`;
+      setLink(link);
     } else {
-      setLink('')
+      setLink("");
     }
   }, [userAddress, lang]);
   const getInviteCodeFromUrl = useCallback(() => {
-    if (typeof window !== 'undefined') {
-      const urlParams = new URLSearchParams(window.location.search)
-      const inviteCode = urlParams.get(urlParamName)
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const inviteCode = urlParams.get(urlParamName);
       if (inviteCode) {
         setCode(inviteCode);
       } else {
-        resetState()
+        resetState();
       }
     }
-  }, [urlParamName, setCode, resetState])
+  }, [urlParamName, setCode, resetState]);
 
   // 监听 URL 变化
   useEffect(() => {
-    getInviteCodeFromUrl()
-  }, [pathname, searchParams, getInviteCodeFromUrl])
+    getInviteCodeFromUrl();
+  }, [pathname, searchParams, getInviteCodeFromUrl]);
 
   useEffect(() => {
-    generateLink()
-  }, [generateLink])
+    generateLink();
+  }, [generateLink]);
 
   const handleJoin = async (address: string) => {
     if (!address) {
-      toast.error(inviteT('enterReferralId'))
+      toast.error(inviteT("enterReferralId"));
       return;
     }
     if (!publicClient || !userAddress) {
-      toast.error(inviteT('missingParams'))
+      toast.error(inviteT("missingParams"));
       return;
     }
 
@@ -122,7 +128,7 @@ const InviteJoin = () => {
       await publicClient.simulateContract({
         abi: MaxInviteAbi,
         address: matrixNetwork as `0x${string}`,
-        functionName: 'joinNetwork',
+        functionName: "joinNetwork",
         args: [address as `0x${string}`],
         account: userAddress as `0x${string}`, // 必须指定调用者
       });
@@ -130,17 +136,17 @@ const InviteJoin = () => {
       const hash = await writeContractAsync({
         abi: MaxInviteAbi as Abi,
         address: matrixNetwork as `0x${string}`,
-        functionName: 'joinNetwork',
+        functionName: "joinNetwork",
         args: [address as `0x${string}`],
       });
 
       const result = await publicClient.waitForTransactionReceipt({ hash });
-      console.log(result, 'sss');
-      if (result.status === 'success') {
-        toast.success(inviteT('joinSuccess'));
+      console.log(result, "sss");
+      if (result.status === "success") {
+        toast.success(inviteT("joinSuccess"));
         refetch();
       } else {
-        toast.error(inviteT('joinFailed'));
+        toast.error(inviteT("joinFailed"));
       }
     } catch (error: unknown) {
       if (isContractError(error as Error)) {
@@ -151,28 +157,28 @@ const InviteJoin = () => {
           error instanceof Error ? error.message : String(error);
 
         // 处理合约定义的错误
-        if (errorMessage.includes('User rejected')) {
-          toast.error(inviteT('userRejected'));
-        } else if (errorMessage.includes('InvalidInitialization')) {
-          toast.error(inviteT('invalidInitialization'));
-        } else if (errorMessage.includes('NotInitializing')) {
-          toast.error(inviteT('notInitializing'));
-        } else if (errorMessage.includes('OwnableInvalidOwner')) {
-          toast.error(inviteT('invalidOwner'));
-        } else if (errorMessage.includes('OwnableUnauthorizedAccount')) {
-          toast.error(inviteT('unauthorizedAccount'));
+        if (errorMessage.includes("User rejected")) {
+          toast.error(inviteT("userRejected"));
+        } else if (errorMessage.includes("InvalidInitialization")) {
+          toast.error(inviteT("invalidInitialization"));
+        } else if (errorMessage.includes("NotInitializing")) {
+          toast.error(inviteT("notInitializing"));
+        } else if (errorMessage.includes("OwnableInvalidOwner")) {
+          toast.error(inviteT("invalidOwner"));
+        } else if (errorMessage.includes("OwnableUnauthorizedAccount")) {
+          toast.error(inviteT("unauthorizedAccount"));
         }
         // 处理常见交易错误
-        else if (errorMessage.includes('insufficient funds')) {
-          toast.error(inviteT('insufficientFunds'));
-        } else if (errorMessage.includes('user rejected')) {
-          toast.error(inviteT('userRejected'));
-        } else if (errorMessage.includes('already joined')) {
-          toast.error(inviteT('alreadyJoined'));
-        } else if (errorMessage.includes('invalid referrer')) {
-          toast.error(inviteT('invalidReferrer'));
+        else if (errorMessage.includes("insufficient funds")) {
+          toast.error(inviteT("insufficientFunds"));
+        } else if (errorMessage.includes("user rejected")) {
+          toast.error(inviteT("userRejected"));
+        } else if (errorMessage.includes("already joined")) {
+          toast.error(inviteT("alreadyJoined"));
+        } else if (errorMessage.includes("invalid referrer")) {
+          toast.error(inviteT("invalidReferrer"));
         } else {
-          toast.error(inviteT('unknownError'));
+          toast.error(inviteT("unknownError"));
         }
       }
     } finally {
@@ -212,26 +218,31 @@ const InviteJoin = () => {
                 <span className="text-xs text-foreground/50">
                   {t("totalReferralLocked")}
                 </span>
-                <span className="text-white font-mono text-lg">{formatte2Num.format(InviterAmountInfo?.referralAmount || 0)} OLY</span>
+                <span className="text-white font-mono text-lg">
+                  {formatte2Num.format(InviterAmountInfo?.referralAmount || 0)}{" "}
+                  OLY
+                </span>
               </div>
               <div className="flex flex-col flex-1">
                 <span className="text-xs text-foreground/50">
                   {t("totalCommunityLocked")}
                 </span>
-                <span className="text-white font-mono text-lg">{formatte2Num.format(InviterAmountInfo?.totalAmount || 0)} OLY</span>
+                <span className="text-white font-mono text-lg">
+                  {formatte2Num.format(InviterAmountInfo?.totalAmount || 0)} OLY
+                </span>
               </div>
               <div className="flex flex-col flex-1">
                 <span className="text-xs text-foreground/50">
                   {t("communityRewards")}
                 </span>
-                <span className="text-white font-mono text-lg">{formatte2Num.format(InviterAmountInfo?.totalBonus || 0)} OLY</span>
+                <span className="text-white font-mono text-lg">
+                  {formatte2Num.format(InviterAmountInfo?.totalBonus || 0)} OLY
+                </span>
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-gray-300 text-sm">
-                {t("referralBy")}
-              </label>
+              <label className="text-gray-300 text-sm">{t("referralBy")}</label>
               <div className="bg-[#1b1f48] items-center flex shadow-[inset_0_0_20px_rgba(84,119,247,0.5)] px-3 py-4 w-full xl:w-5/6">
                 {inviteInfo?.isActive ? (
                   formatAddress(inviteInfo.networkMap as string)
@@ -240,12 +251,18 @@ const InviteJoin = () => {
                     <Input
                       value={code}
                       className="flex-1"
-                      onChange={e => handleCodeChange(e.target.value)}
+                      onChange={(e) => handleCodeChange(e.target.value)}
+                      placeholder={inviteT("enterReferralId")}
                     />
                     <button
                       className="bg-transparent gradient-text font-bold text-sm"
                       onClick={() => handleJoin(code)}
-                      disabled={isJoining || !isValidAddress || inviteInfo?.isActive || !userAddress}
+                      disabled={
+                        isJoining ||
+                        !isValidAddress ||
+                        inviteInfo?.isActive ||
+                        !userAddress
+                      }
                       type="button"
                     >
                       {t("submit")}
@@ -269,10 +286,13 @@ const InviteJoin = () => {
                 </label>
                 <div className="flex gap-2 items-center">
                   <div className="text-white font-mono text-sm">
-                    {inviteInfo?.isActive ?
-                      (<>
+                    {inviteInfo?.isActive ? (
+                      <>
                         <span>{link}</span>
-                        <InfoPopover triggerClassName="inline ml-2" className="w-80">
+                        <InfoPopover
+                          triggerClassName="inline ml-2"
+                          className="w-80"
+                        >
                           <Link
                             target="_blank"
                             href={link}
@@ -281,9 +301,12 @@ const InviteJoin = () => {
                             {link}
                           </Link>
                         </InfoPopover>
-                      </>) :
-                      <span className='opacity-50'>{inviteT('noLinkAvailable')}</span>
-                    }
+                      </>
+                    ) : (
+                      <span className="opacity-50">
+                        {inviteT("noLinkAvailable")}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -298,9 +321,7 @@ const InviteJoin = () => {
               </Button>
             </div>
             <div className="space-y-2 text-xs">
-              <h4 className="text-white font-semibold">
-                {t("inviteFriends")}
-              </h4>
+              <h4 className="text-white font-semibold">{t("inviteFriends")}</h4>
               <p className="text-foreground/50 text-xs leading-relaxed">
                 {t("referralBenefits")}
               </p>
@@ -309,7 +330,7 @@ const InviteJoin = () => {
         </View>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
 export default InviteJoin;
