@@ -447,6 +447,23 @@
     "unclaimed_reward": "Claimable rewards",
     "claim": "Claim",
     "claiming": "Processing...",
+    "connectWallet": "Connect Wallet",
+    "chain": "BNB Smart Chain",
+    "disconnect": "Disconnect",
+    "buy": "Buy",
+    "sell": "Sell",
+    "receive": "Receive",
+    "assets": "Assets",
+    "account": "Account",
+    "mywallet": "Wallet",
+    "myWallet": "My Wallet",
+    "position": "Position",
+    "reward": "Reward",
+    "staking": "Staking",
+    "bonds": "Bonds",
+    "rebaseReward": "Rebase Reward",
+    "totalBonus": "Total Bonus",
+    "myAccount": "My Account",
     "toast": {
       "confirm_in_wallet": "Please confirm transaction in wallet...",
       "confirming": "Confirming transaction...",
@@ -601,5 +618,10 @@
       "stable": "Treasury Bond",
       "liquidity": "Liquidity Bond"
     }
+  },
+  "notFound": {
+    "comingSoon": "New version launching soon.",
+    "title": "Stay tuned",
+    "description": "Estimated launch: August 15, 2025."
   }
 }

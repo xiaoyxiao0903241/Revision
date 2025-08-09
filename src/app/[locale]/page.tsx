@@ -298,7 +298,7 @@ export default function DashboardPage() {
           </div>
 
           {/* 可领取的奖金数量 */}
-          <div className="lg:row-span-3 relative gap-2 bg-[#1E204C] flex flex-col items-start justify-center px-6">
+          <div className="lg:row-span-3 relative gap-2 bg-[#1E204C] flex flex-col items-start justify-center px-6 py-7">
             <Statistics
               title={t("claimableRewardsAmount")}
               value="133,456 OLY"

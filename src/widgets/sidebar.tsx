@@ -1,22 +1,22 @@
-"use client"
-import { useTranslations } from "next-intl"
-import Image from "next/image"
-import { Icon, IconFontName } from "~/components"
-import { Link, usePathname } from "~/i18n/navigation"
-import { cn } from "~/lib/utils"
+"use client";
+import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { Icon, IconFontName } from "~/components";
+import { Link, usePathname } from "~/i18n/navigation";
+import { cn } from "~/lib/utils";
 
 interface NavigationItem {
-  label: string
-  href: string
-  icon: string
-  section?: string
-  uppercase?: boolean
+  label: string;
+  href: string;
+  icon: string;
+  section?: string;
+  uppercase?: boolean;
 }
 
 const NavigationItem = ({ item }: { item: NavigationItem }) => {
-  const pathname = usePathname()
+  const pathname = usePathname();
   const isActive =
-    pathname === item.href || pathname.startsWith(`${item.href}/`)
+    pathname === item.href || pathname.startsWith(`${item.href}/`);
 
   return (
     <Link
@@ -24,7 +24,7 @@ const NavigationItem = ({ item }: { item: NavigationItem }) => {
       className={cn(
         "flex w-full items-center space-x-3 px-5 py-4 text-base font-medium transition-colors",
         "hover:bg-foreground/5",
-        isActive && "text-gradient"
+        isActive && "text-gradient",
       )}
     >
       {item.icon.startsWith("/") ? (
@@ -40,17 +40,17 @@ const NavigationItem = ({ item }: { item: NavigationItem }) => {
         className={cn(
           "text-gray-300",
           isActive && "text-gradient",
-          item.uppercase && "uppercase"
+          item.uppercase && "uppercase",
         )}
       >
         {item.label}
       </span>
     </Link>
-  )
-}
+  );
+};
 
 export function Sidebar() {
-  const t = useTranslations("navigation")
+  const t = useTranslations("navigation");
 
   const navigationItems: NavigationItem[] = [
     {
@@ -127,7 +127,7 @@ export function Sidebar() {
       section: "tools",
       uppercase: true,
     },
-  ]
+  ];
 
   const footerItems: NavigationItem[] = [
     {
@@ -145,22 +145,25 @@ export function Sidebar() {
       href: "/dex-screener",
       icon: "/images/icon/dex.png", // 使用默认图标
     },
-  ]
+  ];
 
-  const groupedItems = navigationItems.reduce((acc, item) => {
-    if (item.section) {
-      if (!acc[item.section]) {
-        acc[item.section] = []
+  const groupedItems = navigationItems.reduce(
+    (acc, item) => {
+      if (item.section) {
+        if (!acc[item.section]) {
+          acc[item.section] = [];
+        }
+        acc[item.section].push(item);
+      } else {
+        if (!acc.main) {
+          acc.main = [];
+        }
+        acc.main.push(item);
       }
-      acc[item.section].push(item)
-    } else {
-      if (!acc.main) {
-        acc.main = []
-      }
-      acc.main.push(item)
-    }
-    return acc
-  }, {} as Record<string, NavigationItem[]>)
+      return acc;
+    },
+    {} as Record<string, NavigationItem[]>,
+  );
 
   return (
     <div className="flex px-9 flex-col">
@@ -171,7 +174,7 @@ export function Sidebar() {
           {groupedItems.main && (
             <div className="space-y-2">
               {groupedItems.main.map((item) => {
-                return <NavigationItem key={item.href} item={item} />
+                return <NavigationItem key={item.href} item={item} />;
               })}
             </div>
           )}
@@ -183,7 +186,7 @@ export function Sidebar() {
                 {t("staking")}
               </h3>
               {groupedItems.staking.map((item) => {
-                return <NavigationItem key={item.href} item={item} />
+                return <NavigationItem key={item.href} item={item} />;
               })}
             </div>
           )}
@@ -195,7 +198,7 @@ export function Sidebar() {
                 {t("bonds")}
               </h3>
               {groupedItems.bonds.map((item) => {
-                return <NavigationItem key={item.href} item={item} />
+                return <NavigationItem key={item.href} item={item} />;
               })}
             </div>
           )}
@@ -207,7 +210,7 @@ export function Sidebar() {
                 {t("tools")}
               </h3>
               {groupedItems.tools.map((item) => {
-                return <NavigationItem key={item.href} item={item} />
+                return <NavigationItem key={item.href} item={item} />;
               })}
             </div>
           )}
@@ -215,7 +218,7 @@ export function Sidebar() {
           {footerItems && (
             <div className="space-y-2">
               {footerItems.map((item) => {
-                return <NavigationItem key={item.href} item={item} />
+                return <NavigationItem key={item.href} item={item} />;
               })}
             </div>
           )}
@@ -251,5 +254,5 @@ export function Sidebar() {
         </nav>
       </div>
     </div>
-  )
+  );
 }

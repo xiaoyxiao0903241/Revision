@@ -2,13 +2,14 @@
 import { useLocale } from "next-intl";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { Button } from "~/components";
+import { Icon } from "~/components";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/dropdown-menu";
+// import { useMock } from "~/hooks/useMock"
 import NetWork from "~/components/common/netWork";
 import ConnectWalletButton from "~/components/web3/ConnectWalletButton";
 
@@ -16,14 +17,13 @@ export function Header() {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
-
+  // const t = useTranslations("common")
   const languages = [
     { code: "en", name: "English" },
     { code: "zh", name: "中文" },
   ];
 
   const handleLanguageChange = (newLocale: string) => {
-    // 构造新的路径来切换语言
     const newPath = pathname.replace(`/${locale}`, `/${newLocale}`);
     router.replace(newPath);
   };
@@ -38,28 +38,36 @@ export function Header() {
           height={60}
         />
       </div>
-      <div className="flex items-center">
-        <NetWork />
-        <ConnectWalletButton />
-
+      <div className="flex items-center gap-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outlined">
-              {languages.find((lang) => lang.code === locale)?.name}
-            </Button>
+            <div className="flex items-center gap-2 cursor-pointer">
+              <Icon
+                name="sphere"
+                size={32}
+                className="text-foreground pointer-events-none"
+              />
+              <Icon
+                name="arrow"
+                size={20}
+                className="text-foreground/50 pointer-events-none"
+              />
+            </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-40">
+          <DropdownMenuContent align="end" className="w-40">
             {languages.map((language) => (
               <DropdownMenuItem
                 key={language.code}
                 onClick={() => handleLanguageChange(language.code)}
-                className={locale === language.code ? "bg-purple-100" : ""}
+                className={locale === language.code ? "text-foreground" : ""}
               >
                 {language.name}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
+        <NetWork />
+        <ConnectWalletButton></ConnectWalletButton>
       </div>
     </header>
   );

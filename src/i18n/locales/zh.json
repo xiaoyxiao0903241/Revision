@@ -417,6 +417,23 @@
     "unclaimed_reward": "可領取的獎金",
     "claim": "領取",
     "claiming": "進行中...",
+    "connectWallet": "连接钱包",
+    "disconnect": "断开连接",
+    "chain": "BNB智能链",
+    "buy": "买入",
+    "sell": "卖出",
+    "receive": "接收",
+    "assets": "资产",
+    "account": "账户",
+    "mywallet": "钱包",
+    "myWallet": "我的钱包",
+    "position": "持仓",
+    "reward": "奖励",
+    "staking": "质押",
+    "bonds": "债券",
+    "rebaseReward": "重基奖励",
+    "totalBonus": "总奖金",
+    "myAccount": "我的账户",
     "toast": {
       "confirm_in_wallet": "請在錢包中確認交易...",
       "confirming": "交易確認中...",
@@ -571,5 +588,10 @@
       "stable": "国库债券",
       "liquidity": "流动性债券"
     }
+  },
+  "notFound": {
+    "comingSoon": "新版本即将推出。",
+    "title": "敬请期待",
+    "description": "预计上线时间：2025年8月15日"
   }
 }
