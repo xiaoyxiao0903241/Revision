@@ -5,11 +5,12 @@ import ReactECharts from "echarts-for-react";
 import React, { useMemo } from "react";
 import { useChart } from "~/hooks/useChart";
 import { useTranslations } from "next-intl";
+import { dayjs, formatNumbedecimalScale } from "~/lib/utils";
 
 interface PerformanceData {
-  date: string;
-  totalPerformance: number;
-  smallTeamPerformance: number;
+  createdAt: string;
+  market: number;
+  smallMarket: number;
 }
 
 interface PerformanceChartProps {
@@ -20,45 +21,22 @@ interface PerformanceChartProps {
   className?: string;
 }
 
-// 生成模拟数据
-const generateMockPerformanceData = (days: number = 30): PerformanceData[] => {
-  const data: PerformanceData[] = [];
-  let totalBase = 120000;
-  let smallTeamBase = 130000;
-
-  for (let i = 0; i < days; i++) {
-    const date = new Date();
-    date.setDate(date.getDate() - (days - i - 1));
-
-    // 添加随机波动
-    const totalChange = (Math.random() - 0.5) * 0.1;
-    const smallTeamChange = (Math.random() - 0.5) * 0.08;
-
-    totalBase = totalBase * (1 + totalChange);
-    smallTeamBase = smallTeamBase * (1 + smallTeamChange);
-
-    data.push({
-      date: date.toISOString().split("T")[0],
-      totalPerformance: Math.round(totalBase),
-      smallTeamPerformance: Math.round(smallTeamBase),
-    });
-  }
-
-  return data;
-};
-
 export const PerformanceChart: React.FC<PerformanceChartProps> = ({
-  data = generateMockPerformanceData(30),
+  data = [],
   theme = "dark",
   className = "",
 }) => {
   const t = useTranslations("dashboard");
   const { chartRef } = useChart();
   const chartOption = useMemo<EChartsOption>(() => {
-    const dates = data.map((item) => item.date);
-    const totalPerformanceData = data.map((item) => item.totalPerformance);
-    const smallTeamPerformanceData = data.map(
-      (item) => item.smallTeamPerformance,
+    const dates = data.map((item) =>
+      dayjs(item.createdAt).format("YYYY-MM-DD"),
+    );
+    const totalPerformanceData = data.map((item) =>
+      formatNumbedecimalScale(item.market, 2),
+    );
+    const smallTeamPerformanceData = data.map((item) =>
+      formatNumbedecimalScale(item.smallMarket, 2),
     );
 
     const option: EChartsOption = {

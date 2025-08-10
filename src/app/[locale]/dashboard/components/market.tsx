@@ -18,17 +18,17 @@ import { useNolockStore } from "~/store/noLock";
 const Market = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
   const safeMyMessInfo = myMessInfo || {};
   const t = useTranslations("dashboard");
-  const [selectedTimeFilter, setSelectedTimeFilter] = useState("all");
+  const [selectedTimeFilter, setSelectedTimeFilter] = useState("1m");
   const { userAddress } = useUserAddress();
-  const [startTime, setStartTime] = useState<string>("");
-  const [endTime, setEndTime] = useState<string>("");
+  const [startTime, setStartTime] = useState<string>(
+    dayjs().subtract(1, "month").format("YYYY-MM-DD"),
+  );
+  const [endTime, setEndTime] = useState<string>(dayjs().format("YYYY-MM-DD"));
   const { olyPrice } = useNolockStore();
   const timeFilters = [
-    { key: "all", label: t("timeFilters.all") },
     { key: "1m", label: t("timeFilters.1m") },
     { key: "3m", label: t("timeFilters.3m") },
     { key: "6m", label: t("timeFilters.6m") },
-    { key: "1y", label: t("timeFilters.1y") },
   ];
 
   // 根据选中的时间过滤器计算开始和结束时间
@@ -38,25 +38,25 @@ const Market = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
     let end = "";
     switch (selectedTimeFilter) {
       case "1m":
-        start = dayjs(now).subtract(1, "month").valueOf().toString();
-        end = now.toString();
+        start = dayjs(now).subtract(1, "month").format("YYYY-MM-DD");
+        end = dayjs(now).format("YYYY-MM-DD");
         break;
       case "3m":
-        start = dayjs(now).subtract(3, "month").valueOf().toString();
-        end = now.toString();
+        start = dayjs(now).subtract(3, "month").format("YYYY-MM-DD");
+        end = dayjs(now).format("YYYY-MM-DD");
         break;
       case "6m":
-        start = dayjs(now).subtract(6, "month").valueOf().toString();
-        end = now.toString();
+        start = dayjs(now).subtract(6, "month").format("YYYY-MM-DD");
+        end = dayjs(now).format("YYYY-MM-DD");
         break;
       case "1y":
-        start = dayjs(now).subtract(1, "year").valueOf().toString();
-        end = now.toString();
+        start = dayjs(now).subtract(1, "year").format("YYYY-MM-DD");
+        end = dayjs(now).format("YYYY-MM-DD");
         break;
       default:
         // all time 不设置具体时间
-        start = "";
-        end = "";
+        start = dayjs(now).subtract(1, "month").format("YYYY-MM-DD");
+        end = dayjs(now).format("YYYY-MM-DD");
     }
     setStartTime(start);
     setEndTime(end);
@@ -68,7 +68,6 @@ const Market = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
     enabled: Boolean(userAddress),
     refetchInterval: 20000,
   });
-  console.log(myMessData, "ddddddddddddddddddddd");
 
   return (
     <Card className="flex flex-col md:flex-row gap-6">
