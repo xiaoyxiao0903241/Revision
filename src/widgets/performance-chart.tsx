@@ -1,63 +1,65 @@
-"use client"
+"use client";
 
-import type { EChartsOption } from "echarts"
-import ReactECharts from "echarts-for-react"
-import React, { useMemo } from "react"
-import { useChart } from "~/hooks/useChart"
+import type { EChartsOption } from "echarts";
+import ReactECharts from "echarts-for-react";
+import React, { useMemo } from "react";
+import { useChart } from "~/hooks/useChart";
+import { useTranslations } from "next-intl";
 
 interface PerformanceData {
-  date: string
-  totalPerformance: number
-  smallTeamPerformance: number
+  date: string;
+  totalPerformance: number;
+  smallTeamPerformance: number;
 }
 
 interface PerformanceChartProps {
-  data?: PerformanceData[]
-  width?: string | number
-  height?: string | number
-  theme?: "light" | "dark"
-  className?: string
+  data?: PerformanceData[];
+  width?: string | number;
+  height?: string | number;
+  theme?: "light" | "dark";
+  className?: string;
 }
 
 // 生成模拟数据
 const generateMockPerformanceData = (days: number = 30): PerformanceData[] => {
-  const data: PerformanceData[] = []
-  let totalBase = 120000
-  let smallTeamBase = 130000
+  const data: PerformanceData[] = [];
+  let totalBase = 120000;
+  let smallTeamBase = 130000;
 
   for (let i = 0; i < days; i++) {
-    const date = new Date()
-    date.setDate(date.getDate() - (days - i - 1))
+    const date = new Date();
+    date.setDate(date.getDate() - (days - i - 1));
 
     // 添加随机波动
-    const totalChange = (Math.random() - 0.5) * 0.1
-    const smallTeamChange = (Math.random() - 0.5) * 0.08
+    const totalChange = (Math.random() - 0.5) * 0.1;
+    const smallTeamChange = (Math.random() - 0.5) * 0.08;
 
-    totalBase = totalBase * (1 + totalChange)
-    smallTeamBase = smallTeamBase * (1 + smallTeamChange)
+    totalBase = totalBase * (1 + totalChange);
+    smallTeamBase = smallTeamBase * (1 + smallTeamChange);
 
     data.push({
       date: date.toISOString().split("T")[0],
       totalPerformance: Math.round(totalBase),
       smallTeamPerformance: Math.round(smallTeamBase),
-    })
+    });
   }
 
-  return data
-}
+  return data;
+};
 
 export const PerformanceChart: React.FC<PerformanceChartProps> = ({
   data = generateMockPerformanceData(30),
   theme = "dark",
   className = "",
 }) => {
-  const { chartRef } = useChart()
+  const t = useTranslations("dashboard");
+  const { chartRef } = useChart();
   const chartOption = useMemo<EChartsOption>(() => {
-    const dates = data.map((item) => item.date)
-    const totalPerformanceData = data.map((item) => item.totalPerformance)
+    const dates = data.map((item) => item.date);
+    const totalPerformanceData = data.map((item) => item.totalPerformance);
     const smallTeamPerformanceData = data.map(
-      (item) => item.smallTeamPerformance
-    )
+      (item) => item.smallTeamPerformance,
+    );
 
     const option: EChartsOption = {
       backgroundColor: "transparent",
@@ -80,23 +82,23 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
         },
         formatter: (params: unknown) => {
           const paramArray = params as Array<{
-            data: number
-            axisValue: string
-            seriesName: string
-          }>
+            data: number;
+            axisValue: string;
+            seriesName: string;
+          }>;
 
           let html = `<div style="font-weight: bold; margin-bottom: 8px;">${
             paramArray[0]?.axisValue || ""
-          }</div>`
+          }</div>`;
 
           paramArray.forEach((param) => {
-            const color = param.seriesName === "总业绩" ? "#B408D7" : "#FF6B35"
+            const color = param.seriesName === "总业绩" ? "#B408D7" : "#FF6B35";
             html += `<div>${
               param.seriesName
-            }: <span style="color: ${color};">${param.data.toLocaleString()} OLY</span></div>`
-          })
+            }: <span style="color: ${color};">${param.data.toLocaleString()} OLY</span></div>`;
+          });
 
-          return html
+          return html;
         },
       },
       grid: {
@@ -117,8 +119,8 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
           show: false,
           color: theme === "dark" ? "#ffffff" : "#333333",
           formatter: (value: string) => {
-            const date = new Date(value)
-            return `${date.getMonth() + 1}/${date.getDate()}`
+            const date = new Date(value);
+            return `${date.getMonth() + 1}/${date.getDate()}`;
           },
         },
       },
@@ -140,13 +142,13 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
           show: false,
           color: theme === "dark" ? "#ffffff" : "#333333",
           formatter: (value: number) => {
-            return `${(value / 1000).toFixed(0)}K`
+            return `${(value / 1000).toFixed(0)}K`;
           },
         },
       },
       series: [
         {
-          name: "总业绩",
+          name: t("totalPerformance"),
           type: "line",
           data: totalPerformanceData,
           smooth: true,
@@ -157,7 +159,7 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
           },
         },
         {
-          name: "小区业绩",
+          name: t("smallTeamPerformance"),
           type: "line",
           data: smallTeamPerformanceData,
           smooth: true,
@@ -168,10 +170,10 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
           },
         },
       ],
-    }
+    };
 
-    return option
-  }, [data, theme])
+    return option;
+  }, [data, theme]);
 
   return (
     <div className={`performance-chart ${className}`}>
@@ -182,7 +184,7 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
         opts={{ renderer: "canvas" }}
       />
     </div>
-  )
-}
+  );
+};
 
-export default PerformanceChart
+export default PerformanceChart;

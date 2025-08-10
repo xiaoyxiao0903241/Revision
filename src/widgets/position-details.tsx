@@ -1,15 +1,17 @@
-import { useTranslations } from "next-intl"
-import { FC } from "react"
-import { Statistics } from "~/components"
+import { useTranslations } from "next-intl";
+import { FC } from "react";
+import { Statistics } from "~/components";
+import { formatCurrency } from "~/lib/utils";
 
 export const PositionDetails: FC<{
   data: {
-    myStakedAmount: string
-    lifetimeRewards: string
-    timeInPool: string
-  }
+    myStakedAmount: string;
+    lifetimeRewards: string;
+    timeInPool: string;
+    olyPrice: number;
+  };
 }> = ({ data }) => {
-  const t = useTranslations("dashboard")
+  const t = useTranslations("dashboard");
   return (
     <div className="space-y-3">
       <div className="text-foreground/50 font-medium">
@@ -19,7 +21,7 @@ export const PositionDetails: FC<{
         <Statistics
           title={t("myStakedAmount")}
           value={data.myStakedAmount}
-          desc="$0.00"
+          desc={`$${formatCurrency(data?.olyPrice * Number(data?.myStakedAmount))}`}
           size="sm"
           info={<span>说明</span>}
         />
@@ -37,5 +39,5 @@ export const PositionDetails: FC<{
         />
       </div>
     </div>
-  )
-}
+  );
+};
