@@ -2,22 +2,14 @@
 // import { useLocale } from "next-intl";
 import Image from "next/image";
 // import { usePathname, useRouter } from "next/navigation";
-import { Icon } from "~/components";
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuItem,
-//   DropdownMenuTrigger,
-// } from "~/components/dropdown-menu";
-// import { useMock } from "~/hooks/useMock"
 import NetWork from "~/components/common/netWork";
 import ConnectWalletButton from "~/components/web3/ConnectWalletButton";
 import { LanguageSwitcher } from "./language-switcher";
 
-interface HeaderProps {
-  onMenuClick?: () => void;
-}
-export function Header({ onMenuClick }: HeaderProps) {
+// interface HeaderProps {
+//   onMenuClick?: () => void;
+// }
+export function Header() {
   // const locale = useLocale();
   // const router = useRouter();
   // const pathname = usePathname();
@@ -42,12 +34,12 @@ export function Header({ onMenuClick }: HeaderProps) {
         <LanguageSwitcher />
         <NetWork />
         <ConnectWalletButton></ConnectWalletButton>
-        <button
+        {/* <button
           onClick={onMenuClick}
           className="md:hidden w-[25px] h-[25px] border-[#434c8c] shadow-[inset_0_0_20px_rgba(84,119,247,0.5)] border rounded-full rotate-90 flex items-center justify-center"
         >
           <Icon name="arrow" size={20} />
-        </button>
+        </button> */}
       </div>
     </header>
   );

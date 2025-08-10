@@ -10,7 +10,6 @@ import { toast } from "sonner";
 import { chainId as chainIdConstant } from "~/wallet/constants/tokens";
 import ClipboardJS from "clipboard";
 import Image from "next/image";
-
 import { Button } from "~/components";
 import { WalletDropdown } from "~/widgets";
 
@@ -165,35 +164,28 @@ export default function ConnectWalletButton({
 
   return (
     <WalletDropdown handleDisconnect={handleDisconnect}>
-      <div className="relative md:block hidden" ref={menuRef}>
+      <div className="relative" ref={menuRef}>
         <Button
           clipDirection="topRight-bottomLeft"
           onClick={() => setIsOpen(!isOpen)}
-          className="gap-2"
+          className="gap-2 px-2 h-9 lg:px-6 lg:h-12 "
         >
           <div className="flex items-center gap-2">
             <Image
-              src="/imgs/common/wallet.png"
-              width={32}
-              height={32}
-              alt=""
-            ></Image>
-            <span className="text-[#0D0EC9] font-bold">{shortAddress}</span>
+              src="/images/icon/wallet.png"
+              alt="wallet"
+              width={25}
+              height={25}
+            />
+            <span className="text-white font-bold">{shortAddress}</span>
           </div>
           <ChevronDown
-            color="black"
+            color="white"
             className={`w-4 h-4 transition-transform  ${
               isOpen ? "rotate-180" : ""
             }`}
           />
         </Button>
-        <Image
-          src="/images/icon/wallet.png"
-          alt="wallet"
-          width={25}
-          height={25}
-          className="block md:hidden"
-        />
       </div>
     </WalletDropdown>
   );

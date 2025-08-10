@@ -492,6 +492,8 @@
     "totalBonus": "Total Bonus",
     "myAccount": "My Account",
     "unlockOver": "Unlock Completed",
+    "addToken": "添加到钱包",
+    "add_tip": "The current wallet does not support adding tokens automatically. Please copy the address and add it manually!",
     "toast": {
       "confirm_in_wallet": "Please confirm transaction in wallet...",
       "confirming": "Confirming transaction...",

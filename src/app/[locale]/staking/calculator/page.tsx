@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Alert } from "~/components";
 import { WalletSummary } from "~/widgets";
-import { StakingCalculator } from "~/widgets/staking-calculator";
+import { Unlockcalculator } from "~/widgets/unlock-calculator";
 
 export default function CalculatorPage() {
   const t = useTranslations("staking");
@@ -20,7 +20,7 @@ export default function CalculatorPage() {
       {/* 主要内容区域 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* 左侧计算器 */}
-        <StakingCalculator />
+        <Unlockcalculator />
 
         {/* 右侧钱包摘要 */}
         <div className="space-y-6">

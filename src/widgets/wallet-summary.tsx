@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { Button, Card, CardHeader, List, Statistics } from "~/components";
+import { Card, CardHeader, List, Statistics } from "~/components";
 import { FC, useEffect, useState } from "react";
 import { formatCurrency } from "~/lib/utils";
 import { infoItems } from "~/hooks/useMock";
@@ -10,7 +10,7 @@ import { useNolockStore } from "~/store/noLock";
 import { formatNumbedecimalScale } from "~/lib/utils";
 import { stakerNum, personStakeAmount } from "~/services/auth/dashboard";
 import { OLY } from "~/wallet/constants/tokens";
-import Image from "next/image";
+import { AddToWallet } from "./addToWallet";
 
 export const WalletSummary: FC = () => {
   const t = useTranslations("staking");
@@ -137,7 +137,7 @@ export const WalletSummary: FC = () => {
           </div>
         </div>
 
-        <Button
+        {/* <Button
           variant="accent"
           size="sm"
           clipSize={8}
@@ -153,7 +153,8 @@ export const WalletSummary: FC = () => {
             />
           </div>
           <span className="text-black">{t("addToMetaMask")}</span>
-        </Button>
+        </Button> */}
+        <AddToWallet></AddToWallet>
         <Statistics
           title={"Unreleased Rewards"}
           value={`${formatCurrency(rebalseProfit, false)} OLY`}

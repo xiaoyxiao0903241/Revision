@@ -22,7 +22,6 @@ export default async function LocaleLayout({
 }) {
   // 确保传入的 `locale` 是有效的
   const { locale = "zh" } = await params;
-
   return (
     <html lang={locale}>
       <NextIntlClientProvider>

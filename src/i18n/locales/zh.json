@@ -461,6 +461,9 @@
     "totalBonus": "总奖金",
     "myAccount": "我的账户",
     "unlockOver": "解锁已完成",
+    "addToken": "添加到钱包",
+    "add_tip": "当前钱包不支持添加代币功能,请复制地址并手动添加!",
+    "add_err": "请先安装钱包插件",
     "toast": {
       "confirm_in_wallet": "請在錢包中確認交易...",
       "confirming": "交易確認中...",
