@@ -1,18 +1,18 @@
-"use client"
-import { motion } from "motion/react"
-import { FC, useEffect, useRef, useState } from "react"
-import { Link } from "~/i18n/navigation"
+"use client";
+import { motion } from "motion/react";
+import { FC, useEffect, useRef, useState } from "react";
+import { Link } from "~/i18n/navigation";
 
-import { cn } from "~/lib/utils"
+import { cn } from "~/lib/utils";
 
 export const NavigationTabs: FC<{
-  data: { label: string; href: string }[]
-  activeIndex?: number
-  children?: React.ReactNode
-  className?: string
-  indicatorClassName?: string
-  activeClassName?: string
-  labelClassName?: string
+  data: { label: string; href: string }[];
+  activeIndex?: number;
+  children?: React.ReactNode;
+  className?: string;
+  indicatorClassName?: string;
+  activeClassName?: string;
+  labelClassName?: string;
 }> = ({
   data,
   activeIndex = 0,
@@ -22,23 +22,23 @@ export const NavigationTabs: FC<{
   activeClassName,
   labelClassName,
 }) => {
-  const tabsRef = useRef<(HTMLElement | null)[]>([])
-  const [tabUnderlineWidth, setTabUnderlineWidth] = useState(0)
-  const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0)
+  const tabsRef = useRef<(HTMLElement | null)[]>([]);
+  const [tabUnderlineWidth, setTabUnderlineWidth] = useState(0);
+  const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
   useEffect(() => {
     const setTabPosition = () => {
-      const currentTab = tabsRef.current[activeIndex] as HTMLElement
-      setTabUnderlineLeft(currentTab?.offsetLeft ?? 0)
-      setTabUnderlineWidth(currentTab?.clientWidth ?? 0)
-    }
-    setTabPosition()
-  }, [activeIndex])
+      const currentTab = tabsRef.current[activeIndex] as HTMLElement;
+      setTabUnderlineLeft(currentTab?.offsetLeft ?? 0);
+      setTabUnderlineWidth(currentTab?.clientWidth ?? 0);
+    };
+    setTabPosition();
+  }, [activeIndex]);
 
   return (
     <div
       className={cn(
         "relative flex w-full h-12 gap-8 mx-auto border-b border-border/20 flew-row backdrop-blur-sm",
-        className
+        className,
       )}
     >
       <span
@@ -48,46 +48,46 @@ export const NavigationTabs: FC<{
         <span
           className={cn(
             "w-full h-[2px] bg-gradient-to-r from-[#B408D7] to-[#576AF4]",
-            indicatorClassName
+            indicatorClassName,
           )}
         />
       </span>
       {data.map((tab, index) => {
-        const isActive = activeIndex === index
+        const isActive = activeIndex === index;
         return (
           <Link
             href={tab.href}
             key={index}
             ref={(el) => {
-              tabsRef.current[index] = el
+              tabsRef.current[index] = el;
             }}
             className={cn(
-              "cursor-pointer font-lg text-2xl uppercase select-none text-nowrap",
+              "cursor-pointer font-lg text-base md:text-2xl uppercase select-none text-nowrap",
               {
                 "hover:text-neutral-300": !isActive,
                 [activeClassName ?? "text-gradient font-bold"]: isActive,
               },
-              labelClassName
+              labelClassName,
             )}
           >
             {tab.label}
           </Link>
-        )
+        );
       })}
       {children}
     </div>
-  )
-}
+  );
+};
 
 export const Tabs: FC<{
-  data: { label: string; href: string }[]
-  activeIndex?: number
-  children?: React.ReactNode
-  className?: string
-  indicatorClassName?: string
-  activeClassName?: string
-  labelClassName?: string
-  onChange?: (index: number) => void
+  data: { label: string; href: string }[];
+  activeIndex?: number;
+  children?: React.ReactNode;
+  className?: string;
+  indicatorClassName?: string;
+  activeClassName?: string;
+  labelClassName?: string;
+  onChange?: (index: number) => void;
 }> = ({
   data,
   activeIndex = 0,
@@ -98,23 +98,23 @@ export const Tabs: FC<{
   activeClassName,
   labelClassName,
 }) => {
-  const tabsRef = useRef<(HTMLElement | null)[]>([])
-  const [tabUnderlineWidth, setTabUnderlineWidth] = useState(0)
-  const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0)
+  const tabsRef = useRef<(HTMLElement | null)[]>([]);
+  const [tabUnderlineWidth, setTabUnderlineWidth] = useState(0);
+  const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
   useEffect(() => {
     const setTabPosition = () => {
-      const currentTab = tabsRef.current[activeIndex] as HTMLElement
-      setTabUnderlineLeft(currentTab?.offsetLeft ?? 0)
-      setTabUnderlineWidth(currentTab?.clientWidth ?? 0)
-    }
-    setTabPosition()
-  }, [activeIndex])
+      const currentTab = tabsRef.current[activeIndex] as HTMLElement;
+      setTabUnderlineLeft(currentTab?.offsetLeft ?? 0);
+      setTabUnderlineWidth(currentTab?.clientWidth ?? 0);
+    };
+    setTabPosition();
+  }, [activeIndex]);
 
   return (
     <div
       className={cn(
         "relative flex w-full h-12 gap-8 mx-auto border-b border-border/20 flew-row backdrop-blur-sm",
-        className
+        className,
       )}
     >
       <span
@@ -124,18 +124,18 @@ export const Tabs: FC<{
         <span
           className={cn(
             "w-full h-[2px] bg-gradient-to-r from-[#B408D7] to-[#576AF4]",
-            indicatorClassName
+            indicatorClassName,
           )}
         />
       </span>
       {data.map((tab, index) => {
-        const isActive = activeIndex === index
+        const isActive = activeIndex === index;
         return (
           <div
             key={index}
             onClick={() => onChange?.(index)}
             ref={(el) => {
-              tabsRef.current[index] = el
+              tabsRef.current[index] = el;
             }}
             className={cn(
               "my-auto cursor-pointer font-lg select-none text-nowrap font-semibold rounded-full text-center",
@@ -143,22 +143,22 @@ export const Tabs: FC<{
                 "hover:text-neutral-300 text-foreground/50": !isActive,
                 [activeClassName ?? "text-gradient"]: isActive,
               },
-              labelClassName
+              labelClassName,
             )}
           >
             {tab.label}
           </div>
-        )
+        );
       })}
       {children}
     </div>
-  )
-}
+  );
+};
 
 export const AnimatedTabs: FC<{
-  data: string[]
-  value: string
-  onChange: (v: string) => void
+  data: string[];
+  value: string;
+  onChange: (v: string) => void;
 }> = ({ data, onChange, value }) => {
   return (
     <div className="flex space-x-1 bg-card rounded-full h-12 border overflow-x-auto">
@@ -185,5 +185,5 @@ export const AnimatedTabs: FC<{
         </button>
       ))}
     </div>
-  )
-}
+  );
+};

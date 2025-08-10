@@ -2,9 +2,10 @@ import { NextIntlClientProvider } from "next-intl";
 import "../global.css";
 import AppProviders from "./components/AppProviders";
 import { Sidebar } from "../../widgets/sidebar";
-import { Header } from "../../widgets/header";
+// import { Header } from "../../widgets/header";
 import { LocaleDetector } from "~/widgets/locale-detector";
 import { locales } from "../../i18n/config";
+import { MobileSidebarProvider } from "~/widgets/mobile-sidebar-provider";
 
 export function generateStaticParams() {
   return locales.map((locale: string) => ({
@@ -28,15 +29,17 @@ export default async function LocaleLayout({
         <LocaleDetector />
         <body className="flex flex-col text-foreground/70">
           <AppProviders>
-            {/* 顶部导航栏 */}
-            <Header />
-            {/* 主内容区域 */}
-            <div className="flex flex-1 flex-row py-6 pr-9">
-              {/* 左侧主导航栏 */}
-              <Sidebar />
-              {/* 右侧主内容区域 */}
-              <main className="flex-1">{children}</main>
-            </div>
+            <MobileSidebarProvider>
+              {/* 顶部导航栏 */}
+              {/* <Header /> */}
+              {/* 主内容区域 */}
+              <div className="flex flex-1 md:flex-row md:py-6 md:pr-9 p-4">
+                {/* 左侧主导航栏 */}
+                <Sidebar />
+                {/* 右侧主内容区域 */}
+                <main className="md:flex-1 md:w-auto w-full">{children}</main>
+              </div>
+            </MobileSidebarProvider>
           </AppProviders>
         </body>
       </NextIntlClientProvider>

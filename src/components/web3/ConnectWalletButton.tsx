@@ -136,7 +136,11 @@ export default function ConnectWalletButton({
 
   if (!isConnected) {
     return (
-      <Button clipDirection="topRight-bottomLeft" onClick={openConnectModal}>
+      <Button
+        clipDirection="topRight-bottomLeft"
+        onClick={openConnectModal}
+        className="md:px-6 md:h-12 md:text-base px-3 h-8 text-sm font-normal"
+      >
         连接钱包
       </Button>
     );
@@ -161,7 +165,7 @@ export default function ConnectWalletButton({
 
   return (
     <WalletDropdown handleDisconnect={handleDisconnect}>
-      <div className="relative" ref={menuRef}>
+      <div className="relative md:block hidden" ref={menuRef}>
         <Button
           clipDirection="topRight-bottomLeft"
           onClick={() => setIsOpen(!isOpen)}
@@ -183,13 +187,13 @@ export default function ConnectWalletButton({
             }`}
           />
         </Button>
-
-        {/* <AddTokenModal
-          open={showAddToken}
-          onClose={() => setShowAddToken(false)}
-          tokens={tokenList}
-          onAdd={handleAddToken}
-        /> */}
+        <Image
+          src="/images/icon/wallet.png"
+          alt="wallet"
+          width={25}
+          height={25}
+          className="block md:hidden"
+        />
       </div>
     </WalletDropdown>
   );
