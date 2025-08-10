@@ -1,15 +1,15 @@
-import { FC } from "react"
-import { cn } from "~/lib/utils"
+import { FC } from "react";
+import { cn } from "~/lib/utils";
 
 export const RadioGroup: FC<{
-  value?: string
-  onChange: (value: string,) => void
+  value?: string | number;
+  onChange: (value: string) => void;
   options: {
-    label: string
-    value: string
-  }[]
+    label: string;
+    value: string;
+  }[];
 }> = ({ value, onChange, options }) => {
-  console.log(value,'22222')
+  console.log(value, "22222");
   return (
     <div className="flex gap-2">
       {options.map((option) => (
@@ -18,9 +18,10 @@ export const RadioGroup: FC<{
           className={cn(
             "rounded-full h-[18px] cursor-pointer flex px-4 items-center justify-center border-gray-400 text-xs",
             {
-              "border-2 text-foreground/50": value !== option.value,
-              gradient: value === option.value,
-            }
+              "border-2 text-foreground/50":
+                Number(value) !== Number(option.value),
+              gradient: Number(value) === Number(option.value),
+            },
           )}
           onClick={() => onChange(option.value)}
         >
@@ -28,5 +29,5 @@ export const RadioGroup: FC<{
         </div>
       ))}
     </div>
-  )
-}
+  );
+};

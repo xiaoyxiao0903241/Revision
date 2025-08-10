@@ -7,11 +7,12 @@ import { useUserAddress } from "~/contexts/UserAddressContext";
 import { formatNumbedecimalScale } from "~/lib/utils";
 import { getClaimPeriod } from "~/wallet/lib/web3/claim";
 import { useTranslations } from "next-intl";
+import ConnectWalletButton from "~/components/web3/ConnectWalletButton";
 
 // 事件颜色映射
 const eventColors = {
   locked: "text-secondary",
-  received: "text-success",
+  claimed: "text-success",
 };
 
 const Cell = ({
@@ -49,6 +50,7 @@ interface ReciveItem extends Record<string, unknown> {
 
 export const CoolingPoolRecords: FC = () => {
   const t = useTranslations("coolingPool");
+  const t2 = useTranslations("common");
   // const t1 = useTranslations("historyTable")
   const [activeTab, setActiveTab] = useState(0);
   const [page, setPage] = useState<number>(1);
@@ -96,7 +98,7 @@ export const CoolingPoolRecords: FC = () => {
     if (rewardHisInfo && claimPeriodList?.length) {
       const list = rewardHisInfo.history;
       list.map((it: ReciveItem) => {
-        it["day"] = claimPeriodList[it.lockIndex].day + " " + "天";
+        it["day"] = claimPeriodList[it.lockIndex].day + " " + t("days");
         it["roi"] = claimPeriodList[it.lockIndex].rate;
       });
       console.log(list, "list11");
@@ -106,6 +108,10 @@ export const CoolingPoolRecords: FC = () => {
       setPages(pages);
     }
   }, [rewardHisInfo, claimPeriodList, t]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [activeTab]);
   return (
     <Card>
       <CardContent className="space-y-6">
@@ -137,20 +143,22 @@ export const CoolingPoolRecords: FC = () => {
                       }
                     >
                       <Icon
-                        name={record.yieldType === "Claim" ? "event" : "record"}
+                        name={
+                          record.yieldType === "claimed" ? "event" : "record"
+                        }
                         size={16}
                       />
-                      {record.event === "Claim"
+                      {record.yieldType === "claimed"
                         ? t("claimEvent")
                         : t("receive")}
                     </Cell>
-                    <Cell title={"释放数量"} className="w-1/6">
+                    <Cell title={t("releaseNum")} className="w-1/6">
                       {formatNumbedecimalScale(record.amount, 2)} OLY
                     </Cell>
-                    <Cell title={"释放天数"} className="w-1/6">
+                    <Cell title={t("releaseDay")} className="w-1/6">
                       {record.day as string}
                     </Cell>
-                    <Cell title={"税率"} className="w-1/6">
+                    <Cell title={t("releaseRate")} className="w-1/6">
                       {record.roi as string}
                     </Cell>
                     <Cell title={t("transactionHash")} className="w-1/6">
@@ -158,6 +166,9 @@ export const CoolingPoolRecords: FC = () => {
                         href="#"
                         className="underline text-sm"
                         title={record.hash}
+                        onClick={() => {
+                          window.open(`https://bscscan.com/tx/${record.hash}`);
+                        }}
                       >
                         {formatHash(record.hash)}
                       </a>
@@ -174,12 +185,7 @@ export const CoolingPoolRecords: FC = () => {
                     {!userAddress ? (
                       <>
                         {t("walletNotConnected")}
-                        <Button
-                          clipDirection="topRight-bottomLeft"
-                          className="w-auto"
-                        >
-                          {t("connectWallet")}
-                        </Button>
+                        <ConnectWalletButton />
                       </>
                     ) : (
                       <>
@@ -188,7 +194,7 @@ export const CoolingPoolRecords: FC = () => {
                           clipDirection="topRight-bottomLeft"
                           className="w-auto"
                         >
-                          暂无数据
+                          {t2("nodata")}
                         </Button>
                       </>
                     )}

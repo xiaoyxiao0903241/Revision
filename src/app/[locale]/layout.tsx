@@ -1,26 +1,26 @@
-import { NextIntlClientProvider } from "next-intl"
-import "../global.css"
-import { Sidebar } from "./components/sidebar"
-import { Header } from "./components/header"
-import AppProviders from "./components/AppProviders"
-import { LocaleDetector } from "~/widgets/locale-detector"
-import { locales } from '../../i18n/config'
+import { NextIntlClientProvider } from "next-intl";
+import "../global.css";
+import AppProviders from "./components/AppProviders";
+import { Sidebar } from "../../widgets/sidebar";
+import { Header } from "../../widgets/header";
+import { LocaleDetector } from "~/widgets/locale-detector";
+import { locales } from "../../i18n/config";
 
 export function generateStaticParams() {
   return locales.map((locale: string) => ({
     locale,
-  }))
+  }));
 }
 
 export default async function LocaleLayout({
   children,
   params,
 }: {
-  children: React.ReactNode
-  params: Promise<{ locale: string }>
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
   // 确保传入的 `locale` 是有效的
-  const { locale = "zh" } = await params
+  const { locale = "zh" } = await params;
 
   return (
     <html lang={locale}>
@@ -41,5 +41,5 @@ export default async function LocaleLayout({
         </body>
       </NextIntlClientProvider>
     </html>
-  )
+  );
 }

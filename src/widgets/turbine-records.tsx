@@ -1,102 +1,115 @@
-import { useTranslations } from "next-intl"
-import { FC, ReactNode, useState } from "react"
-import { Button, Card, CardContent, Icon, Pager, Tabs } from "~/components"
-import { useMock } from "~/hooks/useMock"
-import { cn, dayjs, formatDecimal, formatHash } from "~/lib/utils"
-
-// 涡轮交易记录数据
-const turbineRecords = [
-  {
-    id: 1,
-    event: "Claim",
-    amount: 1285.0,
-    transactionHash: "0X1ert...f9gg",
-    dateTime: "2025/12/30 12:30:22",
-  },
-  {
-    id: 2,
-    event: "Claim",
-    amount: 1285.0,
-    transactionHash: "0X1ert...f9gg",
-    dateTime: "2025/12/30 12:30:22",
-  },
-  {
-    id: 3,
-    event: "Receive",
-    amount: 1285.0,
-    transactionHash: "0X1ert...f9gg",
-    dateTime: "2025/12/30 12:30:22",
-  },
-  {
-    id: 4,
-    event: "Receive",
-    amount: 1285.0,
-    transactionHash: "0X1ert...f9gg",
-    dateTime: "2025/12/30 12:30:22",
-  },
-]
+import { useTranslations } from "next-intl";
+import { FC, ReactNode, useState, useEffect } from "react";
+import { Button, Card, CardContent, Icon, Pager, Tabs } from "~/components";
+import { cn, formatDecimal, formatHash } from "~/lib/utils";
+import { turbineRecord } from "~/services/auth/turbine";
+import { useQuery } from "@tanstack/react-query";
+import { useUserAddress } from "~/contexts/UserAddressContext";
+import ConnectWalletButton from "~/components/web3/ConnectWalletButton";
 
 // 事件颜色映射
 const eventColors = {
-  Claim: "text-secondary",
-  Receive: "text-success",
-}
+  redeemed: "text-secondary",
+  received: "text-success",
+};
 
 const Cell = ({
   children,
   className,
   title,
 }: {
-  className?: string
-  title: string
-  children: ReactNode
+  className?: string;
+  title: string;
+  children: ReactNode;
 }) => {
   return (
     <td
       className={cn(
         "py-3 px-4 gap-1 flex flex-col w-1/4 justify-start",
-        className
+        className,
       )}
     >
       <div className="text-xs text-foreground/50">{title}</div>
       <div className="flex flex-row items-center gap-2">{children}</div>
     </td>
-  )
+  );
+};
+
+interface TurbineRecord {
+  hash: string;
+  turbineType: string;
+  event: string;
+  amount: number;
+  createdAt: string;
 }
 
 export const TurbineRecords: FC = () => {
-  const t = useTranslations("turbine")
-  const [activeTab, setActiveTab] = useState(0)
-  const { walletConnected } = useMock()
+  const t = useTranslations("turbine");
+  const t2 = useTranslations("common");
+  const [activeTab, setActiveTab] = useState(0);
+  const [pages, setPages] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
+  const [total, setTotal] = useState(0);
+  const pageSize = 10;
 
+  const [history, setHistory] = useState<TurbineRecord[]>([]);
+  const { userAddress } = useUserAddress();
+  const [recordType, setRecordType] = useState("");
+
+  //获取记录
+  const { data: recordList } = useQuery({
+    queryKey: ["getTurbineRecord", page, userAddress, recordType],
+    queryFn: async () => {
+      if (!userAddress) {
+        throw new Error("Missing address");
+      }
+      const response = await turbineRecord(
+        page,
+        pageSize,
+        userAddress,
+        recordType,
+      );
+      return response || [];
+    },
+    enabled: !!userAddress,
+    retry: 1,
+    retryDelay: 1000,
+    refetchInterval: 30000,
+  });
+  useEffect(() => {
+    if (recordList && recordList.history.length) {
+      setHistory(recordList.history);
+      setTotal(recordList.total);
+      const pages = Math.ceil(recordList?.total / 10);
+      setPages(pages);
+    }
+  }, [recordList]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [recordType]);
   // 标签页数据
   const tabData = [
-    { label: t("allEvent"), href: "#" },
-    { label: t("receive"), href: "#" },
-    { label: t("claimEvent"), href: "#" },
-  ]
-
-  // 过滤记录
-  const filteredRecords =
-    activeTab === 0
-      ? turbineRecords
-      : turbineRecords.filter((record) => {
-          if (activeTab === 1) return record.event === "Receive"
-          if (activeTab === 2) return record.event === "Claim"
-          return true
-        })
+    { label: t("allEvent"), href: "#", type: "" },
+    { label: t("receive"), href: "#", type: "received" },
+    { label: t("claimEvent"), href: "#", type: "redeemed" },
+  ];
 
   return (
     <Card>
       <CardContent className="space-y-6">
         {/* 标签页 */}
-        <Tabs data={tabData} activeIndex={activeTab} onChange={setActiveTab}>
+        <Tabs
+          data={tabData}
+          activeIndex={activeTab}
+          onChange={(value) => {
+            setRecordType(tabData[value].type);
+            setActiveTab(value);
+          }}
+        >
           <div className="flex-1 flex flex-col items-end">
             <div className="text-base text-foreground">
-              {formatDecimal(22197, 0)} {t("records")}
-            </div>
-            <div className="text-xs text-foreground/50">
-              {dayjs(dayjs().subtract(20, "seconds")).fromNow()}
+              {total} {t("records")}
             </div>
           </div>
         </Tabs>
@@ -105,23 +118,25 @@ export const TurbineRecords: FC = () => {
         <div className="overflow-x-auto">
           <table className="w-full">
             <tbody className="flex flex-col gap-1">
-              {filteredRecords?.length > 0 ? (
-                filteredRecords.map((record) => (
+              {history?.length > 0 ? (
+                history.map((record) => (
                   <tr
-                    key={record.id}
+                    key={record.hash}
                     className="bg-foreground/5 mb-2 rounded-lg flex flex-row w-full"
                   >
                     <Cell
                       title={t("event")}
                       className={
-                        eventColors[record.event as keyof typeof eventColors]
+                        eventColors[
+                          record.turbineType as keyof typeof eventColors
+                        ]
                       }
                     >
                       <Icon
-                        name={record.event === "Claim" ? "event" : "record"}
+                        name={record.event === "claim" ? "event" : "record"}
                         size={16}
                       />
-                      {record.event === "Claim"
+                      {record.turbineType === "claim"
                         ? t("claimEvent")
                         : t("receive")}
                     </Cell>
@@ -132,13 +147,15 @@ export const TurbineRecords: FC = () => {
                       <a
                         href="#"
                         className="underline text-sm"
-                        title={record.transactionHash}
+                        onClick={() => {
+                          window.open(`https://bscscan.com/tx/${record.hash}`);
+                        }}
                       >
-                        {formatHash(record.transactionHash)}
+                        {formatHash(record.hash)}
                       </a>
                     </Cell>
                     <Cell title={t("dateTime")} className="w-1/4">
-                      {record.dateTime}
+                      {record.createdAt}
                     </Cell>
                   </tr>
                 ))
@@ -148,15 +165,10 @@ export const TurbineRecords: FC = () => {
                     colSpan={4}
                     className="flex flex-col items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-4 gap-2"
                   >
-                    {!walletConnected ? (
+                    {!userAddress ? (
                       <>
                         {t("walletNotConnected")}
-                        <Button
-                          clipDirection="topRight-bottomLeft"
-                          className="w-auto"
-                        >
-                          {t("connectWallet")}
-                        </Button>
+                        <ConnectWalletButton />
                       </>
                     ) : (
                       <>
@@ -165,7 +177,7 @@ export const TurbineRecords: FC = () => {
                           clipDirection="topRight-bottomLeft"
                           className="w-auto"
                         >
-                          {t("stakeNow")}
+                          {t2("nodata")}
                         </Button>
                       </>
                     )}
@@ -174,20 +186,22 @@ export const TurbineRecords: FC = () => {
               )}
             </tbody>
             {/* 分页 */}
-            <tfoot>
-              <tr>
-                <td colSpan={4} className="flex justify-center items-center">
-                  <Pager
-                    currentPage={3}
-                    totalPages={10}
-                    onPageChange={() => {}}
-                  />
-                </td>
-              </tr>
-            </tfoot>
+            {pages > 0 && (
+              <tfoot>
+                <tr>
+                  <td colSpan={4} className="flex justify-center items-center">
+                    <Pager
+                      currentPage={page}
+                      totalPages={pages}
+                      onPageChange={setPage}
+                    />
+                  </td>
+                </tr>
+              </tfoot>
+            )}
           </table>
         </div>
       </CardContent>
     </Card>
-  )
-}
+  );
+};

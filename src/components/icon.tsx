@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import React from "react"
-import { cn } from "~/lib/utils"
+import React from "react";
+import { cn } from "~/lib/utils";
 
 // 从 iconfont.json 中提取的所有图标名称
 export type IconFontName =
@@ -36,6 +36,8 @@ export type IconFontName =
   | "usdt"
   | "medal"
   | "bag"
+  | "copy"
+  | "share";
 
 // 图标映射表 - 从 iconfont.css 中提取的 unicode 编码
 export const ICON_MAP: Record<IconFontName, string> = {
@@ -70,23 +72,25 @@ export const ICON_MAP: Record<IconFontName, string> = {
   usdt: "\ue73a",
   medal: "\ue73e",
   bag: "\ue73f",
-}
+  copy: "\ue745",
+  share: "\ue744",
+};
 
 interface IconFontProps {
   /** 图标名称 */
-  name: IconFontName
+  name: IconFontName;
   /** 自定义样式类名 */
-  className?: string
+  className?: string;
   /** 图标大小，可以是数字（px）或CSS尺寸字符串 */
-  size?: number | string
+  size?: number | string;
   /** 图标颜色 */
-  color?: string
+  color?: string;
   /** 点击事件处理函数 */
-  onClick?: () => void
+  onClick?: () => void;
   /** 是否禁用 */
-  disabled?: boolean
+  disabled?: boolean;
   /** 自定义样式对象 */
-  style?: React.CSSProperties
+  style?: React.CSSProperties;
 }
 
 export function Icon({
@@ -99,15 +103,15 @@ export function Icon({
   style,
   ...props
 }: IconFontProps) {
-  const iconCode = ICON_MAP[name]
+  const iconCode = ICON_MAP[name];
 
   if (!iconCode) {
-    console.warn(`Icon "${name}" not found in icon resources`)
-    return null
+    console.warn(`Icon "${name}" not found in icon resources`);
+    return null;
   }
 
   // 处理尺寸
-  const sizeStyle = typeof size === "number" ? `${size}px` : size
+  const sizeStyle = typeof size === "number" ? `${size}px` : size;
 
   // 合并样式
   const combinedStyle: React.CSSProperties = {
@@ -116,7 +120,7 @@ export function Icon({
     cursor: disabled ? "not-allowed" : onClick ? "pointer" : "default",
     opacity: disabled ? 0.5 : 1,
     ...style,
-  }
+  };
 
   return (
     <i
@@ -127,19 +131,19 @@ export function Icon({
       tabIndex={onClick && !disabled ? 0 : undefined}
       onKeyDown={(e) => {
         if (onClick && !disabled && (e.key === "Enter" || e.key === " ")) {
-          e.preventDefault()
-          onClick()
+          e.preventDefault();
+          onClick();
         }
       }}
       {...props}
     >
       {iconCode}
     </i>
-  )
+  );
 }
 
 // 导出所有图标名称的数组，方便使用
-export const ICON_NAMES = Object.keys(ICON_MAP) as IconFontName[]
+export const ICON_NAMES = Object.keys(ICON_MAP) as IconFontName[];
 
 // 导出图标数量
-export const ICON_COUNT = ICON_NAMES.length
+export const ICON_COUNT = ICON_NAMES.length;

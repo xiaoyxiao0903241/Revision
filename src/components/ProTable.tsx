@@ -144,7 +144,7 @@ const ProTable = <T,>({
   // 渲染表格数据
   const processedData = data
     ? formatResult
-      ? (formatResult(data) as ProTableData<T>)
+      ? (formatResult(data) as unknown as ProTableData<T>)
       : (data as ProTableData<T>)
     : null;
 

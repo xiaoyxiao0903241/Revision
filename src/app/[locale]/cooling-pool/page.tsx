@@ -171,7 +171,7 @@ export default function CoolingPoolPage() {
                   alt="gear"
                   width={140}
                   height={140}
-                  className={`${Number(item.claimable) && "animate-spin-slow"}`}
+                  className={`${Number(item.claimable) > 0.0001 && "animate-spin-slow"}`}
                 />
               </CoolingPoolCard>
             ))}

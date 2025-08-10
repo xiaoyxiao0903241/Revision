@@ -514,7 +514,7 @@ export default function SwapPage() {
               isLoading={isLoading}
               onRefresh={onToggle}
               value={showSlippage}
-              onTogle={setShowSlippage}
+              onTogleSlippage={setShowSlippage}
             >
               {
                 // olyPrice && <div className="w-40">1 USDT= formatNumbedecimalScale(1/olyPrice,6)  OLY</div>

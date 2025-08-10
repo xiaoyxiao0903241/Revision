@@ -16,7 +16,8 @@
     "swap": "Swap",
     "documents": "Documents",
     "viewOnAve": "View On AVE",
-    "viewOnDexScreener": "View On Dex Screener"
+    "viewOnDexScreener": "View On Dex Screener",
+    "days": "Days"
   },
   "header": {
     "language": "Language",
@@ -90,7 +91,8 @@
     "yourStake": "Your Stake",
     "yourReward": "Your Reward",
     "months": "Months",
-    "roi": "ROI"
+    "roi": "ROI",
+    "claiming": "Receiving..."
   },
   "invite": {
     "myInvitation": "Community",
@@ -306,7 +308,28 @@
     "walletNotConnected": "Please connect your wallet or enter a wallet address to view the detailed statistics",
     "connectWallet": "Connect Wallet",
     "noRecords": "This address has no turbine-related transaction records.",
-    "stakeNow": "Stake Now"
+    "stakeNow": "Stake Now",
+    "slippage": "Slippage",
+    "unlockable": "Unlockable Amount",
+    "trade_amount": "Turbine Trade Amount",
+    "balance": "Wallet Balance",
+    "enter_amount": "Enter Amount",
+    "max": "Max",
+    "trade": "Unlock",
+    "trading": "Unlocking...",
+    "approving": "Approving...",
+    "trade_settings": "Slippage Settings",
+    "toast": {
+      "insufficient_unlockable": "Exceeds unlockable AS amount",
+      "confirm_in_wallet": "Please confirm the transaction in your wallet...",
+      "confirming": "Transaction confirming...",
+      "trade_success": "Unlock Successful",
+      "trade_failed": "Unlock Failed",
+      "approve_success": "Approval Successful",
+      "approve_failed": "Approval Failed",
+      "enter_amount": "Please enter a trade amount",
+      "insufficient_balance": "Insufficient turbine balance"
+    }
   },
   "community": {
     "title": "Community",
@@ -387,7 +410,11 @@
     "walletNotConnected": "Please connect your wallet or enter a wallet address to view the detailed statistics",
     "connectWallet": "Connect Wallet",
     "noRecords": "This address has no cooling pool-related transaction records.",
-    "stakeNow": "Stake Now"
+    "stakeNow": "Stake Now",
+    "days": "Days",
+    "releaseNum": "release quantity",
+    "releaseDay": "release days",
+    "releaseRate": "tax rate"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -447,6 +474,24 @@
     "unclaimed_reward": "Claimable rewards",
     "claim": "Claim",
     "claiming": "Processing...",
+    "connectWallet": "Connect Wallet",
+    "chain": "BNB Smart Chain",
+    "disconnect": "Disconnect",
+    "buy": "Buy",
+    "sell": "Sell",
+    "receive": "Receive",
+    "assets": "Assets",
+    "account": "Account",
+    "mywallet": "Wallet",
+    "myWallet": "My Wallet",
+    "position": "Position",
+    "reward": "Reward",
+    "staking": "Staking",
+    "bonds": "Bonds",
+    "rebaseReward": "Rebase Reward",
+    "totalBonus": "Total Bonus",
+    "myAccount": "My Account",
+    "unlockOver": "Unlock Completed",
     "toast": {
       "confirm_in_wallet": "Please confirm transaction in wallet...",
       "confirming": "Confirming transaction...",
@@ -600,6 +645,27 @@
       "claimed": "Claim",
       "stable": "Treasury Bond",
       "liquidity": "Liquidity Bond"
+    }
+  },
+  "notFound": {
+    "comingSoon": "New version launching soon.",
+    "title": "Stay tuned",
+    "description": "Estimated launch: August 15, 2025."
+  },
+  "reciveTable": {
+    "title": "Claim List",
+    "amount_of_silences": "Locked Amount(AS)",
+    "silent_countdown": "Unlock Countdown",
+    "countdown_ended": "Countdown Ended",
+    "operate": "Action",
+    "claim": "claim",
+    "claim_and_stake": "Claim & Stake",
+    "toast": {
+      "no_claimable": "No amount available to claim.",
+      "confirm_in_wallet": "Please confirm the transaction in your wallet...",
+      "confirming": "Transaction confirming...",
+      "claim_success": "Claim Successful",
+      "claim_failed": "Claim Failed"
     }
   }
 }

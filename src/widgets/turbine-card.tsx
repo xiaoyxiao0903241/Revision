@@ -1,14 +1,13 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
-import Image from "next/image"
-import { Button } from "~/components/button"
-import { formatCurrency, formatDecimal } from "~/lib/utils"
+import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { Button } from "~/components/button";
 interface ClaimTickerProps {
-  lockedAmount: number
-  usdValue: number
-  title: string
-  onClick?: () => void
+  lockedAmount: number | string;
+  usdValue: number | string;
+  title: string;
+  onClick?: () => void;
 }
 
 export function TurbineCard({
@@ -17,7 +16,7 @@ export function TurbineCard({
   usdValue,
   onClick,
 }: ClaimTickerProps) {
-  const tStaking = useTranslations("staking")
+  const tStaking = useTranslations("staking");
   return (
     <div className="relative px-4">
       <div className="flex items-center justify-between">
@@ -30,11 +29,9 @@ export function TurbineCard({
           {/* 金额显示 */}
           <div className="flex items-baseline gap-1">
             <span className="text-white font-mono text-2xl font-bold">
-              {formatDecimal(lockedAmount, 2)} OLY
+              {lockedAmount} OLY
             </span>
-            <span className="text-foreground/50 text-xs">
-              {formatCurrency(usdValue)}
-            </span>
+            <span className="text-foreground/50 text-xs">${usdValue}</span>
           </div>
         </div>
 
@@ -63,5 +60,5 @@ export function TurbineCard({
         )}
       </div>
     </div>
-  )
+  );
 }
