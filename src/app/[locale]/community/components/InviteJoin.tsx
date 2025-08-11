@@ -209,7 +209,7 @@ const InviteJoin = () => {
           {t("referralProgram")}
         </span>
       </div>
-      <CardContent className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+      <CardContent className="grid grid-cols-1 xl:grid-cols-2 gap-4 px-0 md:px-6">
         <div className="flex flex-col gap-6  h-full">
           {/* 左侧数据 */}
           <div className="space-y-4 flex-1">

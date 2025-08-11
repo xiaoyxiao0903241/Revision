@@ -60,22 +60,22 @@ export const TVLStats: React.FC<{ dataSource: TVLDataSource }> = ({
           {
             name: t("no_lock_staking"),
             value: data?.AllolyStakeNum || 0,
-            icon: "staking",
+            icon: "staking" as IconFontName,
           },
           {
             name: t("locked_staking"),
             value: data?.AllLockOlyStakeNum || 0,
-            icon: "locked-staking",
+            icon: "locked-staking" as IconFontName,
           },
           {
             name: t("lp_bonds"),
             value: data?.lpMarketCap || 0,
-            icon: "lp-bonds",
+            icon: "lp-bonds" as IconFontName,
           },
           {
             name: t("treasury_bonds"),
             value: data?.treasuryMarketCap || 0,
-            icon: "treasury-bonds",
+            icon: "treasury-bonds" as IconFontName,
           },
         ],
       };
@@ -153,7 +153,7 @@ export const TVLStats: React.FC<{ dataSource: TVLDataSource }> = ({
           currentNoLockStaking,
           previousNoLockStaking,
         ),
-        icon: "staking",
+        icon: "staking" as IconFontName,
       },
       {
         name: t("locked_staking"),
@@ -164,7 +164,7 @@ export const TVLStats: React.FC<{ dataSource: TVLDataSource }> = ({
           currentLockedStaking,
           previousLockedStaking,
         ),
-        icon: "locked-staking",
+        icon: "locked-staking" as IconFontName,
       },
       {
         name: t("lp_bonds"),
@@ -175,7 +175,7 @@ export const TVLStats: React.FC<{ dataSource: TVLDataSource }> = ({
           currentLpMarketCap,
           previousLpMarketCap,
         ),
-        icon: "lp-bonds",
+        icon: "lp-bonds" as IconFontName,
       },
       {
         name: t("treasury_bonds"),
@@ -189,7 +189,7 @@ export const TVLStats: React.FC<{ dataSource: TVLDataSource }> = ({
           currentTreasuryMarketCap,
           previousTreasuryMarketCap,
         ),
-        icon: "treasury-bonds",
+        icon: "treasury-bonds" as IconFontName,
       },
     ];
 

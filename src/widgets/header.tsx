@@ -5,11 +5,12 @@ import Image from "next/image";
 import NetWork from "~/components/common/netWork";
 import ConnectWalletButton from "~/components/web3/ConnectWalletButton";
 import { LanguageSwitcher } from "./language-switcher";
+import { Icon } from "~/components";
 
-// interface HeaderProps {
-//   onMenuClick?: () => void;
-// }
-export function Header() {
+interface HeaderProps {
+  onMenuClick?: () => void;
+}
+export function Header({ onMenuClick }: HeaderProps) {
   // const t = useTranslations("header")
 
   return (
@@ -27,12 +28,12 @@ export function Header() {
         <LanguageSwitcher />
         <NetWork />
         <ConnectWalletButton></ConnectWalletButton>
-        {/* <button
+        <button
           onClick={onMenuClick}
           className="md:hidden w-[25px] h-[25px] border-[#434c8c] shadow-[inset_0_0_20px_rgba(84,119,247,0.5)] border rounded-full rotate-90 flex items-center justify-center"
         >
           <Icon name="arrow" size={20} />
-        </button> */}
+        </button>
       </div>
     </header>
   );

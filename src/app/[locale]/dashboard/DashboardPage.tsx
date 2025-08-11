@@ -48,7 +48,7 @@ const defaultMyMessData: myMessDataType = {
 export default function DashboardPage() {
   const t = useTranslations("dashboard");
 
-  const [myMessInfo, setMyMessInfo] = useSafeState();
+  const [myMessInfo, setMyMessInfo] = useSafeState<myMessDataType>();
   const [saleAmount, setSaleAmount] = useState<string>("0.00");
   const [nodeAmount, setNodeAmount] = useState<number>(0);
   const { userAddress } = useUserAddress();
@@ -81,7 +81,10 @@ export default function DashboardPage() {
     let nodeTotal = 0;
     const records = nodeSummaryData?.records || [];
     if (records?.length) {
-      records.forEach((item) => (nodeTotal += Number(item.amount)));
+      records.forEach(
+        (item: { amount: string | number }) =>
+          (nodeTotal += Number(item.amount)),
+      );
     }
     setNodeAmount(nodeTotal);
   }, [nodeSummaryData]);
@@ -136,13 +139,13 @@ export default function DashboardPage() {
           <div className="flex justify-between">
             <Statistics
               title={t("directReferral")}
-              info="说明"
+              info=""
               value={`${myMessInfo?.referralCount || 0}/10`}
               size="sm"
             />
             <Statistics
               title={t("communityAddressCount")}
-              value={myMessInfo?.teamCount || 0}
+              value={String(myMessInfo?.teamCount || 0)}
               size="sm"
             />
           </div>
@@ -162,7 +165,7 @@ export default function DashboardPage() {
           <div className="flex justify-between">
             <Statistics
               title={t("genesisSize")}
-              info="说明"
+              info=""
               value={`${formatNumbedecimalScale(nodeAmount, 2)} USDT`}
               size="sm"
             />
@@ -170,15 +173,15 @@ export default function DashboardPage() {
               title={t("currentTotalValue")}
               value={`${formatNumbedecimalScale(saleAmount?.toString(), 2)} USDT`}
               size="sm"
-              info="说明"
+              info=""
             />
           </div>
         </div>
       </div>
       {/* 业绩区域 */}
-      <Market myMessInfo={myMessInfo} />
+      <Market myMessInfo={myMessInfo || defaultMyMessData} />
       {/* 奖金区域 */}
-      <Bonus myMessInfo={myMessInfo} />
+      <Bonus myMessInfo={myMessInfo || defaultMyMessData} />
     </div>
   );
 }
