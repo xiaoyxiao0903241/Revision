@@ -34,6 +34,7 @@ export const CoolingPoolCard: FC<CoolingPoolCardProps> = ({
   children,
 }) => {
   const t = useTranslations("coolingPool");
+  const t2 = useTranslations("common");
   const tStaking = useTranslations("staking");
   const publicClient = usePublicClient();
   const { userAddress } = useUserAddress();
@@ -45,7 +46,7 @@ export const CoolingPoolCard: FC<CoolingPoolCardProps> = ({
 
   const claimReward = async () => {
     if (!publicClient || !userAddress) return;
-    const toastId = toast.loading("请在钱包中确认交易...");
+    const toastId = toast.loading(t2("toast.confirm_in_wallet"));
     setIsDisabled(true);
     setCurrent(data.period);
     try {
@@ -55,12 +56,12 @@ export const CoolingPoolCard: FC<CoolingPoolCardProps> = ({
         functionName: "claimForIndex",
         args: [data.periodIndex],
       });
-      toast.loading("交易确认中...", {
+      toast.loading(t2("toast.confirming"), {
         id: toastId,
       });
       const result = await publicClient.waitForTransactionReceipt({ hash });
       if (result.status === "success") {
-        toast.success("领取成功", {
+        toast.success(t2("toast.claim_success"), {
           id: toastId,
         });
         await queryClient.invalidateQueries({
@@ -70,7 +71,7 @@ export const CoolingPoolCard: FC<CoolingPoolCardProps> = ({
           queryKey: ["getRewardRecord", userAddress, 1, pageSize],
         });
       } else {
-        toast.error("领取失败", {
+        toast.error(t2("toast.claim_failed"), {
           id: toastId,
         });
       }
@@ -158,7 +159,7 @@ export const CoolingPoolCard: FC<CoolingPoolCardProps> = ({
           onClick={claimReward}
           clipDirection="topLeft-bottomRight"
         >
-          {current === data.period ? "领取中..." : "领取"}
+          {current === data.period ? t2("claiming") : t2("claim")}
         </Button>
       </div>
     </View>

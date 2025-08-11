@@ -78,9 +78,8 @@ export default function CoolingPoolPage() {
       const rewardList = myReward.rewardArr.map((it, index) => ({
         claimable: it.claimable || "0",
         remainingRewards: it.remainingRewards || "0",
-        waitingPercent: Number(
-          (Number(it.claimable || 0) / (it.all || 1)).toFixed(2),
-        ),
+        waitingPercent:
+          Number((Number(it.claimable || 0) / (it.all || 1)).toFixed(2)) * 100,
         className:
           index === 0
             ? "text-gradient"
@@ -107,19 +106,6 @@ export default function CoolingPoolPage() {
       const list = [
         {
           title: t("rewardsInPool"),
-          value: myReward?.allClaimable
-            ? formatNumbedecimalScale(myReward?.allClaimable, 4)
-            : "0",
-          unit: "OLY",
-          usdValue: myReward?.allClaimable
-            ? formatNumbedecimalScale(
-                myReward?.allClaimable * Number(olyPrice),
-                2,
-              )
-            : "0",
-        },
-        {
-          title: t("releasedRewards"),
           value: myReward?.allPending
             ? formatNumbedecimalScale(myReward?.allPending, 4)
             : "0",
@@ -127,6 +113,19 @@ export default function CoolingPoolPage() {
           usdValue: myReward?.allPending
             ? formatNumbedecimalScale(
                 myReward?.allPending * Number(olyPrice),
+                2,
+              )
+            : "0",
+        },
+        {
+          title: t("releasedRewards"),
+          value: myReward?.allClaimable
+            ? formatNumbedecimalScale(myReward?.allClaimable, 4)
+            : "0",
+          unit: "OLY",
+          usdValue: myReward?.allClaimable
+            ? formatNumbedecimalScale(
+                myReward?.allClaimable * Number(olyPrice),
                 2,
               )
             : "0",
@@ -161,7 +160,9 @@ export default function CoolingPoolPage() {
       <div className="grid grid-cols-1">
         <Card>
           {/* 统计卡片 */}
-          <CoolingPoolStats coolMessList={coolMessList} />
+          {userAddress && coolMessList.length ? (
+            <CoolingPoolStats coolMessList={coolMessList} />
+          ) : null}
           {/* 冷却池卡片 */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {myRewardList.map((item, index) => (

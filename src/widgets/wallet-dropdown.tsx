@@ -27,6 +27,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useUserAddress } from "~/contexts/UserAddressContext";
 import { getTokenPrice } from "~/wallet/lib/web3/bond";
 import { toast } from "sonner";
+import {
+  getUserStakes,
+  getNodeStakes,
+  demandAfterHot,
+  demandInfo,
+  demandProfit,
+} from "~/wallet/lib/web3/stake";
+import { myMess } from "~/services/auth/dashboard";
 
 interface WalletAsset {
   symbol: string;
@@ -40,8 +48,8 @@ interface WalletAsset {
 interface PositionItem {
   type: string;
   name: string;
-  amount: string;
-  value: string;
+  amount: string | number;
+  value: string | number;
   icon: IconFontName;
   className: string;
 }
@@ -49,6 +57,18 @@ interface PositionItem {
 interface WalletDropdownProps {
   children: React.ReactNode;
   handleDisconnect: () => void;
+}
+interface StakingItem {
+  pending: number;
+  period: string;
+  blockReward: number;
+  interest: number;
+  claimableBalance: number;
+  time?: string;
+  isShow?: boolean;
+  index: number;
+  type: string;
+  [key: string]: string | number | boolean | undefined;
 }
 
 export function WalletDropdown({
@@ -65,6 +85,8 @@ export function WalletDropdown({
   const addressClipboardRef = useRef<ClipboardJS | null>(null);
   const { userAddress } = useUserAddress();
   const [walletAssets, setWalletAssets] = useState<WalletAsset[]>([]);
+  const [allStakeAmount, setAllStakeAmount] = useState(0);
+  const [allClaimAmount, setAllClaimAmount] = useState(0);
 
   const { balance: olyBalance } = useTokenBalance({
     tokenAddress: TOKEN_ADDRESSES.OLY as `0x${string}`,
@@ -78,41 +100,145 @@ export function WalletDropdown({
     address: address as `0x${string}`,
   });
 
-  // 模拟持仓数据
+  //总奖金
+  const { data: myMessData } = useQuery({
+    queryKey: ["myMess", userAddress],
+    queryFn: () => myMess("", "", userAddress as `0x${string}`),
+    enabled: Boolean(userAddress),
+    refetchInterval: 20000,
+  });
+
+  //热身期后的数据
+  const { data: afterHotData } = useQuery({
+    queryKey: ["DemandAfterHot", userAddress],
+    queryFn: () => demandAfterHot({ address: userAddress as `0x${string}` }),
+    enabled: Boolean(userAddress),
+    retry: 1,
+    refetchInterval: 41000,
+  });
+  //热身期的数据
+  const { data: hotData } = useQuery({
+    queryKey: ["UserDemandInfo", userAddress],
+    queryFn: () => demandInfo({ address: userAddress as `0x${string}` }),
+    enabled: Boolean(userAddress),
+    retry: 1,
+    refetchInterval: 400000,
+  });
+
+  //质押列表
+  const { data: myStakingList } = useQuery({
+    queryKey: ["UserStakes", userAddress],
+    queryFn: () => getUserStakes({ address: userAddress as `0x${string}` }),
+    enabled: Boolean(userAddress),
+    retry: 1,
+    refetchInterval: 20000,
+  });
+
+  //  节点质押
+  const { data: myNodeStakingList } = useQuery({
+    queryKey: ["UserNodeStakes", userAddress],
+    queryFn: () => getNodeStakes({ address: userAddress as `0x${string}` }),
+    enabled: Boolean(userAddress),
+    retry: 1,
+    refetchInterval: 20000,
+  });
+
+  // oly单价
+  const { data: olyPrice } = useQuery({
+    queryKey: ["olyPrice"],
+    queryFn: getTokenPrice,
+    enabled: true,
+    retry: 1,
+    retryDelay: 100000,
+  });
+
+  //获取静态收益
+  const { data: demandProfitInfo } = useQuery({
+    queryKey: ["UserDemandProfit", userAddress],
+    queryFn: () => demandProfit({ address: userAddress as `0x${string}` }),
+    enabled: Boolean(userAddress),
+    retry: 1,
+    refetchInterval: 42000,
+  });
+
+  // 获取质押的数量
+  useEffect(() => {
+    const updateList = async () => {
+      let longAmount = 0;
+      let claimLong = 0;
+      if (myStakingList?.myStakingList || myNodeStakingList?.length) {
+        const list =
+          (myStakingList?.myStakingList.length &&
+            (myStakingList?.myStakingList as StakingItem[])) ||
+          [];
+        const nodeList = myNodeStakingList?.length
+          ? (myNodeStakingList as StakingItem[])
+          : [];
+
+        const allList = [...nodeList, ...list];
+        console.log(allList, "allList1111");
+        allList.forEach((it) => {
+          longAmount += it.pending;
+          claimLong += it.blockReward + it.blockReward;
+        });
+      }
+      const unlockNum =
+        Number(afterHotData?.principal || 0) + Number(hotData?.stakNum || 0);
+      const clainUnclock = demandProfitInfo?.allProfit || 0;
+      const allMyStakNum = longAmount + unlockNum;
+      const AllClaimNum = claimLong + clainUnclock;
+      setAllStakeAmount(allMyStakNum);
+      setAllClaimAmount(AllClaimNum);
+    };
+    updateList();
+  }, [
+    afterHotData,
+    hotData,
+    myStakingList?.myStakingList,
+    myStakingList,
+    setAllStakeAmount,
+    myNodeStakingList,
+    demandProfitInfo,
+  ]);
+
+  // 当前质押
   const positionItems: PositionItem[] = [
     {
       type: "staking",
       name: t("staking"),
-      amount: "5.00",
-      value: "$5.00",
+      amount: formatNumbedecimalScale(allStakeAmount, 4),
+      value: formatNumbedecimalScale(allStakeAmount * Number(olyPrice), 2),
       icon: "staking",
       className: "bg-warning",
     },
     {
       type: "bonds",
       name: t("bonds"),
-      amount: "5.00",
-      value: "$5.00",
+      amount: "0",
+      value: "$0.0",
       icon: "diamond",
       className: "bg-secondary",
     },
   ];
 
-  // 模拟奖励数据
+  // 质押奖励
   const rewardItems: PositionItem[] = [
     {
       type: "rebaseReward",
       name: t("rebaseReward"),
-      amount: "5.00",
-      value: "$5.00",
+      amount: formatNumbedecimalScale(allClaimAmount, 4),
+      value: formatNumbedecimalScale(allClaimAmount * Number(olyPrice), 2),
       icon: "medal",
       className: "gradient",
     },
     {
       type: "totalBonus",
       name: t("totalBonus"),
-      amount: "5.00",
-      value: "$5.00",
+      amount: formatNumbedecimalScale(myMessData?.totalBonus, 4),
+      value: formatNumbedecimalScale(
+        Number(myMessData?.totalBonus) * Number(olyPrice),
+        2,
+      ),
       icon: "bag",
       className: "bg-success",
     },
@@ -128,14 +254,6 @@ export function WalletDropdown({
     enabled: !!userAddress,
     retry: 1,
     retryDelay: 30000,
-  });
-  // oly单价
-  const { data: olyPrice } = useQuery({
-    queryKey: ["olyPrice"],
-    queryFn: getTokenPrice,
-    enabled: true,
-    retry: 1,
-    retryDelay: 10000,
   });
 
   const totalValueInUSD = useMemo(() => {
@@ -210,27 +328,6 @@ export function WalletDropdown({
   };
   const addressRef = useRef<HTMLButtonElement>(null);
 
-  const handleCopyAddress = async () => {
-    if (address) {
-      console.log("复制111");
-      console.log(address, "address复制111");
-      try {
-        if (navigator?.clipboard?.writeText) {
-          await navigator.clipboard.writeText(address);
-          setcopeB(copeB + 1);
-          return;
-        }
-        const success = await fallbackCopyText(address);
-        if (success) {
-          setcopeB(copeB + 1);
-          return;
-        }
-      } catch (error) {
-        console.error(error);
-        setcopeB(copeB - 1);
-      }
-    }
-  };
   useEffect(() => {
     if (addressRef.current) {
       addressClipboardRef.current = new ClipboardJS(addressRef.current, {
@@ -254,6 +351,31 @@ export function WalletDropdown({
     }
     return () => addressClipboardRef.current?.destroy();
   }, [address, setcopeA, copeA]);
+
+  const handleCopyAddress = async () => {
+    if (address) {
+      console.log("复制111");
+      console.log(address, "address复制111");
+      try {
+        if (navigator?.clipboard?.writeText) {
+          await navigator.clipboard.writeText(address);
+          setcopeB(copeB + 1);
+          console.log(copeB + 1, "opeB + 1");
+          return;
+        }
+        const success = await fallbackCopyText(address);
+        console.log(success, "success11111");
+        if (success) {
+          setcopeB(copeB + 1);
+          console.log(copeB + 1, "opeB + 111");
+          return;
+        }
+      } catch (error) {
+        console.error(error, "error111");
+        setcopeB(copeB - 1);
+      }
+    }
+  };
 
   useEffect(() => {
     if (copeA > 1 || copeB > 1) {
@@ -292,15 +414,22 @@ export function WalletDropdown({
               <span className="text-lg text-foreground font-mono">
                 {shortAddress}
               </span>
-              <div
+              <button
                 className="cursor-pointer hover:text-white/70"
+                ref={addressRef}
                 onClick={() => {
                   handleCopyAddress();
                 }}
               >
                 <Icon name="copy" size={16} className="pointer-events-none" />
-              </div>
-              <div className="cursor-pointer hover:text-white/70">
+              </button>
+              <div
+                className="cursor-pointer
+                hover:text-white/70"
+                onClick={() => {
+                  window.open(`https://bscscan.com/address/${userAddress}`);
+                }}
+              >
                 <Icon name="share" size={16} className="pointer-events-none" />
               </div>
             </div>
@@ -450,10 +579,10 @@ export function WalletDropdown({
                       </div>
                       <div className="text-right">
                         <div className="font-medium text-lg font-mono text-white">
-                          {item.amount}
+                          {item.amount} OLY
                         </div>
                         <div className="text-xs text-white/50">
-                          {item.value}
+                          ${item.value}
                         </div>
                       </div>
                     </div>
@@ -487,10 +616,10 @@ export function WalletDropdown({
                       </div>
                       <div className="text-right">
                         <div className="font-medium text-lg text-white">
-                          {item.amount}
+                          {item.amount} OLY
                         </div>
                         <div className="text-xs text-white/50">
-                          {item.value}
+                          ${item.value}
                         </div>
                       </div>
                     </div>

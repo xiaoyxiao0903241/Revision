@@ -95,7 +95,7 @@ export const newRewardList = async ({ address }: { address: string }) => {
         const res = await executeMulticall({
           calls: calls,
         });
-
+        console.log(res, "res000111");
         if (res && res.length) {
           const profit = formatUnits(res[1].data as bigint, 9);
           allClaimable += Number(formatUnits(res[1].data as bigint, 9));
@@ -109,7 +109,7 @@ export const newRewardList = async ({ address }: { address: string }) => {
             periodIndex: i,
             claimable: profit,
             remainingRewards: pending.toString(),
-            all: Number(formatUnits(res[0].data as bigint, 9)),
+            all: Number(profit) + Number(pending),
           });
         }
       }

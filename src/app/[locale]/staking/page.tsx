@@ -199,9 +199,7 @@ export default function StakingPage() {
       <Alert
         icon="stake"
         title={"STAKE"}
-        description={
-          "I您可以随时存入或解除质押,无锁定期限,每12小时发放爆块奖励"
-        }
+        description={"您可以随时存入或解除质押,无锁定期限,每12小时发放爆块奖励"}
       />
 
       {/* 主要内容区域 */}

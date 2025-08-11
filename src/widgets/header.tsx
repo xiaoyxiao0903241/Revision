@@ -1,5 +1,5 @@
 "use client";
-// import { useLocale } from "next-intl";
+// import { useTranslations } from "next-intl";
 import Image from "next/image";
 // import { usePathname, useRouter } from "next/navigation";
 import NetWork from "~/components/common/netWork";
@@ -10,14 +10,7 @@ import { LanguageSwitcher } from "./language-switcher";
 //   onMenuClick?: () => void;
 // }
 export function Header() {
-  // const locale = useLocale();
-  // const router = useRouter();
-  // const pathname = usePathname();
-
-  // const handleLanguageChange = (newLocale: string) => {
-  //   const newPath = pathname.replace(`/${locale}`, `/${newLocale}`);
-  //   router.replace(newPath);
-  // };
+  // const t = useTranslations("header")
 
   return (
     <header className="flex h-20 items-center justify-between md:px-9 px-4">

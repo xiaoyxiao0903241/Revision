@@ -21,7 +21,8 @@
   "header": {
     "language": "语言",
     "network": "BNB智能链",
-    "wallet": "钱包"
+    "wallet": "钱包",
+    "connect": "连接钱包"
   },
   "staking": {
     "stake": "质押",

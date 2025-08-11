@@ -140,7 +140,7 @@ export default function ConnectWalletButton({
         onClick={openConnectModal}
         className="md:px-6 md:h-12 md:text-base px-3 h-8 text-sm font-normal"
       >
-        连接钱包
+        {t("header.connect")}
       </Button>
     );
   }
