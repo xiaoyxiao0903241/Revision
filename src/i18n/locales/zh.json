@@ -415,7 +415,7 @@
     "rewardsInRelease": "释放中的奖金数量",
     "releasedRewardsAmount": "已经释放的奖金数量",
     "turbineRewardsAmount": "涡轮中的奖金数量",
-    "unlockedRewardsAmount": "已解锁的奖金数量",
+    "unlockedRewardsAmount": "涡轮中已解锁的数量",
     "claim": "领取",
     "timeFilters": {
       "all": "全部",
