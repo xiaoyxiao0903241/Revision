@@ -1,11 +1,142 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
-import Image from "next/image"
-import { Alert, Card, InfoPopover, View } from "~/components"
-import { TVLChart, SmallChart, TVLStats } from "~/widgets"
+import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { Alert, Card, InfoPopover, View } from "~/components";
+import { TVLChart, SmallChart, TVLStats } from "~/widgets";
+import { useQuery } from "@tanstack/react-query";
+import { useUserAddress } from "~/contexts/UserAddressContext";
+import { dashMess } from "~/services/auth/dashboard";
+import { homeBaseData } from "~/services/auth/home";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import { getBalanceToken } from "~/wallet/lib/web3/stake";
+import { OLY, staking } from "~/wallet/constants/tokens";
+import { useNolockStore } from "~/store/noLock";
+
+type DepositItem = {
+  createdAt: string;
+  amount: string | number;
+};
+
+type smallChartData = {
+  dates: string[];
+  data: number[];
+};
 export default function AnalyticsPage() {
-  const t = useTranslations("analytics")
+  const t = useTranslations("analytics");
+  const { userAddress } = useUserAddress();
+  const [depositList, setDepositList] = useState<Array<[string, number]>>([]);
+  // const [priceList, setPriceList] = useState<smallChartData>({dates: [], data: []});
+  const [marketList, setMarketList] = useState<smallChartData>({
+    dates: [],
+    data: [],
+  });
+  const [treasuryList, setTreasuryList] = useState<smallChartData>({
+    dates: [],
+    data: [],
+  });
+  const [lpBondMarketCapList, setLpBondMarketCapList] =
+    useState<smallChartData>({ dates: [], data: [] });
+  const [supplyList, setSupplyList] = useState<smallChartData>({
+    dates: [],
+    data: [],
+  });
+  const [baseInfo, setBaseInfo] = useState({});
+
+  const { AllolyStakeNum } = useNolockStore();
+
+  //质押列表
+  const { data: dashMessInfo } = useQuery({
+    queryKey: ["dashMess", userAddress],
+    queryFn: () =>
+      dashMess(
+        dayjs().subtract(1, "y").format("YYYY-MM-DD"),
+        dayjs().format("YYYY-MM-DD"),
+      ),
+    enabled: Boolean(userAddress),
+    retry: 1,
+    refetchInterval: 20000,
+  });
+  const { data: homeBaseInfo } = useQuery({
+    queryKey: ["homeBaseData", userAddress],
+    queryFn: () => homeBaseData(),
+    enabled: Boolean(userAddress),
+    retry: 1,
+    refetchInterval: 20000,
+  });
+
+  //获取全网锁定质押的的oly数量
+  const { data: AllLockOlyStakeNum } = useQuery({
+    queryKey: ["AllolyStakeNum", userAddress],
+    queryFn: () =>
+      getBalanceToken({
+        address: staking as `0x${string}`,
+        TOKEN_ADDRESSES: OLY,
+        decimal: 9,
+      }),
+    enabled: Boolean(userAddress),
+    retry: 1,
+    refetchInterval: 600000,
+  });
+
+  useEffect(() => {
+    setBaseInfo({
+      ...homeBaseInfo,
+      AllolyStakeNum: AllolyStakeNum,
+      AllLockOlyStakeNum: AllLockOlyStakeNum || 0,
+    });
+  }, [AllolyStakeNum, AllolyStakeNum, homeBaseInfo]);
+
+  const formatData = (data: DepositItem[]) => {
+    const dateArr: string[] = [];
+    const dataArr: number[] = [];
+    data.forEach((item) => {
+      dateArr.push(dayjs(item.createdAt).format("YYYY-MM-DD"));
+      dataArr.push(Number(item.amount));
+    });
+    return { dates: dateArr, data: dataArr };
+  };
+
+  useEffect(() => {
+    const depositList = dashMessInfo?.depositList || [];
+    // const priceList = dashMessInfo?.priceList || [];
+    const marketList = dashMessInfo?.marketList || [];
+    const treasuryList = dashMessInfo?.treasuryList || [];
+    const lpBondMarketCapList = dashMessInfo?.lpBondMarketCapList || [];
+    const supplyList = dashMessInfo?.supplyList || [];
+    if (depositList?.length) {
+      const formattedList = depositList.map((item) => {
+        return [
+          dayjs(item.createdAt).format("YYYY-MM-DD"),
+          Number(item.amount),
+        ] as [string, number];
+      });
+      setDepositList(formattedList);
+    }
+    // if (priceList?.length) {
+    //   const formattedList = formatData(priceList);
+    //   setPriceList(formattedList);
+    // }
+    // 流通市值
+    if (marketList?.length) {
+      const formattedList = formatData(marketList);
+      setMarketList(formattedList);
+    }
+    if (treasuryList?.length) {
+      const formattedList = formatData(treasuryList);
+      setTreasuryList(formattedList);
+    }
+    if (lpBondMarketCapList?.length) {
+      const formattedList = formatData(lpBondMarketCapList);
+      setLpBondMarketCapList(formattedList);
+    }
+    // 流通量
+    if (supplyList?.length) {
+      const formattedList = formatData(supplyList);
+      setSupplyList(formattedList);
+    }
+  }, [dashMessInfo]);
 
   return (
     <div className="space-y-6">
@@ -42,7 +173,7 @@ export default function AnalyticsPage() {
                   </p>
                 </InfoPopover>
               </div>
-              <TVLChart height={300} />
+              <TVLChart height={300} dataSource={depositList || []} />
             </div>
 
             <div className="w-full lg:w-5/12">
@@ -51,7 +182,7 @@ export default function AnalyticsPage() {
                 clipDirection="topLeft-bottomRight"
                 className="w-full py-5 px-6 bg-gradient-to-b from-[#333E8E]/30 to-[#576AF4]/30"
               >
-                <TVLStats />
+                <TVLStats dataSource={baseInfo} />
               </View>
             </div>
           </div>
@@ -71,7 +202,11 @@ export default function AnalyticsPage() {
                 </p>
               </InfoPopover>
             </div>
-            <SmallChart className="h-[272px]" title={t("oly_market_cap")} />
+            <SmallChart
+              className="h-[272px]"
+              title={t("oly_market_cap")}
+              dataSource={marketList}
+            />
           </Card>
 
           {/* OLY流通量 */}
@@ -86,7 +221,11 @@ export default function AnalyticsPage() {
                 </p>
               </InfoPopover>
             </div>
-            <SmallChart className="h-[272px]" title={t("oly_circulation")} />
+            <SmallChart
+              className="h-[272px]"
+              title={t("oly_circulation")}
+              dataSource={supplyList}
+            />
           </Card>
 
           {/* 国库无风险价值 */}
@@ -104,6 +243,7 @@ export default function AnalyticsPage() {
             <SmallChart
               className="h-[272px]"
               title={t("treasury_risk_free_value")}
+              dataSource={lpBondMarketCapList || []}
             />
           </Card>
 
@@ -119,10 +259,14 @@ export default function AnalyticsPage() {
                 </p>
               </InfoPopover>
             </div>
-            <SmallChart className="h-[272px]" title={t("treasury_unknown")} />
+            <SmallChart
+              className="h-[272px]"
+              title={t("treasury_unknown")}
+              dataSource={treasuryList || []}
+            />
           </Card>
         </div>
       </div>
     </div>
-  )
+  );
 }
