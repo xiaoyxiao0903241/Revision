@@ -1,73 +1,45 @@
 "use client";
-import { useLocale } from "next-intl";
+// import { useLocale } from "next-intl";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
-import { Icon } from "~/components";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "~/components/dropdown-menu";
-// import { useMock } from "~/hooks/useMock"
+// import { usePathname, useRouter } from "next/navigation";
 import NetWork from "~/components/common/netWork";
 import ConnectWalletButton from "~/components/web3/ConnectWalletButton";
+import { LanguageSwitcher } from "./language-switcher";
 
+// interface HeaderProps {
+//   onMenuClick?: () => void;
+// }
 export function Header() {
-  const locale = useLocale();
-  const router = useRouter();
-  const pathname = usePathname();
-  // const t = useTranslations("common")
-  const languages = [
-    { code: "en", name: "English" },
-    { code: "zh", name: "中文" },
-  ];
+  // const locale = useLocale();
+  // const router = useRouter();
+  // const pathname = usePathname();
 
-  const handleLanguageChange = (newLocale: string) => {
-    const newPath = pathname.replace(`/${locale}`, `/${newLocale}`);
-    router.replace(newPath);
-  };
+  // const handleLanguageChange = (newLocale: string) => {
+  //   const newPath = pathname.replace(`/${locale}`, `/${newLocale}`);
+  //   router.replace(newPath);
+  // };
 
   return (
-    <header className="flex h-20 items-center justify-between px-9">
+    <header className="flex h-20 items-center justify-between md:px-9 px-4">
       <div className="flex flex-col items-center justify-center">
         <Image
           src="/images/widgets/site-logo.png"
           alt="logo"
           width={106}
           height={60}
+          className="md:w-full md:h-full w-[60px] h-[30px]"
         />
       </div>
       <div className="flex items-center gap-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div className="flex items-center gap-2 cursor-pointer">
-              <Icon
-                name="sphere"
-                size={32}
-                className="text-foreground pointer-events-none"
-              />
-              <Icon
-                name="arrow"
-                size={20}
-                className="text-foreground/50 pointer-events-none"
-              />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-40">
-            {languages.map((language) => (
-              <DropdownMenuItem
-                key={language.code}
-                onClick={() => handleLanguageChange(language.code)}
-                className={locale === language.code ? "text-foreground" : ""}
-              >
-                {language.name}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <LanguageSwitcher />
         <NetWork />
         <ConnectWalletButton></ConnectWalletButton>
+        {/* <button
+          onClick={onMenuClick}
+          className="md:hidden w-[25px] h-[25px] border-[#434c8c] shadow-[inset_0_0_20px_rgba(84,119,247,0.5)] border rounded-full rotate-90 flex items-center justify-center"
+        >
+          <Icon name="arrow" size={20} />
+        </button> */}
       </div>
     </header>
   );

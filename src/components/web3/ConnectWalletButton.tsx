@@ -10,7 +10,6 @@ import { toast } from "sonner";
 import { chainId as chainIdConstant } from "~/wallet/constants/tokens";
 import ClipboardJS from "clipboard";
 import Image from "next/image";
-
 import { Button } from "~/components";
 import { WalletDropdown } from "~/widgets";
 
@@ -136,7 +135,11 @@ export default function ConnectWalletButton({
 
   if (!isConnected) {
     return (
-      <Button clipDirection="topRight-bottomLeft" onClick={openConnectModal}>
+      <Button
+        clipDirection="topRight-bottomLeft"
+        onClick={openConnectModal}
+        className="md:px-6 md:h-12 md:text-base px-3 h-8 text-sm font-normal"
+      >
         连接钱包
       </Button>
     );
@@ -165,31 +168,24 @@ export default function ConnectWalletButton({
         <Button
           clipDirection="topRight-bottomLeft"
           onClick={() => setIsOpen(!isOpen)}
-          className="gap-2"
+          className="gap-2 px-2 h-9 lg:px-6 lg:h-12 "
         >
           <div className="flex items-center gap-2">
             <Image
-              src="/imgs/common/wallet.png"
-              width={32}
-              height={32}
-              alt=""
-            ></Image>
-            <span className="text-[#0D0EC9] font-bold">{shortAddress}</span>
+              src="/images/icon/wallet.png"
+              alt="wallet"
+              width={25}
+              height={25}
+            />
+            <span className="text-white font-bold">{shortAddress}</span>
           </div>
           <ChevronDown
-            color="black"
+            color="white"
             className={`w-4 h-4 transition-transform  ${
               isOpen ? "rotate-180" : ""
             }`}
           />
         </Button>
-
-        {/* <AddTokenModal
-          open={showAddToken}
-          onClose={() => setShowAddToken(false)}
-          tokens={tokenList}
-          onAdd={handleAddToken}
-        /> */}
       </div>
     </WalletDropdown>
   );

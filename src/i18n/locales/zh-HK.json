@@ -1,31 +1,31 @@
 {
   "navigation": {
-    "dashboard": "仪表板",
+    "dashboard": "儀表板",
     "analytics": "分析",
-    "community": "社区",
-    "staking": "质押",
-    "noLockStaking": "无锁定期质押",
-    "lockedStaking": "锁定质押",
-    "bonds": "债券",
-    "lpBonds": "LP债券",
-    "treasuryBonds": "国库债券",
+    "community": "社區",
+    "staking": "質押",
+    "noLockStaking": "無鎖定期質押",
+    "lockedStaking": "鎖定質押",
+    "bonds": "債券",
+    "lpBonds": "LP債券",
+    "treasuryBonds": "國庫債券",
     "tools": "工具",
     "dao": "DAO",
-    "coolingPool": "冷却池",
-    "turbine": "涡轮",
-    "swap": "交换",
-    "documents": "文档",
+    "coolingPool": "冷卻池",
+    "turbine": "渦輪",
+    "swap": "交換",
+    "documents": "文檔",
     "viewOnAve": "在AVE上查看",
     "viewOnDexScreener": "在DexScreener上查看"
   },
   "header": {
-    "language": "语言",
-    "network": "BNB智能链",
-    "wallet": "钱包"
+    "language": "語言",
+    "network": "BNB智能鏈",
+    "wallet": "錢包"
   },
   "staking": {
     "stake": "质押",
-    "unstake": "解除质押",
+    "unstake": "解质押",
     "claim": "领取",
     "records": "记录",
     "calculator": "计算器",
@@ -90,52 +90,7 @@
     "yourStake": "您的质押",
     "yourReward": "您的奖励",
     "months": "个月",
-    "roi": "ROI",
-    "claiming": "领取中..."
-  },
-  "invite": {
-    "myInvitation": "社群",
-    "induce": "共建、共享、共治的去中心化社區新範式",
-    "referral": "我的推薦人",
-    "join": "綁定",
-    "referralLink": "我的推薦鏈接",
-    "copy": "複製",
-    "copySuccess": "已複製到剪貼板！",
-    "copyError": "複製鏈接失敗,請手動複製",
-    "enterReferralId": "請輸入您的推薦人地址，確保推薦人能夠獲得相應的獎勵",
-    "userId": "地址",
-    "invitationTime": "加入時間",
-    "status": "狀態",
-    "directInvitation": "直推地址數量 / 社區地址數量",
-    "teamMember": "獎金總數量",
-    "joining": "進行中...",
-    "missingParams": "綁定的賬號未激活或錯誤",
-    "sendingTransaction": "正在發送交易...",
-    "waitingConfirmation": "等待交易確認...",
-    "joinSuccess": "成功加入網絡",
-    "joinFailed": "加入網絡失敗",
-    "invalidInitialization": "合約初始化無效",
-    "notInitializing": "合約未初始化",
-    "invalidOwner": "無效的所有者地址",
-    "unauthorizedAccount": "未授權的賬戶操作",
-    "insufficientFunds": "資金不足",
-    "userRejected": "用戶拒絕了交易",
-    "alreadyJoined": "已綁定",
-    "invalidReferrer": "無效的推薦人地址",
-    "unknownError": "綁定的賬戶未激活或賬戶錯誤",
-    "invitationRecord": "直推詳情",
-    "invalidAddress": "無效的地址",
-    "Activated": "已綁定",
-    "copy_success_message": "鏈接已複製",
-    "noLinkAvailable": "暫無鏈接",
-    "total": "眾籌數量",
-    "market": "社區業績"
-  },
-  "netWork": {
-    "changeNet": "點擊切換網絡",
-    "connect": "請先連接錢包",
-    "noSupport": "未知網絡",
-    "NotConnected": "未連接網絡"
+    "roi": "ROI"
   },
   "lockedStaking": {
     "title": "锁定质押",
@@ -200,9 +155,7 @@
     "noRecords": "此地址没有布道奖相关的交易记录。",
     "superNoRecords": "此地址没有平超奖相关的交易记录。",
     "referralNoRecords": "此地址没有推荐奖相关的交易记录。",
-    "stakeNow": "立即质押",
-    "currentlyReceiving": "正在領取中...",
-    "lockingCycle": "鎖定周期"
+    "stakeNow": "立即质押"
   },
   "noLockedStaking": {
     "title": "无锁定期质押",
@@ -274,28 +227,7 @@
     "walletNotConnected": "请连接您的钱包或输入钱包地址以查看详细统计信息",
     "connectWallet": "连接钱包",
     "noRecords": "此地址没有涡轮相关的交易记录。",
-    "stakeNow": "立即质押",
-    "slippage": "滑点",
-    "unlockable": "可解锁数量",
-    "trade_amount": "涡轮交易金额",
-    "balance": "钱包余额",
-    "enter_amount": "输入数量",
-    "max": "最大",
-    "trade": "解锁",
-    "trading": "解锁进行中...",
-    "approving": "授权中...",
-    "trade_settings": "滑点设置",
-    "toast": {
-      "insufficient_unlockable": "超过可解锁的AS数量",
-      "confirm_in_wallet": "请在钱包中确认交易...",
-      "confirming": "交易确认中...",
-      "trade_success": "解锁成功",
-      "trade_failed": "解锁失败",
-      "approve_success": "授权成功",
-      "approve_failed": "授权失败",
-      "enter_amount": "请输入交易数量",
-      "insufficient_balance": "余额不足"
-    }
+    "stakeNow": "立即质押"
   },
   "community": {
     "title": "社区",
@@ -379,11 +311,7 @@
     "walletNotConnected": "请连接您的钱包或输入钱包地址以查看详细统计信息",
     "connectWallet": "连接钱包",
     "noRecords": "此地址没有冷却池相关的交易记录。",
-    "stakeNow": "立即质押",
-    "days": "天",
-    "releaseNum": "释放数量",
-    "releaseDay": "释放天数",
-    "releaseRate": "税率"
+    "stakeNow": "立即质押"
   },
   "dashboard": {
     "title": "仪表板",
@@ -433,16 +361,6 @@
     "success": "成功",
     "cancel": "取消",
     "confirm": "确认",
-    "connect_wallet": "連接錢包",
-    "nodata": "暫無數據",
-    "language": "中文繁體",
-    "copyright": "© 2025 OLYONE DAO",
-    "copy_success_message": "複製成功",
-    "copy_error_message": "複製失敗",
-    "expired": "倒計時已結束",
-    "unclaimed_reward": "可領取的獎金",
-    "claim": "領取",
-    "claiming": "進行中...",
     "connectWallet": "连接钱包",
     "disconnect": "断开连接",
     "chain": "BNB智能链",
@@ -451,7 +369,7 @@
     "receive": "接收",
     "assets": "资产",
     "account": "账户",
-    "mywallet": "钱包",
+    "wallet": "钱包",
     "myWallet": "我的钱包",
     "position": "持仓",
     "reward": "奖励",
@@ -459,185 +377,11 @@
     "bonds": "债券",
     "rebaseReward": "重基奖励",
     "totalBonus": "总奖金",
-    "myAccount": "我的账户",
-    "unlockOver": "解锁已完成",
-    "addToken": "添加到钱包",
-    "add_tip": "当前钱包不支持添加代币功能,请复制地址并手动添加!",
-    "add_err": "请先安装钱包插件",
-    "toast": {
-      "confirm_in_wallet": "請在錢包中確認交易...",
-      "confirming": "交易確認中...",
-      "claim_success": "領取成功",
-      "claim_failed": "領取失敗"
-    },
-    "time": {
-      "days": "天",
-      "hours": "小時",
-      "minutes": "分鐘",
-      "seconds": "秒"
-    },
-    "pagination": {
-      "previous": "上一頁",
-      "next": "下一頁",
-      "page_info": "第 {current} 頁，共 {total} 頁"
-    },
-    "wallet": {
-      "connect": "連接錢包",
-      "disconnect": "斷開連接",
-      "connected": "已連接",
-      "wrong_network": "未知網絡",
-      "switch_network": "切換網絡",
-      "copy_address": "複製地址",
-      "address_copied": "地址已複製",
-      "view_explorer": "在瀏覽器中查看",
-      "sign_success": "簽名成功",
-      "sign_failed": "網絡錯誤，請重新嘗試",
-      "rejectedSign": "使用者拒絕了簽名",
-      "signing": "簽名中...",
-      "please_sign": "請簽名登入",
-      "assets": "資產"
-    }
-  },
-  "contract": {
-    "error": {
-      "ownable": {
-        "zero_address": "新所有者不能為零地址",
-        "must_be_new_owner": "必須是新所有者才能拉取",
-        "not_owner": "調用者不是所有者"
-      },
-      "tax": {
-        "zero_amount": "金額必須大於零",
-        "zero_address": "不允許零地址"
-      },
-      "fee": {
-        "unauthorized": "調用者未授權"
-      },
-      "node": {
-        "maintenance": "維護期間不允許質押",
-        "invalid_data": "無效數據",
-        "stake_failed": "質押失敗",
-        "no_record": "質押記錄不存在",
-        "warmup": "仍在鎖定期階段",
-        "subtraction_overflow": "減法溢出",
-        "interest_exceeded": "金額超出可用利息"
-      },
-      "sales": {
-        "paused": "已暫停",
-        "not_started": "銷售未開始",
-        "ended": "銷售已結束",
-        "not_active": "未啟用",
-        "invalid_sale": "無效的銷售",
-        "already_paused": "已暫停",
-        "not_paused": "未暫停",
-        "zero_address": "零地址",
-        "already_claimed": "已領取",
-        "invalid_initialization": "初始化無效",
-        "not_initializing": "未初始化",
-        "ownable_invalid_owner": "無效的擁有者",
-        "ownable_unauthorized_account": "未授權帳戶",
-        "reward_not_claimable": "獎勵不可領取",
-        "safe_erc20_failed_operation": "ERC20操作失敗",
-        "sale_ended": "銷售已結束",
-        "sale_not_started": "銷售未開始"
-      },
-      "matrix": {
-        "already_actived": "已啟用",
-        "invalid_address": "無效的地址",
-        "invalid_initialization": "無效的初始化",
-        "invalid_length": "無效的長度",
-        "not_activated": "未啟用",
-        "not_initializing": "未初始化",
-        "ownable_invalid_owner": "無效的擁有者地址",
-        "ownable_unauthorized_account": "未授權的帳戶操作"
-      },
-      "user_rejected": "用戶取消了交易"
-    },
-    "invite_not_active": "您的賬戶需要綁定推薦人地址"
-  },
-  "exchange": {
-    "title": "兑换",
-    "transmission": "跳转到 Dexscreener →",
-    "transmission2": "跳转到 AVE →",
-    "transmission3": "跳转到 QuickSwap →",
-    "from": "支付",
-    "to": "接收",
-    "balance": "余额",
-    "max": "最大",
-    "swap": "兑换",
-    "swapping": "兑换中...",
-    "approve": "授权",
-    "approving": "授权中...",
-    "checking_approval": "检查授权中...",
-    "fate": "交易手续费",
-    "enter_amount": "输入数量",
-    "connect_wallet": {
-      "title": "连接钱包以继续",
-      "description": "请先连接您的钱包来进行交易"
-    },
-    "liquidity_provider": "交易流动性由 QuickSwap 提供",
-    "toast": {
-      "enter_valid_amount": "请输入有效金额",
-      "confirm_in_wallet": "请在钱包中确认交易...",
-      "confirming": "交易确认中...",
-      "swap_success": "兑换成功",
-      "swap_failed": "交易失败，请检查交易详情",
-      "user_rejected": "用户取消了交易",
-      "insufficient_balance": "余额不足",
-      "slippage_too_high": "滑点过大，请重试",
-      "transaction_expired": "交易超时，请重试",
-      "swap_error": "兑换失败，请检查钱包余额或网络状态",
-      "approval_success": "授权成功",
-      "approval_failed": "授权失败",
-      "user_rejected_approval": "用户取消了授权"
-    },
-    "slippage": "滑点",
-    "price": "价格"
-  },
-  "historyTable": {
-    "title": "交易记录",
-    "time": "时间",
-    "amount": "数量(AS)",
-    "record_type": "类型",
-    "hash": "交易哈希",
-    "record_types": {
-      "buy": "购买",
-      "redeem": "赎回",
-      "claim": "领取",
-      "stake": "质押",
-      "unstake": "解除质押",
-      "deposit": "质押",
-      "rebase": "领取(Rebase)",
-      "extra": "领取(Boost)",
-      "principal": "解除质押",
-      "received": "接收",
-      "redeemed": "赎回",
-      "flexible": "活期",
-      "longTerm": "长期",
-      "locked": "接收",
-      "claimed": "领取",
-      "stable": "国库债券",
-      "liquidity": "流动性债券"
-    }
+    "myAccount": "我的账户"
   },
   "notFound": {
     "comingSoon": "新版本即将推出。",
     "title": "敬请期待",
     "description": "预计上线时间：2025年8月15日"
-  },
-  "reciveTable": {
-    "title": "领取列表",
-    "amount_of_silences": "锁定数量(AS)",
-    "silent_countdown": "解锁倒计时",
-    "countdown_ended": "倒计时结束",
-    "operate": "操作",
-    "claim": "领取",
-    "claim_and_stake": "领取并质押",
-    "toast": {
-      "no_claimable": "没有可领取的金额",
-      "confirm_in_wallet": "请在钱包中确认交易...",
-      "confirming": "交易确认中...",
-      "claim_success": "领取成功",
-      "claim_failed": "领取失败"
-    }
   }
 }

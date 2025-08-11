@@ -112,6 +112,10 @@ export const TurbineRecords: FC = () => {
               {total} {t("records")}
             </div>
           </div>
+          {/* <div className="text-xs text-foreground/50">
+            {dayjs(dayjs().subtract(20, "seconds")).fromNow()}
+          </div>
+        </div> */}
         </Tabs>
 
         {/* 记录表格 */}

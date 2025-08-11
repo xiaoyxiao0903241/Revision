@@ -1,28 +1,27 @@
 {
   "navigation": {
-    "dashboard": "Dashboard",
-    "analytics": "Analytics",
-    "community": "Community",
+    "dashboard": "Tableau de bord",
+    "analytics": "Analytique",
+    "community": "Communauté",
     "staking": "Staking",
-    "noLockStaking": "No-Lock Staking",
-    "lockedStaking": "Locked Staking",
-    "bonds": "Bonds",
-    "lpBonds": "LP Bonds",
-    "treasuryBonds": "Treasury Bonds",
-    "tools": "Tools",
+    "noLockStaking": "Staking sans verrouillage",
+    "lockedStaking": "Staking verrouillé",
+    "bonds": "Obligations",
+    "lpBonds": "Obligations LP",
+    "treasuryBonds": "Obligations du Trésor",
+    "tools": "Outils",
     "dao": "DAO",
-    "coolingPool": "Cooling Pool",
+    "coolingPool": "Pool de refroidissement",
     "turbine": "Turbine",
-    "swap": "Swap",
+    "swap": "Échange",
     "documents": "Documents",
-    "viewOnAve": "View On AVE",
-    "viewOnDexScreener": "View On Dex Screener",
-    "days": "Days"
+    "viewOnAve": "Voir sur AVE",
+    "viewOnDexScreener": "Voir sur Dex Screener"
   },
   "header": {
-    "language": "Language",
+    "language": "Langue",
     "network": "BNB Smart Chain",
-    "wallet": "Wallet"
+    "wallet": "Portefeuille"
   },
   "staking": {
     "stake": "Stake",
@@ -91,52 +90,7 @@
     "yourStake": "Your Stake",
     "yourReward": "Your Reward",
     "months": "Months",
-    "roi": "ROI",
-    "claiming": "Receiving..."
-  },
-  "invite": {
-    "myInvitation": "Community",
-    "induce": "A decentralized community paradigm of co-building, sharing, and governance",
-    "referral": "Referred by",
-    "join": "Link",
-    "referralLink": "My Referral Link",
-    "copy": "Copy",
-    "copySuccess": "Copied to clipboard!",
-    "copyError": "Copy failed, please copy manually",
-    "enterReferralId": "Enter referrer address to ensure they receive corresponding rewards",
-    "userId": "Address",
-    "invitationTime": "Join Time",
-    "status": "Status",
-    "directInvitation": "Direct referrals / Community members",
-    "teamMember": "Total Rewards",
-    "joining": "Processing...",
-    "missingParams": "Bound account inactive or incorrect",
-    "sendingTransaction": "Sending transaction...",
-    "waitingConfirmation": "Awaiting confirmation...",
-    "joinSuccess": "Successfully joined network",
-    "joinFailed": "Failed to join network",
-    "invalidInitialization": "Invalid contract initialization",
-    "notInitializing": "Contract not initialized",
-    "invalidOwner": "Invalid owner address",
-    "unauthorizedAccount": "Unauthorized account operation",
-    "insufficientFunds": "Insufficient funds",
-    "userRejected": "User rejected transaction",
-    "alreadyJoined": "Already bound",
-    "invalidReferrer": "Invalid referrer address",
-    "unknownError": "Account not activated or incorrect",
-    "invitationRecord": "Direct Referral Details",
-    "invalidAddress": "Invalid address",
-    "Activated": "Linked",
-    "copy_success_message": "Link copied",
-    "noLinkAvailable": "No link available",
-    "total": "Crowdfunded Amount",
-    "market": "Community Performance"
-  },
-  "netWork": {
-    "changeNet": "Click to switch network",
-    "connect": "Please connect wallet first",
-    "noSupport": "Unsupported network",
-    "NotConnected": "Network not connected"
+    "roi": "ROI"
   },
   "lockedStaking": {
     "title": "Locked Staking",
@@ -201,9 +155,7 @@
     "noRecords": "This address has no evangelist bonus-related transaction records.",
     "superNoRecords": "This address has no super bonus-related transaction records.",
     "referralNoRecords": "This address has no referral bonus-related transaction records.",
-    "stakeNow": "Stake Now",
-    "currentlyReceiving": "Currently Receiving...",
-    "lockingCycle": "Locking cycle"
+    "stakeNow": "Stake Now"
   },
   "noLockedStaking": {
     "title": "No-Lock Staking",
@@ -234,42 +186,7 @@
     "recipient": "Recipient",
     "tokenIn": "Token In",
     "tokenOut": "Token Out",
-    "priceChart": "OLY Price Chart",
-    "timeIntervals": {
-      "1s": "1s",
-      "1m": "1m",
-      "5m": "5m",
-      "15m": "15m",
-      "1h": "1h",
-      "4h": "4h",
-      "1d": "1d",
-      "5y": "5y",
-      "1y": "1y",
-      "6m": "6m",
-      "3m": "3m",
-      "5d": "5d"
-    },
-    "chartInfo": {
-      "open": "Open",
-      "high": "High",
-      "low": "Low",
-      "close": "Close",
-      "volume": "Volume",
-      "volumeSMA": "Volume SMA",
-      "poweredBy": "Powered by GeckoTerminal"
-    },
-    "percentageButtons": {
-      "25": "25%",
-      "50": "50%",
-      "75": "75%",
-      "100": "100%"
-    },
-    "slippageButtons": {
-      "1": "1%",
-      "3": "3%",
-      "5": "5%",
-      "custom": "1.2%"
-    }
+    "priceChart": "OLY Price Chart"
   },
   "turbine": {
     "title": "Turbine",
@@ -308,28 +225,7 @@
     "walletNotConnected": "Please connect your wallet or enter a wallet address to view the detailed statistics",
     "connectWallet": "Connect Wallet",
     "noRecords": "This address has no turbine-related transaction records.",
-    "stakeNow": "Stake Now",
-    "slippage": "Slippage",
-    "unlockable": "Unlockable Amount",
-    "trade_amount": "Turbine Trade Amount",
-    "balance": "Wallet Balance",
-    "enter_amount": "Enter Amount",
-    "max": "Max",
-    "trade": "Unlock",
-    "trading": "Unlocking...",
-    "approving": "Approving...",
-    "trade_settings": "Slippage Settings",
-    "toast": {
-      "insufficient_unlockable": "Exceeds unlockable AS amount",
-      "confirm_in_wallet": "Please confirm the transaction in your wallet...",
-      "confirming": "Transaction confirming...",
-      "trade_success": "Unlock Successful",
-      "trade_failed": "Unlock Failed",
-      "approve_success": "Approval Successful",
-      "approve_failed": "Approval Failed",
-      "enter_amount": "Please enter a trade amount",
-      "insufficient_balance": "Insufficient turbine balance"
-    }
+    "stakeNow": "Stake Now"
   },
   "community": {
     "title": "Community",
@@ -410,11 +306,7 @@
     "walletNotConnected": "Please connect your wallet or enter a wallet address to view the detailed statistics",
     "connectWallet": "Connect Wallet",
     "noRecords": "This address has no cooling pool-related transaction records.",
-    "stakeNow": "Stake Now",
-    "days": "Days",
-    "releaseNum": "release quantity",
-    "releaseDay": "release days",
-    "releaseRate": "tax rate"
+    "stakeNow": "Stake Now"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -464,16 +356,6 @@
     "success": "Success",
     "cancel": "Cancel",
     "confirm": "Confirm",
-    "connect_wallet": "Connect Wallet",
-    "nodata": "No data available",
-    "language": "English",
-    "copyright": "© 2025 OLYONE DAO",
-    "copy_success_message": "Copied successfully",
-    "copy_error_message": "Copy failed",
-    "expired": "Countdown ended",
-    "unclaimed_reward": "Claimable rewards",
-    "claim": "Claim",
-    "claiming": "Processing...",
     "connectWallet": "Connect Wallet",
     "chain": "BNB Smart Chain",
     "disconnect": "Disconnect",
@@ -482,7 +364,7 @@
     "receive": "Receive",
     "assets": "Assets",
     "account": "Account",
-    "mywallet": "Wallet",
+    "wallet": "Wallet",
     "myWallet": "My Wallet",
     "position": "Position",
     "reward": "Reward",
@@ -490,184 +372,11 @@
     "bonds": "Bonds",
     "rebaseReward": "Rebase Reward",
     "totalBonus": "Total Bonus",
-    "myAccount": "My Account",
-    "unlockOver": "Unlock Completed",
-    "addToken": "添加到钱包",
-    "add_tip": "The current wallet does not support adding tokens automatically. Please copy the address and add it manually!",
-    "toast": {
-      "confirm_in_wallet": "Please confirm transaction in wallet...",
-      "confirming": "Confirming transaction...",
-      "claim_success": "Claim successful",
-      "claim_failed": "Claim failed"
-    },
-    "time": {
-      "days": "d",
-      "hours": "h",
-      "minutes": "m",
-      "seconds": "s"
-    },
-    "pagination": {
-      "previous": "Previous",
-      "next": "Next",
-      "page_info": "Page {current} of {total}"
-    },
-    "wallet": {
-      "connect": "Connect Wallet",
-      "disconnect": "Disconnect",
-      "connected": "Connected",
-      "wrong_network": "Unknow Network",
-      "switch_network": "Switch Network",
-      "copy_address": "Copy Address",
-      "address_copied": "Address copied",
-      "view_explorer": "View on Explorer",
-      "sign_success": "Signature successful！",
-      "sign_failed": "Network error, please retry",
-      "rejectedSign": "The user rejected the signature",
-      "signing": "Signing...",
-      "please_sign": "Please sign to login",
-      "assets": "Assets"
-    }
-  },
-  "contract": {
-    "error": {
-      "ownable": {
-        "zero_address": "New owner cannot be zero address",
-        "must_be_new_owner": "Must be new owner to pull",
-        "not_owner": "Caller is not owner"
-      },
-      "tax": {
-        "zero_amount": "Amount must be greater than zero",
-        "zero_address": "Zero address not allowed"
-      },
-      "fee": {
-        "unauthorized": "Caller unauthorized"
-      },
-      "node": {
-        "maintenance": "Staking not allowed during maintenance",
-        "invalid_data": "Invalid data",
-        "stake_failed": "Staking failed",
-        "no_record": "Staking record not found",
-        "warmup": "Still in lock-up period",
-        "subtraction_overflow": "Subtraction overflow",
-        "interest_exceeded": "Amount exceeds available interest"
-      },
-      "sales": {
-        "paused": "Paused",
-        "not_started": "Sale not started",
-        "ended": "Sale ended",
-        "not_active": "Inactive",
-        "invalid_sale": "Invalid sale",
-        "already_paused": "Already paused",
-        "not_paused": "Not paused",
-        "zero_address": "Zero address",
-        "already_claimed": "Claimed",
-        "invalid_initialization": "Invalid initialization",
-        "not_initializing": "Not initializing",
-        "ownable_invalid_owner": "Invalid owner",
-        "ownable_unauthorized_account": "Unauthorized account",
-        "reward_not_claimable": "Reward not claimable",
-        "safe_erc20_failed_operation": "ERC20 operation failed",
-        "sale_ended": "Sale ended",
-        "sale_not_started": "Sale not started"
-      },
-      "matrix": {
-        "already_actived": "Activated",
-        "invalid_address": "Invalid address",
-        "invalid_initialization": "Invalid initialization",
-        "invalid_length": "Invalid length",
-        "not_activated": "Not activated",
-        "not_initializing": "Not initializing",
-        "ownable_invalid_owner": "Invalid owner address",
-        "ownable_unauthorized_account": "Unauthorized account operation"
-      },
-      "user_rejected": "User rejected transaction"
-    },
-    "invite_not_active": "Your account needs to bind a referrer"
-  },
-  "exchange": {
-    "title": "Swap",
-    "transmission": "Go to Dexscreener →",
-    "transmission2": "Go to AVE →",
-    "transmission3": "Go to QuickSwap →",
-    "from": "Pay",
-    "to": "Receive",
-    "balance": "Balance",
-    "max": "Max",
-    "swap": "Swap",
-    "swapping": "Swapping...",
-    "approve": "Approve",
-    "approving": "Approving...",
-    "checking_approval": "Checking Approval...",
-    "fate": "TX Fee",
-    "enter_amount": "Enter Amount",
-    "connect_wallet": {
-      "title": "Connect Wallet to Continue",
-      "description": "Please connect your wallet to trade"
-    },
-    "liquidity_provider": "Trading liquidity provided by QuickSwap",
-    "toast": {
-      "enter_valid_amount": "Please enter a valid amount",
-      "confirm_in_wallet": "Please confirm the transaction in your wallet...",
-      "confirming": "Transaction confirming...",
-      "swap_success": "Swap successful",
-      "swap_failed": "SWAP failed, please check transaction details",
-      "user_rejected": "User rejected the transaction",
-      "insufficient_balance": "Insufficient balance",
-      "slippage_too_high": "Slippage too high, please try again",
-      "transaction_expired": "Transaction timed out, please try again",
-      "swap_error": "Swap failed, please check wallet balance or network status",
-      "approval_success": "Approval successful",
-      "approval_failed": "Approval failed",
-      "user_rejected_approval": "User rejected the approval"
-    },
-    "slippage": "Slippage",
-    "price": "Price"
-  },
-  "historyTable": {
-    "title": "Transaction History",
-    "time": "Time",
-    "amount": "Amount(AS)",
-    "record_type": "Type",
-    "hash": "Transaction Hash",
-    "record_types": {
-      "buy": "Purchase",
-      "redeem": "Redeem",
-      "claim": "Claim",
-      "stake": "Stake",
-      "unstake": "Unstake",
-      "deposit": "Staking",
-      "rebase": "Claim(Rebase)",
-      "extra": "Claim(Boost)",
-      "principal": "Unstake",
-      "received": "Received",
-      "redeemed": "Redeemed",
-      "flexible": "Flexible",
-      "longTerm": "Long-term",
-      "locked": "Locked",
-      "claimed": "Claim",
-      "stable": "Treasury Bond",
-      "liquidity": "Liquidity Bond"
-    }
+    "myAccount": "My Account"
   },
   "notFound": {
     "comingSoon": "New version launching soon.",
     "title": "Stay tuned",
     "description": "Estimated launch: August 15, 2025."
-  },
-  "reciveTable": {
-    "title": "Claim List",
-    "amount_of_silences": "Locked Amount(AS)",
-    "silent_countdown": "Unlock Countdown",
-    "countdown_ended": "Countdown Ended",
-    "operate": "Action",
-    "claim": "claim",
-    "claim_and_stake": "Claim & Stake",
-    "toast": {
-      "no_claimable": "No amount available to claim.",
-      "confirm_in_wallet": "Please confirm the transaction in your wallet...",
-      "confirming": "Transaction confirming...",
-      "claim_success": "Claim Successful",
-      "claim_failed": "Claim Failed"
-    }
   }
 }

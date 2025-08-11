@@ -50,7 +50,7 @@ const Step: FC<{
 export default function CommunityPage() {
   const t = useTranslations("community");
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full">
       {/* 协议介绍横幅 */}
       <Card
         className="relative overflow-hidden"

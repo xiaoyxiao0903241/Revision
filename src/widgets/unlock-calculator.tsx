@@ -2,13 +2,13 @@ import { useTranslations } from "next-intl";
 import { FC, useState } from "react";
 import { Button, Card, Input, List, Slider, View } from "~/components";
 import { formatCurrency, formatDecimal } from "~/lib/utils";
-import { useLockStore } from "~/store/lock";
+import { useNolockStore } from "~/store/noLock";
 
-export const StakingCalculator: FC<{
+export const Unlockcalculator: FC<{
   rateEnabled?: boolean;
 }> = ({ rateEnabled = false }) => {
   const t = useTranslations("staking");
-  const { olyPrice } = useLockStore();
+  const { olyPrice } = useNolockStore();
   // 计算器状态
   const [amount, setAmount] = useState("1000");
   const [stakingDuration, setStakingDuration] = useState(1);
@@ -22,18 +22,19 @@ export const StakingCalculator: FC<{
     const rebaseProfit =
       num *
       (Math.pow(1 + Number(rebaseApy) / 100, 2 * stakingDuration * 30) - 1);
-    const addProfit =
-      ((2 * num * stakingDuration * 30 * Number(rebaseApy)) / 100) * addAmount; //0.02指的是加成系数
     const myProfitUsdt =
-      (rebaseProfit + addProfit + num) * currentOlyPrice - Number(amount);
+      (rebaseProfit + num) * currentOlyPrice - Number(amount);
 
+    console.log(
+      Math.pow(1 + Number(rebaseApy) / 100, 2 * stakingDuration * 30) - 1,
+      "myProfitUsdt111",
+    );
     const durationInMonths = stakingDuration;
     const roi = (myProfitUsdt / Number(amount)) * 100;
     const apr = (roi / stakingDuration) * 12;
     return {
       duration: `${durationInMonths} ${t("months")}`,
       rebaseApy: `${formatDecimal(rebaseApy)}%`,
-      rebaseBoost: `${formatDecimal(addAmount * 100)}%`,
       yourStake: formatCurrency(Number(amount)),
       yourReward: formatCurrency(myProfitUsdt),
       roi: `${formatDecimal(roi)}%`,
@@ -50,14 +51,13 @@ export const StakingCalculator: FC<{
         <div className="flex gap-2">
           <Input.Number
             value={amount}
-            onChange={(value) => setAmount(value)}
+            onChange={(value) => {
+              setAmount(value);
+            }}
             placeholder="0.0"
             step={0.000001}
             className="flex-1 text-white text-3xl font-bold font-mono"
           />
-          {/* <Button clipDirection="topRight-bottomLeft" className="font-mono">
-            {t("calculate")}
-          </Button> */}
         </div>
         <p className="text-sm text-foreground/50 text-right">
           {t("latestOlyPrice", { amount: formatDecimal(olyPrice) })}
@@ -164,12 +164,7 @@ export const StakingCalculator: FC<{
                 {results.rebaseApy}
               </List.Value>
             </List.Item>
-            <List.Item>
-              <List.Label>{t("rebaseBoost")}</List.Label>
-              <List.Value className="text-success">
-                {results.rebaseBoost}
-              </List.Value>
-            </List.Item>
+
             <List.Item>
               <List.Label>{t("yourStake")}</List.Label>
               <List.Value>{results.yourStake}</List.Value>

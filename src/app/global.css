@@ -32,7 +32,8 @@
 /* iconfont 字体图标定义 */
 @font-face {
   font-family: "iconfont"; /* Project id 4989841 */
-  src: url("/fonts/iconfont.woff2?t=1754133405093") format("woff2"),
+  src:
+    url("/fonts/iconfont.woff2?t=1754133405093") format("woff2"),
     url("/fonts/iconfont.woff?t=1754133405093") format("woff"),
     url("/fonts/iconfont.ttf?t=1754133405093") format("truetype");
 }
@@ -300,11 +301,11 @@
   }
 
   .alert {
-    border-width: 4px 4px 32px 4px;
+    border-width: 4px 32px 4px 4px;
     border-image: url("/images/background/alert.png");
-    border-image-slice: 4 4 32 4 fill;
+    border-image-slice: 4 32 4 4 fill;
     & > div {
-      margin: -4px -4px -32px -4px;
+      margin: -4px -32px -4px -4px;
     }
   }
 
