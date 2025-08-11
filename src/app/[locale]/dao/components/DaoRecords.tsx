@@ -274,7 +274,7 @@ const DaoRecords = ({ type }: { type: string }) => {
 
   useEffect(() => {
     switchColumns(type);
-  }, [activeTab, type]);
+  }, [activeTab, type, switchColumns]);
 
   return (
     <Card>

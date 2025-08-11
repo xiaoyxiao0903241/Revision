@@ -6,7 +6,7 @@ import { InfoPopover } from "./info-popover";
 
 interface StatisticsProps {
   title: string;
-  value: string;
+  value: string | number;
   desc?: string;
   info?: React.ReactNode;
   className?: string;

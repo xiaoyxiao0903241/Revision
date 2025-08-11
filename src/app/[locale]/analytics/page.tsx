@@ -86,7 +86,7 @@ export default function AnalyticsPage() {
       AllolyStakeNum: AllolyStakeNum,
       AllLockOlyStakeNum: AllLockOlyStakeNum || 0,
     });
-  }, [AllolyStakeNum, AllolyStakeNum, homeBaseInfo]);
+  }, [AllolyStakeNum, AllolyStakeNum, homeBaseInfo, AllLockOlyStakeNum]);
 
   const formatData = (data: DepositItem[]) => {
     const dateArr: string[] = [];

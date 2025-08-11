@@ -151,7 +151,7 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
     };
 
     return option;
-  }, [data, theme]);
+  }, [data, theme, t]);
 
   return (
     <div className={`performance-chart ${className}`}>
