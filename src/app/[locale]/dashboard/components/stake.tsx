@@ -15,10 +15,12 @@ import { blocks as blocksNum } from "~/wallet/constants/tokens";
 import { getUserStakes, getNodeStakes } from "~/wallet/lib/web3/stake";
 import { myMessDataType } from "../DashboardPage";
 import { getCurrentBlock } from "~/lib/multicall";
+import { useRouter } from "next/navigation";
 
 const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
   const safeMyMessInfo = myMessInfo || {};
   const t = useTranslations("dashboard");
+  const router = useRouter();
   const [allStakeAmount, setAllStakeAmount] = useSafeState(0);
   // const [stakList, setstakList] = useState<StakingItem[]>([]);
   const [totalDays, setTotalDays] = useState<number>(0);
@@ -141,6 +143,9 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               clipDirection="topLeft-bottomRight"
               clipSize={8}
               className="font-mono h-6 text-xs"
+              onClick={() => {
+                router.push("/swap");
+              }}
             >
               {t("getOlyToken")}
             </Button>

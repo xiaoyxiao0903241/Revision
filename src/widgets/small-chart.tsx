@@ -1,42 +1,20 @@
-"use client"
+"use client";
 
-import React, { useMemo } from "react"
-import ReactECharts from "echarts-for-react"
-import type { EChartsOption } from "echarts"
-import { useTranslations } from "next-intl"
-import { useChart } from "~/hooks/useChart"
-
-// 生成小型图表模拟数据
-const generateSmallChartData = () => {
-  const dates: string[] = []
-  const data: number[] = []
-  // 完全按照注释代码的数据生成方式
-  let base = +new Date(1968, 9, 3)
-  const oneDay = 24 * 3600 * 1000
-
-  data.push(Math.random() * 300)
-
-  for (let i = 1; i < 20000; i++) {
-    const now = new Date((base += oneDay))
-    const dateStr = [now.getFullYear(), now.getMonth() + 1, now.getDate()].join(
-      "/"
-    )
-    dates.push(dateStr)
-    data.push(Math.round((Math.random() - 0.5) * 20 + data[i - 1]))
-  }
-
-  return { dates, data }
-}
+import React, { useMemo } from "react";
+import ReactECharts from "echarts-for-react";
+import type { EChartsOption } from "echarts";
+import { useTranslations } from "next-intl";
+import { useChart } from "~/hooks/useChart";
 
 // 小型图表组件
 export const SmallChart: React.FC<{
-  title: string
-  className?: string
-}> = ({ title, className = "" }) => {
-  const { chartRef } = useChart()
+  title: string;
+  className?: string;
+  dataSource?: { dates: string[]; data: number[] };
+}> = ({ title, className = "", dataSource = { dates: [], data: [] } }) => {
+  const { chartRef } = useChart();
   const chartOption = useMemo<EChartsOption>(() => {
-    const { dates, data } = generateSmallChartData()
-
+    const { dates, data } = dataSource;
     return {
       backgroundColor: "transparent",
       animation: false,
@@ -58,12 +36,12 @@ export const SmallChart: React.FC<{
         },
         formatter: (params: unknown) => {
           const paramArray = params as Array<{
-            axisValue: string
-            value: number
-          }>
-          const data = paramArray[0]
+            axisValue: string;
+            value: number;
+          }>;
+          const data = paramArray[0];
           return `<div style="font-weight: bold; margin-bottom: 4px;">${data.axisValue}</div>
-                  <div>${title}: <span style="color: #10B981;">${data.value}</span></div>`
+                  <div>${title}: <span style="color: #10B981;">${data.value}</span></div>`;
         },
       },
       grid: {
@@ -83,9 +61,9 @@ export const SmallChart: React.FC<{
         axisLabel: {
           color: "#ffffff",
           fontSize: 10,
-          formatter: (value: string) => {
-            return value.split("-")[1] // 只显示月份
-          },
+          // formatter: (value: string) => {
+          //   return value.split("-")[1] // 只显示月份
+          // },
         },
       },
       yAxis: {
@@ -106,7 +84,7 @@ export const SmallChart: React.FC<{
           color: "#ffffff",
           fontSize: 10,
           formatter: (value: number) => {
-            return value.toLocaleString()
+            return value.toLocaleString();
           },
         },
       },
@@ -141,8 +119,8 @@ export const SmallChart: React.FC<{
           },
         },
       ],
-    }
-  }, [title])
+    };
+  }, [title, dataSource]);
 
   return (
     <div className={`small-chart ${className}`}>
@@ -153,16 +131,16 @@ export const SmallChart: React.FC<{
         opts={{ renderer: "canvas" }}
       />
     </div>
-  )
-}
+  );
+};
 
 // 圆环图组件
 export const PieChart: React.FC<{
-  className?: string
-  data: { value: number; name: string }[]
+  className?: string;
+  data: { value: number; name: string }[];
 }> = ({ className = "", data }) => {
-  const t = useTranslations("analytics")
-  const { chartRef } = useChart()
+  const t = useTranslations("analytics");
+  const { chartRef } = useChart();
   const chartOption = useMemo<EChartsOption>(() => {
     return {
       backgroundColor: "transparent",
@@ -178,7 +156,7 @@ export const PieChart: React.FC<{
       },
       legend: {
         orient: "vertical",
-        right: "10%",
+        right: "5%",
         top: "center",
         textStyle: {
           color: "#ffffff",
@@ -191,15 +169,15 @@ export const PieChart: React.FC<{
       series: [
         {
           type: "pie",
-          radius: ["50%", "65%"],
-          center: ["30%", "50%"],
+          radius: ["70%", "90%"],
+          center: ["35%", "50%"],
           avoidLabelOverlap: false,
           label: {
             show: true,
             position: "center",
             formatter: () => {
-              const total = data.reduce((sum, item) => sum + item.value, 0)
-              return `{number|${total}}\n{text|${t("total")}}`
+              const total = data.reduce((sum, item) => sum + item.value, 0);
+              return `{number|${total}}\n{text|${t("total")}}`;
             },
             rich: {
               number: {
@@ -225,11 +203,11 @@ export const PieChart: React.FC<{
           },
         },
       ],
-    }
-  }, [data, t])
+    };
+  }, [data, t]);
 
   return (
-    <div className={`pie-chart ${className}`}>
+    <div className={`pie-chart ${className} h-[180px]`}>
       <ReactECharts
         option={chartOption}
         ref={chartRef}
@@ -237,5 +215,5 @@ export const PieChart: React.FC<{
         opts={{ renderer: "canvas" }}
       />
     </div>
-  )
-}
+  );
+};

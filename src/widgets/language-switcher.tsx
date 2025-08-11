@@ -37,13 +37,17 @@ export const LanguageSwitcher = () => {
           />
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
+      <DropdownMenuContent
+        align="end"
+        containerClassName="ml-3 md:ml-0"
+        className="w-[calc(100dvw-24px)] md:w-48 z-50 min-h-[calc(100dvh-80px)] md:min-h-0"
+      >
         {LANGUAGES.map((language) => (
           <DropdownMenuItem
             key={language.code}
             onClick={() => handleLanguageChange(language.code)}
             className={cn(
-              "flex items-center gap-2",
+              "flex items-center gap-2 h-16 md:h-14 text-lg md:text-base",
               locale === language.code ? "text-foreground" : "",
             )}
           >

@@ -129,7 +129,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
 
         {/* 释放中的奖金数量 */}
         <div className="col-span-2 relative">
-          <div className="px-6 py-7 bg-[#1E204C] mb-[5px] flex flex-col items-start justify-center w-1/2">
+          <div className="px-6 py-7 bg-[#1E204C] mb-[5px] flex flex-col items-start justify-center w-full">
             <Statistics
               title={t("rewardsInRelease")}
               value={
@@ -206,7 +206,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
           <div className="px-6 w-full h-full bg-[#1E204C] py-7 flex gap-4 items-center justify-between">
             <div>
               <div className="text-foreground/50 text-xs">
-                涡轮中已解锁的数量
+                {t("unlockedRewardsAmount")}
               </div>
               <div className="text-foreground/50 font-mono text-xl">
                 {formatNumbedecimalScale(stakeAmount || 0, 2)} OLY

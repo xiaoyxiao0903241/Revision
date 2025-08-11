@@ -1,48 +1,20 @@
-"use client"
+"use client";
 
-import React, { useMemo } from "react"
-import ReactECharts from "echarts-for-react"
-import type { EChartsOption } from "echarts"
-import { useChart } from "~/hooks/useChart"
-
-// 生成TVL模拟数据
-const generateTVLData = () => {
-  const data = []
-  let baseValue = 3000
-  let momentum = 0
-
-  for (let i = 0; i < 12; i++) {
-    const month = i + 1
-    const date = `2021-${month.toString().padStart(2, "0")}`
-
-    // 模拟市场波动
-    const trend = Math.sin(i * 0.5) * 0.3 // 长期趋势
-    const volatility = (Math.random() - 0.5) * 0.4 // 随机波动
-    const momentumEffect = momentum * 0.1 // 动量效应
-
-    // 更新动量
-    momentum = momentum * 0.8 + (Math.random() - 0.5) * 0.2
-
-    // 计算新值
-    const change = trend + volatility + momentumEffect
-    baseValue = Math.max(1000, Math.min(6000, baseValue * (1 + change)))
-
-    data.push([date, Math.round(baseValue)])
-  }
-
-  return data
-}
+import React, { useMemo } from "react";
+import ReactECharts from "echarts-for-react";
+import type { EChartsOption } from "echarts";
+import { useChart } from "~/hooks/useChart";
 
 // TVL图表组件
 export const TVLChart: React.FC<{
-  width?: string | number
-  height?: string | number
-  className?: string
-}> = ({ className = "" }) => {
-  const { chartRef } = useChart()
+  width?: string | number;
+  height?: string | number;
+  className?: string;
+  dataSource: Array<[string, number]>;
+}> = ({ dataSource, className = "" }) => {
+  const { chartRef } = useChart();
   const chartOption = useMemo<EChartsOption>(() => {
-    const data = generateTVLData()
-
+    const data = dataSource || [];
     return {
       backgroundColor: "transparent",
       animation: false,
@@ -63,12 +35,12 @@ export const TVLChart: React.FC<{
         },
         formatter: (params: unknown) => {
           const paramArray = params as Array<{
-            axisValue: string
-            value: [string, number]
-          }>
-          const data = paramArray[0]
+            axisValue: string;
+            value: [string, number];
+          }>;
+          const data = paramArray[0];
           return `<div style="font-weight: bold; margin-bottom: 8px;">${data.axisValue}</div>
-                  <div>TVL: <span style="color: #8B5CF6;">${data.value[1]}</span></div>`
+                  <div>TVL: <span style="color: #8B5CF6;">${data.value[1]}</span></div>`;
         },
       },
       grid: {
@@ -87,9 +59,9 @@ export const TVLChart: React.FC<{
         },
         axisLabel: {
           color: "#ffffff",
-          formatter: (value: string) => {
-            return value.split("-")[1] // 只显示月份
-          },
+          // formatter: (value: string) => {
+          //   return value.split("-")[1] // 只显示月份
+          // },
         },
       },
       yAxis: {
@@ -112,7 +84,7 @@ export const TVLChart: React.FC<{
         axisLabel: {
           color: "#ffffff",
           formatter: (value: number) => {
-            return value.toLocaleString()
+            return value.toLocaleString();
           },
         },
       },
@@ -147,8 +119,8 @@ export const TVLChart: React.FC<{
           },
         },
       ],
-    }
-  }, [])
+    };
+  }, [dataSource]);
 
   return (
     <div className={`tvl-chart w-full h-full ${className}`}>
@@ -159,5 +131,5 @@ export const TVLChart: React.FC<{
         opts={{ renderer: "canvas" }}
       />
     </div>
-  )
-}
+  );
+};
