@@ -1,29 +1,29 @@
-import { useCountDown } from "ahooks"
-import { FC } from "react"
-import { cn, dayjs } from "~/lib/utils"
+import { useCountDown } from 'ahooks';
+import { FC } from 'react';
+import { cn, dayjs } from '~/lib/utils';
 
-const formatTimeUnit = (value: number) => value.toString().padStart(2, "0")
+const formatTimeUnit = (value: number) => value.toString().padStart(2, '0');
 
 export const Countdown: FC<{
-  endAt: Date
-  className?: string
-  daysShown?: boolean
+  endAt: Date;
+  className?: string;
+  daysShown?: boolean;
 }> = ({ endAt, className, daysShown = false }) => {
   const [, formattedRes] = useCountDown({
-    targetDate: dayjs(endAt).format("YYYY-MM-DD HH:mm:ss"),
-  })
-  const { days, hours, minutes, seconds } = formattedRes
+    targetDate: dayjs(endAt).format('YYYY-MM-DD HH:mm:ss'),
+  });
+  const { days, hours, minutes, seconds } = formattedRes;
 
   return (
     <span
       className={cn(
-        "text-foreground text-sm font-mono tabular-nums",
+        'text-foreground text-sm font-mono tabular-nums',
         className
       )}
     >
-      {`${daysShown ? `${formatTimeUnit(days)}d ` : ""}${formatTimeUnit(
+      {`${daysShown ? `${formatTimeUnit(days)}d ` : ''}${formatTimeUnit(
         hours
       )}h ${formatTimeUnit(minutes)}m ${formatTimeUnit(seconds)}s`}
     </span>
-  )
-}
+  );
+};

@@ -123,7 +123,7 @@ export const DEX_ADDRESS = '0x10ED43C718714eb63d5aA57B78B54704E256024E';
 export const matrixNetwork = '0x12a2C2EceFF21EFB61e1C8Dd04aCb4768a1b63E9';
 
 //节点销售
-export const nodeSales = '0x864EC402AAa01c236B5756f3b81ADF3c45beDE32';
+export const nodeSales = '0xe7ff403381113245C8daB9a31b3DBF343554E5A2';
 
 //质押
 export const nodeStaking = '0xC0E3F3E026feE27C01006be69759F37Ad4930a20';

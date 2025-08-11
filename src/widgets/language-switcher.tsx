@@ -1,54 +1,79 @@
-import { useLocale } from "next-intl";
-import { Icon } from "~/components";
+// import { useLocale } from "next-intl";
+import { Icon } from '~/components';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "~/components/dropdown-menu";
-import { LANGUAGES } from "~/i18n/locales/constsnts";
-import { usePathname, useRouter } from "next/navigation";
-import { cn } from "~/lib/utils";
-import * as Flags from "country-flag-icons/react/1x1";
+} from '~/components/dropdown-menu';
+import { LANGUAGES } from '../../public/locales/constsnts';
+import { locales } from '~/i18n/config';
+// import { usePathname, useRouter } from "next/navigation";
+import { useLanguage } from '~/i18n/LanguageProvider';
+import {
+  getInitialLocale,
+  setLocale as setCookieLanguage,
+} from '~/i18n/client';
+import { cn } from '~/lib/utils';
+import * as Flags from 'country-flag-icons/react/1x1';
+import { useCallback, useEffect } from 'react';
 
 export const LanguageSwitcher = () => {
-  const locale = useLocale();
-  const router = useRouter();
-  const pathname = usePathname();
-  const handleLanguageChange = (newLocale: string) => {
-    console.log("newLocale", newLocale);
-    // 构造新的路径来切换语言
-    const newPath = pathname.replace(`/${locale}`, `/${newLocale}`);
-    router.replace(newPath);
-  };
+  const { locale, changeLanguage } = useLanguage();
+  // const router = useRouter();
+  // const pathname = usePathname();
+  // const handleLanguageChange = (newLocale: string) => {
+  //   console.log("newLocale", newLocale);
+  //   // 构造新的路径来切换语言
+  //   const newPath = pathname.replace(`/${locale}`, `/${newLocale}`);
+  //   router.replace(newPath);
+  // };
+
+  const handleLanguageChange = useCallback(
+    async (lang: string) => {
+      console.log('lang', lang);
+      console.log('locale', locale);
+      // if (lang === locale) return;
+      setCookieLanguage(lang as (typeof locales)[number]);
+      await changeLanguage(lang);
+    },
+    [locale, changeLanguage]
+  );
+
+  useEffect(() => {
+    const locale = getInitialLocale();
+    if (locale) {
+      handleLanguageChange(locale);
+    }
+  }, [handleLanguageChange]);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="flex items-center gap-2 cursor-pointer">
+        <div className='flex items-center gap-2 cursor-pointer'>
           <Icon
-            name="sphere"
+            name='sphere'
             size={32}
-            className="text-foreground pointer-events-none"
+            className='text-foreground pointer-events-none'
           />
           <Icon
-            name="arrow"
+            name='arrow'
             size={20}
-            className="text-foreground/50 pointer-events-none"
+            className='text-foreground/50 pointer-events-none'
           />
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        align="end"
-        containerClassName="ml-3 md:ml-0"
-        className="w-[calc(100dvw-24px)] md:w-48 z-50 h-[calc(100dvh-80px)] overflow-y-auto md:h-auto"
+        align='end'
+        containerClassName='ml-3 md:ml-0'
+        className='w-[calc(100dvw-24px)] md:w-48 z-50 h-[calc(100dvh-80px)] overflow-y-auto md:h-auto'
       >
-        {LANGUAGES.map((language) => (
+        {LANGUAGES.map(language => (
           <DropdownMenuItem
             key={language.code}
             onClick={() => handleLanguageChange(language.code)}
             className={cn(
-              "flex items-center gap-2 h-16 md:h-14 text-lg md:text-base",
-              locale === language.code ? "text-foreground" : "",
+              'flex items-center gap-2 h-16 md:h-14 text-lg md:text-base',
+              locale === language.code ? 'text-foreground' : ''
             )}
           >
             {(() => {
@@ -56,12 +81,12 @@ export const LanguageSwitcher = () => {
               return Flag ? (
                 <Flag
                   title={language.name}
-                  className="shadow"
+                  className='shadow'
                   style={{
                     width: 24,
                     height: 24,
                     borderRadius: 16,
-                    objectFit: "cover",
+                    objectFit: 'cover',
                   }}
                 />
               ) : null;

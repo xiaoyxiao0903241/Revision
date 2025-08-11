@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { useUserAddress } from "~/contexts/UserAddressContext";
-import { useTranslations } from "next-intl";
-import { Button, Pager } from "~/components";
-import { cn, dayjs, formatHash } from "~/lib/utils";
-import Link from "next/link";
-import _ from "lodash";
+import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useTranslations } from 'next-intl';
+import { Button, Pager } from '~/components';
+import { cn, dayjs, formatHash } from '~/lib/utils';
+import Link from 'next/link';
+import _ from 'lodash';
 
-export type valueType = "text" | "date" | "dateTime" | "hash";
+export type valueType = 'text' | 'date' | 'dateTime' | 'hash';
 
-export type targetType = "_blank" | "_parent" | "_self" | "_top" | string;
+export type targetType = '_blank' | '_parent' | '_self' | '_top' | string;
 
 export interface ProTableRender<T> {
   link?: boolean;
@@ -19,14 +19,14 @@ export interface ProTableRender<T> {
     | ((
         value: string | number | undefined,
         record: T,
-        index: number,
+        index: number
       ) => string);
   valueType?: valueType;
   icon?: React.ReactNode;
   render?: (
     value: string | number | boolean | undefined,
     record: T,
-    index: number,
+    index: number
   ) => React.ReactNode;
 }
 
@@ -40,7 +40,7 @@ export interface ProTableColumn<T> {
     | ((
         value: string | number | boolean | undefined,
         record: T,
-        index: number,
+        index: number
       ) => React.ReactNode);
 }
 
@@ -87,12 +87,12 @@ const ProTable = <T,>({
   columns,
   queryFn,
   params,
-  rowKey = "address" as keyof T,
+  rowKey = 'address' as keyof T,
   showPagination = true,
   pageSize: pageSizeProp = 10,
   formatResult,
   manualRequest = false,
-  appendNotDataText: appendNotDataText = "",
+  appendNotDataText: appendNotDataText = '',
   onSuccess,
 }: ProTableProps<T>) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -113,7 +113,7 @@ const ProTable = <T,>({
 
   // , isLoading, isError, error
   const { data } = useQuery({
-    queryKey: ["proTable", params, currentPage, pageSizeProp],
+    queryKey: ['proTable', params, currentPage, pageSizeProp],
     queryFn: () => queryFn({ ...params, currentPage, pageSizeProp }),
     enabled: !manualRequest,
   });
@@ -126,16 +126,16 @@ const ProTable = <T,>({
 
   // 格式化值的函数
   const formatValue = (value: unknown, valueType?: valueType): string => {
-    if (value === null || value === undefined) return "";
+    if (value === null || value === undefined) return '';
     const strValue = String(value);
     switch (valueType) {
-      case "date":
-        return dayjs(strValue).format("YYYY/MM/DD");
-      case "dateTime":
-        return dayjs(strValue).format("YYYY/MM/DD HH:mm:ss");
-      case "hash":
+      case 'date':
+        return dayjs(strValue).format('YYYY/MM/DD');
+      case 'dateTime':
+        return dayjs(strValue).format('YYYY/MM/DD HH:mm:ss');
+      case 'hash':
         return formatHash(strValue);
-      case "text":
+      case 'text':
       default:
         return strValue;
     }
@@ -152,15 +152,15 @@ const ProTable = <T,>({
   const total = processedData?.total || data?.total || 0;
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full">
-        <tbody className="space-y-2">
+    <div className='overflow-x-auto'>
+      <table className='w-full'>
+        <tbody className='space-y-2'>
           {tableData.map((record: T, index: number) => {
             const key = record[rowKey] || index;
             return (
               <tr
                 key={`${key}-${index}`}
-                className={cn("grid p-6 bg-foreground/5 rounded-md")}
+                className={cn('grid p-6 bg-foreground/5 rounded-md')}
                 style={{
                   gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
                 }}
@@ -177,7 +177,7 @@ const ProTable = <T,>({
 
                   if (column.render) {
                     // 如果是函数形式的render
-                    if (typeof column.render === "function") {
+                    if (typeof column.render === 'function') {
                       const safeValue = value as
                         | string
                         | number
@@ -186,7 +186,7 @@ const ProTable = <T,>({
                       renderedValue = column.render(safeValue, record, index);
                     }
                     // 如果是ProTableRender配置对象
-                    else if (typeof column.render === "object") {
+                    else if (typeof column.render === 'object') {
                       const renderConfig = column.render;
 
                       // 使用自定义render函数
@@ -199,37 +199,37 @@ const ProTable = <T,>({
                         renderedValue = renderConfig.render(
                           safeValue,
                           record,
-                          index,
+                          index
                         );
                       }
                       // 处理链接类型
                       else if (renderConfig.link) {
                         const href =
-                          typeof renderConfig.href === "function"
+                          typeof renderConfig.href === 'function'
                             ? renderConfig.href(
-                                typeof value === "string" ||
-                                  typeof value === "number"
+                                typeof value === 'string' ||
+                                  typeof value === 'number'
                                   ? value
                                   : undefined,
                                 record,
-                                index,
+                                index
                               )
                             : renderConfig.href;
 
                         const formattedValue = formatValue(
                           value,
-                          renderConfig.valueType,
+                          renderConfig.valueType
                         );
 
                         renderedValue = (
                           <Link
-                            href={href || "#"}
-                            target={renderConfig.target || "_blank"}
-                            className="text-blue-400 cursor-pointer hover:underline"
+                            href={href || '#'}
+                            target={renderConfig.target || '_blank'}
+                            className='text-blue-400 cursor-pointer hover:underline'
                           >
                             {formattedValue}
                             {renderConfig.icon && (
-                              <span className="ml-1">{renderConfig.icon}</span>
+                              <span className='ml-1'>{renderConfig.icon}</span>
                             )}
                           </Link>
                         );
@@ -238,13 +238,13 @@ const ProTable = <T,>({
                       else {
                         const formattedValue = formatValue(
                           value,
-                          renderConfig.valueType,
+                          renderConfig.valueType
                         );
                         if (renderConfig.icon) {
                           renderedValue = (
-                            <span className="flex items-center">
+                            <span className='flex items-center'>
                               {formattedValue}
-                              <span className="ml-1">{renderConfig.icon}</span>
+                              <span className='ml-1'>{renderConfig.icon}</span>
                             </span>
                           );
                         } else {
@@ -257,18 +257,18 @@ const ProTable = <T,>({
                   return (
                     <td
                       key={column.key}
-                      className="py-3 px-4 flex flex-col gap-1"
+                      className='py-3 px-4 flex flex-col gap-1'
                     >
-                      <span className="text-xs text-foreground/50">
+                      <span className='text-xs text-foreground/50'>
                         {column.title}
                       </span>
                       <span
                         className={
                           colIndex === 1 || colIndex === 2
-                            ? "text-white font-mono"
+                            ? 'text-white font-mono'
                             : colIndex === 3
-                              ? "text-gray-300 font-mono"
-                              : ""
+                              ? 'text-gray-300 font-mono'
+                              : ''
                         }
                       >
                         {renderedValue}
@@ -280,29 +280,29 @@ const ProTable = <T,>({
             );
           })}
           {tableData.length === 0 && (
-            <tr className="w-full p-6">
+            <tr className='w-full p-6'>
               <td
                 colSpan={5}
-                className="flex flex-col items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-5 gap-2 mt-2"
+                className='flex flex-col items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-5 gap-2 mt-2'
               >
                 {!userAddress ? (
                   <>
-                    {common("walletNotConnected")}
+                    {common('walletNotConnected')}
                     <Button
-                      clipDirection="topRight-bottomLeft"
-                      className="w-auto"
+                      clipDirection='topRight-bottomLeft'
+                      className='w-auto'
                     >
-                      {common("connectWallet")}
+                      {common('connectWallet')}
                     </Button>
                   </>
                 ) : (
                   <>
                     {appendNotDataText && appendNotDataText}
                     <Button
-                      clipDirection="topRight-bottomLeft"
-                      className="w-auto"
+                      clipDirection='topRight-bottomLeft'
+                      className='w-auto'
                     >
-                      {common("common.nodata")}
+                      {common('common.nodata')}
                     </Button>
                   </>
                 )}
@@ -311,13 +311,13 @@ const ProTable = <T,>({
           )}
         </tbody>
         {showPagination && total > pageSizeProp && (
-          <tfoot className="col-span-4">
+          <tfoot className='col-span-4'>
             <tr>
-              <td colSpan={columns.length} className="text-center">
+              <td colSpan={columns.length} className='text-center'>
                 <Pager
                   currentPage={currentPage}
                   totalPages={total ? Math.ceil(total / pageSizeProp) : 0}
-                  onPageChange={(page) => setCurrentPage(page)}
+                  onPageChange={page => setCurrentPage(page)}
                 />
               </td>
             </tr>

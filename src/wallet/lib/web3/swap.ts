@@ -81,7 +81,7 @@ export const fetchTokenData = async ({
       calls,
     });
 
-    console.log(results,'swap的数据')
+    console.log(results, 'swap的数据');
 
     // 处理基础数据
     const fromTokenBalance = results[0].success

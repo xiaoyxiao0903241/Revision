@@ -1,5 +1,5 @@
-import { FC } from "react"
-import { cn } from "~/lib/utils"
+import { FC } from 'react';
+import { cn } from '~/lib/utils';
 
 const Item: FC<React.HTMLAttributes<HTMLDivElement>> = ({
   className,
@@ -9,15 +9,15 @@ const Item: FC<React.HTMLAttributes<HTMLDivElement>> = ({
   return (
     <div
       className={cn(
-        "flex items-center justify-between text-sm font-oxanium",
+        'flex items-center justify-between text-sm font-oxanium',
         className
       )}
       {...props}
     >
       {children}
     </div>
-  )
-}
+  );
+};
 
 const Label: FC<React.HTMLAttributes<HTMLDivElement>> = ({
   children,
@@ -25,11 +25,11 @@ const Label: FC<React.HTMLAttributes<HTMLDivElement>> = ({
   ...props
 }) => {
   return (
-    <span className={cn("text-sm text-foreground/50", className)} {...props}>
+    <span className={cn('text-sm text-foreground/50', className)} {...props}>
       {children}
     </span>
-  )
-}
+  );
+};
 
 const Value: FC<React.HTMLAttributes<HTMLDivElement>> = ({
   children,
@@ -38,13 +38,13 @@ const Value: FC<React.HTMLAttributes<HTMLDivElement>> = ({
 }) => {
   return (
     <span
-      className={cn("text-sm text-white font-oxanium", className)}
+      className={cn('text-sm text-white font-oxanium', className)}
       {...props}
     >
       {children}
     </span>
-  )
-}
+  );
+};
 
 const ListBase: FC<React.HTMLAttributes<HTMLDivElement>> = ({
   children,
@@ -53,16 +53,16 @@ const ListBase: FC<React.HTMLAttributes<HTMLDivElement>> = ({
 }) => {
   return (
     <div
-      className={cn("flex flex-col gap-3 text-sm font-oxanium", className)}
+      className={cn('flex flex-col gap-3 text-sm font-oxanium', className)}
       {...props}
     >
       {children}
     </div>
-  )
-}
+  );
+};
 
 export const List = Object.assign(ListBase, {
   Item,
   Label,
   Value,
-})
+});

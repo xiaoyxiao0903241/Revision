@@ -1,7 +1,7 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { blocks as blocksNum } from "~/wallet/constants/tokens";
-import { useTranslations } from "next-intl";
+import React from 'react';
+import { useState, useEffect } from 'react';
+import { blocks as blocksNum } from '~/wallet/constants/tokens';
+import { useTranslations } from 'next-intl';
 
 interface CountdownFormat {
   days: string;
@@ -11,19 +11,19 @@ interface CountdownFormat {
 }
 
 interface CountdownpProps {
-  isShowDay?: boolean,
-  isShowHour?: boolean,
-  blocks: bigint,
-  type?: string
+  isShowDay?: boolean;
+  isShowHour?: boolean;
+  blocks: bigint;
+  type?: string;
 }
 
 const useCountdown = (seconds: number) => {
   const [timeLeft, setTimeLeft] = useState(seconds);
   const [formatted, setFormatted] = useState<CountdownFormat>({
-    days: "00",
-    hours: "00",
-    minutes: "00",
-    seconds: "00",
+    days: '00',
+    hours: '00',
+    minutes: '00',
+    seconds: '00',
   });
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const useCountdown = (seconds: number) => {
       return;
     }
     const interval = setInterval(() => {
-      setTimeLeft((prev) => {
+      setTimeLeft(prev => {
         if (prev <= 1) {
           clearInterval(interval);
           return 0;
@@ -61,34 +61,40 @@ const useCountdown = (seconds: number) => {
   return { formatted, timeLeft };
 };
 
-export const CountdownDisplay = ({ blocks, isShowDay = true, isShowHour = true, type = "default" }: CountdownpProps) => {
-  const t = useTranslations("common");
+export const CountdownDisplay = ({
+  blocks,
+  isShowDay = true,
+  isShowHour = true,
+  type = 'default',
+}: CountdownpProps) => {
+  const t = useTranslations('common');
   const remainingSeconds = Number(blocks) * blocksNum;
   const { formatted, timeLeft } = useCountdown(remainingSeconds);
 
   if (timeLeft <= 0) {
-    return <span>
-      {
-        type == 'default' && t("expired")
-      }
-      {
-        (type == 'longTerm' ||  type == 'myBonds') && t("releaseOver")
-      }
-    </span>;
+    return (
+      <span>
+        {type == 'default' && t('expired')}
+        {(type == 'longTerm' || type == 'myBonds') && t('releaseOver')}
+      </span>
+    );
   }
 
   return (
     <span>
-      {
-        isShowDay ? <>{formatted.days} {t("time.days")}</> : null
-      }
-      {
-        isShowHour ? <>{formatted.hours}  {t("time.hours")}</> : null
-      }
-
+      {isShowDay ? (
+        <>
+          {formatted.days} {t('time.days')}
+        </>
+      ) : null}
+      {isShowHour ? (
+        <>
+          {formatted.hours} {t('time.hours')}
+        </>
+      ) : null}
       {formatted.minutes}
-      {t("time.minutes")} {formatted.seconds}
-      {t("time.seconds")}
+      {t('time.minutes')} {formatted.seconds}
+      {t('time.seconds')}
     </span>
   );
 };

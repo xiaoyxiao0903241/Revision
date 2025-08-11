@@ -1,17 +1,17 @@
-"use client";
-import { useAccount, useDisconnect, useChainId, useSwitchChain } from "wagmi";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { useState, useEffect, useRef } from "react";
-import { ChevronDown } from "lucide-react";
-import { formatAddress } from "~/lib/utils";
-import { useUserAddress } from "~/contexts/UserAddressContext";
-import { useTranslations } from "next-intl";
-import { toast } from "sonner";
-import { chainId as chainIdConstant } from "~/wallet/constants/tokens";
-import ClipboardJS from "clipboard";
-import Image from "next/image";
-import { Button } from "~/components";
-import { WalletDropdown } from "~/widgets";
+'use client';
+import { useAccount, useDisconnect, useChainId, useSwitchChain } from 'wagmi';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { useState, useEffect, useRef } from 'react';
+import { ChevronDown } from 'lucide-react';
+import { formatAddress } from '~/lib/utils';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
+import { chainId as chainIdConstant } from '~/wallet/constants/tokens';
+import ClipboardJS from 'clipboard';
+import Image from 'next/image';
+import { Button } from '~/components';
+import { WalletDropdown } from '~/widgets';
 
 export default function ConnectWalletButton({
   className,
@@ -19,7 +19,7 @@ export default function ConnectWalletButton({
   className?: string;
 }) {
   const t = useTranslations();
-  const tcopy = useTranslations("invite");
+  const tcopy = useTranslations('invite');
   const { setUserAddress, isSigned, setIsSigned, clearSignature, sign } =
     useUserAddress();
   const { address, isConnected } = useAccount();
@@ -43,9 +43,9 @@ export default function ConnectWalletButton({
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -76,7 +76,7 @@ export default function ConnectWalletButton({
       await sign(address);
       setIsOpen(false);
     } catch (error) {
-      console.error("Sign in failed:", error);
+      console.error('Sign in failed:', error);
       disconnect();
     } finally {
       setIsSigning(false);
@@ -87,19 +87,19 @@ export default function ConnectWalletButton({
       addressClipboardRef.current = new ClipboardJS(addressRef.current, {
         text: () => {
           console.log(
-            "ClipboardJS text function called with address:",
-            address,
+            'ClipboardJS text function called with address:',
+            address
           );
           return address as string;
         },
       });
 
-      addressClipboardRef.current.on("success", () => {
-        console.log("ClipboardJS success");
+      addressClipboardRef.current.on('success', () => {
+        console.log('ClipboardJS success');
         setcopeA(copeA + 1);
       });
-      addressClipboardRef.current.on("error", () => {
-        console.log("ClipboardJS error");
+      addressClipboardRef.current.on('error', () => {
+        console.log('ClipboardJS error');
         setcopeA(copeA - 1);
       });
     }
@@ -110,14 +110,14 @@ export default function ConnectWalletButton({
   useEffect(() => {
     if (copeA > 1 || copeB > 1) {
       const timer = setTimeout(() => {
-        toast.success(tcopy("copySuccess"));
+        toast.success(tcopy('copySuccess'));
         setcopeA(1);
         setcopeB(1);
       }, 500);
       return () => clearTimeout(timer);
     }
     if (copeA < 1 && copeB < 1) {
-      toast.error(tcopy("copyError"));
+      toast.error(tcopy('copyError'));
       setcopeA(1);
       setcopeB(1);
     }
@@ -136,11 +136,11 @@ export default function ConnectWalletButton({
   if (!isConnected) {
     return (
       <Button
-        clipDirection="topRight-bottomLeft"
+        clipDirection='topRight-bottomLeft'
         onClick={openConnectModal}
-        className="md:px-6 md:h-12 md:text-base px-3 h-8 text-sm font-normal"
+        className='md:px-6 md:h-12 md:text-base px-3 h-8 text-sm font-normal'
       >
-        {t("header.connect")}
+        {t('header.connect')}
       </Button>
     );
   }
@@ -148,41 +148,41 @@ export default function ConnectWalletButton({
   if (isConnected && !isSigned) {
     return (
       <Button
-        clipDirection="topRight-bottomLeft"
+        clipDirection='topRight-bottomLeft'
         onClick={handleSignIn}
         disabled={isSigning}
         className={`px-4 py-2 bg-[#7238EF] text-[14px] text-white rounded-md  ${className}`}
       >
         {isSigning
-          ? t("common.wallet.signing")
-          : t("common.wallet.please_sign")}
+          ? t('common.wallet.signing')
+          : t('common.wallet.please_sign')}
       </Button>
     );
   }
 
-  const shortAddress = address ? formatAddress(address) : "";
+  const shortAddress = address ? formatAddress(address) : '';
 
   return (
     <WalletDropdown handleDisconnect={handleDisconnect}>
-      <div className="relative" ref={menuRef}>
+      <div className='relative' ref={menuRef}>
         <Button
-          clipDirection="topRight-bottomLeft"
+          clipDirection='topRight-bottomLeft'
           onClick={() => setIsOpen(!isOpen)}
-          className="gap-2 px-2 h-9 lg:px-6 lg:h-12 "
+          className='gap-2 px-2 h-9 lg:px-6 lg:h-12 '
         >
-          <div className="flex items-center gap-2">
+          <div className='flex items-center gap-2'>
             <Image
-              src="/images/icon/wallet.png"
-              alt="wallet"
+              src='/images/icon/wallet.png'
+              alt='wallet'
               width={25}
               height={25}
             />
-            <span className="text-white font-bold">{shortAddress}</span>
+            <span className='text-white font-bold'>{shortAddress}</span>
           </div>
           <ChevronDown
-            color="white"
+            color='white'
             className={`w-4 h-4 transition-transform  ${
-              isOpen ? "rotate-180" : ""
+              isOpen ? 'rotate-180' : ''
             }`}
           />
         </Button>

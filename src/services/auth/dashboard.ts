@@ -112,41 +112,45 @@ export const stakerNum = async () => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-    }
+    },
   });
   if (response.ok) {
-    const data = await response.json()
+    const data = await response.json();
     return data.data;
   }
-}
+};
 
 //个人账户全部质押数量
-export const personStakeAmount = async (tokenAddress:string) => {
+export const personStakeAmount = async (tokenAddress: string) => {
   const response = await authFetch(
-     '/api/reward/rebase', 
-     {
+    '/api/reward/rebase',
+    {
       method: 'GET',
     },
     tokenAddress
   );
-  
+
   if (response.ok) {
-    const data = await response.json()
+    const data = await response.json();
     return data.data;
   }
-}
+};
 
 //个人仪表盘
 
-export const myMess = async (startTime: string, endTime: string,tokenAddress:string) => {
+export const myMess = async (
+  startTime: string,
+  endTime: string,
+  tokenAddress: string
+) => {
   const parmas = {
     startTime: startTime,
     endTime: endTime,
-    dataType:""
+    dataType: '',
   };
   const response = await authFetch(
-     '/api/user/dashboard', 
-     {
+    '/api/user/dashboard',
+    {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -155,12 +159,9 @@ export const myMess = async (startTime: string, endTime: string,tokenAddress:str
     },
     tokenAddress
   );
- 
+
   if (response.ok) {
-    const data = await response.json()
+    const data = await response.json();
     return data.data;
   }
-}
-
-
-
+};

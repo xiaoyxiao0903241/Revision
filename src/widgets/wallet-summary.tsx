@@ -1,19 +1,19 @@
-import { useTranslations } from "next-intl";
-import { Card, CardHeader, List, Statistics } from "~/components";
-import { FC, useEffect, useState } from "react";
-import { formatCurrency } from "~/lib/utils";
-import { infoItems } from "~/hooks/useMock";
-import { useQuery } from "@tanstack/react-query";
-import { useUserAddress } from "~/contexts/UserAddressContext";
-import { getTotalSupply } from "~/wallet/lib/web3/stake";
-import { useNolockStore } from "~/store/noLock";
-import { formatNumbedecimalScale } from "~/lib/utils";
-import { stakerNum, personStakeAmount } from "~/services/auth/dashboard";
-import { OLY } from "~/wallet/constants/tokens";
-import { AddToWallet } from "./addToWallet";
+import { useTranslations } from 'next-intl';
+import { Card, CardHeader, List, Statistics } from '~/components';
+import { FC, useEffect, useState } from 'react';
+import { formatCurrency } from '~/lib/utils';
+import { infoItems } from '~/hooks/useMock';
+import { useQuery } from '@tanstack/react-query';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import { getTotalSupply } from '~/wallet/lib/web3/stake';
+import { useNolockStore } from '~/store/noLock';
+import { formatNumbedecimalScale } from '~/lib/utils';
+import { stakerNum, personStakeAmount } from '~/services/auth/dashboard';
+import { OLY } from '~/wallet/constants/tokens';
+import { AddToWallet } from './addToWallet';
 
 export const WalletSummary: FC = () => {
-  const t = useTranslations("staking");
+  const t = useTranslations('staking');
   const {
     olyBalance,
     olyPrice,
@@ -23,14 +23,14 @@ export const WalletSummary: FC = () => {
     demandProfitInfo,
   } = useNolockStore();
   const [principal, setPrincipal] = useState(0);
-  const [yearApy, setYearApy] = useState<string>("0");
-  const [yearRate, setYearRate] = useState<string>("0");
+  const [yearApy, setYearApy] = useState<string>('0');
+  const [yearRate, setYearRate] = useState<string>('0');
   const { userAddress } = useUserAddress();
   const [rebalseProfit, setRebalseProfit] = useState<number>(0);
 
   //活期的质押人数
   const { data: stakerAmount } = useQuery({
-    queryKey: ["getStakerAmount"],
+    queryKey: ['getStakerAmount'],
     queryFn: async () => {
       const response = await stakerNum();
       return response || null;
@@ -41,7 +41,7 @@ export const WalletSummary: FC = () => {
 
   //oly的总量
   const { data: totalOlyNum } = useQuery({
-    queryKey: ["totalSupply", userAddress],
+    queryKey: ['totalSupply', userAddress],
     queryFn: async () => {
       const response = await getTotalSupply({
         TOKEN_ADDRESSES: OLY,
@@ -55,7 +55,7 @@ export const WalletSummary: FC = () => {
 
   //我的长期总奖励
   const { data: myStakeAmount } = useQuery({
-    queryKey: ["getMyStakeAmount", userAddress],
+    queryKey: ['getMyStakeAmount', userAddress],
     queryFn: async () => {
       const response = await personStakeAmount(userAddress as `0x${string}`);
       return response || null;
@@ -90,45 +90,45 @@ export const WalletSummary: FC = () => {
   }, [demandProfitInfo]);
   return (
     <Card>
-      <CardHeader className="space-y-3">
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col gap-2 flex-1">
+      <CardHeader className='space-y-3'>
+        <div className='flex items-center justify-between'>
+          <div className='flex flex-col gap-2 flex-1'>
             <Statistics
-              title={t("availableToStake")}
+              title={t('availableToStake')}
               value={`${formatCurrency(olyBalance, false)} OLY`}
             />
-            <div className="h-px bg-border/20 w-full"></div>
+            <div className='h-px bg-border/20 w-full'></div>
             <Statistics
-              title={t("stakedAmount")}
+              title={t('stakedAmount')}
               value={`${formatCurrency(principal, false)} OLY`}
               desc={formatCurrency(principal * olyPrice)}
               info={
-                <div className="flex flex-col space-y-2">
-                  {infoItems.map((item) => (
-                    <div key={item.label} className="flex justify-between">
-                      <span className="text-foreground/50">{item.label}</span>
-                      <span className="text-secondary">{item.value}</span>
+                <div className='flex flex-col space-y-2'>
+                  {infoItems.map(item => (
+                    <div key={item.label} className='flex justify-between'>
+                      <span className='text-foreground/50'>{item.label}</span>
+                      <span className='text-secondary'>{item.value}</span>
                     </div>
                   ))}
                 </div>
               }
             />
           </div>
-          <div className="flex flex-col gap-2">
-            <Statistics title={t("apr")} value={`${yearApy}%`} />
-            <div className="h-px bg-border/20 w-full"></div>
+          <div className='flex flex-col gap-2'>
+            <Statistics title={t('apr')} value={`${yearApy}%`} />
+            <div className='h-px bg-border/20 w-full'></div>
             <Statistics
-              title={t("rebaseRewards")}
+              title={t('rebaseRewards')}
               value={`${formatCurrency(myStakeAmount?.unlockReward, false)} OLY`}
               desc={formatCurrency(
-                Number(myStakeAmount?.unlockReward * olyPrice),
+                Number(myStakeAmount?.unlockReward * olyPrice)
               )}
               info={
-                <div className="flex flex-col space-y-2">
-                  {infoItems.map((item) => (
-                    <div key={item.label} className="flex justify-between">
-                      <span className="text-foreground/50">{item.label}</span>
-                      <span className="text-secondary">{item.value}</span>
+                <div className='flex flex-col space-y-2'>
+                  {infoItems.map(item => (
+                    <div key={item.label} className='flex justify-between'>
+                      <span className='text-foreground/50'>{item.label}</span>
+                      <span className='text-secondary'>{item.value}</span>
                     </div>
                   ))}
                 </div>
@@ -156,38 +156,38 @@ export const WalletSummary: FC = () => {
         </Button> */}
         <AddToWallet></AddToWallet>
         <Statistics
-          title={"Unreleased Rewards"}
+          title={'Unreleased Rewards'}
           value={`${formatCurrency(rebalseProfit, false)} OLY`}
           desc={formatCurrency(Number(rebalseProfit * olyPrice))}
         ></Statistics>
       </CardHeader>
-      <List className="py-4">
-        <List.Item className="font-semibold">
-          <List.Label className="font-chakrapetch text-white text-base">
-            {t("statistics")}
+      <List className='py-4'>
+        <List.Item className='font-semibold'>
+          <List.Label className='font-chakrapetch text-white text-base'>
+            {t('statistics')}
           </List.Label>
-          <List.Label className="text-gradient text-base">
-            {t("viewOnBscScan")}
+          <List.Label className='text-gradient text-base'>
+            {t('viewOnBscScan')}
           </List.Label>
         </List.Item>
         <List.Item>
-          <List.Label>{t("annualPercentageRate")}</List.Label>
-          <List.Value className="text-success">{yearRate}%</List.Value>
+          <List.Label>{t('annualPercentageRate')}</List.Label>
+          <List.Value className='text-success'>{yearRate}%</List.Value>
         </List.Item>
         <List.Item>
-          <List.Label>{t("totalStaked")}</List.Label>
-          <List.Value className="text-secondary">
+          <List.Label>{t('totalStaked')}</List.Label>
+          <List.Value className='text-secondary'>
             {AllolyStakeNum
               ? `${formatCurrency(AllolyStakeNum, false)} OLY`
-              : "0 OLY"}
+              : '0 OLY'}
           </List.Value>
         </List.Item>
         <List.Item>
-          <List.Label>{t("stakers")}</List.Label>
+          <List.Label>{t('stakers')}</List.Label>
           <List.Value>{stakerAmount?.unlockUniqueCount || 0}</List.Value>
         </List.Item>
         <List.Item>
-          <List.Label>{t("olyMarketCap")}</List.Label>
+          <List.Label>{t('olyMarketCap')}</List.Label>
           {totalOlyNum ? formatCurrency(totalOlyNum * olyPrice) : 0}
         </List.Item>
       </List>

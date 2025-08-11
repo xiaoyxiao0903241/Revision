@@ -1,10 +1,10 @@
-import { createWithEqualityFn } from "zustand/traditional"
+import { createWithEqualityFn } from 'zustand/traditional';
 
 interface MockStore {
-  amount?: number
-  duration?: number
-  decimal?: string
-  walletConnected?: boolean
+  amount?: number;
+  duration?: number;
+  decimal?: string;
+  walletConnected?: boolean;
 }
 
-export const useMockStore = createWithEqualityFn<MockStore>()(() => ({}))
+export const useMockStore = createWithEqualityFn<MockStore>()(() => ({}));

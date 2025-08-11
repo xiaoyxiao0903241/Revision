@@ -1,7 +1,7 @@
-"use client";
-import { createContext, useContext, useState, ReactNode } from "react";
-import { Header } from "./header";
-import { MobileSidebar } from "./mobile-sidebar";
+'use client';
+import { createContext, useContext, useState, ReactNode } from 'react';
+import { Header } from './header';
+import { MobileSidebar } from './mobile-sidebar';
 
 interface MobileSidebarContextType {
   isOpen: boolean;
@@ -17,7 +17,7 @@ export function useMobileSidebar() {
   const context = useContext(MobileSidebarContext);
   if (context === undefined) {
     throw new Error(
-      "useMobileSidebar must be used within a MobileSidebarProvider",
+      'useMobileSidebar must be used within a MobileSidebarProvider'
     );
   }
   return context;

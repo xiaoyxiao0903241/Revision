@@ -1,37 +1,37 @@
-"use client";
+'use client';
 
-import React, { useMemo } from "react";
-import ReactECharts from "echarts-for-react";
-import type { EChartsOption } from "echarts";
-import { useTranslations } from "next-intl";
-import { useChart } from "~/hooks/useChart";
+import React, { useMemo } from 'react';
+import ReactECharts from 'echarts-for-react';
+import type { EChartsOption } from 'echarts';
+import { useTranslations } from 'next-intl';
+import { useChart } from '~/hooks/useChart';
 
 // 小型图表组件
 export const SmallChart: React.FC<{
   title: string;
   className?: string;
   dataSource?: { dates: string[]; data: number[] };
-}> = ({ title, className = "", dataSource = { dates: [], data: [] } }) => {
+}> = ({ title, className = '', dataSource = { dates: [], data: [] } }) => {
   const { chartRef } = useChart();
   const chartOption = useMemo<EChartsOption>(() => {
     const { dates, data } = dataSource;
     return {
-      backgroundColor: "transparent",
+      backgroundColor: 'transparent',
       animation: false,
       tooltip: {
-        trigger: "axis",
+        trigger: 'axis',
         axisPointer: {
-          type: "cross",
+          type: 'cross',
           lineStyle: {
-            color: "#376df4",
+            color: '#376df4',
             width: 1,
             opacity: 1,
           },
         },
-        backgroundColor: "rgba(0, 0, 0, 0.8)",
-        borderColor: "#333333",
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        borderColor: '#333333',
         textStyle: {
-          color: "#ffffff",
+          color: '#ffffff',
           fontSize: 12,
         },
         formatter: (params: unknown) => {
@@ -45,21 +45,21 @@ export const SmallChart: React.FC<{
         },
       },
       grid: {
-        left: "8%",
-        right: "8%",
-        top: "15%",
-        bottom: "15%",
+        left: '8%',
+        right: '8%',
+        top: '15%',
+        bottom: '15%',
       },
       xAxis: {
-        type: "category",
+        type: 'category',
         data: dates,
         axisLine: {
           lineStyle: {
-            color: "#8392A5",
+            color: '#8392A5',
           },
         },
         axisLabel: {
-          color: "#ffffff",
+          color: '#ffffff',
           fontSize: 10,
           // formatter: (value: string) => {
           //   return value.split("-")[1] // 只显示月份
@@ -67,21 +67,21 @@ export const SmallChart: React.FC<{
         },
       },
       yAxis: {
-        type: "value",
+        type: 'value',
         axisLine: {
           lineStyle: {
-            color: "#8392A5",
+            color: '#8392A5',
           },
         },
         splitLine: {
           show: true,
           lineStyle: {
-            color: "#2A2A2A",
-            type: "dashed",
+            color: '#2A2A2A',
+            type: 'dashed',
           },
         },
         axisLabel: {
-          color: "#ffffff",
+          color: '#ffffff',
           fontSize: 10,
           formatter: (value: number) => {
             return value.toLocaleString();
@@ -90,17 +90,17 @@ export const SmallChart: React.FC<{
       },
       series: [
         {
-          type: "line",
+          type: 'line',
           data: data,
           smooth: true,
-          symbol: "none",
+          symbol: 'none',
           lineStyle: {
             width: 0.5,
-            color: "#10B981",
+            color: '#10B981',
           },
           areaStyle: {
             color: {
-              type: "linear",
+              type: 'linear',
               x: 0,
               y: 0,
               x2: 0,
@@ -108,11 +108,11 @@ export const SmallChart: React.FC<{
               colorStops: [
                 {
                   offset: 0,
-                  color: "rgba(16, 185, 129, 0.3)",
+                  color: 'rgba(16, 185, 129, 0.3)',
                 },
                 {
                   offset: 1,
-                  color: "rgba(16, 185, 129, 0.05)",
+                  color: 'rgba(16, 185, 129, 0.05)',
                 },
               ],
             },
@@ -127,8 +127,8 @@ export const SmallChart: React.FC<{
       <ReactECharts
         ref={chartRef}
         option={chartOption}
-        style={{ width: "100%", height: "100%" }}
-        opts={{ renderer: "canvas" }}
+        style={{ width: '100%', height: '100%' }}
+        opts={{ renderer: 'canvas' }}
       />
     </div>
   );
@@ -138,28 +138,28 @@ export const SmallChart: React.FC<{
 export const PieChart: React.FC<{
   className?: string;
   data: { value: number; name: string }[];
-}> = ({ className = "", data }) => {
-  const t = useTranslations("analytics");
+}> = ({ className = '', data }) => {
+  const t = useTranslations('analytics');
   const { chartRef } = useChart();
   const chartOption = useMemo<EChartsOption>(() => {
     return {
-      backgroundColor: "transparent",
+      backgroundColor: 'transparent',
       tooltip: {
-        trigger: "item",
-        backgroundColor: "rgba(0, 0, 0, 0.8)",
-        borderColor: "#333333",
+        trigger: 'item',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        borderColor: '#333333',
         textStyle: {
-          color: "#ffffff",
+          color: '#ffffff',
           fontSize: 12,
         },
-        formatter: "{b} : {c} ({d}%)",
+        formatter: '{b} : {c} ({d}%)',
       },
       legend: {
-        orient: "vertical",
-        right: "5%",
-        top: "center",
+        orient: 'vertical',
+        right: '5%',
+        top: 'center',
         textStyle: {
-          color: "#ffffff",
+          color: '#ffffff',
           fontSize: 12,
         },
         itemWidth: 10,
@@ -168,27 +168,27 @@ export const PieChart: React.FC<{
       },
       series: [
         {
-          type: "pie",
-          radius: ["70%", "90%"],
-          center: ["35%", "50%"],
+          type: 'pie',
+          radius: ['70%', '90%'],
+          center: ['35%', '50%'],
           avoidLabelOverlap: false,
           label: {
             show: true,
-            position: "center",
+            position: 'center',
             formatter: () => {
               const total = data.reduce((sum, item) => sum + item.value, 0);
-              return `{number|${total}}\n{text|${t("total")}}`;
+              return `{number|${total}}\n{text|${t('total')}}`;
             },
             rich: {
               number: {
                 fontSize: 24,
-                fontWeight: "bold",
-                color: "#ffffff",
+                fontWeight: 'bold',
+                color: '#ffffff',
                 lineHeight: 30,
               },
               text: {
                 fontSize: 14,
-                color: "#8392A5",
+                color: '#8392A5',
                 lineHeight: 20,
               },
             },
@@ -211,8 +211,8 @@ export const PieChart: React.FC<{
       <ReactECharts
         option={chartOption}
         ref={chartRef}
-        style={{ width: "100%", height: "100%" }}
-        opts={{ renderer: "canvas" }}
+        style={{ width: '100%', height: '100%' }}
+        opts={{ renderer: 'canvas' }}
       />
     </div>
   );

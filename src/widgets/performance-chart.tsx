@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import type { EChartsOption } from "echarts";
-import ReactECharts from "echarts-for-react";
-import React, { useMemo } from "react";
-import { useChart } from "~/hooks/useChart";
-import { useTranslations } from "next-intl";
-import { dayjs, formatNumbedecimalScale } from "~/lib/utils";
+import type { EChartsOption } from 'echarts';
+import ReactECharts from 'echarts-for-react';
+import React, { useMemo } from 'react';
+import { useChart } from '~/hooks/useChart';
+import { useTranslations } from 'next-intl';
+import { dayjs, formatNumbedecimalScale } from '~/lib/utils';
 
 interface PerformanceData {
   createdAt: string;
@@ -17,46 +17,44 @@ interface PerformanceChartProps {
   data?: PerformanceData[];
   width?: string | number;
   height?: string | number;
-  theme?: "light" | "dark";
+  theme?: 'light' | 'dark';
   className?: string;
 }
 
 export const PerformanceChart: React.FC<PerformanceChartProps> = ({
   data = [],
-  theme = "dark",
-  className = "",
+  theme = 'dark',
+  className = '',
 }) => {
-  const t = useTranslations("dashboard");
+  const t = useTranslations('dashboard');
   const { chartRef } = useChart();
   const chartOption = useMemo<EChartsOption>(() => {
-    const dates = data.map((item) =>
-      dayjs(item.createdAt).format("YYYY-MM-DD"),
+    const dates = data.map(item => dayjs(item.createdAt).format('YYYY-MM-DD'));
+    const totalPerformanceData = data.map(item =>
+      formatNumbedecimalScale(item.market, 2)
     );
-    const totalPerformanceData = data.map((item) =>
-      formatNumbedecimalScale(item.market, 2),
-    );
-    const smallTeamPerformanceData = data.map((item) =>
-      formatNumbedecimalScale(item.smallMarket, 2),
+    const smallTeamPerformanceData = data.map(item =>
+      formatNumbedecimalScale(item.smallMarket, 2)
     );
 
     const option: EChartsOption = {
-      backgroundColor: "transparent",
+      backgroundColor: 'transparent',
       animation: false,
       tooltip: {
-        trigger: "axis",
+        trigger: 'axis',
         axisPointer: {
-          type: "cross",
+          type: 'cross',
           lineStyle: {
-            color: "#376df4",
+            color: '#376df4',
             width: 2,
             opacity: 1,
           },
         },
         backgroundColor:
-          theme === "dark" ? "rgba(0, 0, 0, 0.8)" : "rgba(255, 255, 255, 0.9)",
-        borderColor: theme === "dark" ? "#333333" : "#e0e0e0",
+          theme === 'dark' ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.9)',
+        borderColor: theme === 'dark' ? '#333333' : '#e0e0e0',
         textStyle: {
-          color: theme === "dark" ? "#ffffff" : "#333333",
+          color: theme === 'dark' ? '#ffffff' : '#333333',
         },
         formatter: (params: unknown) => {
           const paramArray = params as Array<{
@@ -66,11 +64,11 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
           }>;
 
           let html = `<div style="font-weight: bold; margin-bottom: 8px;">${
-            paramArray[0]?.axisValue || ""
+            paramArray[0]?.axisValue || ''
           }</div>`;
 
-          paramArray.forEach((param) => {
-            const color = param.seriesName === "总业绩" ? "#B408D7" : "#FF6B35";
+          paramArray.forEach(param => {
+            const color = param.seriesName === '总业绩' ? '#B408D7' : '#FF6B35';
             html += `<div>${
               param.seriesName
             }: <span style="color: ${color};">${param.data.toLocaleString()} OLY</span></div>`;
@@ -80,22 +78,22 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
         },
       },
       grid: {
-        left: "10%",
-        right: "10%",
-        top: "10%",
-        bottom: "10%",
+        left: '10%',
+        right: '10%',
+        top: '10%',
+        bottom: '10%',
       },
       xAxis: {
-        type: "category",
+        type: 'category',
         data: dates,
         axisLine: {
           lineStyle: {
-            color: theme === "dark" ? "#8392A5" : "#666666",
+            color: theme === 'dark' ? '#8392A5' : '#666666',
           },
         },
         axisLabel: {
           show: false,
-          color: theme === "dark" ? "#ffffff" : "#333333",
+          color: theme === 'dark' ? '#ffffff' : '#333333',
           formatter: (value: string) => {
             const date = new Date(value);
             return `${date.getMonth() + 1}/${date.getDate()}`;
@@ -103,22 +101,22 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
         },
       },
       yAxis: {
-        type: "value",
+        type: 'value',
         axisLine: {
           lineStyle: {
-            color: theme === "dark" ? "#8392A5" : "#666666",
+            color: theme === 'dark' ? '#8392A5' : '#666666',
           },
         },
         splitLine: {
           show: true,
           lineStyle: {
-            color: theme === "dark" ? "#333333" : "#e0e0e0",
+            color: theme === 'dark' ? '#333333' : '#e0e0e0',
             opacity: 0.3,
           },
         },
         axisLabel: {
           show: false,
-          color: theme === "dark" ? "#ffffff" : "#333333",
+          color: theme === 'dark' ? '#ffffff' : '#333333',
           formatter: (value: number) => {
             return `${(value / 1000).toFixed(0)}K`;
           },
@@ -126,25 +124,25 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
       },
       series: [
         {
-          name: t("totalPerformance"),
-          type: "line",
+          name: t('totalPerformance'),
+          type: 'line',
           data: totalPerformanceData,
           smooth: true,
           showSymbol: false,
           lineStyle: {
             width: 3,
-            color: "#B408D7",
+            color: '#B408D7',
           },
         },
         {
-          name: t("smallTeamPerformance"),
-          type: "line",
+          name: t('smallTeamPerformance'),
+          type: 'line',
           data: smallTeamPerformanceData,
           smooth: true,
           showSymbol: false,
           lineStyle: {
             width: 3,
-            color: "#FF6B35",
+            color: '#FF6B35',
           },
         },
       ],
@@ -158,8 +156,8 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
       <ReactECharts
         option={chartOption}
         ref={chartRef}
-        style={{ width: "100%", height: "100%" }}
-        opts={{ renderer: "canvas" }}
+        style={{ width: '100%', height: '100%' }}
+        opts={{ renderer: 'canvas' }}
       />
     </div>
   );

@@ -208,7 +208,7 @@ export const getTokenPrice = async () => {
     const res = await executeMulticall<[bigint, bigint]>({
       calls,
     });
-   console.log(res,'1111')
+    console.log(res, '1111');
     if (res.length && res[0].data) {
       const priceData = res[0].data as [bigint, bigint];
       return res[0].success ? formatUnits(priceData[1], 18) : 0;
