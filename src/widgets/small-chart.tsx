@@ -156,7 +156,7 @@ export const PieChart: React.FC<{
       },
       legend: {
         orient: "vertical",
-        right: "10%",
+        right: "5%",
         top: "center",
         textStyle: {
           color: "#ffffff",
@@ -169,8 +169,8 @@ export const PieChart: React.FC<{
       series: [
         {
           type: "pie",
-          radius: ["50%", "65%"],
-          center: ["30%", "50%"],
+          radius: ["70%", "90%"],
+          center: ["35%", "50%"],
           avoidLabelOverlap: false,
           label: {
             show: true,
@@ -207,7 +207,7 @@ export const PieChart: React.FC<{
   }, [data, t]);
 
   return (
-    <div className={`pie-chart ${className}`}>
+    <div className={`pie-chart ${className} h-[180px]`}>
       <ReactECharts
         option={chartOption}
         ref={chartRef}

@@ -250,11 +250,11 @@ export const TVLStats: React.FC<{ dataSource: TVLDataSource }> = ({
 
       {/* TVL组件列表 */}
       {showGraph ? (
-        <div>
+        <div className="h-[190px] mx-[-24px]">
           <PieChart data={tvlData.components} />
         </div>
       ) : (
-        <div className="space-y-3 p-4 border-foreground/20 border">
+        <div className="space-y-3 p-4 border-foreground/20 border h-[190px]">
           {tvlData.components.map((component, index) => (
             <div key={index} className="flex items-center justify-between">
               <div className="flex items-center gap-2">

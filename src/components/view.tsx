@@ -12,6 +12,7 @@ interface ViewProps extends React.HTMLAttributes<HTMLDivElement> {
   border?: boolean;
   borderColor?: string;
   borderWidth?: number;
+  containerClassName?: string;
 }
 
 export function View({
@@ -21,6 +22,7 @@ export function View({
   clipSize = 12,
   border = false,
   borderColor = "rgba(255, 255, 255, 0.2)",
+  containerClassName,
   borderWidth = 2,
   ...props
 }: ViewProps) {
@@ -28,7 +30,7 @@ export function View({
 
   if (border && clipDirection !== "none") {
     return (
-      <div className="relative">
+      <div className={cn("relative", containerClassName)}>
         {/* 边框层 */}
         <div
           className="absolute inset-0 pointer-events-none backdrop-blur-sm"

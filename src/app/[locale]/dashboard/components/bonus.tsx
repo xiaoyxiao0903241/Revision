@@ -129,7 +129,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
 
         {/* 释放中的奖金数量 */}
         <div className="col-span-2 relative">
-          <div className="px-6 py-7 bg-[#1E204C] mb-[5px] flex flex-col items-start justify-center w-1/2">
+          <div className="px-6 py-7 bg-[#1E204C] mb-[5px] flex flex-col items-start justify-center w-full">
             <Statistics
               title={t("rewardsInRelease")}
               value={

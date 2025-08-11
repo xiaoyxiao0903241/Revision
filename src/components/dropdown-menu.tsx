@@ -36,8 +36,11 @@ function DropdownMenuContent({
   className,
   sideOffset = 4,
   children,
+  containerClassName,
   ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Content> & {
+  containerClassName?: string;
+}) {
   return (
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content
@@ -50,8 +53,9 @@ function DropdownMenuContent({
           border
           borderWidth={1}
           borderColor="#434c8c"
+          containerClassName={containerClassName}
           className={cn(
-            "bg-[#1b1f48] backdrop-blur-xs  shadow-[inset_0_0_20px_rgba(84,119,247,0.5)]",
+            "bg-[#1b1f48] backdrop-blur-xs z-50  shadow-[inset_0_0_20px_rgba(84,119,247,0.5)]",
             className,
           )}
         >
