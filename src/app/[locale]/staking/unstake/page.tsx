@@ -46,7 +46,7 @@ export default function UnstakePage() {
     afterHotData,
   } = useNolockStore();
   const tNoLockedStaking = useTranslations("noLockedStaking");
-
+  const t2 = useTranslations("common");
   const { userAddress } = useUserAddress();
   const [disabled] = useState(true);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
@@ -75,18 +75,18 @@ export default function UnstakePage() {
   const claimPrincipal = async () => {
     if (!publicClient || !userAddress) return;
     if (Number(principal) === 0) {
-      toast.success("您暂未有可解除的OLY");
+      toast.success(tNoLockedStaking("onOly"));
       return;
     }
     if (Number(principal) < Number(UnstakeAmount)) {
-      toast.success("超过了最大可解除的数量");
+      toast.success(tNoLockedStaking("overMore"));
       return;
     }
     if (Number(UnstakeAmount) === 0) {
-      toast.success("请输入解除质押的数量");
+      toast.success(tNoLockedStaking("addInOly"));
       return;
     }
-    const toastId = toast.loading("请在钱包中确认交易...");
+    const toastId = toast.loading(t2("toast.confirm_in_wallet"));
     setIsDisabled(true);
     setIsLoading(true);
     try {
@@ -97,11 +97,11 @@ export default function UnstakePage() {
         args: [parseUnits(UnstakeAmount, 9)],
       });
       const result = await publicClient.waitForTransactionReceipt({ hash });
-      toast.loading("交易确认中...", {
+      toast.loading(t2("toast.confirming"), {
         id: toastId,
       });
       if (result.status === "success") {
-        toast.success("解除质押成功", {
+        toast.success(tNoLockedStaking("unLock_sucess"), {
           id: toastId,
         });
         await Promise.all([
@@ -133,11 +133,11 @@ export default function UnstakePage() {
   const claimToStakes = async () => {
     if (!publicClient || !userAddress) return;
     if (!isClaim) {
-      toast.warning("质押锁定期阶段,无法解除");
+      toast.warning(tNoLockedStaking("cant_unclock"));
       return;
     }
 
-    const toastId = toast.loading("请在钱包中确认交易...");
+    const toastId = toast.loading(t2("toast.confirm_in_wallet"));
     setIsDisabled(true);
     setIsLoading(true);
     try {
@@ -147,12 +147,12 @@ export default function UnstakePage() {
         functionName: "claim",
         args: [],
       });
-      toast.loading("交易确认中...", {
+      toast.loading(t2("toast.confirming"), {
         id: toastId,
       });
       const result = await publicClient.waitForTransactionReceipt({ hash });
       if (result.status === "success") {
-        toast.success("释放成功", {
+        toast.success(tNoLockedStaking("unlock_sucess"), {
           id: toastId,
         });
         await Promise.all([
@@ -167,7 +167,7 @@ export default function UnstakePage() {
           }),
         ]);
       } else {
-        toast.error(t("toast.claim_failed"), {
+        toast.error(tNoLockedStaking("unlock_fail"), {
           id: toastId,
         });
         // toast.dismiss(toastId)
@@ -337,13 +337,13 @@ export default function UnstakePage() {
                     )} OLY`}</List.Value>
                   </List.Item>
                   <List.Item>
-                    <List.Label>下一次爆块收益率</List.Label>
+                    <List.Label>{t2("nextBlockRate")}</List.Label>
                     <List.Value className="font-mono">
                       {Number(apy) > 0 ? apy : 0}%
                     </List.Value>
                   </List.Item>
                   <List.Item>
-                    <List.Label>下一次爆块奖励</List.Label>
+                    <List.Label>{t2("next_earnings")}</List.Label>
                     <List.Value className="text-success">
                       {nextEarnAmount > 0
                         ? formatNumbedecimalScale(nextEarnAmount, 2)
@@ -374,7 +374,7 @@ export default function UnstakePage() {
                   }
                   onClick={claimPrincipal}
                 >
-                  {isLoading ? "解除中..." : "解除质押"}
+                  {isLoading ? t2("unpledgeing") : t2("unpledge")}
                 </Button>
               </>
             )}

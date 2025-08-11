@@ -92,7 +92,23 @@
     "yourReward": "您的奖励",
     "months": "个月",
     "roi": "ROI",
-    "claiming": "领取中..."
+    "claiming": "领取中...",
+    "noType": "无效的质押类型",
+    "noRward": "暂无奖励",
+    "nobkRward": "无爆块奖励",
+    "no_claimable": "没有可解除的金额",
+    "unpledgeing": "解除中...",
+    "unpledge": "解除质押",
+    "approve_success": "授权成功",
+    "insufficient_amount": "数量不足",
+    "invite_not_active": "您的账户需要绑定推荐人地址",
+    "stake_success": "质押成功",
+    "stake_fail": "质押失败",
+    "approving": "授权中...",
+    "approve": "授权",
+    "staking": "质押中...",
+    "inStakNum": "请输入质押数量",
+    "stake_tip": "您可以随时存入或解除质押,无锁定期限,每12小时发放爆块奖励"
   },
   "invite": {
     "myInvitation": "社群",
@@ -216,7 +232,14 @@
     "claimInfo": "您可以随时领取已累积的奖励。领取后，奖励将立即发送到您的钱包。",
     "selectReleasePeriod": "选择释放周期",
     "release": "释放",
-    "nextRebaseReward": "下次重基奖励"
+    "nextRebaseReward": "下次重基奖励",
+    "onOly": "您暂未有可解除的OLY",
+    "overMore": "超过了最大可解除的数量",
+    "addInOly": "请输入解除质押的数量",
+    "unLock_sucess": "解除质押成功",
+    "cant_unclock": "质押锁定期阶段,无法解除",
+    "unlock_sucess": "释放成功",
+    "unlock_fail": "释放失败"
   },
   "swap": {
     "title": "交换",
@@ -236,7 +259,13 @@
     "tokenOut": "输出代币",
     "priceChart": "OLY价格图表",
     "usdtDescription": "Tether USD",
-    "olyDescription": "OLYONE Token"
+    "olyDescription": "OLYONE Token",
+    "checking_approval": "检查授权",
+    "approve": "授权",
+    "approving": "授权中...",
+    "swap": "兑换",
+    "swapping": "兑换中...",
+    "swap_success": "兑换成功"
   },
   "turbine": {
     "title": "涡轮",
@@ -286,6 +315,8 @@
     "trading": "解锁进行中...",
     "approving": "授权中...",
     "trade_settings": "滑点设置",
+    "reciveNum": "涡轮接收数量",
+    "claimNum": "从涡轮领取数量",
     "toast": {
       "insufficient_unlockable": "超过可解锁的AS数量",
       "confirm_in_wallet": "请在钱包中确认交易...",
@@ -465,11 +496,22 @@
     "addToken": "添加到钱包",
     "add_tip": "当前钱包不支持添加代币功能,请复制地址并手动添加!",
     "add_err": "请先安装钱包插件",
+    "nextBlockRate": "下一次爆块收益率",
+    "next_earnings": "下一次爆块奖励",
+    "unpledgeing": "解除中...",
+    "unpledge": "解除质押",
     "toast": {
       "confirm_in_wallet": "請在錢包中確認交易...",
       "confirming": "交易確認中...",
       "claim_success": "領取成功",
-      "claim_failed": "領取失敗"
+      "claim_failed": "領取失敗",
+      "unpledge_sucess": "解除成功",
+      "unpledge_fail": "解除失败",
+      "approval_success": "授权成功",
+      "approving": "授权中...",
+      "approve": "授权",
+      "staking": "质押中...",
+      "stake": "质押"
     },
     "time": {
       "days": "天",

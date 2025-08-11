@@ -1,4 +1,5 @@
 import { Button } from "~/components/button";
+import { useTranslations } from "next-intl";
 
 interface SwapButtonProps {
   amount: string;
@@ -17,6 +18,7 @@ export default function SwapButton({
   needsApproval,
   onSwap,
 }: SwapButtonProps) {
+  const t = useTranslations("swap");
   return (
     <div className="flex items-center w-full box-border justify-between">
       {needsApproval && (
@@ -42,12 +44,12 @@ export default function SwapButton({
           }
         >
           {isCheckingApproval
-            ? "检查授权"
+            ? t("checking_approval")
             : isApproving
-              ? "授权中..."
+              ? t("approving")
               : needsApproval
-                ? "授权"
-                : "授权"}
+                ? t("approve")
+                : t("approve")}
         </Button>
       )}
       <Button
@@ -71,7 +73,7 @@ export default function SwapButton({
           needsApproval
         }
       >
-        {isSwapping ? "兑换中..." : "兑换"}
+        {isSwapping ? t("swapping") : t("swap")}
       </Button>
     </div>
   );

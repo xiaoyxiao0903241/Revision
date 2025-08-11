@@ -30,6 +30,7 @@ interface Props {
 }
 export const ReciveTable = ({ unitPrice }: Props) => {
   const t = useTranslations("reciveTable");
+  const t2 = useTranslations("turbine");
   const { userAddress } = useUserAddress();
   const [myReciveList, setMyReciveList] = useState<ReciveItem[]>([]);
   const publicClient = usePublicClient();
@@ -164,7 +165,7 @@ export const ReciveTable = ({ unitPrice }: Props) => {
             ? formatNumbedecimalScale(turbineMessOp.receivedAmount, 4)
             : 0
         }
-        title={"涡轮接收数量"}
+        title={t2("reciveNum")}
         usdValue={formatNumbedecimalScale(
           Number(turbineMessOp ? turbineMessOp.receivedAmount : 0) * unitPrice,
           2,
@@ -178,7 +179,7 @@ export const ReciveTable = ({ unitPrice }: Props) => {
             ? formatNumbedecimalScale(turbineMessOp.claimedAmount, 4)
             : 0
         }
-        title={"从涡轮领取数量"}
+        title={t2("claimNum")}
         usdValue={formatNumbedecimalScale(
           Number(turbineMessOp ? turbineMessOp.claimedAmount : 0) * unitPrice,
           2,

@@ -250,7 +250,7 @@ export default function SwapPage() {
 
       // 根据交易状态更新提示
       if (txReceipt.status === "success") {
-        toast.success("兑换成功", {
+        toast.success(t("swap_success"), {
           id: toastId,
         });
         // 重新获取 token 数据以更新余额

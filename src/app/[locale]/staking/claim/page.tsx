@@ -24,6 +24,7 @@ interface StakInfo {
 }
 export default function ClaimPage() {
   const t = useTranslations("staking");
+  const t2 = useTranslations("common");
   const { demandProfitInfo, olyPrice, hotDataStakeNum } = useNolockStore();
   const tNoLockedStaking = useTranslations("noLockedStaking");
   const [claimAmount, setClaimAmount] = useState("");
@@ -52,7 +53,7 @@ export default function ClaimPage() {
   //领取静态收益方法
   const claimInterest = async () => {
     if (!publicClient || !userAddress) return;
-    const toastId = toast.loading("请在钱包中确认交易...");
+    const toastId = toast.loading(t2("toast.confirm_in_wallet"));
     setIsDisabled(true);
     try {
       const hash = await writeContractAsync({
@@ -79,7 +80,7 @@ export default function ClaimPage() {
           }),
         ]);
       } else {
-        toast.error("领取失败", {
+        toast.error(t2("toast.claim_failed"), {
           id: toastId,
         });
       }

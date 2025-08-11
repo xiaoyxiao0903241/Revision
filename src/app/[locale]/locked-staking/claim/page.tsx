@@ -36,6 +36,7 @@ import NodeStakingAbi from "~/wallet/constants/NodeStaking.json";
 export default function ClaimPage() {
   const t = useTranslations("staking");
   const tLockedStaking = useTranslations("lockedStaking");
+  const t2 = useTranslations("common");
   const { periodList } = usePeriods();
   const [selectedClaimType, setSelectedClaimType] =
     useState<string>("rebaseReward");
@@ -89,10 +90,10 @@ export default function ClaimPage() {
     if (!publicClient || !userAddress) return;
     const stakTokenInfo = depositDayList.find((item) => item.day === type);
     if (!stakTokenInfo) {
-      toast.error("无效的质押类型");
+      toast.error(t("noType"));
       return;
     }
-    const toastId = toast.loading("请在钱包中确认交易...");
+    const toastId = toast.loading(t2("toast.confirm_in_wallet"));
     setIsDisabled(true);
     try {
       const hash = await writeContractAsync({
@@ -101,12 +102,12 @@ export default function ClaimPage() {
         functionName: "claimInterest",
         args: [index, parseUnits(rewardAmount, 9).toString(), lockClaimIndex],
       });
-      toast.loading("交易确认中...", {
+      toast.loading(t2("toast.confirming"), {
         id: toastId,
       });
       const result = await publicClient.waitForTransactionReceipt({ hash });
       if (result.status === "success") {
-        toast.success("领取成功", {
+        toast.success(t2("toast.claim_success"), {
           id: toastId,
         });
         await queryClient.invalidateQueries({
@@ -116,7 +117,7 @@ export default function ClaimPage() {
           queryKey: ["longStakHisData", 1, userAddress],
         });
       } else {
-        toast.error("领取失败", {
+        toast.error(t2("toast.claim_failed"), {
           id: toastId,
         });
       }
@@ -134,10 +135,10 @@ export default function ClaimPage() {
   const claimNodeReward = async () => {
     if (!publicClient || !userAddress) return;
     if (curStakeItem && curStakeItem.blockReward === 0) {
-      toast.warning("暂无奖励");
+      toast.warning(t("noRward"));
       return;
     }
-    const toastId = toast.loading("请在钱包中确认交易...");
+    const toastId = toast.loading(t2("toast.confirm_in_wallet"));
     setIsDisabled(true);
     try {
       const hash = await writeContractAsync({
@@ -146,12 +147,12 @@ export default function ClaimPage() {
         functionName: "claimInterest",
         args: [parseUnits(rewardAmount, 9).toString(), lockClaimIndex],
       });
-      toast.loading("交易确认中...", {
+      toast.loading(t2("toast.confirming"), {
         id: toastId,
       });
       const result = await publicClient.waitForTransactionReceipt({ hash });
       if (result.status === "success") {
-        toast.success("领取成功", {
+        toast.success(t2("toast.claim_success"), {
           id: toastId,
         });
 
@@ -159,7 +160,7 @@ export default function ClaimPage() {
           queryKey: ["UserNodeStakes", userAddress],
         });
       } else {
-        toast.error("领取失败", {
+        toast.error(t2("toast.claim_failed"), {
           id: toastId,
         });
       }
@@ -179,10 +180,10 @@ export default function ClaimPage() {
 
     const stakTokenInfo = depositDayList.find((item) => item.day === type);
     if (!stakTokenInfo) {
-      toast.error("无效的质押类型");
+      toast.error(t("noType"));
       return;
     }
-    const toastId = toast.loading("请在钱包中确认交易...");
+    const toastId = toast.loading(t2("toast.confirm_in_wallet"));
     setIsDisabled(true);
     try {
       const hash = await writeContractAsync({
@@ -191,12 +192,12 @@ export default function ClaimPage() {
         functionName: "claimExtraInterest",
         args: [index, parseUnits(boostAmount, 9).toString(), lockClaimIndex],
       });
-      toast.loading("交易确认中...", {
+      toast.loading(t2("toast.confirming"), {
         id: toastId,
       });
       const result = await publicClient.waitForTransactionReceipt({ hash });
       if (result.status === "success") {
-        toast.success("领取成功", {
+        toast.success(t2("toast.claim_success"), {
           id: toastId,
         });
 
@@ -204,7 +205,7 @@ export default function ClaimPage() {
           queryKey: ["UserStakes", userAddress],
         });
       } else {
-        toast.error("领取失败", {
+        toast.error(t2("toast.claim_failed"), {
           id: toastId,
         });
       }
@@ -401,7 +402,7 @@ export default function ClaimPage() {
                     }
                   }}
                 >
-                  领取奖励
+                  {t("claimTitle")}
                 </Button>
               )}
               {selectedClaimType === "rebaseBoost" && (
@@ -428,7 +429,9 @@ export default function ClaimPage() {
                     }
                   }}
                 >
-                  {curStakeItem?.type == "nodeStake" ? "无爆块奖励" : "领取"}
+                  {curStakeItem?.type == "nodeStake"
+                    ? t("nobkRward")
+                    : t("claim")}
                 </Button>
               )}
             </CardContent>

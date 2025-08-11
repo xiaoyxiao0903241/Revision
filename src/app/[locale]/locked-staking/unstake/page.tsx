@@ -33,6 +33,7 @@ import NodeStakingAbi from "~/wallet/constants/NodeStaking.json";
 export default function UnstakePage() {
   const t = useTranslations("staking");
   const tLockedStaking = useTranslations("lockedStaking");
+  const t2 = useTranslations("common");
   const { userAddress } = useUserAddress();
   const [stakList, setstakList] = useState<StakingItem[]>([]);
   const [curStakeItem, setCurStakeItem] = useState<StakingItem>();
@@ -73,16 +74,16 @@ export default function UnstakePage() {
     //长期质押
 
     if (curStakeItem && curStakeItem.claimableBalance === 0) {
-      toast.warning("没有可解除的金额");
+      toast.warning(t("no_claimable"));
       return;
     }
-    const toastId = toast.loading("请在钱包中确认交易...");
+    const toastId = toast.loading(t2("toast.confirm_in_wallet"));
     setIsDisabled(true);
     setIsLoading(true);
     try {
       const stakTokenInfo = depositDayList.find((item) => item.day === type);
       if (!stakTokenInfo) {
-        toast.error("无效的质押类型", { id: toastId });
+        toast.error(t("noType"), { id: toastId });
         return;
       }
       const hash = await writeContractAsync({
@@ -91,19 +92,19 @@ export default function UnstakePage() {
         functionName: "unstakePrincipal",
         args: [curStakeItem && curStakeItem.index],
       });
-      toast.loading("交易确认中...", {
+      toast.loading(t2("toast.confirming"), {
         id: toastId,
       });
       const result = await publicClient.waitForTransactionReceipt({ hash });
       if (result.status === "success") {
-        toast.success("领取成功", {
+        toast.success(t2("toast.unpledge_sucess"), {
           id: toastId,
         });
         await queryClient.invalidateQueries({
           queryKey: ["UserStakes", userAddress],
         });
       } else {
-        toast.error("领取失败", {
+        toast.error(t2("toast.unpledge_fail"), {
           id: toastId,
         });
       }
@@ -122,7 +123,7 @@ export default function UnstakePage() {
     if (!publicClient || !userAddress) return;
     setIsDisabled(true);
     setIsLoading(true);
-    const toastId = toast.loading("请在钱包中确认交易...");
+    const toastId = toast.loading(t2("toast.confirm_in_wallet"));
     try {
       const hash = await writeContractAsync({
         abi: NodeStakingAbi as Abi,
@@ -130,12 +131,12 @@ export default function UnstakePage() {
         functionName: "unstakePrincipal",
         args: [],
       });
-      toast.loading("交易确认中...", {
+      toast.loading(t2("toast.confirming"), {
         id: toastId,
       });
       const result = await publicClient.waitForTransactionReceipt({ hash });
       if (result.status === "success") {
-        toast.success("领取成功", {
+        toast.success(t2("toast.unpledge_sucess"), {
           id: toastId,
         });
 
@@ -143,7 +144,7 @@ export default function UnstakePage() {
           queryKey: ["UserNodeStakes", 1, userAddress],
         });
       } else {
-        toast.error("领取失败", {
+        toast.error(t2("toast.unpledge_fail"), {
           id: toastId,
         });
       }
@@ -265,7 +266,7 @@ export default function UnstakePage() {
                     }
                   }}
                 >
-                  {isLoading ? "解除中..." : "解除质押"}
+                  {isLoading ? t("unpledgeing") : t("unpledge")}
                 </Button>
               )}
             </AmountTicker>

@@ -40,7 +40,7 @@ export const LanguageSwitcher = () => {
       <DropdownMenuContent
         align="end"
         containerClassName="ml-3 md:ml-0"
-        className="w-[calc(100dvw-24px)] md:w-48 z-50 min-h-[calc(100dvh-80px)] md:min-h-0"
+        className="w-[calc(100dvw-24px)] md:w-48 z-50 h-[calc(100dvh-80px)] overflow-y-auto md:h-auto"
       >
         {LANGUAGES.map((language) => (
           <DropdownMenuItem

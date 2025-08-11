@@ -29,6 +29,7 @@ import longStakingAbi from "~/wallet/constants/LongStakingAbi.json";
 
 export default function StakingPage() {
   const t = useTranslations("staking");
+  const t2 = useTranslations("common");
   const tLockedStaking = useTranslations("lockedStaking");
   const [lockIndex, setLockIndex] = useState<number>(0);
   const { userAddress } = useUserAddress();
@@ -88,7 +89,7 @@ export default function StakingPage() {
     const stakToken = depositDayList[index].token;
     const priceInWei = Number(stakeAmount.toString());
     if (!myolybalance || Number(myolybalance.toString()) < priceInWei) {
-      toast.error("数量不足");
+      toast.error(t("insufficient_amount"));
       return;
     }
     setIsDisabled(true);
@@ -106,7 +107,7 @@ export default function StakingPage() {
 
       const result = await publicClient.waitForTransactionReceipt({ hash });
       if (result.status === "success") {
-        toast.success("授权成功");
+        toast.success(t("approve_success"));
         await queryClient.invalidateQueries({
           queryKey: ["getLongAllowanceList", userAddress],
         });
@@ -126,19 +127,19 @@ export default function StakingPage() {
     if (!publicClient || !userAddress) return;
     await refetchInviteInfo();
     if (!inviteInfo?.isActive) {
-      toast.warning("您的账户需要绑定推荐人地址");
+      toast.warning(t("invite_not_active"));
       return;
     }
     const stakToken = depositDayList[index].token;
     if (Number(stakeAmount) <= 0) {
-      toast.error("数量不足");
+      toast.error(t("insufficient_amount"));
       return;
     }
     if (Number(myolybalance) < Number(setStakeAmount)) {
-      toast.error("数量不足");
+      toast.error(t("insufficient_amount"));
       return;
     }
-    const toastId = toast.loading("请在钱包中确认交易...");
+    const toastId = toast.loading(t2("toast.confirm_in_wallet"));
     setIsDisabled(true);
     try {
       setIsLoading(true);
@@ -148,12 +149,12 @@ export default function StakingPage() {
         functionName: "stake",
         args: [parseUnits(stakeAmount, 9)],
       });
-      toast.loading("交易确认中...", {
+      toast.loading(t2("toast.confirming"), {
         id: toastId,
       });
       const result = await publicClient.waitForTransactionReceipt({ hash });
       if (result.status === "success") {
-        toast.success("质押成功", {
+        toast.success(t("stake_success"), {
           id: toastId,
         });
         await queryClient.invalidateQueries({
@@ -270,7 +271,7 @@ export default function StakingPage() {
                         handApprove(lockIndex);
                       }}
                     >
-                      {isLoading ? "授权中..." : "授权"}
+                      {isLoading ? t("approving") : t("approve")}
                     </Button>
                   )}
                 {curPeriod && (
@@ -300,8 +301,8 @@ export default function StakingPage() {
                     {isLoading &&
                     Number(curPeriod.allowanceNum) > 0 &&
                     Number(curPeriod.allowanceNum) > Number(stakeAmount)
-                      ? "质押中..."
-                      : "质押"}
+                      ? t("staking")
+                      : t("stake")}
                   </Button>
                 )}
               </div>

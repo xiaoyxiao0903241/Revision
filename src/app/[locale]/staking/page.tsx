@@ -22,6 +22,7 @@ import { useNolockStore } from "~/store/noLock";
 
 export default function StakingPage() {
   const t = useTranslations("staking");
+  const t2 = useTranslations("common");
   const { userAddress } = useUserAddress();
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
   const publicClient = usePublicClient();
@@ -82,7 +83,7 @@ export default function StakingPage() {
       });
       const result = await publicClient.waitForTransactionReceipt({ hash });
       if (result.status === "success") {
-        toast.success("授权成功");
+        toast.success(t2("toast.approval_success"));
         await refetchAllowanceOly();
       }
     } catch (error: unknown) {
@@ -98,15 +99,15 @@ export default function StakingPage() {
     if (!publicClient || !userAddress) return;
     await refetchInviteInfo();
     if (!inviteInfo?.isActive) {
-      toast.warning("您的账户需要绑定推荐人地址");
+      toast.warning(t("invite_not_active"));
       return;
     }
     if (!myolybalance || Number(myolybalance) === 0) {
-      toast.error("数量不足");
+      toast.error(t("insufficient_amount"));
       return;
     }
     if (Number(stakeAmount) === 0) {
-      toast.error("请输入质押数量");
+      toast.error(t("inStakNum"));
       return;
     }
     if (allowanceNum === undefined) return;
@@ -114,7 +115,7 @@ export default function StakingPage() {
       handApprove();
       return;
     }
-    const toastId = toast.loading("请在钱包中确认交易...");
+    const toastId = toast.loading(t2("toast.confirm_in_wallet"));
     setIsDisabled(true);
     try {
       setIsLoading(true);
@@ -124,12 +125,12 @@ export default function StakingPage() {
         functionName: "stake",
         args: [parseUnits(stakeAmount, 9)],
       });
-      toast.loading("交易确认中...", {
+      toast.loading(t2("toast.confirming"), {
         id: toastId,
       });
       const result = await publicClient.waitForTransactionReceipt({ hash });
       if (result.status === "success") {
-        toast.success("质押成功", {
+        toast.success(t("stake_success"), {
           id: toastId,
         });
         await Promise.all([
@@ -139,7 +140,7 @@ export default function StakingPage() {
         ]);
         setStakeAmount("");
       } else {
-        toast.error("质押失败", {
+        toast.error(t("stake_fail"), {
           id: toastId,
         });
       }
@@ -196,11 +197,7 @@ export default function StakingPage() {
 
   return (
     <div className="space-y-6">
-      <Alert
-        icon="stake"
-        title={"STAKE"}
-        description={"您可以随时存入或解除质押,无锁定期限,每12小时发放爆块奖励"}
-      />
+      <Alert icon="stake" title={"STAKE"} description={t("stake_tip")} />
 
       {/* 主要内容区域 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -215,7 +212,7 @@ export default function StakingPage() {
               onChange={(value) => {
                 setStakeAmount(value);
               }}
-              description={"余额"}
+              description={t("balance")}
             />
             <List>
               <List.Item>
@@ -261,7 +258,7 @@ export default function StakingPage() {
                     }
                     onClick={toStaking}
                   >
-                    {isLoading ? "授权中..." : "授权"}
+                    {isLoading ? t2("toast.approving") : t2("toast.approve")}
                   </Button>
                 )}
                 {
@@ -289,8 +286,8 @@ export default function StakingPage() {
                     {isLoading &&
                     allowanceNum > 0 &&
                     allowanceNum > Number(stakeAmount)
-                      ? "质押中..."
-                      : "质押"}
+                      ? t("staking")
+                      : t("stake")}
                   </Button>
                 }
               </div>
