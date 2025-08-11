@@ -1,16 +1,16 @@
 'use client';
-import { useAccount, useDisconnect, useChainId, useSwitchChain } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
-import { useState, useEffect, useRef } from 'react';
-import { ChevronDown } from 'lucide-react';
-import { formatAddress } from '~/lib/utils';
-import { useUserAddress } from '~/contexts/UserAddressContext';
-import { useTranslations } from 'next-intl';
-import { toast } from 'sonner';
-import { chainId as chainIdConstant } from '~/wallet/constants/tokens';
 import ClipboardJS from 'clipboard';
+import { ChevronDown } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
+import { useAccount, useChainId, useDisconnect, useSwitchChain } from 'wagmi';
 import { Button } from '~/components';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import { formatAddress } from '~/lib/utils';
+import { chainId as chainIdConstant } from '~/wallet/constants/tokens';
 import { WalletDropdown } from '~/widgets';
 
 export default function ConnectWalletButton({
