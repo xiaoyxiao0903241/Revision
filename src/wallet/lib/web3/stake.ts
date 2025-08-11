@@ -28,12 +28,13 @@ interface ContractCall {
   period?: string;
 }
 
-export interface periodlongItem extends Record<string, string | number | boolean> {
+export interface periodlongItem
+  extends Record<string, string | number | boolean> {
   token: string;
   day: string;
   period: string;
   rate: string;
-  addition:string;
+  addition: string;
   tvl: number | string;
   balance: string;
   isApprove: boolean;
@@ -67,17 +68,17 @@ export const depositDayList = [
 export const roi = () => {
   return [
     {
-      rate:"(0.3%-1%)",
-      addition:"(0.02-0.04)"
+      rate: '(0.3%-1%)',
+      addition: '(0.02-0.04)',
     },
     {
-      rate:"(0.3%-1%)",
-      addition:"(0.02-0.08)"
+      rate: '(0.3%-1%)',
+      addition: '(0.02-0.08)',
     },
     {
-      rate:"(0.3%-1%)",
-      addition:"(0.02-0.09)"
-    }
+      rate: '(0.3%-1%)',
+      addition: '(0.02-0.09)',
+    },
   ];
 };
 export interface StakingItem {
@@ -238,8 +239,6 @@ export const getEnchBlock = async () => {
   }
 };
 
-
-
 //活期质押数据(热身期)
 export const demandInfo = async ({ address }: { address: Address }) => {
   try {
@@ -335,7 +334,7 @@ export const demandProfit = async ({ address }: { address: Address }) => {
         allProfit,
         normalProfit,
         isClaim,
-        rebalseProfit
+        rebalseProfit,
       };
     }
   } catch (err: unknown) {
@@ -363,7 +362,7 @@ export const getBalanceToken = async ({
       },
     ],
   })) as { success: boolean; data: bigint }[];
-  
+
   if (res.length) {
     const balance = Number(formatUnits(res[0].data, decimal));
     return balance || 0;
@@ -389,15 +388,13 @@ export const getTotalSupply = async ({
       },
     ],
   })) as { success: boolean; data: bigint }[];
-  
+
   if (res.length) {
     const balance = Number(formatUnits(res[0].data, decimal));
     return balance || 0;
   }
   return 0;
 };
-
-
 
 //获取apy(收益率),全网rebalse数量
 export const getAllnetReabalseNum = async () => {
@@ -458,7 +455,7 @@ export const getAllowance = async ({
         },
       ],
     })) as { success: boolean; data: bigint }[];
-    console.log(res,"res11")
+    console.log(res, 'res11');
     if (res.length && res[0].success) {
       const rate = formatUnits(res[0].data, decimal);
       return rate;

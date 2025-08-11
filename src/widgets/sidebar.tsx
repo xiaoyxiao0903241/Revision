@@ -1,9 +1,10 @@
-"use client";
-import { useTranslations } from "next-intl";
-import Image from "next/image";
-import { Icon, IconFontName } from "~/components";
-import { Link, usePathname } from "~/i18n/navigation";
-import { cn } from "~/lib/utils";
+'use client';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Icon, IconFontName } from '~/components';
+import { cn } from '~/lib/utils';
 
 interface NavigationItem {
   label: string;
@@ -22,25 +23,25 @@ const NavigationItem = ({ item }: { item: NavigationItem }) => {
     <Link
       href={item.href}
       className={cn(
-        "flex w-full items-center space-x-3 px-5 py-4 text-base font-medium transition-colors",
-        "hover:bg-foreground/5",
-        isActive && "text-gradient",
+        'flex w-full items-center space-x-3 px-5 py-4 text-base font-medium transition-colors',
+        'hover:bg-foreground/5',
+        isActive && 'text-gradient'
       )}
     >
-      {item.icon.startsWith("/") ? (
+      {item.icon.startsWith('/') ? (
         <Image src={item.icon} alt={item.label} width={24} height={24} />
       ) : (
         <Icon
           name={item.icon as IconFontName}
           size={24}
-          className={cn("text-gray-400", isActive && "text-gradient")}
+          className={cn('text-gray-400', isActive && 'text-gradient')}
         />
       )}
       <span
         className={cn(
-          "text-gray-300",
-          isActive && "text-gradient",
-          item.uppercase && "uppercase",
+          'text-gray-300',
+          isActive && 'text-gradient',
+          item.uppercase && 'uppercase'
         )}
       >
         {item.label}
@@ -50,100 +51,100 @@ const NavigationItem = ({ item }: { item: NavigationItem }) => {
 };
 
 export const SidebarContent = () => {
-  const t = useTranslations("navigation");
+  const t = useTranslations('navigation');
 
   const navigationItems: NavigationItem[] = [
     {
-      label: t("dashboard"),
-      href: "/",
-      icon: "dashboard",
+      label: t('dashboard'),
+      href: '/',
+      icon: 'dashboard',
       uppercase: true,
     },
     {
-      label: t("analytics"),
-      href: "/analytics",
-      icon: "analytics",
+      label: t('analytics'),
+      href: '/analytics',
+      icon: 'analytics',
       uppercase: true,
     },
     {
-      label: t("community"),
-      href: "/community",
-      icon: "community",
+      label: t('community'),
+      href: '/community',
+      icon: 'community',
       uppercase: true,
     },
     {
-      label: t("noLockStaking"),
-      href: "/staking",
-      icon: "staking",
-      section: "staking",
+      label: t('noLockStaking'),
+      href: '/staking',
+      icon: 'staking',
+      section: 'staking',
       uppercase: true,
     },
     {
-      label: t("lockedStaking"),
-      href: "/locked-staking",
-      icon: "locked-staking",
-      section: "staking",
+      label: t('lockedStaking'),
+      href: '/locked-staking',
+      icon: 'locked-staking',
+      section: 'staking',
       uppercase: true,
     },
     {
-      label: t("lpBonds"),
-      href: "/lp-bonds",
-      icon: "lp-bonds",
-      section: "bonds",
+      label: t('lpBonds'),
+      href: '/lp-bonds',
+      icon: 'lp-bonds',
+      section: 'bonds',
       uppercase: true,
     },
     {
-      label: t("treasuryBonds"),
-      href: "/treasury-bonds",
-      icon: "treasury-bonds",
-      section: "bonds",
+      label: t('treasuryBonds'),
+      href: '/treasury-bonds',
+      icon: 'treasury-bonds',
+      section: 'bonds',
       uppercase: true,
     },
     {
-      label: t("dao"),
-      href: "/dao",
-      icon: "dao",
-      section: "tools",
+      label: t('dao'),
+      href: '/dao',
+      icon: 'dao',
+      section: 'tools',
       uppercase: true,
     },
     {
-      label: t("coolingPool"),
-      href: "/cooling-pool",
-      icon: "cooling-pool",
-      section: "tools",
+      label: t('coolingPool'),
+      href: '/cooling-pool',
+      icon: 'cooling-pool',
+      section: 'tools',
       uppercase: true,
     },
     {
-      label: t("turbine"),
-      href: "/turbine",
-      icon: "turbine",
-      section: "tools",
+      label: t('turbine'),
+      href: '/turbine',
+      icon: 'turbine',
+      section: 'tools',
       uppercase: true,
     },
     {
-      label: t("swap"),
-      href: "/swap",
-      icon: "swap",
-      section: "tools",
+      label: t('swap'),
+      href: '/swap',
+      icon: 'swap',
+      section: 'tools',
       uppercase: true,
     },
   ];
 
   const footerItems: NavigationItem[] = [
     {
-      label: t("documents"),
-      href: "/documents",
-      icon: "/images/icon/docs.png",
+      label: t('documents'),
+      href: '/documents',
+      icon: '/images/icon/docs.png',
     },
     {
-      label: t("viewOnAve"),
-      href: "/ave",
-      icon: "/images/icon/ave.png", // 使用默认图标
+      label: t('viewOnAve'),
+      href: '/ave',
+      icon: '/images/icon/ave.png', // 使用默认图标
     },
     {
-      label: t("viewOnDexScreener"),
-      href: "/dex-screener",
-      icon: "/images/icon/dex.png", // 使用默认图标
+      label: t('viewOnDexScreener'),
+      href: '/dex-screener',
+      icon: '/images/icon/dex.png', // 使用默认图标
     },
   ];
 
@@ -162,87 +163,87 @@ export const SidebarContent = () => {
       }
       return acc;
     },
-    {} as Record<string, NavigationItem[]>,
+    {} as Record<string, NavigationItem[]>
   );
 
   return (
     <>
       {/* Main Navigation */}
       {groupedItems.main && (
-        <div className="space-y-2">
-          {groupedItems.main.map((item) => {
+        <div className='space-y-2'>
+          {groupedItems.main.map(item => {
             return <NavigationItem key={item.href} item={item} />;
           })}
         </div>
       )}
-      <div className="border-t border-gray-800 mx-5"></div>
+      <div className='border-t border-gray-800 mx-5'></div>
       {/* Staking Section */}
       {groupedItems.staking && (
-        <div className="space-y-2">
-          <h3 className="px-5 text-xs font-semibold uppercase tracking-wider text-gray-400">
-            {t("staking")}
+        <div className='space-y-2'>
+          <h3 className='px-5 text-xs font-semibold uppercase tracking-wider text-gray-400'>
+            {t('staking')}
           </h3>
-          {groupedItems.staking.map((item) => {
+          {groupedItems.staking.map(item => {
             return <NavigationItem key={item.href} item={item} />;
           })}
         </div>
       )}
-      <div className="border-t border-gray-800 mx-5"></div>
+      <div className='border-t border-gray-800 mx-5'></div>
       {/* Bonds Section */}
       {groupedItems.bonds && (
-        <div className="space-y-2">
-          <h3 className="px-5 text-xs font-semibold uppercase tracking-wider text-gray-400">
-            {t("bonds")}
+        <div className='space-y-2'>
+          <h3 className='px-5 text-xs font-semibold uppercase tracking-wider text-gray-400'>
+            {t('bonds')}
           </h3>
-          {groupedItems.bonds.map((item) => {
+          {groupedItems.bonds.map(item => {
             return <NavigationItem key={item.href} item={item} />;
           })}
         </div>
       )}
-      <div className="border-t border-gray-800 mx-5"></div>
+      <div className='border-t border-gray-800 mx-5'></div>
       {/* Tools Section */}
       {groupedItems.tools && (
-        <div className="space-y-2">
-          <h3 className="px-5 text-xs font-semibold uppercase tracking-wider text-gray-400">
-            {t("tools")}
+        <div className='space-y-2'>
+          <h3 className='px-5 text-xs font-semibold uppercase tracking-wider text-gray-400'>
+            {t('tools')}
           </h3>
-          {groupedItems.tools.map((item) => {
+          {groupedItems.tools.map(item => {
             return <NavigationItem key={item.href} item={item} />;
           })}
         </div>
       )}
 
-      <div className="flex-1"></div>
+      <div className='flex-1'></div>
       {footerItems && (
-        <div className="space-y-2">
-          {footerItems.map((item) => {
+        <div className='space-y-2'>
+          {footerItems.map(item => {
             return <NavigationItem key={item.href} item={item} />;
           })}
         </div>
       )}
       {/* Social Links */}
       <div>
-        <div className="flex gap-6 px-5">
-          <a href="#" aria-label="x">
+        <div className='flex gap-6 px-5'>
+          <a href='#' aria-label='x'>
             <Image
-              src="/images/icon/x.png"
-              alt="Twitter"
+              src='/images/icon/x.png'
+              alt='Twitter'
               width={32}
               height={32}
             />
           </a>
-          <a href="#" aria-label="Telegram">
+          <a href='#' aria-label='Telegram'>
             <Image
-              src="/images/icon/telegram.png"
-              alt="Telegram"
+              src='/images/icon/telegram.png'
+              alt='Telegram'
               width={32}
               height={32}
             />
           </a>
-          <a href="#" aria-label="YouTube">
+          <a href='#' aria-label='YouTube'>
             <Image
-              src="/images/icon/youtube.png"
-              alt="YouTube"
+              src='/images/icon/youtube.png'
+              alt='YouTube'
               width={32}
               height={32}
             />
@@ -255,9 +256,9 @@ export const SidebarContent = () => {
 
 export const Sidebar = () => {
   return (
-    <div className="hidden md:flex px-4 lg:px-9 flex-col">
-      <div className="sidebar w-[260px] min-h-[calc(100vh-128px)]">
-        <nav className="h-full flex flex-col gap-6 pt-6">
+    <div className='hidden md:flex px-4 lg:px-9 flex-col'>
+      <div className='sidebar w-[260px] min-h-[calc(100vh-128px)]'>
+        <nav className='h-full flex flex-col gap-6 pt-6'>
           <SidebarContent />
         </nav>
       </div>

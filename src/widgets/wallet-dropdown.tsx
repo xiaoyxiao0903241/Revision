@@ -1,40 +1,40 @@
-"use client";
-import { useMemo } from "react";
-import { useTranslations } from "next-intl";
-import Image from "next/image";
-import { useState, useRef, useEffect } from "react";
-import { Button, Icon, IconFontName, Segments } from "~/components";
+'use client';
+import { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import { useState, useRef, useEffect } from 'react';
+import { Button, Icon, IconFontName, Segments } from '~/components';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "~/components/dropdown-menu";
+} from '~/components/dropdown-menu';
 import {
   cn,
   formatAddress,
   fallbackCopyText,
   formatNumbedecimalScale,
-} from "~/lib/utils";
-import { useAccount } from "wagmi";
-import ClipboardJS from "clipboard";
-import { useTokenBalance } from "~/hooks/useTokenBalance";
-import { TOKEN_ADDRESSES } from "~/wallet/constants/tokens";
-import { useBalance } from "wagmi";
-import { formatUnits } from "viem";
-import { bnbPrice } from "~/services/auth/head";
-import { useQuery } from "@tanstack/react-query";
-import { useUserAddress } from "~/contexts/UserAddressContext";
-import { getTokenPrice } from "~/wallet/lib/web3/bond";
-import { toast } from "sonner";
+} from '~/lib/utils';
+import { useAccount } from 'wagmi';
+import ClipboardJS from 'clipboard';
+import { useTokenBalance } from '~/hooks/useTokenBalance';
+import { TOKEN_ADDRESSES } from '~/wallet/constants/tokens';
+import { useBalance } from 'wagmi';
+import { formatUnits } from 'viem';
+import { bnbPrice } from '~/services/auth/head';
+import { useQuery } from '@tanstack/react-query';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import { getTokenPrice } from '~/wallet/lib/web3/bond';
+import { toast } from 'sonner';
 import {
   getUserStakes,
   getNodeStakes,
   demandAfterHot,
   demandInfo,
   demandProfit,
-} from "~/wallet/lib/web3/stake";
-import { myMess } from "~/services/auth/dashboard";
+} from '~/wallet/lib/web3/stake';
+import { myMess } from '~/services/auth/dashboard';
 
 interface WalletAsset {
   symbol: string;
@@ -75,10 +75,10 @@ export function WalletDropdown({
   children,
   handleDisconnect,
 }: WalletDropdownProps) {
-  const t = useTranslations("common");
-  const tcopy = useTranslations("invite");
+  const t = useTranslations('common');
+  const tcopy = useTranslations('invite');
 
-  const [activeTab, setActiveTab] = useState("wallet");
+  const [activeTab, setActiveTab] = useState('wallet');
   const [copeA, setcopeA] = useState(1);
   const [copeB, setcopeB] = useState(1);
   const { address } = useAccount();
@@ -102,15 +102,15 @@ export function WalletDropdown({
 
   //总奖金
   const { data: myMessData } = useQuery({
-    queryKey: ["myMess", userAddress],
-    queryFn: () => myMess("", "", userAddress as `0x${string}`),
+    queryKey: ['myMess', userAddress],
+    queryFn: () => myMess('', '', userAddress as `0x${string}`),
     enabled: Boolean(userAddress),
     refetchInterval: 20000,
   });
 
   //热身期后的数据
   const { data: afterHotData } = useQuery({
-    queryKey: ["DemandAfterHot", userAddress],
+    queryKey: ['DemandAfterHot', userAddress],
     queryFn: () => demandAfterHot({ address: userAddress as `0x${string}` }),
     enabled: Boolean(userAddress),
     retry: 1,
@@ -118,7 +118,7 @@ export function WalletDropdown({
   });
   //热身期的数据
   const { data: hotData } = useQuery({
-    queryKey: ["UserDemandInfo", userAddress],
+    queryKey: ['UserDemandInfo', userAddress],
     queryFn: () => demandInfo({ address: userAddress as `0x${string}` }),
     enabled: Boolean(userAddress),
     retry: 1,
@@ -127,7 +127,7 @@ export function WalletDropdown({
 
   //质押列表
   const { data: myStakingList } = useQuery({
-    queryKey: ["UserStakes", userAddress],
+    queryKey: ['UserStakes', userAddress],
     queryFn: () => getUserStakes({ address: userAddress as `0x${string}` }),
     enabled: Boolean(userAddress),
     retry: 1,
@@ -136,7 +136,7 @@ export function WalletDropdown({
 
   //  节点质押
   const { data: myNodeStakingList } = useQuery({
-    queryKey: ["UserNodeStakes", userAddress],
+    queryKey: ['UserNodeStakes', userAddress],
     queryFn: () => getNodeStakes({ address: userAddress as `0x${string}` }),
     enabled: Boolean(userAddress),
     retry: 1,
@@ -145,7 +145,7 @@ export function WalletDropdown({
 
   // oly单价
   const { data: olyPrice } = useQuery({
-    queryKey: ["olyPrice"],
+    queryKey: ['olyPrice'],
     queryFn: getTokenPrice,
     enabled: true,
     retry: 1,
@@ -154,7 +154,7 @@ export function WalletDropdown({
 
   //获取静态收益
   const { data: demandProfitInfo } = useQuery({
-    queryKey: ["UserDemandProfit", userAddress],
+    queryKey: ['UserDemandProfit', userAddress],
     queryFn: () => demandProfit({ address: userAddress as `0x${string}` }),
     enabled: Boolean(userAddress),
     retry: 1,
@@ -176,8 +176,8 @@ export function WalletDropdown({
           : [];
 
         const allList = [...nodeList, ...list];
-        console.log(allList, "allList1111");
-        allList.forEach((it) => {
+        console.log(allList, 'allList1111');
+        allList.forEach(it => {
           longAmount += it.pending;
           claimLong += it.blockReward + it.blockReward;
         });
@@ -204,51 +204,51 @@ export function WalletDropdown({
   // 当前质押
   const positionItems: PositionItem[] = [
     {
-      type: "staking",
-      name: t("staking"),
+      type: 'staking',
+      name: t('staking'),
       amount: formatNumbedecimalScale(allStakeAmount, 4),
       value: formatNumbedecimalScale(allStakeAmount * Number(olyPrice), 2),
-      icon: "staking",
-      className: "bg-warning",
+      icon: 'staking',
+      className: 'bg-warning',
     },
     {
-      type: "bonds",
-      name: t("bonds"),
-      amount: "0",
-      value: "$0.0",
-      icon: "diamond",
-      className: "bg-secondary",
+      type: 'bonds',
+      name: t('bonds'),
+      amount: '0',
+      value: '$0.0',
+      icon: 'diamond',
+      className: 'bg-secondary',
     },
   ];
 
   // 质押奖励
   const rewardItems: PositionItem[] = [
     {
-      type: "rebaseReward",
-      name: t("rebaseReward"),
+      type: 'rebaseReward',
+      name: t('rebaseReward'),
       amount: formatNumbedecimalScale(allClaimAmount, 4),
       value: formatNumbedecimalScale(allClaimAmount * Number(olyPrice), 2),
-      icon: "medal",
-      className: "gradient",
+      icon: 'medal',
+      className: 'gradient',
     },
     {
-      type: "totalBonus",
-      name: t("totalBonus"),
+      type: 'totalBonus',
+      name: t('totalBonus'),
       amount: formatNumbedecimalScale(myMessData?.totalBonus, 4),
       value: formatNumbedecimalScale(
         Number(myMessData?.totalBonus) * Number(olyPrice),
-        2,
+        2
       ),
-      icon: "bag",
-      className: "bg-success",
+      icon: 'bag',
+      className: 'bg-success',
     },
   ];
 
   //获取bnb价格
   const { data: bnbprice } = useQuery({
-    queryKey: ["getBnbPrice"],
+    queryKey: ['getBnbPrice'],
     queryFn: () => {
-      if (!userAddress) return Promise.reject(new Error("Missing  address"));
+      if (!userAddress) return Promise.reject(new Error('Missing  address'));
       return bnbPrice();
     },
     enabled: !!userAddress,
@@ -273,42 +273,42 @@ export function WalletDropdown({
     }
     setWalletAssets([
       {
-        symbol: "USDT",
-        name: "Tether USD",
+        symbol: 'USDT',
+        name: 'Tether USD',
         balance: formatNumbedecimalScale(daiBalance, 2),
         value: formatNumbedecimalScale(daiBalance, 2),
-        icon: "/images/icon/usdt.png",
-        chain: "BNB CHAIN",
+        icon: '/images/icon/usdt.png',
+        chain: 'BNB CHAIN',
       },
       {
-        symbol: "BNB",
-        name: "BNB",
+        symbol: 'BNB',
+        name: 'BNB',
         balance: bnbBalance
           ? formatNumbedecimalScale(
               formatUnits(bnbBalance.value, bnbBalance.decimals),
-              6,
+              6
             )
-          : "0",
+          : '0',
         value: bnbBalance
           ? formatNumbedecimalScale(
               Number(formatUnits(bnbBalance.value, bnbBalance.decimals)) *
                 bnbprice,
-              2,
+              2
             )
           : 0,
-        icon: "/images/icon/bnb.png",
-        chain: "BNB CHAIN",
+        icon: '/images/icon/bnb.png',
+        chain: 'BNB CHAIN',
       },
       {
-        symbol: "OLY",
-        name: "OLYONE TOKEN",
+        symbol: 'OLY',
+        name: 'OLYONE TOKEN',
         balance: formatNumbedecimalScale(olyBalance, 4),
         value:
           olyBalance && olyPrice
             ? formatNumbedecimalScale(Number(olyBalance) * Number(olyPrice), 2)
             : 0,
-        icon: "/images/icon/one.png",
-        chain: "BNB CHAIN",
+        icon: '/images/icon/one.png',
+        chain: 'BNB CHAIN',
       },
     ]);
 
@@ -316,15 +316,15 @@ export function WalletDropdown({
   }, [daiBalance, bnbBalance, bnbprice, olyBalance, olyPrice]);
 
   const handleBuy = () => {
-    console.log("Buy clicked");
+    console.log('Buy clicked');
   };
 
   const handleSell = () => {
-    console.log("Sell clicked");
+    console.log('Sell clicked');
   };
 
   const handleReceive = () => {
-    console.log("Receive clicked");
+    console.log('Receive clicked');
   };
   const addressRef = useRef<HTMLButtonElement>(null);
 
@@ -333,19 +333,19 @@ export function WalletDropdown({
       addressClipboardRef.current = new ClipboardJS(addressRef.current, {
         text: () => {
           console.log(
-            "ClipboardJS text function called with address:",
-            address,
+            'ClipboardJS text function called with address:',
+            address
           );
           return address as string;
         },
       });
 
-      addressClipboardRef.current.on("success", () => {
-        console.log("ClipboardJS success");
+      addressClipboardRef.current.on('success', () => {
+        console.log('ClipboardJS success');
         setcopeA(copeA + 1);
       });
-      addressClipboardRef.current.on("error", () => {
-        console.log("ClipboardJS error");
+      addressClipboardRef.current.on('error', () => {
+        console.log('ClipboardJS error');
         setcopeA(copeA - 1);
       });
     }
@@ -354,24 +354,24 @@ export function WalletDropdown({
 
   const handleCopyAddress = async () => {
     if (address) {
-      console.log("复制111");
-      console.log(address, "address复制111");
+      console.log('复制111');
+      console.log(address, 'address复制111');
       try {
         if (navigator?.clipboard?.writeText) {
           await navigator.clipboard.writeText(address);
           setcopeB(copeB + 1);
-          console.log(copeB + 1, "opeB + 1");
+          console.log(copeB + 1, 'opeB + 1');
           return;
         }
         const success = await fallbackCopyText(address);
-        console.log(success, "success11111");
+        console.log(success, 'success11111');
         if (success) {
           setcopeB(copeB + 1);
-          console.log(copeB + 1, "opeB + 111");
+          console.log(copeB + 1, 'opeB + 111');
           return;
         }
       } catch (error) {
-        console.error(error, "error111");
+        console.error(error, 'error111');
         setcopeB(copeB - 1);
       }
     }
@@ -380,208 +380,208 @@ export function WalletDropdown({
   useEffect(() => {
     if (copeA > 1 || copeB > 1) {
       const timer = setTimeout(() => {
-        toast.success(tcopy("copySuccess"));
+        toast.success(tcopy('copySuccess'));
         setcopeA(1);
         setcopeB(1);
       }, 500);
       return () => clearTimeout(timer);
     }
     if (copeA < 1 && copeB < 1) {
-      toast.error(tcopy("copyError"));
+      toast.error(tcopy('copyError'));
       setcopeA(1);
       setcopeB(1);
     }
   }, [copeA, copeB, tcopy, setcopeA, setcopeB]);
-  const shortAddress = address ? formatAddress(address) : "";
+  const shortAddress = address ? formatAddress(address) : '';
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent
-        align="end"
-        className="w-[412px] p-0 bg-gradient-to-b from-[#1a1d4a] to-[#0f1235] border-[#434c8c] text-white"
+        align='end'
+        className='w-[412px] p-0 bg-gradient-to-b from-[#1a1d4a] to-[#0f1235] border-[#434c8c] text-white'
       >
         {/* Header */}
-        <div className="flex flex-col p-6 gap-6">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-2 text-foreground/50">
+        <div className='flex flex-col p-6 gap-6'>
+          <div className='flex items-center justify-between gap-4'>
+            <div className='flex items-center gap-2 text-foreground/50'>
               <Image
-                src="/images/icon/fox.png"
-                alt="wallet"
+                src='/images/icon/fox.png'
+                alt='wallet'
                 width={24}
                 height={24}
               />
-              <span className="text-lg text-foreground font-mono">
+              <span className='text-lg text-foreground font-mono'>
                 {shortAddress}
               </span>
               <button
-                className="cursor-pointer hover:text-white/70"
+                className='cursor-pointer hover:text-white/70'
                 ref={addressRef}
                 onClick={() => {
                   handleCopyAddress();
                 }}
               >
-                <Icon name="copy" size={16} className="pointer-events-none" />
+                <Icon name='copy' size={16} className='pointer-events-none' />
               </button>
               <div
-                className="cursor-pointer
-                hover:text-white/70"
+                className='cursor-pointer
+                hover:text-white/70'
                 onClick={() => {
                   window.open(`https://bscscan.com/address/${userAddress}`);
                 }}
               >
-                <Icon name="share" size={16} className="pointer-events-none" />
+                <Icon name='share' size={16} className='pointer-events-none' />
               </div>
             </div>
             <Button
-              clipDirection="topLeft-bottomRight"
+              clipDirection='topLeft-bottomRight'
               clipSize={8}
-              variant="outlined"
-              className="h-8"
+              variant='outlined'
+              className='h-8'
               onClick={handleDisconnect}
             >
-              <span className="text-gradient text-sm px-2 z-10">
-                {t("disconnect")}
+              <span className='text-gradient text-sm px-2 z-10'>
+                {t('disconnect')}
               </span>
             </Button>
           </div>
 
           {/* Balance */}
-          <div className="flex flex-col gap-2">
-            <div className="text-3xl font-bold">{totalValueInUSD}</div>
-            <div className="text-foreground/50 text-xs">
-              {activeTab === "wallet" ? t("myWallet") : t("myAccount")}
+          <div className='flex flex-col gap-2'>
+            <div className='text-3xl font-bold'>{totalValueInUSD}</div>
+            <div className='text-foreground/50 text-xs'>
+              {activeTab === 'wallet' ? t('myWallet') : t('myAccount')}
             </div>
           </div>
 
           <Segments
             options={[
-              { value: "wallet", label: t("mywallet") },
-              { value: "account", label: t("account") },
+              { value: 'wallet', label: t('mywallet') },
+              { value: 'account', label: t('account') },
             ]}
             value={activeTab}
-            onChange={(value) => setActiveTab(value as "wallet" | "account")}
+            onChange={value => setActiveTab(value as 'wallet' | 'account')}
           />
         </div>
 
         {/* Content */}
-        <div className="px-6 pb-6">
-          {activeTab === "wallet" && (
-            <div className="space-y-3">
+        <div className='px-6 pb-6'>
+          {activeTab === 'wallet' && (
+            <div className='space-y-3'>
               {/* Assets Header */}
-              <span className="text-foreground/50 text-xs px-0">
-                {t("assets")}
+              <span className='text-foreground/50 text-xs px-0'>
+                {t('assets')}
               </span>
 
               {/* Assets List */}
-              <div className="">
+              <div className=''>
                 {walletAssets.map((asset, index) => (
                   <DropdownMenuItem
                     key={index}
-                    className="flex items-center justify-between px-0"
+                    className='flex items-center justify-between px-0'
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="relative">
+                    <div className='flex items-center gap-3'>
+                      <div className='relative'>
                         <Image
                           src={asset.icon}
                           alt={asset.symbol}
                           width={32}
                           height={32}
-                          className="rounded-full"
+                          className='rounded-full'
                         />
                         <Image
-                          src="/images/icon/bnb.png"
-                          alt="bnb"
+                          src='/images/icon/bnb.png'
+                          alt='bnb'
                           width={16}
                           height={16}
-                          className="absolute -bottom-1 -right-1 w-4 h-4"
+                          className='absolute -bottom-1 -right-1 w-4 h-4'
                         />
                       </div>
                       <div>
-                        <div className="font-medium space-x-2">
+                        <div className='font-medium space-x-2'>
                           <span>{asset.symbol}</span>
-                          <span className="text-white/50 text-xs">
+                          <span className='text-white/50 text-xs'>
                             {asset.name}
                           </span>
                         </div>
-                        <div className="text-xs text-white/50">
+                        <div className='text-xs text-white/50'>
                           {asset.chain}
                         </div>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <div className="font-medium font-mono text-lg">
+                    <div className='text-right'>
+                      <div className='font-medium font-mono text-lg'>
                         {asset.balance}
                       </div>
-                      <div className="text-xs text-white/50">{asset.value}</div>
+                      <div className='text-xs text-white/50'>{asset.value}</div>
                     </div>
                   </DropdownMenuItem>
                 ))}
               </div>
               {/* Action Buttons */}
-              <div className="flex gap-5 w-full text-sm font-mono">
+              <div className='flex gap-5 w-full text-sm font-mono'>
                 <Button
                   onClick={handleBuy}
-                  clipDirection="topLeft-bottomRight"
+                  clipDirection='topLeft-bottomRight'
                   clipSize={8}
-                  className="h-8 flex-1 text-sm font-mono"
+                  className='h-8 flex-1 text-sm font-mono'
                 >
-                  {t("buy")}
+                  {t('buy')}
                 </Button>
                 <Button
                   onClick={handleSell}
-                  clipDirection="topLeft-bottomRight"
+                  clipDirection='topLeft-bottomRight'
                   clipSize={8}
-                  className="h-8 flex-1 text-sm font-mono"
+                  className='h-8 flex-1 text-sm font-mono'
                 >
-                  {t("sell")}
+                  {t('sell')}
                 </Button>
                 <Button
                   onClick={handleReceive}
-                  variant="outlined"
-                  clipDirection="topLeft-bottomRight"
+                  variant='outlined'
+                  clipDirection='topLeft-bottomRight'
                   clipSize={8}
-                  className="h-8 flex-1 text-sm font-mono"
+                  className='h-8 flex-1 text-sm font-mono'
                 >
-                  <span className="text-gradient text-sm px-2 z-10">
-                    {t("receive")}
+                  <span className='text-gradient text-sm px-2 z-10'>
+                    {t('receive')}
                   </span>
                 </Button>
               </div>
             </div>
           )}
 
-          {activeTab === "account" && (
-            <div className="space-y-6">
+          {activeTab === 'account' && (
+            <div className='space-y-6'>
               {/* Position Section */}
-              <div className="space-y-3">
-                <span className="text-white/50 text-xs px-0">
-                  {t("position")}
+              <div className='space-y-3'>
+                <span className='text-white/50 text-xs px-0'>
+                  {t('position')}
                 </span>
-                <div className="space-y-2">
+                <div className='space-y-2'>
                   {positionItems.map((item, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between"
+                      className='flex items-center justify-between'
                     >
-                      <div className="flex items-center gap-3">
+                      <div className='flex items-center gap-3'>
                         <div
                           className={cn(
                             `w-8 h-8 rounded-full flex items-center justify-center`,
-                            item.className,
+                            item.className
                           )}
                         >
                           <Icon name={item.icon} size={24} />
                         </div>
-                        <div className="font-medium text-lg font-mono text-white">
+                        <div className='font-medium text-lg font-mono text-white'>
                           {item.name}
                         </div>
                       </div>
-                      <div className="text-right">
-                        <div className="font-medium text-lg font-mono text-white">
+                      <div className='text-right'>
+                        <div className='font-medium text-lg font-mono text-white'>
                           {item.amount} OLY
                         </div>
-                        <div className="text-xs text-white/50">
+                        <div className='text-xs text-white/50'>
                           ${item.value}
                         </div>
                       </div>
@@ -591,34 +591,34 @@ export function WalletDropdown({
               </div>
 
               {/* Reward Section */}
-              <div className="space-y-3">
-                <span className="text-white/50 text-xs px-0">
-                  {t("reward")}
+              <div className='space-y-3'>
+                <span className='text-white/50 text-xs px-0'>
+                  {t('reward')}
                 </span>
-                <div className="space-y-2">
+                <div className='space-y-2'>
                   {rewardItems.map((item, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between"
+                      className='flex items-center justify-between'
                     >
-                      <div className="flex items-center gap-3">
+                      <div className='flex items-center gap-3'>
                         <div
                           className={cn(
                             `w-8 h-8 rounded-full flex items-center justify-center`,
-                            item.className,
+                            item.className
                           )}
                         >
                           <Icon name={item.icon} size={24} />
                         </div>
-                        <div className="font-medium text-lg text-white">
+                        <div className='font-medium text-lg text-white'>
                           {item.name}
                         </div>
                       </div>
-                      <div className="text-right">
-                        <div className="font-medium text-lg text-white">
+                      <div className='text-right'>
+                        <div className='font-medium text-lg text-white'>
                           {item.amount} OLY
                         </div>
-                        <div className="text-xs text-white/50">
+                        <div className='text-xs text-white/50'>
                           ${item.value}
                         </div>
                       </div>

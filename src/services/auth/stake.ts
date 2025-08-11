@@ -63,13 +63,13 @@ export const longStakHis = async (
   page: number = 1,
   pageSize: number = 10,
   tokenAddress: string,
-  recordType:string | ""
+  recordType: string | ''
 ) => {
   const searchParams = {
     pageNum: page,
     pageSize: pageSize,
     pageType: 'longTerm',
-    recordType
+    recordType,
   };
   const response = await authFetch(
     `/api/history/staked`,
@@ -114,13 +114,13 @@ export const demandStakHis = async (
   page: number = 1,
   pageSize: number = 10,
   tokenAddress: string,
-  recordType:string | ""
+  recordType: string | ''
 ) => {
   const searchParams = {
     pageNum: page,
     pageSize: pageSize,
     pageType: 'flexible',
-    recordType
+    recordType,
   };
   const response = await authFetch(
     `/api/history/staked`,

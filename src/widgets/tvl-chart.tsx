@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React, { useMemo } from "react";
-import ReactECharts from "echarts-for-react";
-import type { EChartsOption } from "echarts";
-import { useChart } from "~/hooks/useChart";
+import React, { useMemo } from 'react';
+import ReactECharts from 'echarts-for-react';
+import type { EChartsOption } from 'echarts';
+import { useChart } from '~/hooks/useChart';
 
 // TVL图表组件
 export const TVLChart: React.FC<{
@@ -11,27 +11,27 @@ export const TVLChart: React.FC<{
   height?: string | number;
   className?: string;
   dataSource: Array<[string, number]>;
-}> = ({ dataSource, className = "" }) => {
+}> = ({ dataSource, className = '' }) => {
   const { chartRef } = useChart();
   const chartOption = useMemo<EChartsOption>(() => {
     const data = dataSource || [];
     return {
-      backgroundColor: "transparent",
+      backgroundColor: 'transparent',
       animation: false,
       tooltip: {
-        trigger: "axis",
+        trigger: 'axis',
         axisPointer: {
-          type: "cross",
+          type: 'cross',
           lineStyle: {
-            color: "#376df4",
+            color: '#376df4',
             width: 1,
             opacity: 1,
           },
         },
-        backgroundColor: "rgba(0, 0, 0, 0.8)",
-        borderColor: "#333333",
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        borderColor: '#333333',
         textStyle: {
-          color: "#ffffff",
+          color: '#ffffff',
         },
         formatter: (params: unknown) => {
           const paramArray = params as Array<{
@@ -44,45 +44,45 @@ export const TVLChart: React.FC<{
         },
       },
       grid: {
-        left: "10%",
-        right: "10%",
-        top: "15%",
-        bottom: "15%",
+        left: '10%',
+        right: '10%',
+        top: '15%',
+        bottom: '15%',
       },
       xAxis: {
-        type: "category",
-        data: data.map((item) => item[0]),
+        type: 'category',
+        data: data.map(item => item[0]),
         axisLine: {
           lineStyle: {
-            color: "#8392A5",
+            color: '#8392A5',
           },
         },
         axisLabel: {
-          color: "#ffffff",
+          color: '#ffffff',
           // formatter: (value: string) => {
           //   return value.split("-")[1] // 只显示月份
           // },
         },
       },
       yAxis: {
-        type: "value",
+        type: 'value',
         min: 0,
         max: 6000,
         interval: 1000,
         axisLine: {
           lineStyle: {
-            color: "#8392A5",
+            color: '#8392A5',
           },
         },
         splitLine: {
           show: true,
           lineStyle: {
-            color: "#2A2A2A",
-            type: "dashed",
+            color: '#2A2A2A',
+            type: 'dashed',
           },
         },
         axisLabel: {
-          color: "#ffffff",
+          color: '#ffffff',
           formatter: (value: number) => {
             return value.toLocaleString();
           },
@@ -90,17 +90,17 @@ export const TVLChart: React.FC<{
       },
       series: [
         {
-          type: "line",
+          type: 'line',
           data: data,
           smooth: true,
-          symbol: "none",
+          symbol: 'none',
           lineStyle: {
             width: 1,
-            color: "#8B5CF6",
+            color: '#8B5CF6',
           },
           areaStyle: {
             color: {
-              type: "linear",
+              type: 'linear',
               x: 0,
               y: 0,
               x2: 0,
@@ -108,11 +108,11 @@ export const TVLChart: React.FC<{
               colorStops: [
                 {
                   offset: 0,
-                  color: "rgba(139, 92, 246, 0.3)",
+                  color: 'rgba(139, 92, 246, 0.3)',
                 },
                 {
                   offset: 1,
-                  color: "rgba(139, 92, 246, 0.05)",
+                  color: 'rgba(139, 92, 246, 0.05)',
                 },
               ],
             },
@@ -127,8 +127,8 @@ export const TVLChart: React.FC<{
       <ReactECharts
         option={chartOption}
         ref={chartRef}
-        style={{ width: "100%", height: "100%" }}
-        opts={{ renderer: "canvas" }}
+        style={{ width: '100%', height: '100%' }}
+        opts={{ renderer: 'canvas' }}
       />
     </div>
   );

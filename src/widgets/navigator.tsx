@@ -1,21 +1,21 @@
-"use client"
+'use client';
 
-import { NavigationTabs } from "~/components"
-import { usePathname } from "~/i18n/navigation"
+import { usePathname } from 'next/navigation';
+import { NavigationTabs } from '~/components';
 
 export function Navigator({
   items,
 }: {
-  items: { label: string; href: string }[]
+  items: { label: string; href: string }[];
 }) {
-  const pathname = usePathname()
+  const pathname = usePathname();
   return (
     <NavigationTabs
       data={items}
       activeIndex={items.findIndex(
-        (item) =>
+        item =>
           pathname.endsWith(item.href) || pathname.includes(`/${item.href}/`)
       )}
     />
-  )
+  );
 }

@@ -1,16 +1,16 @@
-import { useTranslations } from "next-intl";
-import { FC, ReactNode, useState, useEffect } from "react";
-import { Button, Card, CardContent, Icon, Pager, Tabs } from "~/components";
-import { cn, formatDecimal, formatHash } from "~/lib/utils";
-import { turbineRecord } from "~/services/auth/turbine";
-import { useQuery } from "@tanstack/react-query";
-import { useUserAddress } from "~/contexts/UserAddressContext";
-import ConnectWalletButton from "~/components/web3/ConnectWalletButton";
+import { useTranslations } from 'next-intl';
+import { FC, ReactNode, useState, useEffect } from 'react';
+import { Button, Card, CardContent, Icon, Pager, Tabs } from '~/components';
+import { cn, formatDecimal, formatHash } from '~/lib/utils';
+import { turbineRecord } from '~/services/auth/turbine';
+import { useQuery } from '@tanstack/react-query';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
 
 // 事件颜色映射
 const eventColors = {
-  redeemed: "text-secondary",
-  received: "text-success",
+  redeemed: 'text-secondary',
+  received: 'text-success',
 };
 
 const Cell = ({
@@ -25,12 +25,12 @@ const Cell = ({
   return (
     <td
       className={cn(
-        "py-3 px-4 gap-1 flex flex-col w-1/4 justify-start",
-        className,
+        'py-3 px-4 gap-1 flex flex-col w-1/4 justify-start',
+        className
       )}
     >
-      <div className="text-xs text-foreground/50">{title}</div>
-      <div className="flex flex-row items-center gap-2">{children}</div>
+      <div className='text-xs text-foreground/50'>{title}</div>
+      <div className='flex flex-row items-center gap-2'>{children}</div>
     </td>
   );
 };
@@ -44,8 +44,8 @@ interface TurbineRecord {
 }
 
 export const TurbineRecords: FC = () => {
-  const t = useTranslations("turbine");
-  const t2 = useTranslations("common");
+  const t = useTranslations('turbine');
+  const t2 = useTranslations('common');
   const [activeTab, setActiveTab] = useState(0);
   const [pages, setPages] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
@@ -54,20 +54,20 @@ export const TurbineRecords: FC = () => {
 
   const [history, setHistory] = useState<TurbineRecord[]>([]);
   const { userAddress } = useUserAddress();
-  const [recordType, setRecordType] = useState("");
+  const [recordType, setRecordType] = useState('');
 
   //获取记录
   const { data: recordList } = useQuery({
-    queryKey: ["getTurbineRecord", page, userAddress, recordType],
+    queryKey: ['getTurbineRecord', page, userAddress, recordType],
     queryFn: async () => {
       if (!userAddress) {
-        throw new Error("Missing address");
+        throw new Error('Missing address');
       }
       const response = await turbineRecord(
         page,
         pageSize,
         userAddress,
-        recordType,
+        recordType
       );
       return response || [];
     },
@@ -90,26 +90,26 @@ export const TurbineRecords: FC = () => {
   }, [recordType]);
   // 标签页数据
   const tabData = [
-    { label: t("allEvent"), href: "#", type: "" },
-    { label: t("receive"), href: "#", type: "received" },
-    { label: t("claimEvent"), href: "#", type: "redeemed" },
+    { label: t('allEvent'), href: '#', type: '' },
+    { label: t('receive'), href: '#', type: 'received' },
+    { label: t('claimEvent'), href: '#', type: 'redeemed' },
   ];
 
   return (
     <Card>
-      <CardContent className="space-y-6">
+      <CardContent className='space-y-6'>
         {/* 标签页 */}
         <Tabs
           data={tabData}
           activeIndex={activeTab}
-          onChange={(value) => {
+          onChange={value => {
             setRecordType(tabData[value].type);
             setActiveTab(value);
           }}
         >
-          <div className="flex-1 flex flex-col items-end">
-            <div className="text-base text-foreground">
-              {total} {t("records")}
+          <div className='flex-1 flex flex-col items-end'>
+            <div className='text-base text-foreground'>
+              {total} {t('records')}
             </div>
           </div>
           {/* <div className="text-xs text-foreground/50">
@@ -119,17 +119,17 @@ export const TurbineRecords: FC = () => {
         </Tabs>
 
         {/* 记录表格 */}
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <tbody className="flex flex-col gap-1">
+        <div className='overflow-x-auto'>
+          <table className='w-full'>
+            <tbody className='flex flex-col gap-1'>
               {history?.length > 0 ? (
-                history.map((record) => (
+                history.map(record => (
                   <tr
                     key={record.hash}
-                    className="bg-foreground/5 mb-2 rounded-lg flex flex-row w-full"
+                    className='bg-foreground/5 mb-2 rounded-lg flex flex-row w-full'
                   >
                     <Cell
-                      title={t("event")}
+                      title={t('event')}
                       className={
                         eventColors[
                           record.turbineType as keyof typeof eventColors
@@ -137,20 +137,20 @@ export const TurbineRecords: FC = () => {
                       }
                     >
                       <Icon
-                        name={record.event === "claim" ? "event" : "record"}
+                        name={record.event === 'claim' ? 'event' : 'record'}
                         size={16}
                       />
-                      {record.turbineType === "claim"
-                        ? t("claimEvent")
-                        : t("receive")}
+                      {record.turbineType === 'claim'
+                        ? t('claimEvent')
+                        : t('receive')}
                     </Cell>
-                    <Cell title={t("amount")} className="w-1/4">
+                    <Cell title={t('amount')} className='w-1/4'>
                       {formatDecimal(record.amount, 2)} OLY
                     </Cell>
-                    <Cell title={t("transactionHash")} className="w-1/4">
+                    <Cell title={t('transactionHash')} className='w-1/4'>
                       <a
-                        href="#"
-                        className="underline text-sm"
+                        href='#'
+                        className='underline text-sm'
                         onClick={() => {
                           window.open(`https://bscscan.com/tx/${record.hash}`);
                         }}
@@ -158,30 +158,30 @@ export const TurbineRecords: FC = () => {
                         {formatHash(record.hash)}
                       </a>
                     </Cell>
-                    <Cell title={t("dateTime")} className="w-1/4">
+                    <Cell title={t('dateTime')} className='w-1/4'>
                       {record.createdAt}
                     </Cell>
                   </tr>
                 ))
               ) : (
-                <tr className="w-full">
+                <tr className='w-full'>
                   <td
                     colSpan={4}
-                    className="flex flex-col items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-4 gap-2"
+                    className='flex flex-col items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-4 gap-2'
                   >
                     {!userAddress ? (
                       <>
-                        {t("walletNotConnected")}
+                        {t('walletNotConnected')}
                         <ConnectWalletButton />
                       </>
                     ) : (
                       <>
-                        {t("noRecords")}
+                        {t('noRecords')}
                         <Button
-                          clipDirection="topRight-bottomLeft"
-                          className="w-auto"
+                          clipDirection='topRight-bottomLeft'
+                          className='w-auto'
                         >
-                          {t2("nodata")}
+                          {t2('nodata')}
                         </Button>
                       </>
                     )}
@@ -193,7 +193,7 @@ export const TurbineRecords: FC = () => {
             {pages > 0 && (
               <tfoot>
                 <tr>
-                  <td colSpan={4} className="flex justify-center items-center">
+                  <td colSpan={4} className='flex justify-center items-center'>
                     <Pager
                       currentPage={page}
                       totalPages={pages}

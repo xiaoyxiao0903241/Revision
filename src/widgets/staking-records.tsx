@@ -1,15 +1,15 @@
-import { useTranslations } from "next-intl";
-import { FC, ReactNode, useState } from "react";
-import { Button, Card, CardContent, Icon, Tabs } from "~/components";
-import { useUserAddress } from "~/contexts/UserAddressContext";
-import ConnectWalletButton from "~/components/web3/ConnectWalletButton";
-import { cn, formatDecimal, formatHash } from "~/lib/utils";
+import { useTranslations } from 'next-intl';
+import { FC, ReactNode, useState } from 'react';
+import { Button, Card, CardContent, Icon, Tabs } from '~/components';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
+import { cn, formatDecimal, formatHash } from '~/lib/utils';
 
 // 事件颜色映射
 const eventColors = {
-  deposit: "text-secondary",
-  principal: "text-destructive",
-  rebase: "text-success",
+  deposit: 'text-secondary',
+  principal: 'text-destructive',
+  rebase: 'text-success',
 };
 
 const Cell = ({
@@ -24,12 +24,12 @@ const Cell = ({
   return (
     <td
       className={cn(
-        "py-3 px-4 gap-1 flex flex-col w-1/5 justify-start",
-        className,
+        'py-3 px-4 gap-1 flex flex-col w-1/5 justify-start',
+        className
       )}
     >
-      <div className="text-xs text-foreground/50">{title}</div>
-      <div className="flex flex-row items-center gap-2">{children}</div>
+      <div className='text-xs text-foreground/50'>{title}</div>
+      <div className='flex flex-row items-center gap-2'>{children}</div>
     </td>
   );
 };
@@ -47,61 +47,61 @@ export const StakingRecords: FC<{
   changeTab: (type: string) => void;
   total: number;
 }> = ({ records, changeTab, total }) => {
-  const t = useTranslations("staking");
-  const t2 = useTranslations("common");
+  const t = useTranslations('staking');
+  const t2 = useTranslations('common');
   const [activeTab, setActiveTab] = useState(0);
   const { userAddress } = useUserAddress();
   // 标签页数据
   const tabData = [
-    { label: t("allEvent"), href: "#", type: "" },
-    { label: t("stake"), href: "#", type: "deposit" },
-    { label: t("unstake"), href: "#", type: "principal" },
-    { label: t("claim"), href: "#", type: "rebase" },
+    { label: t('allEvent'), href: '#', type: '' },
+    { label: t('stake'), href: '#', type: 'deposit' },
+    { label: t('unstake'), href: '#', type: 'principal' },
+    { label: t('claim'), href: '#', type: 'rebase' },
   ];
 
   return (
     <Card>
-      <CardContent className="space-y-6">
+      <CardContent className='space-y-6'>
         {/* 标签页 */}
         <Tabs
           data={tabData}
           activeIndex={activeTab}
-          onChange={(value) => {
+          onChange={value => {
             changeTab(tabData[value].type);
             setActiveTab(value);
           }}
         >
-          <div className="flex-1 flex flex-col items-end">
-            <div className="text-base text-foreground">
-              {total} {t("recordsCount")}
+          <div className='flex-1 flex flex-col items-end'>
+            <div className='text-base text-foreground'>
+              {total} {t('recordsCount')}
             </div>
           </div>
         </Tabs>
 
         {/* 记录表格 */}
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <tbody className="flex flex-col gap-1">
+        <div className='overflow-x-auto'>
+          <table className='w-full'>
+            <tbody className='flex flex-col gap-1'>
               {records?.length > 0 ? (
                 records.map((record, index) => (
                   <tr
                     key={index}
-                    className="bg-foreground/5 mb-2 rounded-lg flex flex-row w-full"
+                    className='bg-foreground/5 mb-2 rounded-lg flex flex-row w-full'
                   >
                     <Cell
-                      title={t("event")}
+                      title={t('event')}
                       className={
                         eventColors[
                           record.recordType as keyof typeof eventColors
                         ]
                       }
                     >
-                      <Icon name="event" size={16} />
+                      <Icon name='event' size={16} />
                       {record.recordType}
                     </Cell>
-                    <Cell title={t("transactionHash")} className="w-1/4">
+                    <Cell title={t('transactionHash')} className='w-1/4'>
                       <span
-                        className="underline text-sm"
+                        className='underline text-sm'
                         title={record.hash}
                         onClick={() => {
                           window.open(`https://bscscan.com/tx/${record.hash}`);
@@ -110,33 +110,33 @@ export const StakingRecords: FC<{
                         {formatHash(record.hash)}
                       </span>
                     </Cell>
-                    <Cell title={t("amount")} className="w-1/4">
+                    <Cell title={t('amount')} className='w-1/4'>
                       {formatDecimal(Number(record.amount), 2)}
                     </Cell>
-                    <Cell title={t("dateTime")} className="w-1/4">
+                    <Cell title={t('dateTime')} className='w-1/4'>
                       {record.createdAt}
                     </Cell>
                   </tr>
                 ))
               ) : (
-                <tr className="w-full">
+                <tr className='w-full'>
                   <td
                     colSpan={5}
-                    className="flex flex-col items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-4 gap-2"
+                    className='flex flex-col items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-4 gap-2'
                   >
                     {!userAddress ? (
                       <>
-                        {t("walletNotConnected")}
+                        {t('walletNotConnected')}
                         <ConnectWalletButton />
                       </>
                     ) : (
                       <>
-                        {t("noRecords")}
+                        {t('noRecords')}
                         <Button
-                          clipDirection="topRight-bottomLeft"
-                          className="w-auto"
+                          clipDirection='topRight-bottomLeft'
+                          className='w-auto'
                         >
-                          {t2("nodata")}
+                          {t2('nodata')}
                         </Button>
                       </>
                     )}
