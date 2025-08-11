@@ -1,31 +1,31 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { Abi, erc20Abi, parseUnits } from 'viem';
+import { usePublicClient } from 'wagmi';
 import { Alert, Button, Card } from '~/components';
+import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
+import { formatNumbedecimalScale } from '~/lib/utils';
+import { useLockStore } from '~/store/lock';
+import longStakingAbi from '~/wallet/constants/LongStakingAbi.json';
+import { OLY } from '~/wallet/constants/tokens';
+import { getInviteInfo } from '~/wallet/lib/web3/invite';
+import type { periodlongItem } from '~/wallet/lib/web3/stake';
+import {
+  depositDayList,
+  longAllowance,
+  longStakList,
+  longStakStatus,
+  roi,
+} from '~/wallet/lib/web3/stake';
 import { WalletSummaryLock } from '~/widgets';
 import { AmountCard } from '~/widgets/amount-card';
 import { DurationSelect } from '~/widgets/select';
 import { StakingSummary } from '~/widgets/staking-summary';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useUserAddress } from '~/contexts/UserAddressContext';
-import {
-  longStakList,
-  longStakStatus,
-  longAllowance,
-  roi,
-  depositDayList,
-} from '~/wallet/lib/web3/stake';
-import type { periodlongItem } from '~/wallet/lib/web3/stake';
-import { formatNumbedecimalScale } from '~/lib/utils';
-import { useLockStore } from '~/store/lock';
-import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
-import { usePublicClient } from 'wagmi';
-import { toast } from 'sonner';
-import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
-import { Abi, erc20Abi, parseUnits } from 'viem';
-import { OLY } from '~/wallet/constants/tokens';
-import { getInviteInfo } from '~/wallet/lib/web3/invite';
-import longStakingAbi from '~/wallet/constants/LongStakingAbi.json';
 
 export default function StakingPage() {
   const t = useTranslations('staking');
@@ -243,7 +243,7 @@ export default function StakingPage() {
               }}
             />
             {!userAddress ? (
-              <ConnectWalletButton className='bg-[#FF8908] text-xl py-3 cursor-pointer px-6 !text-white text-5   hover:bg-[#FF8908]/80 h-[48px] min-w-[160px]   mx-auto' />
+              <ConnectWalletButton className='text-xl py-3 cursor-pointer px-6 !text-white text-5  h-[48px] min-w-[160px]   mx-auto' />
             ) : (
               <div className='flex items-center justify-center w-full gap-x-4'>
                 {curPeriod &&
