@@ -10,6 +10,7 @@ import { LanguageProvider } from '~/i18n/LanguageProvider';
 import { getInitialLocale } from '~/i18n/client';
 import { loadMessages } from '~/i18n/request';
 import { Suspense } from 'react';
+import CommonTokenProvider from './components/CommonTokenProvider';
 export function generateStaticParams() {
   return locales.map((locale: string) => ({
     locale,
@@ -44,15 +45,19 @@ export default async function LocaleLayout({
           <AppProviders>
             <Suspense fallback={<Loading />}>
               <MobileSidebarProvider>
-                {/* 顶部导航栏 */}
-                {/* <Header /> */}
-                {/* 主内容区域 */}
-                <div className='flex flex-1 md:flex-row md:py-6 md:pr-9 p-4'>
-                  {/* 左侧主导航栏 */}
-                  <Sidebar />
-                  {/* 右侧主内容区域 */}
-                  <main className='md:flex-1 md:w-auto w-full'>{children}</main>
-                </div>
+                <CommonTokenProvider>
+                  {/* 顶部导航栏 */}
+                  {/* <Header /> */}
+                  {/* 主内容区域 */}
+                  <div className='flex flex-1 md:flex-row md:py-6 md:pr-9 p-4'>
+                    {/* 左侧主导航栏 */}
+                    <Sidebar />
+                    {/* 右侧主内容区域 */}
+                    <main className='md:flex-1 md:w-auto w-full'>
+                      {children}
+                    </main>
+                  </div>
+                </CommonTokenProvider>
               </MobileSidebarProvider>
             </Suspense>
           </AppProviders>
