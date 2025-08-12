@@ -1,24 +1,23 @@
 'use client';
-import { useState, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
-import { Alert, Button, List, Card, CountdownDisplay } from '~/components';
-import { demandStaking } from '~/wallet/constants/tokens';
-import { useUserAddress } from '~/contexts/UserAddressContext';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { getAllowance } from '~/wallet/lib/web3/stake';
-import { OLY } from '~/wallet/constants/tokens';
-import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
-import { usePublicClient } from 'wagmi';
 import { Abi, erc20Abi, parseUnits } from 'viem';
+import { usePublicClient } from 'wagmi';
+import { Alert, Button, Card, CountdownDisplay, List } from '~/components';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
+import { demandStaking, OLY } from '~/wallet/constants/tokens';
+import { getAllowance } from '~/wallet/lib/web3/stake';
 import { WalletSummary } from '~/widgets';
 import { AmountCard } from '~/widgets/amount-card';
 // import { DurationSelect } from "~/widgets/select"
-import { formatNumbedecimalScale } from '~/lib/utils';
 import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
+import { formatNumbedecimalScale } from '~/lib/utils';
+import { useNolockStore } from '~/store/noLock';
 import DemandStakingAbi from '~/wallet/constants/DemandStakingAbi.json';
 import { getInviteInfo } from '~/wallet/lib/web3/invite';
-import { useNolockStore } from '~/store/noLock';
 
 export default function StakingPage() {
   const t = useTranslations('staking');
@@ -72,6 +71,7 @@ export default function StakingPage() {
     if (!publicClient || !userAddress) return;
     try {
       setIsLoading(true);
+      setIsDisabled(true);
       const hash = await writeContractAsync({
         abi: erc20Abi,
         address: OLY as `0x${string}`,
@@ -91,6 +91,7 @@ export default function StakingPage() {
       toast.error('error');
     } finally {
       setIsLoading(false);
+      setIsDisabled(false);
     }
   };
 
@@ -136,6 +137,12 @@ export default function StakingPage() {
         await Promise.all([
           queryClient.invalidateQueries({
             queryKey: ['olyBalance', userAddress],
+          }),
+          queryClient.invalidateQueries({
+            queryKey: ['DemandAfterHot', userAddress],
+          }),
+          queryClient.invalidateQueries({
+            queryKey: ['UserDemandInfo', userAddress],
           }),
         ]);
         setStakeAmount('');

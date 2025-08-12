@@ -1,8 +1,8 @@
 import { Abi, formatUnits } from 'viem';
-import YielodLockAbi from '../../constants/YielodLockAbi.json';
-import { yieldLocker as YieldLockerProxy } from '../../constants/tokens';
 import { executeMulticall } from '~/lib/multicall';
 import { formatNumbedecimalScale } from '~/lib/utils';
+import YielodLockAbi from '../../constants/YielodLockAbi.json';
+import { yieldLocker as YieldLockerProxy } from '../../constants/tokens';
 
 export interface periodItem {
   feeRate: bigint;
@@ -39,7 +39,6 @@ export const getClaimPeriod = async () => {
         },
       ],
     })) as { success: boolean; data: periodItem[] }[];
-    console.log(res, '00000');
     if (res.length && res[0].data.length) {
       const list = res[0].data;
       list.map((it: periodItem) => {

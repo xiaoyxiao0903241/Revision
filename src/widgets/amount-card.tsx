@@ -27,7 +27,7 @@ export const AmountCard: FC<{
               placeholder='0.0'
               step={0.000001}
               maxDecimals={2}
-              className='flex-1 text-white text-3xl font-bold font-mono'
+              className='flex-1 text-white text-xl md:text-2xl font-bold font-mono'
             />
           </div>
         </div>
@@ -38,7 +38,7 @@ export const AmountCard: FC<{
       </div>
       <div className='flex items-center justify-between text-xs text-foreground/70 py-4'>
         <span className='font-mono'>
-          {formatNumbedecimalScale(data.desc, 2)}
+          ${formatNumbedecimalScale(data.desc, 2)}
         </span>
         <div className='flex items-center gap-2'>
           <span className='font-mono'>{description}</span>

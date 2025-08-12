@@ -10,7 +10,7 @@ import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
 import { formatNumbedecimalScale } from '~/lib/utils';
-import { useLockStore } from '~/store/lock';
+import { useNolockStore } from '~/store/noLock';
 import longStakingAbi from '~/wallet/constants/LongStakingAbi.json';
 import { OLY } from '~/wallet/constants/tokens';
 import { getInviteInfo } from '~/wallet/lib/web3/invite';
@@ -35,7 +35,14 @@ export default function StakingPage() {
   const { userAddress } = useUserAddress();
   const [periodLongList, setPeriodLongList] = useState<periodlongItem[]>([]);
   const [curPeriod, setCurPeriod] = useState<periodlongItem | null>(null);
-  const { olyBalance, olyPrice } = useLockStore();
+  const {
+    olyBalance,
+    olyPrice,
+    allnetReabalseNum,
+    AllolyStakeNum,
+    nextBlock,
+    currentBlock,
+  } = useNolockStore();
   const [stakeAmount, setStakeAmount] = useState('');
   const [myolybalance, seMyolybalance] = useState<string>('0');
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
@@ -43,6 +50,8 @@ export default function StakingPage() {
   const publicClient = usePublicClient();
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
   const queryClient = useQueryClient();
+  const [apy, setApy] = useState<string>('0');
+  const [cutDownTime, setCutDownTime] = useState<number>(0);
 
   //获取长期质押状态列表
   const { data: stakingStatusList } = useQuery({
@@ -158,6 +167,9 @@ export default function StakingPage() {
           id: toastId,
         });
         await queryClient.invalidateQueries({
+          queryKey: ['UserStakes', userAddress],
+        });
+        await queryClient.invalidateQueries({
           queryKey: ['olyBalance', userAddress],
         });
         setStakeAmount('');
@@ -206,6 +218,25 @@ export default function StakingPage() {
     const myBalance = formatNumbedecimalScale(olyBalance, 2);
     seMyolybalance(myBalance);
   }, [olyBalance]);
+
+  //计算下一次爆块收益率
+  useEffect(() => {
+    if (allnetReabalseNum && AllolyStakeNum) {
+      const rate = formatNumbedecimalScale(
+        (allnetReabalseNum / AllolyStakeNum) * 100,
+        4
+      );
+      setApy(rate);
+    }
+  }, [allnetReabalseNum, AllolyStakeNum]);
+
+  //计算rebase倒计时
+  useEffect(() => {
+    if (nextBlock && currentBlock) {
+      const time = nextBlock - currentBlock < 0 ? 0 : nextBlock - currentBlock;
+      setCutDownTime(time);
+    }
+  }, [currentBlock, nextBlock]);
   return (
     <div className='space-y-6'>
       <Alert
@@ -241,6 +272,8 @@ export default function StakingPage() {
               data={{
                 rebaseRewardRate: (curPeriod && curPeriod?.rate) || '0.3%-1%',
                 rebaseBoost: (curPeriod && curPeriod?.addition) || '0.02-0.04',
+                nextRebaseRewardRate: apy + '%',
+                cutDownTime: cutDownTime,
               }}
             />
             {!userAddress ? (

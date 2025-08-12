@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { FC } from 'react';
-import { Countdown, List } from '~/components';
+import { CountdownDisplay, List } from '~/components';
 
 export const StakingSummary: FC<{
   data: {
@@ -8,6 +8,7 @@ export const StakingSummary: FC<{
     rebaseBoost?: string;
     nextRebaseRewardRate?: string;
     endAt?: Date;
+    cutDownTime: number;
   };
 }> = ({ data }) => {
   const t = useTranslations('staking');
@@ -31,11 +32,14 @@ export const StakingSummary: FC<{
           </List.Value>
         </List.Item>
       )}
-      {data.endAt && (
+      {data.cutDownTime && (
         <List.Item>
           <List.Label>{t('countdownToNextRebase')}</List.Label>
           <List.Value className='font-mono'>
-            <Countdown endAt={data.endAt} />
+            <CountdownDisplay
+              blocks={BigInt(data.cutDownTime)}
+              isShowDay={false}
+            />
           </List.Value>
         </List.Item>
       )}

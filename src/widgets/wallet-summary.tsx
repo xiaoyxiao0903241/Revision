@@ -20,8 +20,9 @@ export const WalletSummary: FC = () => {
     AllolyStakeNum,
     allnetReabalseNum,
     demandProfitInfo,
+    hotDataStakeNum,
   } = useNolockStore();
-  const [principal, setPrincipal] = useState(0);
+  const [myStakeNum, setMyStakeNum] = useState(0);
   const [yearApy, setYearApy] = useState<string>('0');
   const [yearRate, setYearRate] = useState<string>('0');
   const { userAddress } = useUserAddress();
@@ -63,12 +64,9 @@ export const WalletSummary: FC = () => {
   });
 
   useEffect(() => {
-    if (afterHotData?.principal) {
-      setPrincipal(afterHotData?.principal);
-      return;
-    }
-    setPrincipal(0);
-  }, [afterHotData]);
+    const myStakeNum = hotDataStakeNum + afterHotData?.principal;
+    setMyStakeNum(myStakeNum);
+  }, [afterHotData, hotDataStakeNum]);
 
   //计算下一次爆块收益率
   useEffect(() => {
@@ -99,8 +97,8 @@ export const WalletSummary: FC = () => {
             <div className='h-px bg-border/20 w-full'></div>
             <Statistics
               title={t('stakedAmount')}
-              value={`${formatCurrency(principal, false)} OLY`}
-              desc={formatCurrency(principal * olyPrice)}
+              value={`${formatCurrency(myStakeNum, false)} OLY`}
+              desc={formatCurrency(myStakeNum * olyPrice)}
               info={
                 <div className='flex flex-col space-y-2'>
                   {infoItems.map(item => (
