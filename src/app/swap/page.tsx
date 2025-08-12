@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, RoundedLogo, View } from '~/components';
 import { Card } from '~/components/card';
 import { useMock } from '~/hooks/useMock';
@@ -14,29 +14,29 @@ import {
 import { useMockStore } from '~/store/mock';
 import { BalanceCard } from '~/widgets/balance-card';
 // import { CandlestickChart } from "~/widgets/charts";
+import { useQuery } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { toast } from 'sonner';
+import { Abi, erc20Abi, parseUnits } from 'viem';
+import { useAccount, usePublicClient } from 'wagmi';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useContractError } from '~/hooks/useContractError';
+import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
+import PANCAKESWAP_ROUTER_ABI from '~/wallet/constants/RouterAbi.json';
+import { DEX_ADDRESS, TOKEN_ADDRESSES } from '~/wallet/constants/tokens';
+import { getTokenPrice } from '~/wallet/lib/web3/bond';
+import {
+  calculateMinOutput,
+  checkNeedsApproval,
+  fetchTokenData,
+  formatTokenBalance,
+} from '~/wallet/lib/web3/swap';
 import { RateCard } from '~/widgets/rate-card';
 import { Slippage } from '~/widgets/slippage';
 import { Balance, SwapCard } from '~/widgets/swap-card';
 import { SwapSummary } from '~/widgets/swap-summary';
-import dynamic from 'next/dynamic';
 
-import { useAccount, usePublicClient } from 'wagmi';
-import { Abi, erc20Abi } from 'viem';
-import { parseUnits } from 'viem';
-import { TOKEN_ADDRESSES, DEX_ADDRESS } from '~/wallet/constants/tokens';
-import PANCAKESWAP_ROUTER_ABI from '~/wallet/constants/RouterAbi.json';
-import {
-  fetchTokenData,
-  formatTokenBalance,
-  checkNeedsApproval,
-  calculateMinOutput,
-} from '~/wallet/lib/web3/swap';
-import { toast } from 'sonner';
-import { useUserAddress } from '~/contexts/UserAddressContext';
-import { useContractError } from '~/hooks/useContractError';
-import { useQuery } from '@tanstack/react-query';
-import { getTokenPrice } from '~/wallet/lib/web3/bond';
-import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
 const SwapButton = dynamic(() => import('./component/SwapButton'), {
   loading: () => (
     <div className='h-14 bg-neutral-800 rounded-xl animate-pulse' />
@@ -70,6 +70,27 @@ export default function SwapPage() {
   const publicClient = usePublicClient();
   const [isApproving, setIsApproving] = useState(false);
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // 获取路由参数
+  const type = searchParams.get('type');
+
+  // 根据参数设置初始状态
+  useEffect(() => {
+    if (type === 'buy') {
+      setFromToken('DAI');
+      setToToken('OLY');
+      setSource('USDT');
+    } else if (type === 'sell') {
+      setFromToken('OLY');
+      setToToken('DAI');
+      setSource('OLY');
+    }
+  }, [type]);
+
+  console.log('Route type:', type);
+  console.log(router, 'router');
 
   const [exchangeMess, setExchangeMess] = useState({
     //底部显示的信息

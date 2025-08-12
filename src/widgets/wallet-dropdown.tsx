@@ -1,8 +1,13 @@
 'use client';
-import { useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import ClipboardJS from 'clipboard';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { toast } from 'sonner';
+import { formatUnits } from 'viem';
+import { useAccount, useBalance } from 'wagmi';
 import { Button, Icon, IconFontName, Segments } from '~/components';
 import {
   DropdownMenu,
@@ -10,31 +15,25 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '~/components/dropdown-menu';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useTokenBalance } from '~/hooks/useTokenBalance';
 import {
   cn,
-  formatAddress,
   fallbackCopyText,
+  formatAddress,
   formatNumbedecimalScale,
 } from '~/lib/utils';
-import { useAccount } from 'wagmi';
-import ClipboardJS from 'clipboard';
-import { useTokenBalance } from '~/hooks/useTokenBalance';
-import { TOKEN_ADDRESSES } from '~/wallet/constants/tokens';
-import { useBalance } from 'wagmi';
-import { formatUnits } from 'viem';
+import { myMess } from '~/services/auth/dashboard';
 import { bnbPrice } from '~/services/auth/head';
-import { useQuery } from '@tanstack/react-query';
-import { useUserAddress } from '~/contexts/UserAddressContext';
+import { TOKEN_ADDRESSES } from '~/wallet/constants/tokens';
 import { getTokenPrice } from '~/wallet/lib/web3/bond';
-import { toast } from 'sonner';
 import {
-  getUserStakes,
-  getNodeStakes,
   demandAfterHot,
   demandInfo,
   demandProfit,
+  getNodeStakes,
+  getUserStakes,
 } from '~/wallet/lib/web3/stake';
-import { myMess } from '~/services/auth/dashboard';
 
 interface WalletAsset {
   symbol: string;
@@ -77,7 +76,7 @@ export function WalletDropdown({
 }: WalletDropdownProps) {
   const t = useTranslations('common');
   const tcopy = useTranslations('invite');
-
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState('wallet');
   const [copeA, setcopeA] = useState(1);
   const [copeB, setcopeB] = useState(1);
@@ -99,13 +98,16 @@ export function WalletDropdown({
   const { data: bnbBalance } = useBalance({
     address: address as `0x${string}`,
   });
+  const toSwap = (type: string) => {
+    router.push(`/swap?type=${type}`);
+  };
 
   //总奖金
   const { data: myMessData } = useQuery({
     queryKey: ['myMess', userAddress],
     queryFn: () => myMess('', '', userAddress as `0x${string}`),
     enabled: Boolean(userAddress),
-    refetchInterval: 20000,
+    refetchInterval: 200000,
   });
 
   //热身期后的数据
@@ -131,7 +133,7 @@ export function WalletDropdown({
     queryFn: () => getUserStakes({ address: userAddress as `0x${string}` }),
     enabled: Boolean(userAddress),
     retry: 1,
-    refetchInterval: 20000,
+    refetchInterval: 42000,
   });
 
   //  节点质押
@@ -176,7 +178,6 @@ export function WalletDropdown({
           : [];
 
         const allList = [...nodeList, ...list];
-        console.log(allList, 'allList1111');
         allList.forEach(it => {
           longAmount += it.pending;
           claimLong += it.blockReward + it.blockReward;
@@ -316,11 +317,11 @@ export function WalletDropdown({
   }, [daiBalance, bnbBalance, bnbprice, olyBalance, olyPrice]);
 
   const handleBuy = () => {
-    console.log('Buy clicked');
+    toSwap('buy');
   };
 
   const handleSell = () => {
-    console.log('Sell clicked');
+    toSwap('sell');
   };
 
   const handleReceive = () => {
@@ -354,8 +355,6 @@ export function WalletDropdown({
 
   const handleCopyAddress = async () => {
     if (address) {
-      console.log('复制111');
-      console.log(address, 'address复制111');
       try {
         if (navigator?.clipboard?.writeText) {
           await navigator.clipboard.writeText(address);
@@ -364,7 +363,6 @@ export function WalletDropdown({
           return;
         }
         const success = await fallbackCopyText(address);
-        console.log(success, 'success11111');
         if (success) {
           setcopeB(copeB + 1);
           console.log(copeB + 1, 'opeB + 111');

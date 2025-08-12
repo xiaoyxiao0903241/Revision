@@ -1,6 +1,6 @@
-import { Countdown, List } from '~/components';
 import { useTranslations } from 'next-intl';
 import { FC } from 'react';
+import { Countdown, List } from '~/components';
 
 export const StakingSummary: FC<{
   data: {

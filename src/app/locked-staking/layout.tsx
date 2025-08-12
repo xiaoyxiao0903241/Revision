@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useTranslations } from 'next-intl';
-import { Navigator } from '~/widgets';
-import { useLockStore } from '~/store/lock';
 import { useQuery } from '@tanstack/react-query';
-import { getTokenPrice, getTokenBalance } from '~/wallet/lib/web3/bond';
+import { useTranslations } from 'next-intl';
+import { useEffect } from 'react';
 import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useLockStore } from '~/store/lock';
+import { getTokenBalance, getTokenPrice } from '~/wallet/lib/web3/bond';
+import { Navigator } from '~/widgets';
 
 interface LockStakingLayoutProps {
   children: React.ReactNode;

@@ -22,7 +22,8 @@
   "header": {
     "language": "Language",
     "network": "BNB Smart Chain",
-    "wallet": "Wallet"
+    "wallet": "Wallet",
+    "connect": "Connect Wallet"
   },
   "staking": {
     "stake": "Stake",

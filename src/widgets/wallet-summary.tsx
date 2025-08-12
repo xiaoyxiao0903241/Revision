@@ -1,15 +1,14 @@
-import { useTranslations } from 'next-intl';
-import { Card, CardHeader, List, Statistics } from '~/components';
-import { FC, useEffect, useState } from 'react';
-import { formatCurrency } from '~/lib/utils';
-import { infoItems } from '~/hooks/useMock';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
+import { FC, useEffect, useState } from 'react';
+import { Card, CardHeader, List, Statistics } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
-import { getTotalSupply } from '~/wallet/lib/web3/stake';
+import { infoItems } from '~/hooks/useMock';
+import { formatCurrency, formatNumbedecimalScale } from '~/lib/utils';
+import { personStakeAmount, stakerNum } from '~/services/auth/dashboard';
 import { useNolockStore } from '~/store/noLock';
-import { formatNumbedecimalScale } from '~/lib/utils';
-import { stakerNum, personStakeAmount } from '~/services/auth/dashboard';
 import { OLY } from '~/wallet/constants/tokens';
+import { getTotalSupply } from '~/wallet/lib/web3/stake';
 import { AddToWallet } from './addToWallet';
 
 export const WalletSummary: FC = () => {

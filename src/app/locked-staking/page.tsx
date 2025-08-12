@@ -196,6 +196,7 @@ export default function StakingPage() {
         allowanceNum: longAllowanceList[index].allowanceNum,
       })) as periodlongItem[];
       setPeriodLongList(updatedList);
+      console.log(updatedList, 'updatedList');
       setCurPeriod(updatedList[lockIndex]);
     }
   }, [longStakListData, stakingStatusList, longAllowanceList, lockIndex]);

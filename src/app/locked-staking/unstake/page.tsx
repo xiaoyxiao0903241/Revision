@@ -1,34 +1,34 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { Abi } from 'viem';
+import { usePublicClient } from 'wagmi';
 import {
   Alert,
-  Card,
-  Notification,
-  CountdownDisplay,
   Button,
+  Card,
+  CountdownDisplay,
+  Notification,
 } from '~/components';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
+import { getCurrentBlock } from '~/lib/multicall';
+import { useLockStore } from '~/store/lock';
+import longStaking from '~/wallet/constants/LongStakingAbi.json';
+import NodeStakingAbi from '~/wallet/constants/NodeStaking.json';
+import { blocks as blocksNum, nodeStaking } from '~/wallet/constants/tokens';
+import type { StakingItem } from '~/wallet/lib/web3/stake';
+import {
+  depositDayList,
+  getNodeStakes,
+  getUserStakes,
+} from '~/wallet/lib/web3/stake';
 import { WalletSummary } from '~/widgets';
 import { AmountTicker } from '~/widgets/amount-ticker';
 import { DurationSelect } from '~/widgets/select-lockMyList';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useUserAddress } from '~/contexts/UserAddressContext';
-import {
-  getUserStakes,
-  depositDayList,
-  getNodeStakes,
-} from '~/wallet/lib/web3/stake';
-import { getCurrentBlock } from '~/lib/multicall';
-import { blocks as blocksNum, nodeStaking } from '~/wallet/constants/tokens';
-import type { StakingItem } from '~/wallet/lib/web3/stake';
-import { useLockStore } from '~/store/lock';
-import { usePublicClient } from 'wagmi';
-import { toast } from 'sonner';
-import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
-import longStaking from '~/wallet/constants/LongStakingAbi.json';
-import { Abi } from 'viem';
-import NodeStakingAbi from '~/wallet/constants/NodeStaking.json';
 
 export default function UnstakePage() {
   const t = useTranslations('staking');
@@ -51,7 +51,7 @@ export default function UnstakePage() {
     queryFn: () => getUserStakes({ address: userAddress as `0x${string}` }),
     enabled: Boolean(userAddress),
     retry: 1,
-    refetchInterval: 20000,
+    refetchInterval: 42000,
   });
   //当前块
   const { data: currentBlock } = useQuery({
