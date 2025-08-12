@@ -19,6 +19,7 @@ import {
   View,
 } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useContractError } from '~/hooks/useContractError';
 import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
 import { usePeriods } from '~/hooks/userPeriod';
 import { dayjs, formatte2Num } from '~/lib/utils';
@@ -89,50 +90,14 @@ export const ClaimSection = ({
   const [currentRate, setCurrentRate] = useState<number>(0);
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
   const publicClient = usePublicClient();
-  // const [typeAddress, setTypeAddress] = useState<string>(ReferralRewardPool);
-  // const [cutDownTime, setCutDownTime] = useState<number>(0);
-  let typeAddress = ReferralRewardPool;
+  const { handleContractError, isContractError } = useContractError();
 
-  const {
-    time,
-    lastStakeTimestamp,
-    // nextBlock,
-    // currentBlock,
-  } = useNolockStore();
+  const { time, lastStakeTimestamp } = useNolockStore();
 
   useEffect(() => {
     setCurrentRate(Number(currentPeriodInfo?.rate?.split('%')[0]));
   }, [currentPeriodInfo]);
 
-  if (type === 'matrix') {
-    typeAddress = ReferralRewardPool;
-  }
-  if (type === 'promotion') {
-    typeAddress = TitleRewardPool;
-  }
-  if (type === 'lead') {
-    typeAddress = LeadRewardPool;
-  }
-  if (type === 'service') {
-    typeAddress = ServiceRewardPool;
-  }
-
-  // useEffect(() => {
-  //   console.log(type, 'eeeeeeeeeeeeee');
-  //   if (type === 'matrix') {
-  //     setTypeAddress(ReferralRewardPool)
-  //   }
-  //   if (type === 'promotion') {
-  //     setTypeAddress(TitleRewardPool)
-  //   }
-  //   if (type === 'lead') {
-  //     setTypeAddress(LeadRewardPool)
-  //   }
-  //   if (type === 'service') {
-  //     setTypeAddress(ServiceRewardPool)
-  //   }
-  console.log('addressaddressaddress', typeAddress);
-  // }, [type])
   //计算rebase倒计时
   // useEffect(() => {
   //   if (nextBlock && currentBlock) {
@@ -146,7 +111,6 @@ export const ClaimSection = ({
     mutationFn: async () => {
       toastId = toast.loading(t('currentlyReceiving'));
       // 调用claimReward获取数据
-      console.log('type', type);
       const claimData = await getClaimReward(
         type,
         userAddress as `0x${string}`
@@ -156,10 +120,7 @@ export const ClaimSection = ({
           signature: claimData.salt,
           address: typeAddressMap[type as keyof typeof typeAddressMap],
         });
-        console.log(
-          signatureInfo,
-          'signatureInfosignatureInfosignatureInfosignatureInfo'
-        );
+
         if (signatureInfo.isUsed) {
           try {
             await rewardClaimed(
@@ -167,20 +128,19 @@ export const ClaimSection = ({
               claimData.salt,
               userAddress as `0x${string}`
             );
-          } catch (e) {
-            console.error('Failed to update reward status:', e);
+          } catch {
+            throw new Error(commonT('toast.claim_failed'));
           }
-          throw new Error(t('toast.claim_failed_invalid'));
         }
 
         if (signatureInfo.isSignatureUsed) {
-          throw new Error(t('toast.claim_failed_used'));
+          throw new Error(commonT('toast.claim_failed'));
         }
 
         if (!publicClient) {
-          throw new Error(t('toast.claim_failed'));
+          throw new Error(commonT('toast.claim_failed'));
         }
-        console.log('claimData:', claimData, 'lockIndex:', currentPeriodInfo);
+
         // 先模拟合约调用
         const { request } = await publicClient.simulateContract({
           abi: RewardPoolV7Abi as Abi,
@@ -196,14 +156,9 @@ export const ClaimSection = ({
           ],
           account: claimData.account as `0x${string}`,
         });
-        console.log(request, 'requestrequestrequestrequest55555555');
-        // return false;
 
         // 模拟成功后再执行实际交易
-        // const hash = await writeContractAsync(request);
-
         const hash = await writeContractAsync(request);
-
         const result = await publicClient.waitForTransactionReceipt({
           hash,
         });
@@ -213,23 +168,28 @@ export const ClaimSection = ({
             claimData.salt,
             userAddress as `0x${string}`
           );
-          toast.success(t('toast.claim_success'), { id: toastId });
-          refetch();
+          toast.success(commonT('toast.claim_success'), { id: toastId });
           return { success: true, data: result };
         } else {
-          toast.error(t('toast.claim_failed'), { id: toastId });
-          throw new Error(t('toast.claim_failed'));
+          toast.error(commonT('toast.claim_failed'), { id: toastId });
+          throw new Error(commonT('toast.claim_failed'));
         }
       }
     },
     onSuccess: () => {
+      refetch();
       onSuccess();
       toast.dismiss(toastId);
       console.log('奖励领取成功');
     },
     onError: error => {
       toast.dismiss(toastId);
-      toast.error(error.message || t('toast.claim_failed'), { id: toastId });
+      if (isContractError(error as Error)) {
+        const errorMessage = handleContractError(error as Error);
+        toast.error(errorMessage, { id: toastId });
+      } else {
+        toast.error(commonT('toast.claim_failed'), { id: toastId });
+      }
       console.error('奖励领取失败:', error);
     },
   });
