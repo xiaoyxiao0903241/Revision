@@ -17,6 +17,7 @@ import { OLY, staking } from '~/wallet/constants/tokens';
 import { useNolockStore } from '~/store/noLock';
 import { demandStakHis } from '~/services/auth/stake';
 import { dayjs, formatTimeToLocal } from '~/lib/utils';
+import { useLockStore } from '~/store/lock';
 
 interface HistoryItem {
   amount: string;
@@ -159,6 +160,9 @@ const CommonTokenProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     useNolockStore.setState({
+      olyBalance: Number(balance),
+    });
+    useLockStore.setState({
       olyBalance: Number(balance),
     });
   }, [balance]);

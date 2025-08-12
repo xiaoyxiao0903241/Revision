@@ -84,7 +84,7 @@ const InviteJoin = () => {
 
   const generateLink = useCallback(() => {
     if (userAddress) {
-      const link = `${window.location.origin}/${lang}/community?address=${userAddress}`;
+      const link = `${window.location.origin}/community?address=${userAddress}`;
       setLink(link);
     } else {
       setLink('');
