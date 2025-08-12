@@ -1,23 +1,22 @@
-import { useTranslations } from 'next-intl';
-import { Card, CardHeader, List, Statistics } from '~/components';
-import { FC, useEffect, useState } from 'react';
-import { formatCurrency } from '~/lib/utils';
-import { infoItems } from '~/hooks/useMock';
-import { useLockStore } from '~/store/lock';
 import { useQuery } from '@tanstack/react-query';
+import { useSafeState } from 'ahooks';
+import { useTranslations } from 'next-intl';
+import { FC, useEffect, useState } from 'react';
+import { Card, CardHeader, List, Statistics } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
+import { infoItems } from '~/hooks/useMock';
+import { formatCurrency, formatNumbedecimalScale } from '~/lib/utils';
+import { personStakeAmount, stakerNum } from '~/services/auth/dashboard';
+import { useLockStore } from '~/store/lock';
+import { OLY, staking } from '~/wallet/constants/tokens';
+import type { StakingItem } from '~/wallet/lib/web3/stake';
 import {
-  getUserStakes,
-  getNodeStakes,
   getAllnetReabalseNum,
   getBalanceToken,
+  getNodeStakes,
   getTotalSupply,
+  getUserStakes,
 } from '~/wallet/lib/web3/stake';
-import type { StakingItem } from '~/wallet/lib/web3/stake';
-import { useSafeState } from 'ahooks';
-import { OLY, staking } from '~/wallet/constants/tokens';
-import { formatNumbedecimalScale } from '~/lib/utils';
-import { stakerNum, personStakeAmount } from '~/services/auth/dashboard';
 import { AddToWallet } from './addToWallet';
 
 export const WalletSummaryLock: FC = () => {
@@ -69,7 +68,7 @@ export const WalletSummaryLock: FC = () => {
     queryFn: () => getUserStakes({ address: userAddress as `0x${string}` }),
     enabled: Boolean(userAddress),
     retry: 1,
-    refetchInterval: 20000,
+    refetchInterval: 42000,
   });
 
   //  节点质押

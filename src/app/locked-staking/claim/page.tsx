@@ -1,6 +1,10 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { Abi, parseUnits } from 'viem';
+import { usePublicClient } from 'wagmi';
 import {
   Alert,
   Button,
@@ -9,29 +13,25 @@ import {
   Notification,
   Segments,
 } from '~/components';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import { usePeriods } from '~/hooks/userPeriod';
+import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
+import { getCurrentBlock } from '~/lib/multicall';
+import { formatNumbedecimalScale } from '~/lib/utils';
+import { useLockStore } from '~/store/lock';
+import longStaking from '~/wallet/constants/LongStakingAbi.json';
+import NodeStakingAbi from '~/wallet/constants/NodeStaking.json';
+import { blocks as blocksNum, nodeStaking } from '~/wallet/constants/tokens';
+import type { StakingItem } from '~/wallet/lib/web3/stake';
+import {
+  depositDayList,
+  getNodeStakes,
+  getUserStakes,
+} from '~/wallet/lib/web3/stake';
 import { WalletSummary } from '~/widgets';
 import { AmountCard } from '~/widgets/amount-card';
 import { ClaimSummary } from '~/widgets/claim-summary';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useUserAddress } from '~/contexts/UserAddressContext';
-import {
-  getUserStakes,
-  depositDayList,
-  getNodeStakes,
-} from '~/wallet/lib/web3/stake';
-import { getCurrentBlock } from '~/lib/multicall';
-import { blocks as blocksNum, nodeStaking } from '~/wallet/constants/tokens';
-import type { StakingItem } from '~/wallet/lib/web3/stake';
-import { useLockStore } from '~/store/lock';
-import { usePublicClient } from 'wagmi';
-import { toast } from 'sonner';
-import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
-import longStaking from '~/wallet/constants/LongStakingAbi.json';
-import { Abi, parseUnits } from 'viem';
-import { DurationSelect, ClaimSelect } from '~/widgets/select-lockMyList';
-import { usePeriods } from '~/hooks/userPeriod';
-import { formatNumbedecimalScale } from '~/lib/utils';
-import NodeStakingAbi from '~/wallet/constants/NodeStaking.json';
+import { ClaimSelect, DurationSelect } from '~/widgets/select-lockMyList';
 
 export default function ClaimPage() {
   const t = useTranslations('staking');
@@ -68,7 +68,7 @@ export default function ClaimPage() {
     queryFn: () => getUserStakes({ address: userAddress as `0x${string}` }),
     enabled: Boolean(userAddress),
     retry: 1,
-    refetchInterval: 20000,
+    refetchInterval: 42000,
   });
   //当前块
   const { data: currentBlock } = useQuery({
