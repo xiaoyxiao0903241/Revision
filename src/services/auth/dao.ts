@@ -84,7 +84,7 @@ export const rewardHistoryList = async (
 //领取收益
 // /reward/claim/{reward}
 // reward = { referral 共振, title 称号, reverse 反呼, service 服务, lead 引领 }
-export const claimReward = async (reward: string, tokenAddress: string) => {
+export const getClaimReward = async (reward: string, tokenAddress: string) => {
   const response = await authFetch(
     `/api/reward/claim/${reward}`,
     {

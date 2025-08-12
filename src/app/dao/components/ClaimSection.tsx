@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import _ from 'lodash';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { usePeriods } from '~/hooks/userPeriod';
-import { claimReward, rewardClaimed } from '~/services/auth/dao';
+import { getClaimReward, rewardClaimed } from '~/services/auth/dao';
 import { dayjs, formatte2Num } from '~/lib/utils';
 import { useNolockStore } from '~/store/noLock';
 import {
@@ -22,8 +22,20 @@ import {
 } from '~/components';
 import { ClaimSummary } from '~/widgets/claim-summary';
 import CountdownTimer from '~/app/staking/unstake/component/countDownTimer';
+import { verifySignature } from '~/wallet/lib/web3/dao';
+import {
+  LeadRewardPool,
+  ReferralRewardPool,
+  ServiceRewardPool,
+  TitleRewardPool,
+} from '~/wallet/constants/tokens';
+import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
+import { usePublicClient } from 'wagmi';
+import { Abi } from 'viem';
+import RewardPoolV7Abi from '~/wallet/constants/RewardPoolV7.json';
 
 interface PeriodInfo {
+  index: number;
   day: number;
   feeRate: number;
   feeRecipient: string;
@@ -44,9 +56,11 @@ interface ClaimSectionProps {
       }
     | undefined;
   type: string;
+  onSuccess: () => void;
 }
 
 const defaultPeriodInfo = {
+  index: 0,
   day: 0,
   feeRate: 0,
   feeRecipient: '',
@@ -58,6 +72,7 @@ export const ClaimSection = ({
   refetch,
   rewardData,
   type,
+  onSuccess,
 }: ClaimSectionProps) => {
   const t = useTranslations('dao');
   const commonT = useTranslations('common');
@@ -67,7 +82,12 @@ export const ClaimSection = ({
   const [currentPeriodInfo, setCurrentPeriodInfo] =
     useState<PeriodInfo>(defaultPeriodInfo);
   const [currentRate, setCurrentRate] = useState<number>(0);
+  const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
+  const publicClient = usePublicClient();
+  // const [typeAddress, setTypeAddress] = useState<string>(ReferralRewardPool);
   // const [cutDownTime, setCutDownTime] = useState<number>(0);
+  let typeAddress = ReferralRewardPool;
+
   const {
     time,
     lastStakeTimestamp,
@@ -79,6 +99,35 @@ export const ClaimSection = ({
     setCurrentRate(Number(currentPeriodInfo?.rate?.split('%')[0]));
   }, [currentPeriodInfo]);
 
+  if (type === 'matrix') {
+    typeAddress = ReferralRewardPool;
+  }
+  if (type === 'promotion') {
+    typeAddress = TitleRewardPool;
+  }
+  if (type === 'lead') {
+    typeAddress = LeadRewardPool;
+  }
+  if (type === 'service') {
+    typeAddress = ServiceRewardPool;
+  }
+
+  // useEffect(() => {
+  //   console.log(type, 'eeeeeeeeeeeeee');
+  //   if (type === 'matrix') {
+  //     setTypeAddress(ReferralRewardPool)
+  //   }
+  //   if (type === 'promotion') {
+  //     setTypeAddress(TitleRewardPool)
+  //   }
+  //   if (type === 'lead') {
+  //     setTypeAddress(LeadRewardPool)
+  //   }
+  //   if (type === 'service') {
+  //     setTypeAddress(ServiceRewardPool)
+  //   }
+  console.log('addressaddressaddress', typeAddress);
+  // }, [type])
   //计算rebase倒计时
   // useEffect(() => {
   //   if (nextBlock && currentBlock) {
@@ -92,20 +141,100 @@ export const ClaimSection = ({
     mutationFn: async () => {
       toastId = toast.loading(t('currentlyReceiving'));
       // 调用claimReward获取数据
-      const claimData = await claimReward(type, userAddress as `0x${string}`);
-      // 在claimReward成功后，将结果传递给rewardClaimed
-      const claimedData = await rewardClaimed(
-        claimData,
+      const claimData = await getClaimReward(
         type,
-        userAddress as string
+        userAddress as `0x${string}`
       );
-      return { claimData, claimedData };
+      if (claimData) {
+        const signatureInfo = await verifySignature({
+          signature: claimData.salt,
+          address: ReferralRewardPool as `0x${string}`,
+        });
+        console.log(
+          signatureInfo,
+          'signatureInfosignatureInfosignatureInfosignatureInfo'
+        );
+        if (signatureInfo.isUsed) {
+          try {
+            await rewardClaimed(
+              type,
+              claimData.salt,
+              userAddress as `0x${string}`
+            );
+          } catch (e) {
+            console.error('Failed to update reward status:', e);
+          }
+          throw new Error(t('toast.claim_failed_invalid'));
+        }
+
+        if (signatureInfo.isSignatureUsed) {
+          throw new Error(t('toast.claim_failed_used'));
+        }
+
+        if (!publicClient) {
+          throw new Error(t('toast.claim_failed'));
+        }
+        console.log('claimData:', claimData, 'lockIndex:', currentPeriodInfo);
+        // 先模拟合约调用
+        const { request } = await publicClient.simulateContract({
+          abi: RewardPoolV7Abi as Abi,
+          address: userAddress as `0x${string}`,
+          functionName: 'claimReward',
+          args: [
+            currentPeriodInfo.index,
+            claimData.salt,
+            claimData.account as `0x${string}`,
+            // userAddress as `0x${string}`,
+            claimData.amount,
+            claimData.expireTime,
+            claimData.signature,
+          ],
+          account: claimData.account as `0x${string}`,
+        });
+        console.log(request, 'requestrequestrequestrequest55555555');
+        return false;
+
+        // 模拟成功后再执行实际交易
+        // const hash = await writeContractAsync(request);
+
+        const hash = await writeContractAsync({
+          abi: RewardPoolV7Abi.abi as Abi,
+          address: userAddress as `0x${string}`,
+          functionName: 'claimReward',
+          args: [
+            currentPeriodInfo.index,
+            claimData.salt,
+            claimData.account as `0x${string}`,
+            // userAddress as `0x${string}`,
+            claimData.amount,
+            claimData.expireTime,
+            claimData.signature,
+          ],
+          // account: userAddress as `0x${string}`,
+        });
+
+        const result = await publicClient.waitForTransactionReceipt({
+          hash,
+        });
+        if (result.status === 'success') {
+          await rewardClaimed(
+            type,
+            claimData.salt,
+            userAddress as `0x${string}`
+          );
+          toast.success(t('toast.claim_success'), { id: toastId });
+          refetch();
+          return { success: true, data: result };
+        } else {
+          toast.error(t('toast.claim_failed'), { id: toastId });
+          throw new Error(t('toast.claim_failed'));
+        }
+      }
     },
-    onSuccess: data => {
+    onSuccess: () => {
+      onSuccess();
       toast.dismiss(toastId);
-      toast.success(t('toast.claim_success'), { id: toastId });
-      console.log('奖励领取成功:', data);
-      refetch();
+      console.log('奖励领取成功');
     },
     onError: error => {
       toast.dismiss(toastId);
@@ -114,7 +243,7 @@ export const ClaimSection = ({
     },
   });
 
-  const handleClaimReward = () => {
+  const handleClaimReward = async () => {
     claimRewardMutation.mutate();
   };
 
@@ -161,8 +290,12 @@ export const ClaimSection = ({
           const periodItem = _.find(periodListData?.periodList || [], {
             day: Number(value),
           });
+          const index = (periodListData?.periodList || []).findIndex(
+            it => Number(it.day) === Number(value)
+          );
           if (periodItem) {
             setCurrentPeriodInfo({
+              index,
               day: periodItem.day ?? 0,
               feeRate: Number(periodItem.feeRate || 0),
               feeRecipient: periodItem.feeRecipient ?? '',
