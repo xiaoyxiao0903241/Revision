@@ -1,39 +1,44 @@
-import { useTranslations } from 'next-intl';
-import { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { toast } from 'sonner';
 import _ from 'lodash';
-import { useUserAddress } from '~/contexts/UserAddressContext';
-import { usePeriods } from '~/hooks/userPeriod';
-import { getClaimReward, rewardClaimed } from '~/services/auth/dao';
-import { dayjs, formatte2Num } from '~/lib/utils';
-import { useNolockStore } from '~/store/noLock';
+import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { Abi } from 'viem';
+import { usePublicClient } from 'wagmi';
+import CountdownTimer from '~/app/staking/unstake/component/countDownTimer';
 import {
-  Card,
   Button,
+  Card,
   Notification,
-  View,
   RoundedLogo,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  View,
 } from '~/components';
-import { ClaimSummary } from '~/widgets/claim-summary';
-import CountdownTimer from '~/app/staking/unstake/component/countDownTimer';
-import { verifySignature } from '~/wallet/lib/web3/dao';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
+import { usePeriods } from '~/hooks/userPeriod';
+import { dayjs, formatte2Num } from '~/lib/utils';
+import { getClaimReward, rewardClaimed } from '~/services/auth/dao';
+import { useNolockStore } from '~/store/noLock';
+import RewardPoolV7Abi from '~/wallet/constants/RewardPoolV7.json';
 import {
   LeadRewardPool,
   ReferralRewardPool,
   ServiceRewardPool,
   TitleRewardPool,
 } from '~/wallet/constants/tokens';
-import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
-import { usePublicClient } from 'wagmi';
-import { Abi } from 'viem';
-import RewardPoolV7Abi from '~/wallet/constants/RewardPoolV7.json';
-
+import { verifySignature } from '~/wallet/lib/web3/dao';
+import { ClaimSummary } from '~/widgets/claim-summary';
+const typeAddressMap = {
+  matrix: ReferralRewardPool as `0x${string}`,
+  promotion: TitleRewardPool as `0x${string}`,
+  lead: LeadRewardPool as `0x${string}`,
+  service: ServiceRewardPool as `0x${string}`,
+};
 interface PeriodInfo {
   index: number;
   day: number;
@@ -141,6 +146,7 @@ export const ClaimSection = ({
     mutationFn: async () => {
       toastId = toast.loading(t('currentlyReceiving'));
       // 调用claimReward获取数据
+      console.log('type', type);
       const claimData = await getClaimReward(
         type,
         userAddress as `0x${string}`
@@ -148,7 +154,7 @@ export const ClaimSection = ({
       if (claimData) {
         const signatureInfo = await verifySignature({
           signature: claimData.salt,
-          address: ReferralRewardPool as `0x${string}`,
+          address: typeAddressMap[type as keyof typeof typeAddressMap],
         });
         console.log(
           signatureInfo,
@@ -178,13 +184,12 @@ export const ClaimSection = ({
         // 先模拟合约调用
         const { request } = await publicClient.simulateContract({
           abi: RewardPoolV7Abi as Abi,
-          address: userAddress as `0x${string}`,
+          address: typeAddressMap[type as keyof typeof typeAddressMap],
           functionName: 'claimReward',
           args: [
             currentPeriodInfo.index,
             claimData.salt,
             claimData.account as `0x${string}`,
-            // userAddress as `0x${string}`,
             claimData.amount,
             claimData.expireTime,
             claimData.signature,
@@ -192,26 +197,12 @@ export const ClaimSection = ({
           account: claimData.account as `0x${string}`,
         });
         console.log(request, 'requestrequestrequestrequest55555555');
-        return false;
+        // return false;
 
         // 模拟成功后再执行实际交易
         // const hash = await writeContractAsync(request);
 
-        const hash = await writeContractAsync({
-          abi: RewardPoolV7Abi.abi as Abi,
-          address: userAddress as `0x${string}`,
-          functionName: 'claimReward',
-          args: [
-            currentPeriodInfo.index,
-            claimData.salt,
-            claimData.account as `0x${string}`,
-            // userAddress as `0x${string}`,
-            claimData.amount,
-            claimData.expireTime,
-            claimData.signature,
-          ],
-          // account: userAddress as `0x${string}`,
-        });
+        const hash = await writeContractAsync(request);
 
         const result = await publicClient.waitForTransactionReceipt({
           hash,

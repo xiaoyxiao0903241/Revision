@@ -1,9 +1,9 @@
 // signatureSalts
-import { Address, Abi, formatUnits } from 'viem';
+import { Abi, Address, formatUnits } from 'viem';
 import { executeMulticall } from '~/lib/multicall';
 import RewardPoolV7Abi from '../../constants/RewardPoolV7.json';
-import { taxReceiver } from '../../constants/tokens';
 import TaxReceiver_ABI from '../../constants/TaxReceiver.json';
+import { taxReceiver } from '../../constants/tokens';
 
 interface signatureInfo {
   isUsed: boolean;
@@ -31,13 +31,13 @@ export const verifySignature = async ({
       calls: [
         {
           address: address as `0x${string}`,
-          abi: RewardPoolV7Abi.abi as Abi,
+          abi: RewardPoolV7Abi as Abi,
           functionName: 'signatureSalts',
           args: [signature],
         },
         {
           address: address as `0x${string}`,
-          abi: RewardPoolV7Abi.abi as Abi,
+          abi: RewardPoolV7Abi as Abi,
           functionName: 'usedSignatures',
           args: [signature],
         },
