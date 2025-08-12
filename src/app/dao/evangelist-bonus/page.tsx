@@ -1,18 +1,19 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Alert, Card, Statistics } from '~/components';
+import { Alert, Button, Card, Statistics } from '~/components';
 import { useQuery } from '@tanstack/react-query';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { useNolockStore } from '~/store/noLock';
 import { rewardPromotion } from '~/services/auth/dao';
 import { formatNumbedecimalScale, formatte2Num } from '~/lib/utils';
 import { ClaimSection } from '../components/ClaimSection';
-import DaoRecords from '../components/DaoRecords';
+import DaoRecords, { DaoRecordsRef } from '../components/DaoRecords';
+import { useRef } from 'react';
 
 export default function EvangelistBonusPage() {
   const t = useTranslations('dao');
-
+  const daoRecordsRef = useRef<DaoRecordsRef>(null);
   const { userAddress } = useUserAddress();
   const { olyPrice } = useNolockStore();
 
@@ -23,6 +24,13 @@ export default function EvangelistBonusPage() {
     enabled: Boolean(userAddress),
   });
   console.log(rewardPromotionData, 'rewardPromotionData');
+
+  const handleManualRefresh = () => {
+    console.log(daoRecordsRef, 'daoRecordsRef');
+    if (daoRecordsRef.current) {
+      daoRecordsRef.current.handleManualRefresh();
+    }
+  };
 
   return (
     <div className='space-y-6'>
@@ -42,6 +50,7 @@ export default function EvangelistBonusPage() {
             refetch={refetch}
             rewardData={rewardPromotionData}
             type='promotion'
+            onSuccess={handleManualRefresh}
           />
         </div>
         {/* 右侧：账户摘要 */}
@@ -86,9 +95,9 @@ export default function EvangelistBonusPage() {
           </Card>
         </div>
       </div>
-
+      <Button onClick={handleManualRefresh}>111111111</Button>
       {/* 底部：记录表格 */}
-      <DaoRecords type='promotion' />
+      <DaoRecords ref={daoRecordsRef} type='promotion' />
     </div>
   );
 }

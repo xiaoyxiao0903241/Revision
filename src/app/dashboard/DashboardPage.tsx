@@ -6,8 +6,8 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { Alert, Statistics } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
-import { formatNumbedecimalScale } from '~/lib/utils';
 import { myMess } from '~/services/auth/dashboard';
+import { dayjs, formatNumbedecimalScale } from '~/lib/utils';
 import { nodeSummary } from '~/services/auth/node';
 import { getSaleOverview } from '~/wallet/lib/web3/node';
 import Bonus from './components/bonus';
@@ -51,13 +51,20 @@ export default function DashboardPage() {
   const [myMessInfo, setMyMessInfo] = useSafeState<myMessDataType>();
   const [saleAmount, setSaleAmount] = useState<string>('0.00');
   const [nodeAmount, setNodeAmount] = useState<number>(0);
+  const [startTime] = useState<string>(
+    dayjs().subtract(1, 'month').format('YYYY-MM-DD')
+  );
+  // const [endTime] = useState<string>(dayjs().format('YYYY-MM-DD'));
   const { userAddress } = useUserAddress();
 
   const { data: myMessData } = useQuery({
-    queryKey: ['myMess', userAddress],
-    queryFn: () => myMess('', '', userAddress as `0x${string}`),
-    enabled: Boolean(userAddress),
-    refetchInterval: 20000,
+    queryKey: ['dashboardMyMess', userAddress],
+    queryFn: () => {
+      // console.log('dashboardMyMessdashboardMyMessdashboardMyMess');
+      return myMess(startTime, startTime, userAddress as `0x${string}`);
+    },
+    enabled: Boolean(userAddress && startTime && startTime),
+    // refetchInterval: 20000,
   });
   console.log(myMessData, 'mymyMessData');
 
@@ -66,7 +73,7 @@ export default function DashboardPage() {
     queryKey: ['getSaleOverview', userAddress],
     queryFn: () => getSaleOverview({ address: userAddress as `0x${string}` }),
     enabled: Boolean(userAddress),
-    refetchInterval: 34000,
+    // refetchInterval: 34000,
   });
 
   // 我的节点总额
@@ -74,7 +81,7 @@ export default function DashboardPage() {
     queryKey: ['nodeSummary', userAddress],
     queryFn: () => nodeSummary(1, 50, userAddress as `0x${string}`),
     enabled: Boolean(userAddress),
-    refetchInterval: 34000,
+    // refetchInterval: 34000,
   });
 
   useEffect(() => {

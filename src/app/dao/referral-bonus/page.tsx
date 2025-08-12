@@ -1,26 +1,33 @@
 'use client';
 import { useTranslations } from 'next-intl';
-import { Alert, Card, Statistics } from '~/components';
+import { Alert, Button, Card, Statistics } from '~/components';
 import { useQuery } from '@tanstack/react-query';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { useNolockStore } from '~/store/noLock';
 import { serviceReward } from '~/services/auth/dao';
 import { formatNumbedecimalScale, formatte2Num } from '~/lib/utils';
 import { ClaimSection } from '../components/ClaimSection';
-import DaoRecords from '../components/DaoRecords';
+import DaoRecords, { DaoRecordsRef } from '../components/DaoRecords';
+import { useRef } from 'react';
 
 export default function SuperBonusPage() {
   const t = useTranslations('dao');
   const { userAddress } = useUserAddress();
   const { olyPrice } = useNolockStore();
-
+  const daoRecordsRef = useRef<DaoRecordsRef>(null);
   // 奖励信息
   const { data: serviceRewardData, refetch } = useQuery({
     queryKey: ['leadReward', userAddress],
     queryFn: () => serviceReward(userAddress as `0x${string}`),
     enabled: Boolean(userAddress),
   });
-  console.log(serviceRewardData, 'serviceRewardData');
+
+  const handleManualRefresh = () => {
+    console.log(daoRecordsRef, 'daoRecordsRef');
+    if (daoRecordsRef.current) {
+      daoRecordsRef.current.handleManualRefresh();
+    }
+  };
 
   return (
     <div className='space-y-6'>
@@ -40,6 +47,7 @@ export default function SuperBonusPage() {
             refetch={refetch}
             rewardData={serviceRewardData}
             type='service'
+            onSuccess={handleManualRefresh}
           />
         </div>
         {/* 右侧：账户摘要 */}
@@ -67,9 +75,9 @@ export default function SuperBonusPage() {
           </Card>
         </div>
       </div>
-
+      <Button onClick={handleManualRefresh}>111111111</Button>
       {/* 底部：记录表格 */}
-      <DaoRecords type='service' />
+      <DaoRecords ref={daoRecordsRef} type='service' />
     </div>
   );
 }

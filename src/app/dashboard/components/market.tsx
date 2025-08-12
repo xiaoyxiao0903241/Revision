@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Card, Statistics, View } from '~/components';
@@ -15,6 +15,9 @@ import {
   formatNumbedecimalScale,
 } from '~/lib/utils';
 import { useNolockStore } from '~/store/noLock';
+import isEqual from 'lodash/isEqual';
+import { useRef } from 'react';
+
 const Market = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
   const safeMyMessInfo = myMessInfo || {};
   const t = useTranslations('dashboard');
@@ -62,13 +65,36 @@ const Market = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
     setEndTime(end);
   }, [selectedTimeFilter]);
 
+  // 使用自定义的 useDeepCompareMemo 实现深比较
+  const useDeepCompareMemo = (value: any[], deps: any[]) => {
+    const ref = useRef<any[]>(deps);
+    if (!isEqual(ref.current, deps)) {
+      ref.current = deps;
+    }
+    return useMemo(value, ref.current);
+  };
+
+  // 使用 useDeepCompareMemo 稳定查询参数
+  const queryKey = useDeepCompareMemo(
+    () => ['marketData', userAddress, startTime, endTime],
+    [userAddress, startTime, endTime]
+  );
+
   const { data: myMessData } = useQuery({
-    queryKey: ['myMess', userAddress, startTime, endTime], // 将 startTime 和 endTime 添加到 queryKey 中
-    queryFn: () => myMess(startTime, endTime, userAddress as `0x${string}`),
-    enabled: Boolean(userAddress),
+    queryKey,
+    queryFn: () => {
+      console.log(
+        'Fetching market data with params:',
+        startTime,
+        endTime,
+        userAddress
+      );
+      return myMess(startTime, endTime, userAddress as `0x${string}`);
+    },
+    enabled: Boolean(userAddress && startTime && endTime),
     refetchInterval: 20000,
   });
-
+  console.log('marketDatamarketDatamarketDatamarketData------');
   return (
     <Card className='flex flex-col md:flex-row gap-6'>
       <div className='w-full h-full xl:w-2/5 space-y-6'>

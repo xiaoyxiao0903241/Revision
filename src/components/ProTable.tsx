@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import React, { forwardRef, useCallback, useEffect, useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { useTranslations } from 'next-intl';
 import { Button, Pager } from '~/components';
@@ -56,6 +56,10 @@ export type ProTableDataType = {
   total: number;
 };
 
+export type ProTableRef = {
+  refresh: () => void;
+};
+
 export interface ProTableProps<T> {
   columns: ProTableColumn<T>[]; // 表格列配置
   pageSize?: number; // 每页条数，默认为10
@@ -67,6 +71,7 @@ export interface ProTableProps<T> {
   params?: Record<string, unknown>; // 参数
   manualRequest?: boolean; // 是否手动请求
   onSuccess?: (data: ProTableData<T>) => void; // 数据获取成功回调
+  onRefreshRef?: React.Ref<(() => void) | undefined>;
 }
 /**
  * ProTable通用表格组件
@@ -83,249 +88,282 @@ export interface ProTableProps<T> {
  * @param manualRequest 是否手动触发请求
  * @param appendNotDataText 暂无数据顶部追加文案
  */
-const ProTable = <T,>({
-  columns,
-  queryFn,
-  params,
-  rowKey = 'address' as keyof T,
-  showPagination = true,
-  pageSize: pageSizeProp = 10,
-  formatResult,
-  manualRequest = false,
-  appendNotDataText: appendNotDataText = '',
-  onSuccess,
-}: ProTableProps<T>) => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const common = useTranslations();
-  const userAddress = useUserAddress();
-  // 保存上一次的params用于比较
-  const [prevParams, setPrevParams] = useState<
-    Record<string, unknown> | undefined
-  >(params);
+const ProTable = forwardRef(
+  <T extends Record<string, any>>({
+    columns,
+    queryFn,
+    params,
+    rowKey = 'address' as keyof T,
+    showPagination = true,
+    pageSize: pageSizeProp = 3,
+    formatResult,
+    manualRequest = false,
+    appendNotDataText: appendNotDataText = '',
+    onSuccess,
+    onRefreshRef,
+  }: ProTableProps<T>) => {
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const common = useTranslations();
+    const userAddress = useUserAddress();
+    // 保存上一次的params用于比较
+    const [prevParams, setPrevParams] = useState<
+      Record<string, unknown> | undefined
+    >(params);
+    const queryClient = useQueryClient();
 
-  // 监听params变化，如果变化则重置到第一页
-  useEffect(() => {
-    if (!_.isEqual(params, prevParams)) {
-      setCurrentPage(1);
-      setPrevParams(params);
-    }
-  }, [params, prevParams]);
+    // 监听params变化，如果变化则重置到第一页
+    useEffect(() => {
+      if (!_.isEqual(params, prevParams)) {
+        setCurrentPage(1);
+        setPrevParams(params);
+      }
+    }, [params, prevParams]);
 
-  // , isLoading, isError, error
-  const { data } = useQuery({
-    queryKey: ['proTable', params, currentPage, pageSizeProp],
-    queryFn: () => queryFn({ ...params, currentPage, pageSizeProp }),
-    enabled: !manualRequest,
-  });
+    // , isLoading, isError, error
+    const { data } = useQuery({
+      queryKey: ['proTable', params, currentPage, pageSizeProp],
+      queryFn: () => queryFn({ ...params, currentPage, pageSizeProp }),
+      enabled: !manualRequest,
+    });
 
-  useEffect(() => {
-    if (data && onSuccess) {
-      onSuccess(data);
-    }
-  }, [data, onSuccess]);
+    useEffect(() => {
+      if (data && onSuccess) {
+        onSuccess(data);
+      }
+    }, [data, onSuccess]);
 
-  // 格式化值的函数
-  const formatValue = (value: unknown, valueType?: valueType): string => {
-    if (value === null || value === undefined) return '';
-    const strValue = String(value);
-    switch (valueType) {
-      case 'date':
-        return dayjs(strValue).format('YYYY/MM/DD');
-      case 'dateTime':
-        return dayjs(strValue).format('YYYY/MM/DD HH:mm:ss');
-      case 'hash':
-        return formatHash(strValue);
-      case 'text':
-      default:
-        return strValue;
-    }
-  };
+    // 格式化值的函数
+    const formatValue = (value: unknown, valueType?: valueType): string => {
+      if (value === null || value === undefined) return '';
+      const strValue = String(value);
+      switch (valueType) {
+        case 'date':
+          return dayjs(strValue).format('YYYY/MM/DD');
+        case 'dateTime':
+          return dayjs(strValue).format('YYYY/MM/DD HH:mm:ss');
+        case 'hash':
+          return formatHash(strValue);
+        case 'text':
+        default:
+          return strValue;
+      }
+    };
 
-  // 渲染表格数据
-  const processedData = data
-    ? formatResult
-      ? (formatResult(data) as unknown as ProTableData<T>)
-      : (data as ProTableData<T>)
-    : null;
+    // 渲染表格数据
+    const processedData = data
+      ? formatResult
+        ? (formatResult(data) as unknown as ProTableData<T>)
+        : (data as ProTableData<T>)
+      : null;
 
-  const tableData = processedData?.dataSource || processedData?.records || [];
-  const total = processedData?.total || data?.total || 0;
+    const tableData = processedData?.dataSource || processedData?.records || [];
+    const total = processedData?.total || data?.total || 0;
 
-  return (
-    <div className='overflow-x-auto'>
-      <table className='w-full'>
-        <tbody className='space-y-2'>
-          {tableData.map((record: T, index: number) => {
-            const key = record[rowKey] || index;
-            return (
-              <tr
-                key={`${key}-${index}`}
-                className={cn('grid p-6 bg-foreground/5 rounded-md')}
-                style={{
-                  gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
-                }}
-              >
-                {columns.map((column, colIndex) => {
-                  // 获取单元格的值
-                  const value = record[column.dataIndex];
+    const refresh = useCallback(() => {
+      // 重新获取数据的方法
+      queryClient.invalidateQueries({
+        queryKey: ['proTable', params, currentPage, pageSizeProp],
+      });
+    }, [queryClient, params, currentPage, pageSizeProp]);
 
-                  // 处理渲染逻辑
-                  let renderedValue: React.ReactNode =
-                    value === null || value === undefined
-                      ? null
-                      : String(value);
+    // 将刷新方法暴露给父组件
+    useEffect(() => {
+      if (onRefreshRef) {
+        if (typeof onRefreshRef === 'function') {
+          onRefreshRef(refresh);
+        } else if ('current' in onRefreshRef) {
+          onRefreshRef.current = refresh;
+        }
+      }
 
-                  if (column.render) {
-                    // 如果是函数形式的render
-                    if (typeof column.render === 'function') {
-                      const safeValue = value as
-                        | string
-                        | number
-                        | boolean
-                        | undefined;
-                      renderedValue = column.render(safeValue, record, index);
-                    }
-                    // 如果是ProTableRender配置对象
-                    else if (typeof column.render === 'object') {
-                      const renderConfig = column.render;
+      // 清理函数，组件卸载时清理引用
+      return () => {
+        if (onRefreshRef && 'current' in onRefreshRef) {
+          onRefreshRef.current = undefined;
+        }
+      };
+    }, [onRefreshRef, refresh]);
 
-                      // 使用自定义render函数
-                      if (renderConfig.render) {
+    return (
+      <div className='overflow-x-auto'>
+        <table className='w-full'>
+          <tbody className='space-y-2'>
+            {tableData.map((record: T, index: number) => {
+              const key = record[rowKey] || index;
+              return (
+                <tr
+                  key={`${key}-${index}`}
+                  className={cn('grid p-6 bg-foreground/5 rounded-md')}
+                  style={{
+                    gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
+                  }}
+                >
+                  {columns.map((column, colIndex) => {
+                    // 获取单元格的值
+                    const value = record[column.dataIndex];
+
+                    // 处理渲染逻辑
+                    let renderedValue: React.ReactNode =
+                      value === null || value === undefined
+                        ? null
+                        : String(value);
+
+                    if (column.render) {
+                      // 如果是函数形式的render
+                      if (typeof column.render === 'function') {
                         const safeValue = value as
                           | string
                           | number
                           | boolean
                           | undefined;
-                        renderedValue = renderConfig.render(
-                          safeValue,
-                          record,
-                          index
-                        );
+                        renderedValue = column.render(safeValue, record, index);
                       }
-                      // 处理链接类型
-                      else if (renderConfig.link) {
-                        const href =
-                          typeof renderConfig.href === 'function'
-                            ? renderConfig.href(
-                                typeof value === 'string' ||
-                                  typeof value === 'number'
-                                  ? value
-                                  : undefined,
-                                record,
-                                index
-                              )
-                            : renderConfig.href;
+                      // 如果是ProTableRender配置对象
+                      else if (typeof column.render === 'object') {
+                        const renderConfig = column.render;
 
-                        const formattedValue = formatValue(
-                          value,
-                          renderConfig.valueType
-                        );
-
-                        renderedValue = (
-                          <Link
-                            href={href || '#'}
-                            target={renderConfig.target || '_blank'}
-                            className='text-blue-400 cursor-pointer hover:underline'
-                          >
-                            {formattedValue}
-                            {renderConfig.icon && (
-                              <span className='ml-1'>{renderConfig.icon}</span>
-                            )}
-                          </Link>
-                        );
-                      }
-                      // 格式化值类型
-                      else {
-                        const formattedValue = formatValue(
-                          value,
-                          renderConfig.valueType
-                        );
-                        if (renderConfig.icon) {
-                          renderedValue = (
-                            <span className='flex items-center'>
-                              {formattedValue}
-                              <span className='ml-1'>{renderConfig.icon}</span>
-                            </span>
+                        // 使用自定义render函数
+                        if (renderConfig.render) {
+                          const safeValue = value as
+                            | string
+                            | number
+                            | boolean
+                            | undefined;
+                          renderedValue = renderConfig.render(
+                            safeValue,
+                            record,
+                            index
                           );
-                        } else {
-                          renderedValue = formattedValue;
+                        }
+                        // 处理链接类型
+                        else if (renderConfig.link) {
+                          const href =
+                            typeof renderConfig.href === 'function'
+                              ? renderConfig.href(
+                                  typeof value === 'string' ||
+                                    typeof value === 'number'
+                                    ? value
+                                    : undefined,
+                                  record,
+                                  index
+                                )
+                              : renderConfig.href;
+
+                          const formattedValue = formatValue(
+                            value,
+                            renderConfig.valueType
+                          );
+
+                          renderedValue = (
+                            <Link
+                              href={href || '#'}
+                              target={renderConfig.target || '_blank'}
+                              className='text-blue-400 cursor-pointer hover:underline'
+                            >
+                              {formattedValue}
+                              {renderConfig.icon && (
+                                <span className='ml-1'>
+                                  {renderConfig.icon}
+                                </span>
+                              )}
+                            </Link>
+                          );
+                        }
+                        // 格式化值类型
+                        else {
+                          const formattedValue = formatValue(
+                            value,
+                            renderConfig.valueType
+                          );
+                          if (renderConfig.icon) {
+                            renderedValue = (
+                              <span className='flex items-center'>
+                                {formattedValue}
+                                <span className='ml-1'>
+                                  {renderConfig.icon}
+                                </span>
+                              </span>
+                            );
+                          } else {
+                            renderedValue = formattedValue;
+                          }
                         }
                       }
                     }
-                  }
 
-                  return (
-                    <td
-                      key={column.key}
-                      className='py-3 px-4 flex flex-col gap-1'
-                    >
-                      <span className='text-xs text-foreground/50'>
-                        {column.title}
-                      </span>
-                      <span
-                        className={
-                          colIndex === 1 || colIndex === 2
-                            ? 'text-white font-mono'
-                            : colIndex === 3
-                              ? 'text-gray-300 font-mono'
-                              : ''
-                        }
+                    return (
+                      <td
+                        key={column.key}
+                        className='py-3 px-4 flex flex-col gap-1'
                       >
-                        {renderedValue}
-                      </span>
-                    </td>
-                  );
-                })}
+                        <span className='text-xs text-foreground/50'>
+                          {column.title}
+                        </span>
+                        <span
+                          className={
+                            colIndex === 1 || colIndex === 2
+                              ? 'text-white font-mono'
+                              : colIndex === 3
+                                ? 'text-gray-300 font-mono'
+                                : ''
+                          }
+                        >
+                          {renderedValue}
+                        </span>
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+            {tableData.length === 0 && (
+              <tr className='w-full p-6'>
+                <td
+                  colSpan={5}
+                  className='flex flex-col items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-5 gap-2 mt-2'
+                >
+                  {!userAddress ? (
+                    <>
+                      {common('walletNotConnected')}
+                      <Button
+                        clipDirection='topRight-bottomLeft'
+                        className='w-auto'
+                      >
+                        {common('connectWallet')}
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      {appendNotDataText && appendNotDataText}
+                      <Button
+                        clipDirection='topRight-bottomLeft'
+                        className='w-auto'
+                      >
+                        {common('common.nodata')}
+                      </Button>
+                    </>
+                  )}
+                </td>
               </tr>
-            );
-          })}
-          {tableData.length === 0 && (
-            <tr className='w-full p-6'>
-              <td
-                colSpan={5}
-                className='flex flex-col items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-5 gap-2 mt-2'
-              >
-                {!userAddress ? (
-                  <>
-                    {common('walletNotConnected')}
-                    <Button
-                      clipDirection='topRight-bottomLeft'
-                      className='w-auto'
-                    >
-                      {common('connectWallet')}
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    {appendNotDataText && appendNotDataText}
-                    <Button
-                      clipDirection='topRight-bottomLeft'
-                      className='w-auto'
-                    >
-                      {common('common.nodata')}
-                    </Button>
-                  </>
-                )}
-              </td>
-            </tr>
+            )}
+          </tbody>
+          {showPagination && total > pageSizeProp && (
+            <tfoot className='col-span-4'>
+              <tr>
+                <td colSpan={columns.length} className='text-center'>
+                  <Pager
+                    currentPage={currentPage}
+                    totalPages={total ? Math.ceil(total / pageSizeProp) : 0}
+                    onPageChange={page => setCurrentPage(page)}
+                  />
+                </td>
+              </tr>
+            </tfoot>
           )}
-        </tbody>
-        {showPagination && total > pageSizeProp && (
-          <tfoot className='col-span-4'>
-            <tr>
-              <td colSpan={columns.length} className='text-center'>
-                <Pager
-                  currentPage={currentPage}
-                  totalPages={total ? Math.ceil(total / pageSizeProp) : 0}
-                  onPageChange={page => setCurrentPage(page)}
-                />
-              </td>
-            </tr>
-          </tfoot>
-        )}
-      </table>
-    </div>
-  );
-};
-
+        </table>
+      </div>
+    );
+  }
+);
+ProTable.displayName = 'ProTable';
 export default ProTable;

@@ -163,11 +163,11 @@ export const taxReceiver = '0xbB9898bA012d652E528e3E9D00D9102255C06396';
 export const dao = '0xa8f816ee14636F807A6b93b386f96001a5Ca0bAF';
 
 //收益
-export const ReferralRewardPool = '0xed4862091EACd04E35BEFF5BD5994b976FAD27B0';
-export const TitleRewardPool = '0x3E0a3329b41FAa2219Da3fa22e9e2eEc3bcDc386';
+export const ReferralRewardPool = '0xed4862091EACd04E35BEFF5BD5994b976FAD27B0'; // 矩阵
+export const TitleRewardPool = '0x3E0a3329b41FAa2219Da3fa22e9e2eEc3bcDc386'; // 布道
 export const ReverseRewardPool = '0x09724aE039aD5419B0d0D7Fee6654055F504b9ef';
-export const ServiceRewardPool = '0x38676302C31EDB0e9A17B0cC334B0d25a2e2035e';
-export const LeadRewardPool = '0x509F19fB5B083adc9fDD4816cEEFE72466465B54';
+export const ServiceRewardPool = '0x38676302C31EDB0e9A17B0cC334B0d25a2e2035e'; // 推荐
+export const LeadRewardPool = '0x509F19fB5B083adc9fDD4816cEEFE72466465B54'; // 平超
 
 // 代币合约地址
 export const TOKEN_ADDRESSES = {

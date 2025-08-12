@@ -6,21 +6,29 @@ import { useUserAddress } from '~/contexts/UserAddressContext';
 import { rewardMatrix } from '~/services/auth/dao';
 import { formatNumbedecimalScale, formatte2Num } from '~/lib/utils';
 import { useNolockStore } from '~/store/noLock';
-import DaoRecords from './components/DaoRecords';
+import DaoRecords, { DaoRecordsRef } from './components/DaoRecords';
 import { ClaimSection } from './components/ClaimSection';
+import { useRef } from 'react';
 
 export default function DaoPage() {
   const t = useTranslations('dao');
   const { userAddress } = useUserAddress();
   const { olyPrice } = useNolockStore();
-
+  const daoRecordsRef = useRef<DaoRecordsRef>(null);
   // 奖励信息
   const { data: rewardMatrixData, refetch: refetchLeadReward } = useQuery({
     queryKey: ['rewardMatrix', userAddress],
     queryFn: () => rewardMatrix(userAddress as `0x${string}`),
     enabled: Boolean(userAddress),
   });
-
+  const handleManualRefresh = () => {
+    console.log(daoRecordsRef, 'daoRecordsRef');
+    if (daoRecordsRef.current) {
+      daoRecordsRef.current.handleManualRefresh();
+    } else {
+      console.log('daoRecordsRef.current is null or undefined');
+    }
+  };
   return (
     <div className='space-y-6'>
       {/* 顶部Alert */}
@@ -39,6 +47,7 @@ export default function DaoPage() {
             refetch={refetchLeadReward}
             rewardData={rewardMatrixData}
             type='matrix'
+            onSuccess={handleManualRefresh}
           />
         </div>
 
@@ -77,7 +86,7 @@ export default function DaoPage() {
       </div>
 
       {/* 底部：记录表格 */}
-      <DaoRecords type='matrix' />
+      <DaoRecords ref={daoRecordsRef} type='matrix' />
     </div>
   );
 }
