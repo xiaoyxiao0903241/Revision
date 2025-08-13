@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useMemo } from 'react';
-import ReactECharts from 'echarts-for-react';
 import type { EChartsOption } from 'echarts';
+import ReactECharts from 'echarts-for-react';
+import React, { useMemo } from 'react';
 import { useChart } from '~/hooks/useChart';
 
 // TVL图表组件
@@ -44,10 +44,10 @@ export const TVLChart: React.FC<{
         },
       },
       grid: {
-        left: '10%',
-        right: '10%',
-        top: '15%',
-        bottom: '15%',
+        left: '20%',
+        right: '0%',
+        top: '5%',
+        bottom: '20%',
       },
       xAxis: {
         type: 'category',
@@ -123,7 +123,7 @@ export const TVLChart: React.FC<{
   }, [dataSource]);
 
   return (
-    <div className={`tvl-chart w-full h-full ${className}`}>
+    <div className={`tvl-chart w-full h-[200px] md:h-full  ${className}`}>
       <ReactECharts
         option={chartOption}
         ref={chartRef}
