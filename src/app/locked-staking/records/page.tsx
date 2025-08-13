@@ -1,13 +1,13 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-import { useState, useEffect } from 'react';
-import { Alert } from '~/components';
-import { StakingRecords } from '~/widgets/staking-records';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
+import { Alert } from '~/components';
+import { Pager } from '~/components/pagination';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { longStakHis } from '~/services/auth/stake';
-import { Pager } from '~/components/pagination';
+import { StakingRecords } from '~/widgets/staking-records';
 
 export default function RecordsPage() {
   const t = useTranslations('staking');
@@ -62,7 +62,7 @@ export default function RecordsPage() {
         changeTab={setRecordType}
         total={total}
       />
-      {pages && (
+      {pages > 0 && (
         <Pager
           currentPage={page}
           totalPages={pages}

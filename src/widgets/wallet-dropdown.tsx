@@ -75,7 +75,6 @@ export function WalletDropdown({
   handleDisconnect,
 }: WalletDropdownProps) {
   const t = useTranslations('common');
-  const tcopy = useTranslations('invite');
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('wallet');
   const [copeA, setcopeA] = useState(1);
@@ -378,18 +377,18 @@ export function WalletDropdown({
   useEffect(() => {
     if (copeA > 1 || copeB > 1) {
       const timer = setTimeout(() => {
-        toast.success(tcopy('copySuccess'));
+        toast.success(t('copySuccess'));
         setcopeA(1);
         setcopeB(1);
       }, 500);
       return () => clearTimeout(timer);
     }
     if (copeA < 1 && copeB < 1) {
-      toast.error(tcopy('copyError'));
+      toast.error(t('copyError'));
       setcopeA(1);
       setcopeB(1);
     }
-  }, [copeA, copeB, tcopy, setcopeA, setcopeB]);
+  }, [copeA, copeB, t, setcopeA, setcopeB]);
   const shortAddress = address ? formatAddress(address) : '';
 
   return (

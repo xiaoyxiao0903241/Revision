@@ -32,17 +32,15 @@ export const StakingSummary: FC<{
           </List.Value>
         </List.Item>
       )}
-      {data.cutDownTime && (
-        <List.Item>
-          <List.Label>{t('countdownToNextRebase')}</List.Label>
-          <List.Value className='font-mono'>
-            <CountdownDisplay
-              blocks={BigInt(data.cutDownTime)}
-              isShowDay={false}
-            />
-          </List.Value>
-        </List.Item>
-      )}
+      <List.Item>
+        <List.Label>{t('countdownToNextRebase')}</List.Label>
+        <List.Value className='font-mono'>
+          <CountdownDisplay
+            blocks={BigInt(data.cutDownTime)}
+            isShowDay={false}
+          />
+        </List.Value>
+      </List.Item>
     </List>
   );
 };

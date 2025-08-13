@@ -1,8 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-import Image from 'next/image';
-import { Button } from '~/components/button';
+import { AddToWallet } from './addToWallet';
 interface ClaimTickerProps {
   lockedAmount: number | string;
   usdValue: number | string;
@@ -16,7 +14,7 @@ export function TurbineCard({
   usdValue,
   onClick,
 }: ClaimTickerProps) {
-  const tStaking = useTranslations('staking');
+  // const tStaking = useTranslations('staking');
   return (
     <div className='relative px-4'>
       <div className='flex items-center justify-between'>
@@ -36,28 +34,7 @@ export function TurbineCard({
         </div>
 
         {/* 右侧：按钮 */}
-        {onClick && (
-          <div className='flex flex-col items-end space-y-2'>
-            {/* 领取按钮 */}
-            <Button
-              variant='accent'
-              size='sm'
-              clipSize={8}
-              className='gap-2'
-              clipDirection='topLeft-bottomRight'
-            >
-              <div className='w-4 h-4 rounded-full bg-white flex items-center justify-center'>
-                <Image
-                  src='/images/widgets/logo.png'
-                  alt='logo'
-                  width={16}
-                  height={16}
-                />
-              </div>
-              <span className='text-black'>{tStaking('addToMetaMask')}</span>
-            </Button>
-          </div>
-        )}
+        {onClick && <AddToWallet></AddToWallet>}
       </div>
     </div>
   );

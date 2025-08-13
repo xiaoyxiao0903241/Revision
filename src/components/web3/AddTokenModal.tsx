@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { createPortal } from 'react-dom';
-import Image from 'next/image';
-import { fallbackCopyText } from '~/lib/utils';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { fallbackCopyText } from '~/lib/utils';
 // import ClipboardJS from "clipboard";
 import { toast } from 'sonner';
 
@@ -27,7 +27,7 @@ export default function AddTokenModal({ open, onClose, tokens, onAdd }: Props) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   // const clipboardRef = useRef<ClipboardJS | null>(null);
   // const [link, setLink] = useState("");
-  const t = useTranslations('invite');
+
   const t2 = useTranslations('common.addTokenModal');
   // useEffect(() => {
   //   if (buttonRef.current) {
@@ -71,18 +71,18 @@ export default function AddTokenModal({ open, onClose, tokens, onAdd }: Props) {
   useEffect(() => {
     if (copeA > 1 || copeB > 1) {
       const timer = setTimeout(() => {
-        toast.success(t('copySuccess'));
+        toast.success(t2('common.copySuccess'));
         setcopeA(1);
         setcopeB(1);
       }, 500);
       return () => clearTimeout(timer);
     }
     if (copeA < 1 && copeB < 1) {
-      toast.error(t('copyError'));
+      toast.error(t2('common.copyError'));
       setcopeA(1);
       setcopeB(1);
     }
-  }, [copeA, copeB, t, setcopeA, setcopeB]);
+  }, [copeA, copeB, t2, setcopeA, setcopeB]);
 
   if (!open) return null;
   return createPortal(
