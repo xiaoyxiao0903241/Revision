@@ -55,19 +55,6 @@ export default function ClaimPage() {
     if (!publicClient || !userAddress) return;
     const toastId = toast.loading(t2('toast.confirm_in_wallet'));
     setIsDisabled(true);
-    console.log(
-      lockIndex,
-      parseUnits(claimAmount || '0', 9).toString(),
-      'lockIndexlockIndexlockIndex'
-    );
-    const { request } = await publicClient.simulateContract({
-      abi: DemandStakingAbi as Abi,
-      address: demandStaking as `0x${string}`,
-      functionName: 'claimInterest',
-      args: [lockIndex, parseUnits(claimAmount || '0', 9).toString()],
-    });
-    console.log(request, 'requestrequestrequestrequest');
-    return false;
     try {
       const hash = await writeContractAsync({
         abi: DemandStakingAbi as Abi,

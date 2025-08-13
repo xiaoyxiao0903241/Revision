@@ -71,15 +71,14 @@ const Market = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
     if (!isEqual(ref.current, deps)) {
       ref.current = deps;
     }
-    return useMemo(value, ref.current);
+    return useMemo(() => value, ref.current);
   };
 
   // 使用 useDeepCompareMemo 稳定查询参数
   const queryKey = useDeepCompareMemo(
-    () => ['marketData', userAddress, startTime, endTime],
+    ['marketData', userAddress, startTime, endTime],
     [userAddress, startTime, endTime]
   );
-
   const { data: myMessData } = useQuery({
     queryKey,
     queryFn: () => {
