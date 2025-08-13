@@ -95,7 +95,7 @@ const ProTable = forwardRef(
     params,
     rowKey = 'address' as keyof T,
     showPagination = true,
-    pageSize: pageSizeProp = 3,
+    pageSize: pageSizeProp = 10,
     formatResult,
     manualRequest = false,
     appendNotDataText: appendNotDataText = '',

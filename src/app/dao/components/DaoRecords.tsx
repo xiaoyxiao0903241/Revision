@@ -12,6 +12,7 @@ import ProTable, { ProTableColumn } from '~/components/ProTable';
 import { rewardHistoryList, rewardList } from '~/services/auth/dao';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { formatDecimal } from '~/lib/utils';
+import _ from 'lodash';
 
 type DaoRecordsParams = {
   currentPage: number;
@@ -26,7 +27,7 @@ type DaoRecordItem = {
   amount?: string;
   lockIndex?: number;
   lockIndex_n?: number;
-  createdAt: string;
+  createdAt?: string;
   actBonus?: string;
   unlockNum?: number;
   stakeAmount?: string;
@@ -38,6 +39,7 @@ type DaoRecordItem = {
   smallMarket?: string;
   fromAddress?: string;
   interest?: string;
+  recipient?: string;
 };
 
 export type DaoRecordsRef = {
@@ -48,12 +50,12 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
   ({ type }, ref) => {
     const t = useTranslations('dao');
     const tStaking = useTranslations('staking');
+    const tSwap = useTranslations('swap');
     const [activeTab, setActiveTab] = useState(0);
     const { userAddress } = useUserAddress();
     const [total, setTotal] = useState<number>(0);
     const [columns, setColumns] = useState<ProTableColumn<DaoRecordItem>[]>([]);
     const proTableRef = useRef<(() => void) | undefined>(undefined);
-    // const [historyColumns, setHistoryColumns] = useState<ProTableColumn<DaoRecordItem>[]>([]);
 
     // 标签页数据
     const tabData = [
@@ -100,11 +102,40 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
         title: t('lockingCycle'),
         dataIndex: 'lockIndex',
         key: 'lockIndex',
+        render: (value: string | number | boolean | undefined) => {
+          const dataSource = [
+            {
+              value: 0,
+              label: `5 ${tStaking('days')}`,
+            },
+            {
+              value: 1,
+              label: `10 ${tStaking('days')}`,
+            },
+            {
+              value: 2,
+              label: `15 ${tStaking('days')}`,
+            },
+            {
+              value: 3,
+              label: `20 ${tStaking('days')}`,
+            },
+          ];
+          const item = _.find(dataSource, { value: Number(value) });
+          return <>{item?.label}</>;
+        },
       },
       {
-        title: t('tax_rate'),
-        dataIndex: 'lockIndex_n',
-        key: 'lockIndex_n',
+        title: tSwap('recipient'),
+        dataIndex: 'recipient',
+        key: 'recipient',
+        render: {
+          link: true,
+          href: (value: string | number | boolean | undefined) =>
+            `https://bscscan.com/address/${value}`,
+          target: '_blank',
+          valueType: 'hash',
+        },
       },
       {
         title: t('date_time'),
@@ -346,7 +377,7 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
             <div className='overflow-x-auto'>
               <ProTable
                 onRefreshRef={proTableRef}
-                columns={columns}
+                columns={historyColumns}
                 queryFn={params => {
                   const { currentPage, pageSizeProp, type } =
                     params as DaoRecordsParams;

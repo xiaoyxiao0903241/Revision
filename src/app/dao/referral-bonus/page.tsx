@@ -1,6 +1,6 @@
 'use client';
 import { useTranslations } from 'next-intl';
-import { Alert, Button, Card, Statistics } from '~/components';
+import { Alert, Card, Statistics } from '~/components';
 import { useQuery } from '@tanstack/react-query';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { useNolockStore } from '~/store/noLock';
@@ -75,7 +75,7 @@ export default function SuperBonusPage() {
           </Card>
         </div>
       </div>
-      <Button onClick={handleManualRefresh}>111111111</Button>
+
       {/* 底部：记录表格 */}
       <DaoRecords ref={daoRecordsRef} type='service' />
     </div>
