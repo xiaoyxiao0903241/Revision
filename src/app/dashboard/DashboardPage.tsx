@@ -6,8 +6,8 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { Alert, Statistics } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
-import { myMess } from '~/services/auth/dashboard';
 import { dayjs, formatNumbedecimalScale } from '~/lib/utils';
+import { myMess } from '~/services/auth/dashboard';
 import { nodeSummary } from '~/services/auth/node';
 import { getSaleOverview } from '~/wallet/lib/web3/node';
 import Bonus from './components/bonus';
@@ -47,6 +47,7 @@ const defaultMyMessData: myMessDataType = {
 };
 export default function DashboardPage() {
   const t = useTranslations('dashboard');
+  const t2 = useTranslations('tooltip');
 
   const [myMessInfo, setMyMessInfo] = useSafeState<myMessDataType>();
   const [saleAmount, setSaleAmount] = useState<string>('0.00');
@@ -172,15 +173,15 @@ export default function DashboardPage() {
           <div className='flex justify-between'>
             <Statistics
               title={t('genesisSize')}
-              info=''
               value={`${formatNumbedecimalScale(nodeAmount, 2)} USDT`}
               size='sm'
+              info={<span>{t2('dash.invite_serving')}</span>}
             />
             <Statistics
               title={t('currentTotalValue')}
               value={`${formatNumbedecimalScale(saleAmount?.toString(), 2)} USDT`}
               size='sm'
-              info=''
+              info={<span>{t2('dash.all_value')}</span>}
             />
           </div>
         </div>

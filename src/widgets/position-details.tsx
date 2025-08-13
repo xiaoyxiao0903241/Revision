@@ -9,6 +9,8 @@ export const PositionDetails: FC<{
     lifetimeRewards: string;
     timeInPool: string;
     olyPrice: number;
+    info1?: string;
+    info2?: string;
   };
 }> = ({ data }) => {
   const t = useTranslations('dashboard');
@@ -23,19 +25,19 @@ export const PositionDetails: FC<{
           value={data.myStakedAmount}
           desc={`$${formatCurrency(data?.olyPrice * Number(data?.myStakedAmount))}`}
           size='sm'
-          info={<span>说明</span>}
         />
         <Statistics
           title={t('lifetimeRewards')}
           value={data.lifetimeRewards}
           desc='$0.00'
           size='sm'
+          info={<span>{data.info1}</span>}
         />
         <Statistics
           title={t('timeInPool')}
           value={data.timeInPool}
           size='sm'
-          info={<span>说明</span>}
+          info={<span>{data.info2}</span>}
         />
       </div>
     </div>

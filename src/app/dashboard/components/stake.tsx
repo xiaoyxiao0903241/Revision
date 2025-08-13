@@ -1,25 +1,26 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useSafeState } from 'ahooks';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import GrayLogo from '~/assets/gray-logo.svg';
 import { Button, Card, Statistics, View } from '~/components';
-import { formatCurrency, formatNumbedecimalScale } from '~/lib/utils';
-import { PositionDetails } from '~/widgets/position-details';
-import { useNolockStore } from '~/store/noLock';
-import { useQuery } from '@tanstack/react-query';
 import { useUserAddress } from '~/contexts/UserAddressContext';
-import type { StakingItem } from '~/wallet/lib/web3/stake';
-import { useSafeState } from 'ahooks';
-import { blocks as blocksNum } from '~/wallet/constants/tokens';
-import { getUserStakes, getNodeStakes } from '~/wallet/lib/web3/stake';
-import { myMessDataType } from '../DashboardPage';
 import { getCurrentBlock } from '~/lib/multicall';
-import { useRouter } from 'next/navigation';
+import { formatCurrency, formatNumbedecimalScale } from '~/lib/utils';
+import { useNolockStore } from '~/store/noLock';
+import { blocks as blocksNum } from '~/wallet/constants/tokens';
+import type { StakingItem } from '~/wallet/lib/web3/stake';
+import { getNodeStakes, getUserStakes } from '~/wallet/lib/web3/stake';
+import { PositionDetails } from '~/widgets/position-details';
+import { myMessDataType } from '../DashboardPage';
 
 const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
   const safeMyMessInfo = myMessInfo || {};
   const t = useTranslations('dashboard');
+  const t2 = useTranslations('tooltip');
   const router = useRouter();
   const [allStakeAmount, setAllStakeAmount] = useSafeState(0);
   // const [stakList, setstakList] = useState<StakingItem[]>([]);
@@ -169,6 +170,8 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
             lifetimeRewards: `${formatNumbedecimalScale(safeMyMessInfo?.stakedRewardAmount || 0, 2)} OLY`,
             timeInPool: `${totalDays} d`,
             olyPrice: olyPrice || 0,
+            info1: t2('dash.life_rewards'),
+            info2: t2('dash.stake_left_time'),
           }}
         />
         <GrayLogo className='w-[76px] absolute right-6 bottom-2' />
@@ -179,7 +182,7 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
           <div className='flex flex-col gap-2 items-start'>
             <div className='flex items-center'>
               <span className="bg-[url('/images/icon/usdt.png')] bg-cover bg-center w-6 h-6"></span>
-              <span className="bg-[url('/images/widgets/one.png')] bg-cover bg-center w-6 h-6 -translate-x-2"></span>
+              <span className="bg-[url('/images/icon/one.png')] bg-cover bg-center w-6 h-6 -translate-x-2"></span>
             </div>
             <span className='text-white'>{t('bondsPosition')}</span>
             <View
@@ -213,6 +216,8 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
             lifetimeRewards: `${formatNumbedecimalScale(safeMyMessInfo?.bondRewardAmount || 0, 2)} OLY`,
             timeInPool: '0 d',
             olyPrice: olyPrice || 0,
+            info1: t2('dash.bond_rewards'),
+            info2: t2('dash.bonds_nleft_time'),
           }}
         />
       </Card>
