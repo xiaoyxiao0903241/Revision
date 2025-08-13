@@ -67,6 +67,7 @@ export interface ProTableProps<T> {
   rowKey?: keyof T; // 行的唯一标识，默认为 'address'
   queryFn: (params: Record<string, unknown>) => Promise<ProTableData<T>>; // 自定义请求
   formatResult?: (data: ProTableData<T>) => void; // 自定义返回结果
+  notDataText?: string;
   appendNotDataText?: string; // 暂无数据顶部追加文案
   params?: Record<string, unknown>; // 参数
   manualRequest?: boolean; // 是否手动请求
@@ -99,6 +100,7 @@ const ProTable = forwardRef(
     formatResult,
     manualRequest = false,
     appendNotDataText: appendNotDataText = '',
+    notDataText,
     onSuccess,
     onRefreshRef,
   }: ProTableProps<T>) => {
@@ -339,7 +341,7 @@ const ProTable = forwardRef(
                         clipDirection='topRight-bottomLeft'
                         className='w-auto'
                       >
-                        {common('common.nodata')}
+                        {notDataText || common('common.nodata')}
                       </Button>
                     </>
                   )}

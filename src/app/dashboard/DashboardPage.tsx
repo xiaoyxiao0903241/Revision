@@ -54,16 +54,15 @@ export default function DashboardPage() {
   const [startTime] = useState<string>(
     dayjs().subtract(1, 'month').format('YYYY-MM-DD')
   );
-  // const [endTime] = useState<string>(dayjs().format('YYYY-MM-DD'));
+  const [endTime] = useState<string>(dayjs().format('YYYY-MM-DD'));
   const { userAddress } = useUserAddress();
 
   const { data: myMessData } = useQuery({
     queryKey: ['dashboardMyMess', userAddress],
     queryFn: () => {
-      // console.log('dashboardMyMessdashboardMyMessdashboardMyMess');
-      return myMess(startTime, startTime, userAddress as `0x${string}`);
+      return myMess(startTime, endTime, userAddress as `0x${string}`);
     },
-    enabled: Boolean(userAddress && startTime && startTime),
+    enabled: Boolean(userAddress && startTime && endTime),
     // refetchInterval: 20000,
   });
   console.log(myMessData, 'mymyMessData');

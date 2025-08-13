@@ -111,19 +111,18 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
             desc={`$${formatNumbedecimalScale(Number(safeMyMessInfo?.claimableBonus || 0) * olyPrice, 2)}`}
             size='sm'
           />
-          {Number(safeMyMessInfo?.claimableBonus || 0) > 0 && (
-            <Button
-              variant='primary'
-              clipSize={8}
-              clipDirection='topLeft-bottomRight'
-              className='h-6 px-3'
-              onClick={() => {
-                router.push('/dao');
-              }}
-            >
-              {t('claim')}
-            </Button>
-          )}
+          <Button
+            variant='primary'
+            clipSize={8}
+            clipDirection='topLeft-bottomRight'
+            className='h-6 px-3'
+            onClick={() => {
+              router.push('/dao');
+            }}
+            disabled={Number(safeMyMessInfo?.claimableBonus || 0) <= 0}
+          >
+            {t('claim')}
+          </Button>
           <div className='absolute left-0 top-0 bottom-0 w-[5px] bg-gradient-to-b from-primary to-secondary'></div>
         </div>
 
@@ -157,18 +156,17 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               desc={`$${formatNumbedecimalScale((myReward?.allClaimable || 0) * olyPrice, 2)}`}
               size='sm'
             />
-            {Number(myReward?.allClaimable || 0) > 0 && (
-              <Button
-                variant='primary'
-                size='sm'
-                clipDirection='topRight-bottomLeft'
-                onClick={() => {
-                  router.push('/cooling-pool');
-                }}
-              >
-                {t('claim')}
-              </Button>
-            )}
+            <Button
+              variant='primary'
+              size='sm'
+              clipDirection='topRight-bottomLeft'
+              onClick={() => {
+                router.push('/cooling-pool');
+              }}
+              disabled={Number(myReward?.allClaimable || 0) <= 0}
+            >
+              {t('claim')}
+            </Button>
           </div>
           <div className='absolute left-0 top-0 bottom-0 w-[5px] bg-gradient-to-b from-primary to-secondary'></div>
         </div>
@@ -215,19 +213,17 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
                 ${formatNumbedecimalScale((stakeAmount || 0) * olyPrice, 2)}
               </div>
             </div>
-            {stakeAmount ||
-              (0 > 0 && (
-                <Button
-                  variant='primary'
-                  size='sm'
-                  clipDirection='topRight-bottomLeft'
-                  onClick={() => {
-                    router.push('/turbine');
-                  }}
-                >
-                  {t('claim')}
-                </Button>
-              ))}
+            <Button
+              variant='primary'
+              size='sm'
+              clipDirection='topRight-bottomLeft'
+              disabled={Number(stakeAmount || 0) <= 0}
+              onClick={() => {
+                router.push('/turbine');
+              }}
+            >
+              {t('claim')}
+            </Button>
           </div>
           <div className='absolute left-0 top-0 bottom-0 w-[5px] bg-gradient-to-b from-primary to-secondary'></div>
         </div>

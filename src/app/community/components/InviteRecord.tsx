@@ -92,6 +92,7 @@ const InviteRecord = () => {
           // 请求数据
           return inviteHisList(currentPage, pageSizeProp, userAddress);
         }}
+        notDataText={t('notData')}
         params={{ userAddress }}
         formatResult={data => {
           const total = data?.total || 0;
