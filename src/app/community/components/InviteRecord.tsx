@@ -7,12 +7,12 @@ import List from '~/assets/list.svg';
 import { inviteHisList } from '~/services/auth/invite';
 import ProTable, { ProTableColumn } from '~/components/ProTable';
 
-interface InviteDataSource {
-  address: string;
-  createdAt: string;
-  performance: string;
-  stakedAmount: string;
-}
+// interface InviteDataSource {
+//   address: string;
+//   createdAt: string;
+//   performance: string;
+//   stakedAmount: string;
+// }
 type InviteDataParams = {
   currentPage: number;
   pageSizeProp: number;
@@ -32,7 +32,7 @@ const InviteRecord = () => {
     );
   };
 
-  const columns: ProTableColumn<InviteDataSource>[] = [
+  const columns: ProTableColumn<Record<string, any>>[] = [
     {
       title: t('address'),
       dataIndex: 'address',
