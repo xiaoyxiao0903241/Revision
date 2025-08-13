@@ -1,8 +1,5 @@
 import { useTranslations } from 'next-intl';
 import { FC } from 'react';
-import type { periodItem } from '~/wallet/lib/web3/claim';
-import type { StakingItem } from '~/wallet/lib/web3/stake';
-
 import {
   RoundedLogo,
   Select,
@@ -11,7 +8,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '~/components';
+import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
+import { useUserAddress } from '~/contexts/UserAddressContext';
 import { formatCurrency } from '~/lib/utils';
+import type { periodItem } from '~/wallet/lib/web3/claim';
+import type { StakingItem } from '~/wallet/lib/web3/stake';
 
 export const DurationSelect: FC<{
   options: StakingItem[];
@@ -21,6 +22,8 @@ export const DurationSelect: FC<{
 }> = ({ options, value, onChange, placeholder }) => {
   const t = useTranslations('staking');
   const selectedOption = options.find((it, index) => index === value);
+  const { userAddress } = useUserAddress();
+
   return (
     <Select
       value={value?.toString()}
@@ -51,23 +54,29 @@ export const DurationSelect: FC<{
         </SelectValue>
       </SelectTrigger>
       <SelectContent>
-        {options.map((it, index) => (
-          <SelectItem key={index} value={it.time?.toString() || ''}>
-            <div className='w-full flex justify-between'>
-              <div className='flex items-center'>
-                <RoundedLogo className='w-5 h-5' />
-                <span className='flex-1 font-semibold  ml-2'>
-                  {it.pending} OLY
+        {userAddress ? (
+          options.map((it, index) => (
+            <SelectItem key={index} value={it.time?.toString() || ''}>
+              <div className='w-full flex justify-between'>
+                <div className='flex items-center'>
+                  <RoundedLogo className='w-5 h-5' />
+                  <span className='flex-1 font-semibold  ml-2'>
+                    {it.pending} OLY
+                  </span>
+                </div>
+                <span>
+                  {it
+                    ? `${it.period} ${t('days')}`
+                    : placeholder || t('selectDurationPlaceholder')}
                 </span>
               </div>
-              <span>
-                {it
-                  ? `${it.period} ${t('days')}`
-                  : placeholder || t('selectDurationPlaceholder')}
-              </span>
-            </div>
-          </SelectItem>
-        ))}
+            </SelectItem>
+          ))
+        ) : (
+          <div className='text-center'>
+            <ConnectWalletButton className='text-xl  cursor-pointer px-6 !text-white text-5  min-w-[160px]   mx-auto' />
+          </div>
+        )}
       </SelectContent>
     </Select>
   );
@@ -124,6 +133,7 @@ export const ClaimSelect: FC<{
 }> = ({ options, value, onChange, placeholder }) => {
   const t = useTranslations('staking');
   const selectedOption = options.find((it, index) => index === value);
+  const { userAddress } = useUserAddress();
   return (
     <Select
       value={value?.toString()}
@@ -142,17 +152,23 @@ export const ClaimSelect: FC<{
         </SelectValue>
       </SelectTrigger>
       <SelectContent>
-        {options.map(it => (
-          <SelectItem key={it.day} value={it.day?.toString() || ''}>
-            <div className='flex justify-between w-full'>
-              <span>
-                {' '}
-                {it.day} {t('days')}
-              </span>
-              <span>{it.rate}</span>
-            </div>
-          </SelectItem>
-        ))}
+        {userAddress ? (
+          options.map(it => (
+            <SelectItem key={it.day} value={it.day?.toString() || ''}>
+              <div className='flex justify-between w-full'>
+                <span>
+                  {' '}
+                  {it.day} {t('days')}
+                </span>
+                <span>{it.rate}</span>
+              </div>
+            </SelectItem>
+          ))
+        ) : (
+          <div className='text-center'>
+            <ConnectWalletButton className='text-xl  cursor-pointer px-6 !text-white text-5  min-w-[160px]   mx-auto' />
+          </div>
+        )}
       </SelectContent>
     </Select>
   );

@@ -1,13 +1,12 @@
-import { FC, ReactNode, useState, useEffect } from 'react';
-import { Button, Card, CardContent, Icon, Pager, Tabs } from '~/components';
-import { cn, formatHash } from '~/lib/utils';
-import { rewardRecord } from '~/services/auth/claim';
 import { useQuery } from '@tanstack/react-query';
-import { useUserAddress } from '~/contexts/UserAddressContext';
-import { formatNumbedecimalScale } from '~/lib/utils';
-import { getClaimPeriod } from '~/wallet/lib/web3/claim';
 import { useTranslations } from 'next-intl';
+import { FC, ReactNode, useEffect, useState } from 'react';
+import { Button, Card, CardContent, Icon, Pager, Tabs } from '~/components';
 import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import { cn, formatHash, formatNumbedecimalScale } from '~/lib/utils';
+import { rewardRecord } from '~/services/auth/claim';
+import { getClaimPeriod } from '~/wallet/lib/web3/claim';
 
 // 事件颜色映射
 const eventColors = {
@@ -51,7 +50,6 @@ interface ReciveItem extends Record<string, unknown> {
 export const CoolingPoolRecords: FC = () => {
   const t = useTranslations('coolingPool');
   const t2 = useTranslations('common');
-  // const t1 = useTranslations("historyTable")
   const [activeTab, setActiveTab] = useState(0);
   const [page, setPage] = useState<number>(1);
   const { userAddress } = useUserAddress();

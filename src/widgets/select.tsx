@@ -1,8 +1,5 @@
 import { useTranslations } from 'next-intl';
 import { FC } from 'react';
-import type { periodItem } from '~/wallet/lib/web3/claim';
-import type { periodlongItem } from '~/wallet/lib/web3/stake';
-
 import {
   RoundedLogo,
   Select,
@@ -11,7 +8,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '~/components';
+import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
+import { useUserAddress } from '~/contexts/UserAddressContext';
 import { formatCurrency } from '~/lib/utils';
+import type { periodItem } from '~/wallet/lib/web3/claim';
+import type { periodlongItem } from '~/wallet/lib/web3/stake';
 
 export const DurationSelect: FC<{
   options: periodItem[] | periodlongItem[];
@@ -21,6 +22,8 @@ export const DurationSelect: FC<{
 }> = ({ options, value, onChange, placeholder }) => {
   const t = useTranslations('staking');
   const selectedOption = options.find((it, index) => index === value);
+  const { userAddress } = useUserAddress();
+
   return (
     <Select
       value={value?.toString()}
@@ -39,17 +42,23 @@ export const DurationSelect: FC<{
         </SelectValue>
       </SelectTrigger>
       <SelectContent>
-        {options.map(it => (
-          <SelectItem key={it.day} value={it.day?.toString() || ''}>
-            <div className='flex justify-between w-full'>
-              <span>
-                {' '}
-                {it.day} {t('days')}
-              </span>
-              <span>{it.rate}</span>
-            </div>
-          </SelectItem>
-        ))}
+        {userAddress ? (
+          options.map(it => (
+            <SelectItem key={it.day} value={it.day?.toString() || ''}>
+              <div className='flex justify-between w-full'>
+                <span>
+                  {' '}
+                  {it.day} {t('days')}
+                </span>
+                <span>{it.rate}</span>
+              </div>
+            </SelectItem>
+          ))
+        ) : (
+          <div className='text-center'>
+            <ConnectWalletButton className='text-xl  cursor-pointer px-6 !text-white text-5  min-w-[160px]   mx-auto' />
+          </div>
+        )}
       </SelectContent>
     </Select>
   );

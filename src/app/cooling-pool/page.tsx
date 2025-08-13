@@ -1,20 +1,20 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { Alert, Card } from '~/components';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import { formatNumbedecimalScale } from '~/lib/utils';
+import { coolAllCLaimAmount } from '~/services/auth/claim';
+import { getTokenPrice } from '~/wallet/lib/web3/bond';
+import { newRewardList } from '~/wallet/lib/web3/claim';
 import {
-  CoolingPoolStats,
   CoolingPoolCard,
   CoolingPoolRecords,
+  CoolingPoolStats,
 } from '~/widgets';
-import { newRewardList } from '~/wallet/lib/web3/claim';
-import { useUserAddress } from '~/contexts/UserAddressContext';
-import { useQuery } from '@tanstack/react-query';
-import { formatNumbedecimalScale } from '~/lib/utils';
-import { getTokenPrice } from '~/wallet/lib/web3/bond';
-import { coolAllCLaimAmount } from '~/services/auth/claim';
 
 interface CoolingPoolCardData {
   claimable: string;
@@ -158,26 +158,28 @@ export default function CoolingPoolPage() {
       />
 
       <div className='grid grid-cols-1'>
-        <Card>
-          {/* 统计卡片 */}
-          {userAddress && coolMessList.length ? (
-            <CoolingPoolStats coolMessList={coolMessList} />
-          ) : null}
-          {/* 冷却池卡片 */}
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
-            {myRewardList.map((item, index) => (
-              <CoolingPoolCard key={index} data={item}>
-                <Image
-                  src={`/images/widgets/pool-${index + 1}.png`}
-                  alt='gear'
-                  width={140}
-                  height={140}
-                  className={`${Number(item.claimable) > 0.0001 && 'animate-spin-slow'}`}
-                />
-              </CoolingPoolCard>
-            ))}
-          </div>
-        </Card>
+        {userAddress && (
+          <Card>
+            {/* 统计卡片 */}
+            {userAddress && coolMessList.length ? (
+              <CoolingPoolStats coolMessList={coolMessList} />
+            ) : null}
+            {/* 冷却池卡片 */}
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
+              {myRewardList.map((item, index) => (
+                <CoolingPoolCard key={index} data={item}>
+                  <Image
+                    src={`/images/widgets/pool-${index + 1}.png`}
+                    alt='gear'
+                    width={140}
+                    height={140}
+                    className={`${Number(item.claimable) > 0.0001 && 'animate-spin-slow'}`}
+                  />
+                </CoolingPoolCard>
+              ))}
+            </div>
+          </Card>
+        )}
       </div>
 
       {/* 事件记录 */}

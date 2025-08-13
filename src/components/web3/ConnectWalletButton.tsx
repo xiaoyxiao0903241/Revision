@@ -19,7 +19,6 @@ export default function ConnectWalletButton({
   className?: string;
 }) {
   const t = useTranslations();
-  const tcopy = useTranslations('invite');
   const { setUserAddress, isSigned, setIsSigned, clearSignature, sign } =
     useUserAddress();
   const { address, isConnected } = useAccount();
@@ -110,18 +109,18 @@ export default function ConnectWalletButton({
   useEffect(() => {
     if (copeA > 1 || copeB > 1) {
       const timer = setTimeout(() => {
-        toast.success(tcopy('copySuccess'));
+        toast.success(t('copySuccess'));
         setcopeA(1);
         setcopeB(1);
       }, 500);
       return () => clearTimeout(timer);
     }
     if (copeA < 1 && copeB < 1) {
-      toast.error(tcopy('copyError'));
+      toast.error(t('copyError'));
       setcopeA(1);
       setcopeB(1);
     }
-  }, [copeA, copeB, tcopy, setcopeA, setcopeB]);
+  }, [copeA, copeB, t, setcopeA, setcopeB]);
 
   const handleDisconnect = () => {
     if (address) {
@@ -168,7 +167,7 @@ export default function ConnectWalletButton({
         <Button
           clipDirection='topRight-bottomLeft'
           onClick={() => setIsOpen(!isOpen)}
-          className='gap-2 px-2 h-9 lg:px-6 lg:h-12 '
+          className='gap-2 px-2 h-9 lg:px-6 lg:h-12 lg:text-base text-[13px]'
         >
           <div className='flex items-center gap-2'>
             <Image
