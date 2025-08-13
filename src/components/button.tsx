@@ -81,13 +81,16 @@ export function Button({
         sizeClasses[size],
         variantClasses[variant],
         {
-          'bg-gradient-to-r from-gray-500 to-gray-500 hover:opacity-100 active:opacity-100 text-white/50':
+          'bg-gradient-to-r from-gray-500 to-gray-500 hover:opacity-100 active:opacity-100 text-white/50 text-nowrap':
             disabled,
         },
         className
       )}
       style={{
         clipPath,
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
       }}
       disabled={disabled}
       {...props}

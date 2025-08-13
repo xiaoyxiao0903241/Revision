@@ -1,5 +1,12 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { Abi } from 'viem';
+import { usePublicClient } from 'wagmi';
+import Trend from '~/assets/trend.svg';
 import {
   Button,
   Card,
@@ -8,26 +15,19 @@ import {
   Input,
   View,
 } from '~/components';
-import Link from 'next/link';
-import Trend from '~/assets/trend.svg';
-import { getInviteInfo } from '~/wallet/lib/web3/invite';
-import { useQuery } from '@tanstack/react-query';
 import { useUserAddress } from '~/contexts/UserAddressContext';
-import { toast } from 'sonner';
-import { usePublicClient } from 'wagmi';
-import { Abi } from 'viem';
-import MaxInviteAbi from '~/wallet/constants/MatrixNetworkAbi.json';
-import { matrixNetwork } from '~/wallet/constants/tokens';
-import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
 import { useContractError } from '~/hooks/useContractError';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
 import {
-  getCookieLanguage,
-  formatAddress,
   fallbackCopyText,
+  formatAddress,
   formatte2Num,
+  getCookieLanguage,
 } from '~/lib/utils';
 import { inviterInfo } from '~/services/auth/invite';
+import MaxInviteAbi from '~/wallet/constants/MatrixNetworkAbi.json';
+import { matrixNetwork } from '~/wallet/constants/tokens';
+import { getInviteInfo } from '~/wallet/lib/web3/invite';
 
 // 添加以太坊地址验证函数
 const isValidEthereumAddress = (address: string): boolean => {
@@ -213,7 +213,7 @@ const InviteJoin = () => {
         <div className='flex flex-col gap-6  h-full'>
           {/* 左侧数据 */}
           <div className='space-y-4 flex-1'>
-            <div className='flex items-center'>
+            <div className='grid grid-cols-2 md:flex items-center'>
               <div className='flex flex-col flex-1'>
                 <span className='text-xs text-foreground/50'>
                   {t('totalReferralLocked')}

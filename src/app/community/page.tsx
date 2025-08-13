@@ -18,11 +18,11 @@ const Step: FC<{
   return (
     <div
       className={cn(
-        'flex flex-col py-4 my-4 h-full gap-2 pl-6 xl:pl-0 pr-4 lg:pr-0',
+        'flex md:flex-col md:py-4 md:my-4 h-full md:gap-2',
         className
       )}
     >
-      <div className='flex w-full items-center gap-2'>
+      <div className='flex flex-col md:flex-row md:w-full items-center gap-2'>
         <View
           clipDirection='topLeft-bottomRight'
           border={true}
@@ -35,13 +35,15 @@ const Step: FC<{
         </View>
         <div
           className={cn(
-            'border-t border-dashed border-foreground/50 w-full',
-            isHiddenLine && 'hidden'
+            'border-l md:border-t border-dashed border-foreground/50 h-full md:h-auto md:w-full',
+            isHiddenLine && 'md:hidden'
           )}
         ></div>
       </div>
-      <h3 className='text-base font-bold text-white'>{title}</h3>
-      <p className='text-sm text-foreground/50'>{description}</p>
+      <div className='p-4 pt-0 md:p-0'>
+        <h3 className='text-base font-bold text-white'>{title}</h3>
+        <p className='text-sm text-foreground/50'>{description}</p>
+      </div>
     </div>
   );
 };
@@ -55,12 +57,12 @@ export default function CommunityPage() {
         className='relative overflow-hidden'
         containerClassName='community-body'
       >
-        <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 items-center'>
+        <div className='flex md:grid grid-cols-3 gap-2 md:gap-6 items-center'>
           <div className='lg:col-span-2'>
-            <h1 className='text-5xl font-bold text-white mb-4'>
+            <h1 className='text-lg md:text-5xl font-bold text-white mb-4'>
               {t('protocolTitle')}
             </h1>
-            <p className='text-foreground/50 text-sm leading-relaxed'>
+            <p className='text-foreground/50 text-xs md:text-sm leading-relaxed'>
               {t('protocolDescription')}
             </p>
           </div>
@@ -68,6 +70,7 @@ export default function CommunityPage() {
             <Image
               src='/images/widgets/community-logo.png'
               alt='community'
+              className='w-[89px] md:w-[151px] max-w-max'
               width={151}
               height={187}
             />
@@ -76,8 +79,8 @@ export default function CommunityPage() {
       </Card>
 
       {/* 如何获得社区奖励 */}
-      <Card className='grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 p-0'>
-        <div className='py-6 lg:col-span-3 xl:col-span-1 p-6 flex items-center text-xl font-bold border-r border-dashed border-foreground/20'>
+      <Card className='grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 px-4 gap-0 md:gap-6 lg:px-9'>
+        <div className='py-6 md:col-span-3 xl:col-span-1 p-0 flex items-center text-xl font-bold xl:border-r xl:border-dashed border-foreground/20'>
           {t('howToGetRewards')}
         </div>
         {/* 步骤1 */}
@@ -98,7 +101,6 @@ export default function CommunityPage() {
           index={2}
           title={t('step3.title')}
           description={t('step3.description')}
-          className='pr-4 lg:pr-4'
           isHiddenLine
         />
       </Card>

@@ -5,14 +5,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Abi, parseUnits } from 'viem';
 import { usePublicClient } from 'wagmi';
-import {
-  Alert,
-  Button,
-  Card,
-  CardContent,
-  Notification,
-  Segments,
-} from '~/components';
+import { Alert, Button, Card, Notification, Segments } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { usePeriods } from '~/hooks/userPeriod';
 import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
@@ -296,145 +289,138 @@ export default function ClaimPage() {
         <div className='space-y-6'>
           {/* 分段控制器 */}
           <Card>
-            <CardContent className='space-y-6'>
-              <Segments
-                options={claimOptions}
-                value={selectedClaimType}
-                onChange={setSelectedClaimType}
-              />
-              <DurationSelect
-                options={stakList}
-                value={lockIndex}
-                onChange={value => {
-                  const curItem = stakList[value];
-                  setCurStakeItem(curItem);
-                  setLockIndex(value);
-                }}
-              />
-              <AmountCard
-                data={{
-                  value:
-                    selectedClaimType === 'rebaseReward'
-                      ? rewardAmount
-                      : boostAmount,
-                  desc:
-                    selectedClaimType === 'rebaseReward'
-                      ? Number(curStakeItem?.blockReward) * olyPrice
-                      : Number(curStakeItem?.interest) * olyPrice,
-                  balance:
-                    selectedClaimType === 'rebaseReward'
-                      ? curStakeItem
-                        ? Number(
-                            formatNumbedecimalScale(
-                              curStakeItem?.blockReward,
-                              2
-                            )
-                          )
-                        : 0
-                      : curStakeItem
-                        ? Number(
-                            formatNumbedecimalScale(curStakeItem?.interest)
-                          )
-                        : 0,
-                }}
-                onChange={value => {
-                  if (selectedClaimType === 'rebaseReward') {
-                    if (Number(value) > Number(curStakeItem?.blockReward)) {
-                      setRewardAmount(
-                        curStakeItem?.blockReward?.toString() || '0'
-                      );
-                    } else {
-                      setRewardAmount(value);
-                    }
+            <Segments
+              options={claimOptions}
+              value={selectedClaimType}
+              onChange={setSelectedClaimType}
+            />
+            <DurationSelect
+              options={stakList}
+              value={lockIndex}
+              onChange={value => {
+                const curItem = stakList[value];
+                setCurStakeItem(curItem);
+                setLockIndex(value);
+              }}
+            />
+            <AmountCard
+              data={{
+                value:
+                  selectedClaimType === 'rebaseReward'
+                    ? rewardAmount
+                    : boostAmount,
+                desc:
+                  selectedClaimType === 'rebaseReward'
+                    ? Number(curStakeItem?.blockReward) * olyPrice
+                    : Number(curStakeItem?.interest) * olyPrice,
+                balance:
+                  selectedClaimType === 'rebaseReward'
+                    ? curStakeItem
+                      ? Number(
+                          formatNumbedecimalScale(curStakeItem?.blockReward, 2)
+                        )
+                      : 0
+                    : curStakeItem
+                      ? Number(formatNumbedecimalScale(curStakeItem?.interest))
+                      : 0,
+              }}
+              onChange={value => {
+                if (selectedClaimType === 'rebaseReward') {
+                  if (Number(value) > Number(curStakeItem?.blockReward)) {
+                    setRewardAmount(
+                      curStakeItem?.blockReward?.toString() || '0'
+                    );
                   } else {
-                    if (Number(value) > Number(curStakeItem?.interest)) {
-                      setBoostAmount(curStakeItem?.interest?.toString() || '0');
-                    } else {
-                      setBoostAmount(value);
-                    }
+                    setRewardAmount(value);
                   }
-                }}
-                description={'余额'}
-              />
-              <Notification>{tLockedStaking('claimInfo')}</Notification>
-              <ClaimSelect
-                options={periodList || []}
-                value={lockClaimIndex}
-                onChange={value => {
-                  if (periodList) {
-                    setRate(Number(periodList[value].rate.split('%')[0]));
+                } else {
+                  if (Number(value) > Number(curStakeItem?.interest)) {
+                    setBoostAmount(curStakeItem?.interest?.toString() || '0');
+                  } else {
+                    setBoostAmount(value);
                   }
-                  setLockClaimIndex(value);
-                }}
-              />
-              <ClaimSummary
-                data={{
-                  amount: reciveAmount,
-                  taxRate: rate,
-                  incomeTax: rateAmount,
-                }}
-              />
+                }
+              }}
+              description={'余额'}
+            />
+            <Notification>{tLockedStaking('claimInfo')}</Notification>
+            <ClaimSelect
+              options={periodList || []}
+              value={lockClaimIndex}
+              onChange={value => {
+                if (periodList) {
+                  setRate(Number(periodList[value].rate.split('%')[0]));
+                }
+                setLockClaimIndex(value);
+              }}
+            />
+            <ClaimSummary
+              data={{
+                amount: reciveAmount,
+                taxRate: rate,
+                incomeTax: rateAmount,
+              }}
+            />
 
-              {/* 领取按钮 */}
-              {selectedClaimType === 'rebaseReward' && (
-                <Button
-                  clipDirection='topRight-bottomLeft'
-                  className='w-full'
-                  variant={
-                    (curStakeItem && curStakeItem.blockReward < 0.01) ||
-                    isDisabled ||
-                    curStakeItem?.blockReward === 0 ||
-                    Number(rewardAmount) === 0
-                      ? 'disabled'
-                      : 'primary'
+            {/* 领取按钮 */}
+            {selectedClaimType === 'rebaseReward' && (
+              <Button
+                clipDirection='topRight-bottomLeft'
+                className='w-full'
+                variant={
+                  (curStakeItem && curStakeItem.blockReward < 0.01) ||
+                  isDisabled ||
+                  curStakeItem?.blockReward === 0 ||
+                  Number(rewardAmount) === 0
+                    ? 'disabled'
+                    : 'primary'
+                }
+                disabled={
+                  (curStakeItem && curStakeItem.blockReward < 0.01) ||
+                  isDisabled ||
+                  curStakeItem?.blockReward === 0 ||
+                  Number(rewardAmount) === 0
+                }
+                onClick={() => {
+                  if (curStakeItem && curStakeItem.type === 'longStake') {
+                    claimReward(curStakeItem.index, curStakeItem.period);
+                  } else {
+                    claimNodeReward();
                   }
-                  disabled={
-                    (curStakeItem && curStakeItem.blockReward < 0.01) ||
-                    isDisabled ||
-                    curStakeItem?.blockReward === 0 ||
-                    Number(rewardAmount) === 0
+                }}
+              >
+                {t('claimTitle')}
+              </Button>
+            )}
+            {selectedClaimType === 'rebaseBoost' && (
+              <Button
+                clipDirection='topRight-bottomLeft'
+                className='w-full'
+                variant={
+                  (curStakeItem && curStakeItem.interest < 0.01) ||
+                  isDisabled ||
+                  curStakeItem?.interest === 0 ||
+                  Number(boostAmount) === 0
+                    ? 'disabled'
+                    : 'primary'
+                }
+                disabled={
+                  (curStakeItem && curStakeItem.interest < 0.01) ||
+                  isDisabled ||
+                  curStakeItem?.interest === 0 ||
+                  Number(boostAmount) === 0
+                }
+                onClick={() => {
+                  if (curStakeItem) {
+                    claimInerest(curStakeItem.index, curStakeItem.period);
                   }
-                  onClick={() => {
-                    if (curStakeItem && curStakeItem.type === 'longStake') {
-                      claimReward(curStakeItem.index, curStakeItem.period);
-                    } else {
-                      claimNodeReward();
-                    }
-                  }}
-                >
-                  {t('claimTitle')}
-                </Button>
-              )}
-              {selectedClaimType === 'rebaseBoost' && (
-                <Button
-                  clipDirection='topRight-bottomLeft'
-                  className='w-full'
-                  variant={
-                    (curStakeItem && curStakeItem.interest < 0.01) ||
-                    isDisabled ||
-                    curStakeItem?.interest === 0 ||
-                    Number(boostAmount) === 0
-                      ? 'disabled'
-                      : 'primary'
-                  }
-                  disabled={
-                    (curStakeItem && curStakeItem.interest < 0.01) ||
-                    isDisabled ||
-                    curStakeItem?.interest === 0 ||
-                    Number(boostAmount) === 0
-                  }
-                  onClick={() => {
-                    if (curStakeItem) {
-                      claimInerest(curStakeItem.index, curStakeItem.period);
-                    }
-                  }}
-                >
-                  {curStakeItem?.type == 'nodeStake'
-                    ? t('nobkRward')
-                    : t('claim')}
-                </Button>
-              )}
-            </CardContent>
+                }}
+              >
+                {curStakeItem?.type == 'nodeStake'
+                  ? t('nobkRward')
+                  : t('claim')}
+              </Button>
+            )}
           </Card>
         </div>
 

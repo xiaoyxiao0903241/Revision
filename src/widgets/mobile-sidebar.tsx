@@ -52,7 +52,7 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
           )}
         >
           <nav className='space-y-6 h-full w-[calc(100vw-32px)] py-4'>
-            <div className='h-full w-full overflow-y-auto'>
+            <div className='h-full w-full overflow-y-auto space-y-4'>
               <SidebarContent />
             </div>
           </nav>

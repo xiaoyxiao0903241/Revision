@@ -80,7 +80,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
       </div>
 
       {/* 奖金卡片网格 */}
-      <div className='grid grid-cols-1 lg:grid-cols-4'>
+      <div className='lg:grid hidden grid-cols-4'>
         {/* 奖金池 - 占据左侧整个高度 */}
         <div className='lg:row-span-3 nine-patch-frame grid-body relative w-full h-full flex flex-col items-center justify-center'>
           <div className='flex flex-col gap-2 items-center justify-center'>
@@ -99,7 +99,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
         </div>
 
         {/* 可领取的奖金数量 */}
-        <div className='lg:row-span-3 relative gap-2 bg-[#1E204C] flex flex-col items-start justify-center px-6'>
+        <div className='row-span-3 relative gap-2 bg-[#1E204C] flex flex-col items-start justify-center px-6'>
           <Statistics
             title={t('claimableRewardsAmount')}
             value={
@@ -143,7 +143,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
         </div>
 
         {/* 已经释放的奖金数量 */}
-        <div className='lg:row-span-2 relative'>
+        <div className='row-span-2 relative'>
           <div className='px-6 w-full h-full bg-[#1E204C] py-7 flex gap-4 items-center justify-between'>
             <Statistics
               title={t('releasedRewardsAmount')}
@@ -225,6 +225,154 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
             </Button>
           </div>
           <div className='absolute left-0 top-0 bottom-0 w-[5px] bg-gradient-to-b from-primary to-secondary'></div>
+        </div>
+      </div>
+
+      <div className='lg:hidden grid grid-cols-3 gap-1'>
+        {/* 奖金池 - 占据左侧整个高度 */}
+        <div className='col-span-3 relative w-full h-full flex flex-col items-center justify-center  bg-[#1E204C]'>
+          <div className='flex flex-col py-4 gap-2 items-center justify-center'>
+            <div>{t('rewardPool')}</div>
+            <div className='font-mono text-2xl font-bold text-gradient'>
+              {formatNumbedecimalScale(safeMyMessInfo?.totalBonus || 0, 2)} OLY
+            </div>
+            <div className='text-foreground/50 text-xs'>
+              $
+              {formatNumbedecimalScale(
+                Number(safeMyMessInfo?.totalBonus || 0) * olyPrice,
+                2
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* 可领取的奖金数量 */}
+        <div className='col-span-3 relative gap-2 bg-[#1E204C] flex py-4 items-center justify-between px-6'>
+          <div className='absolute top-0 right-0 left-0 h-[5px] bg-gradient-to-r from-primary to-secondary'></div>
+          <Statistics
+            title={t('claimableRewardsAmount')}
+            value={
+              safeMyMessInfo?.claimableBonus
+                ? `${formatNumbedecimalScale(safeMyMessInfo?.claimableBonus || 0, 2)} OLY`
+                : '0 OLY'
+            }
+            desc={`$${formatNumbedecimalScale(Number(safeMyMessInfo?.claimableBonus || 0) * olyPrice, 2)}`}
+            size='sm'
+          />
+          <Button
+            variant='primary'
+            clipSize={8}
+            clipDirection='topLeft-bottomRight'
+            className='h-6 px-3'
+            onClick={() => {
+              router.push('/dao');
+            }}
+            disabled={Number(safeMyMessInfo?.claimableBonus || 0) <= 0}
+          >
+            {t('claim')}
+          </Button>
+        </div>
+
+        {/* 释放中的奖金数量 */}
+        <div className='row-span-2 relative'>
+          <div className='px-6 py-7 bg-[#1E204C] mb-[5px] flex flex-col items-start justify-center w-full h-full'>
+            <Statistics
+              title={t('rewardsInRelease')}
+              value={
+                myReward?.allPending
+                  ? `${formatNumbedecimalScale(myReward?.allPending || 0, 2)} OLY`
+                  : '0 OLY'
+              }
+              desc={`$${formatNumbedecimalScale((myReward?.allPending || 0) * olyPrice, 2)}`}
+              size='sm'
+            />
+          </div>
+          <div className='absolute left-0 top-0 right-0 h-[5px] bg-foreground/50'></div>
+        </div>
+
+        {/* 已经释放的奖金数量 */}
+        <div className='col-span-2 relative'>
+          <div className='px-6 w-full h-full bg-[#1E204C] py-7 flex gap-4 items-center justify-between'>
+            <Statistics
+              title={t('releasedRewardsAmount')}
+              value={
+                myReward?.allClaimable
+                  ? `${formatNumbedecimalScale(myReward?.allClaimable || 0, 2)} OLY`
+                  : '0 OLY'
+              }
+              desc={`$${formatNumbedecimalScale((myReward?.allClaimable || 0) * olyPrice, 2)}`}
+              size='sm'
+            />
+            <Button
+              variant='primary'
+              size='sm'
+              clipDirection='topRight-bottomLeft'
+              onClick={() => {
+                router.push('/cooling-pool');
+              }}
+              disabled={Number(myReward?.allClaimable || 0) <= 0}
+            >
+              {t('claim')}
+            </Button>
+          </div>
+          <div className='absolute left-0 top-0 right-0 h-[5px] bg-gradient-to-r from-primary to-secondary'></div>
+        </div>
+
+        {/* 涡轮中的奖金数量 */}
+
+        <div className='relative'>
+          <div className='px-6 py-7 bg-[#1E204C] mb-[5px] flex flex-col items-start justify-center h-full'>
+            <div className='text-foreground/50 text-xs'>
+              {t('turbineRewardsAmount')}
+            </div>
+            <div className='text-foreground/50 font-mono text-xl'>
+              {formatNumbedecimalScale(
+                (turbineMessData?.receivedAmount || 0) +
+                  (turbineMessData?.claimedAmount || 0),
+                2
+              )}{' '}
+              OLY
+            </div>
+            <div className='text-foreground/50 text-xs'>
+              $
+              {formatNumbedecimalScale(
+                ((turbineMessData?.receivedAmount || 0) +
+                  (turbineMessData?.claimedAmount || 0)) *
+                  olyPrice,
+                2
+              )}
+            </div>
+          </div>
+          <div className='absolute left-0 top-0 right-0 h-[5px] bg-foreground/50'></div>
+        </div>
+
+        {/* 已解锁的奖金数量 */}
+        <div className='relative'>
+          <div className='px-6 w-full h-full bg-[#1E204C] py-7 flex gap-4 items-center flex-col'>
+            <div>
+              <div className='text-foreground/50 text-xs'>
+                {t('unlockedRewardsAmount')}
+              </div>
+              <div className='text-foreground/50 font-mono text-xl'>
+                {formatNumbedecimalScale(stakeAmount || 0, 2)} OLY
+              </div>
+              <div className='text-foreground/50 text-xs'>
+                ${formatNumbedecimalScale((stakeAmount || 0) * olyPrice, 2)}
+              </div>
+            </div>
+            <Button
+              variant='primary'
+              size='sm'
+              clipDirection='topRight-bottomLeft'
+              disabled={Number(stakeAmount || 0) <= 0}
+              onClick={() => {
+                router.push('/turbine');
+              }}
+            >
+              {t('claim')}
+            </Button>
+          </div>
+          <div className='absolute left-0 top-0 right-0 h-[5px] bg-gradient-to-r from-primary to-secondary'></div>
         </div>
       </div>
     </Card>

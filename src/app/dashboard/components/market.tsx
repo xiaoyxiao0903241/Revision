@@ -1,22 +1,21 @@
 'use client';
-import React, { useEffect, useState, useMemo } from 'react';
-import Image from 'next/image';
+import { useQuery } from '@tanstack/react-query';
+import isEqual from 'lodash/isEqual';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Card, Statistics, View } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
-import { useQuery } from '@tanstack/react-query';
-import { PerformanceChart } from '~/widgets';
-import { myMess } from '~/services/auth/dashboard';
-import { myMessDataType } from '../DashboardPage';
 import {
   cn,
   dayjs,
   formatCurrency,
   formatNumbedecimalScale,
 } from '~/lib/utils';
+import { myMess } from '~/services/auth/dashboard';
 import { useNolockStore } from '~/store/noLock';
-import isEqual from 'lodash/isEqual';
-import { useRef } from 'react';
+import { PerformanceChart } from '~/widgets';
+import { myMessDataType } from '../DashboardPage';
 
 const Market = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
   const safeMyMessInfo = myMessInfo || {};
@@ -98,8 +97,8 @@ const Market = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
       <div className='w-full h-full xl:w-2/5 space-y-6'>
         <div className='flex items-center gap-2'>
           <Image
-            src='/images/icon/rocket.png'
-            alt='rocket'
+            src='/images/icon/trend.png'
+            alt='trend'
             width={24}
             height={24}
           />

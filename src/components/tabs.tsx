@@ -37,7 +37,7 @@ export const NavigationTabs: FC<{
   return (
     <div
       className={cn(
-        'relative flex w-full h-12 gap-8 mx-auto border-b border-border/20 flew-row backdrop-blur-sm',
+        'relative flex w-full h-12 gap-8 mx-auto border-b border-border/20 flew-row backdrop-blur-sm overflow-x-auto',
         className
       )}
     >

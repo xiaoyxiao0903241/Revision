@@ -49,7 +49,7 @@ export function View({
           className={cn('relative', className)}
           style={{
             clipPath,
-            zIndex: 1,
+            zIndex: 0,
           }}
           {...props}
         >
