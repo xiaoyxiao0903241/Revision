@@ -32,6 +32,7 @@ import { WalletSummary } from '~/widgets';
 import { AmountCard } from '~/widgets/amount-card';
 import { ClaimSummary } from '~/widgets/claim-summary';
 import { ClaimSelect, DurationSelect } from '~/widgets/select-lockMyList';
+import { useContractError } from '~/hooks/useContractError';
 
 export default function ClaimPage() {
   const t = useTranslations('staking');
@@ -55,6 +56,7 @@ export default function ClaimPage() {
   const publicClient = usePublicClient();
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const queryClient = useQueryClient();
+  const { handleContractError, isContractError } = useContractError();
 
   // 定义领取类型选项
   const claimOptions = [
@@ -122,10 +124,15 @@ export default function ClaimPage() {
         });
       }
     } catch (error: unknown) {
-      console.log(error);
-      toast.error('error', {
-        id: toastId,
-      });
+      if (isContractError(error as Error)) {
+        const errorMessage = handleContractError(error as Error);
+        toast.error(errorMessage);
+      } else {
+        console.log(error);
+        toast.error('error', {
+          id: toastId,
+        });
+      }
     } finally {
       setIsDisabled(false);
     }
@@ -165,10 +172,15 @@ export default function ClaimPage() {
         });
       }
     } catch (error: unknown) {
-      console.log(error);
-      toast.error('error', {
-        id: toastId,
-      });
+      if (isContractError(error as Error)) {
+        const errorMessage = handleContractError(error as Error);
+        toast.error(errorMessage);
+      } else {
+        console.log(error);
+        toast.error('error', {
+          id: toastId,
+        });
+      }
     } finally {
       setIsDisabled(false);
     }
@@ -210,10 +222,15 @@ export default function ClaimPage() {
         });
       }
     } catch (error: unknown) {
-      console.log(error);
-      toast.error('error', {
-        id: toastId,
-      });
+      if (isContractError(error as Error)) {
+        const errorMessage = handleContractError(error as Error);
+        toast.error(errorMessage);
+      } else {
+        console.log(error);
+        toast.error('error', {
+          id: toastId,
+        });
+      }
     } finally {
       setIsDisabled(false);
     }

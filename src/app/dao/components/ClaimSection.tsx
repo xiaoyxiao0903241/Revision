@@ -140,7 +140,6 @@ export const ClaimSection = ({
         if (!publicClient) {
           throw new Error(commonT('toast.claim_failed'));
         }
-
         // 先模拟合约调用
         const { request } = await publicClient.simulateContract({
           abi: RewardPoolV7Abi as Abi,
@@ -171,7 +170,6 @@ export const ClaimSection = ({
           toast.success(commonT('toast.claim_success'), { id: toastId });
           return { success: true, data: result };
         } else {
-          toast.error(commonT('toast.claim_failed'), { id: toastId });
           throw new Error(commonT('toast.claim_failed'));
         }
       }

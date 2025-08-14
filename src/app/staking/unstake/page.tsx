@@ -26,6 +26,7 @@ import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBu
 import DemandStakingAbi from '~/wallet/constants/DemandStakingAbi.json';
 import { demandStaking } from '~/wallet/constants/tokens';
 import { Abi, parseUnits } from 'viem';
+import { useContractError } from '~/hooks/useContractError';
 
 interface StakInfo {
   stakNum: number;
@@ -70,6 +71,7 @@ export default function UnstakePage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
   const queryClient = useQueryClient();
+  const { handleContractError, isContractError } = useContractError();
 
   //领取本金
   const claimPrincipal = async () => {
@@ -118,10 +120,15 @@ export default function UnstakePage() {
         setUnstakeAmount('');
       }
     } catch (error: unknown) {
-      console.log(error);
-      toast.error('error', {
-        id: toastId,
-      });
+      if (isContractError(error as Error)) {
+        const errorMessage = handleContractError(error as Error);
+        toast.error(errorMessage);
+      } else {
+        toast.error('error', {
+          id: toastId,
+        });
+        console.log(error);
+      }
     } finally {
       // toast.dismiss(toastId)
       setIsDisabled(false);
@@ -173,11 +180,15 @@ export default function UnstakePage() {
         // toast.dismiss(toastId)
       }
     } catch (error: unknown) {
-      console.log(error);
-      console.log(error);
-      toast.error('error', {
-        id: toastId,
-      });
+      if (isContractError(error as Error)) {
+        const errorMessage = handleContractError(error as Error);
+        toast.error(errorMessage);
+      } else {
+        toast.error('error', {
+          id: toastId,
+        });
+        console.log(error);
+      }
     } finally {
       // toast.dismiss(toastId)
       setIsDisabled(false);

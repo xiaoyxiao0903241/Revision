@@ -14,6 +14,7 @@ import {
   Notification,
 } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useContractError } from '~/hooks/useContractError';
 import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
 import { getCurrentBlock } from '~/lib/multicall';
 import { useLockStore } from '~/store/lock';
@@ -44,6 +45,7 @@ export default function UnstakePage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
   const queryClient = useQueryClient();
+  const { handleContractError, isContractError } = useContractError();
 
   //质押列表
   const { data: myStakingList } = useQuery({
@@ -109,10 +111,15 @@ export default function UnstakePage() {
         });
       }
     } catch (error: unknown) {
-      console.log(error);
-      toast.error('error', {
-        id: toastId,
-      });
+      if (isContractError(error as Error)) {
+        const errorMessage = handleContractError(error as Error);
+        toast.error(errorMessage);
+      } else {
+        toast.error('error', {
+          id: toastId,
+        });
+        console.log(error);
+      }
     } finally {
       setIsDisabled(false);
       setIsLoading(false);
@@ -149,10 +156,15 @@ export default function UnstakePage() {
         });
       }
     } catch (error: unknown) {
-      console.log(error);
-      toast.error('error', {
-        id: toastId,
-      });
+      if (isContractError(error as Error)) {
+        const errorMessage = handleContractError(error as Error);
+        toast.error(errorMessage);
+      } else {
+        toast.error('error', {
+          id: toastId,
+        });
+        console.log(error);
+      }
     } finally {
       setIsDisabled(false);
       setIsLoading(false);

@@ -136,7 +136,7 @@ const InviteJoin = () => {
       });
 
       const result = await publicClient.waitForTransactionReceipt({ hash });
-      console.log(result, 'sss');
+
       if (result.status === 'success') {
         toast.success(inviteT('joinSuccess'));
         refetch();
@@ -148,33 +148,7 @@ const InviteJoin = () => {
         const errorMessage = handleContractError(error as Error);
         toast.error(errorMessage);
       } else {
-        const errorMessage =
-          error instanceof Error ? error.message : String(error);
-
-        // 处理合约定义的错误
-        if (errorMessage.includes('User rejected')) {
-          toast.error(inviteT('userRejected'));
-        } else if (errorMessage.includes('InvalidInitialization')) {
-          toast.error(inviteT('invalidInitialization'));
-        } else if (errorMessage.includes('NotInitializing')) {
-          toast.error(inviteT('notInitializing'));
-        } else if (errorMessage.includes('OwnableInvalidOwner')) {
-          toast.error(inviteT('invalidOwner'));
-        } else if (errorMessage.includes('OwnableUnauthorizedAccount')) {
-          toast.error(inviteT('unauthorizedAccount'));
-        }
-        // 处理常见交易错误
-        else if (errorMessage.includes('insufficient funds')) {
-          toast.error(inviteT('insufficientFunds'));
-        } else if (errorMessage.includes('user rejected')) {
-          toast.error(inviteT('userRejected'));
-        } else if (errorMessage.includes('already joined')) {
-          toast.error(inviteT('alreadyJoined'));
-        } else if (errorMessage.includes('invalid referrer')) {
-          toast.error(inviteT('invalidReferrer'));
-        } else {
-          toast.error(inviteT('unknownError'));
-        }
+        toast.error(inviteT('unknownError'));
       }
     } finally {
       // setIsJoining(false);

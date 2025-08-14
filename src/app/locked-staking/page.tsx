@@ -13,6 +13,7 @@ import { formatNumbedecimalScale } from '~/lib/utils';
 import { useNolockStore } from '~/store/noLock';
 import longStakingAbi from '~/wallet/constants/LongStakingAbi.json';
 import { OLY } from '~/wallet/constants/tokens';
+import { useContractError } from '~/hooks/useContractError';
 import { getInviteInfo } from '~/wallet/lib/web3/invite';
 import type { periodlongItem } from '~/wallet/lib/web3/stake';
 import {
@@ -52,6 +53,7 @@ export default function StakingPage() {
   const queryClient = useQueryClient();
   const [apy, setApy] = useState<string>('0');
   const [cutDownTime, setCutDownTime] = useState<number>(0);
+  const { handleContractError, isContractError } = useContractError();
 
   //获取长期质押状态列表
   const { data: stakingStatusList } = useQuery({
@@ -123,8 +125,13 @@ export default function StakingPage() {
         // changeApproveData(index);
       }
     } catch (error: unknown) {
-      console.log(error);
-      toast.error('error');
+      if (isContractError(error as Error)) {
+        const errorMessage = handleContractError(error as Error);
+        toast.error(errorMessage);
+      } else {
+        toast.error('error');
+        console.log(error);
+      }
     } finally {
       setIsLoading(false);
       setIsDisabled(false);
@@ -179,10 +186,15 @@ export default function StakingPage() {
         });
       }
     } catch (error: unknown) {
-      console.log(error);
-      toast.error('error', {
-        id: toastId,
-      });
+      if (isContractError(error as Error)) {
+        const errorMessage = handleContractError(error as Error);
+        toast.error(errorMessage);
+      } else {
+        toast.error('error', {
+          id: toastId,
+        });
+        console.log(error);
+      }
     } finally {
       setIsLoading(false);
       setIsDisabled(false);

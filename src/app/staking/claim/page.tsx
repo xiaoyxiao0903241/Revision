@@ -18,6 +18,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Abi, parseUnits } from 'viem';
 import { getClaimPeriod } from '~/wallet/lib/web3/claim';
 import type { periodItem } from '~/wallet/lib/web3/claim';
+import { useContractError } from '~/hooks/useContractError';
 
 interface StakInfo {
   stakNum: number;
@@ -41,6 +42,7 @@ export default function ClaimPage() {
   const [periodList, setPeriodList] = useState<periodItem[]>([]);
   // const [curPeriod, setCurPeriod] = useState<periodItem | null>(null);
   const [rate, setRate] = useState(0);
+  const { handleContractError, isContractError } = useContractError();
 
   const { data: list } = useQuery({
     queryKey: ['claimPeriod'],
@@ -85,10 +87,15 @@ export default function ClaimPage() {
         });
       }
     } catch (error: unknown) {
-      console.log(error);
-      toast.error('error', {
-        id: toastId,
-      });
+      if (isContractError(error as Error)) {
+        const errorMessage = handleContractError(error as Error);
+        toast.error(errorMessage);
+      } else {
+        toast.error('error', {
+          id: toastId,
+        });
+        console.log(error);
+      }
     } finally {
       // toast.dismiss(toastId)
       setIsDisabled(false);
