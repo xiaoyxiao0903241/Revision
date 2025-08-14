@@ -98,11 +98,6 @@ export const TurbineRecords: FC = () => {
   return (
     <Card>
       {/* 标签页 */}
-      <div className='flex md:hidden flex-col items-end'>
-        <div className='text-base text-foreground'>
-          {total} {t('records')}
-        </div>
-      </div>
       <Tabs
         data={tabData}
         activeIndex={activeTab}

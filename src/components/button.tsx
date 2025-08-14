@@ -26,6 +26,7 @@ export function Button({
   clipDirection = 'none',
   clipSize = 12,
   disabled,
+  style,
   ...props
 }: ButtonProps) {
   const baseClasses =
@@ -91,6 +92,7 @@ export function Button({
         whiteSpace: 'nowrap',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
+        ...style,
       }}
       disabled={disabled}
       {...props}

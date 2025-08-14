@@ -113,11 +113,6 @@ export const CoolingPoolRecords: FC = () => {
   return (
     <Card>
       {/* 标签页 */}
-      <div className='flex flex-1 md:hidden items-center justify-between'>
-        <div className='text-base text-foreground'>
-          {total} {t('recordsCount')}
-        </div>
-      </div>
       <Tabs data={tabData} activeIndex={activeTab} onChange={setActiveTab}>
         <div className='hidden flex-1 md:flex flex-col items-end justify-center'>
           <div className='text-base text-foreground'>

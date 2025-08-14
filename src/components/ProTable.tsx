@@ -317,11 +317,11 @@ const ProTable = forwardRef(
                 </tr>
               );
             })}
-            {tableData.length === 0 && (
+            {tableData.length !== 0 && (
               <tr className='w-full p-6'>
                 <td
                   colSpan={5}
-                  className='flex flex-col items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-5 gap-2 mt-2'
+                  className='flex flex-col w-full items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-5 gap-2 mt-2'
                 >
                   {!userAddress ? (
                     <>
@@ -338,7 +338,11 @@ const ProTable = forwardRef(
                       {appendNotDataText && appendNotDataText}
                       <Button
                         clipDirection='topRight-bottomLeft'
-                        className='w-auto'
+                        className='flex-wrap text-wrap'
+                        style={{
+                          whiteSpace: 'wrap',
+                          height: 'auto',
+                        }}
                       >
                         {notDataText || common('common.nodata')}
                       </Button>

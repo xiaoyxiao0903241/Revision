@@ -1,9 +1,11 @@
+import { Portal } from '@radix-ui/react-portal';
 import { AnimatePresence, motion } from 'motion/react';
-import { FC, ReactNode, useEffect, useState } from 'react';
+import { FC, ReactNode, useState } from 'react';
 import Close from '~/assets/close.svg';
 import InfoIcon from '~/assets/info.svg';
 import { cn } from '~/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '../components/popover';
+import { useResponsive } from '../hooks/useResponsive';
 import { View } from './view';
 export const InfoPopover: FC<{
   children: ReactNode;
@@ -12,14 +14,7 @@ export const InfoPopover: FC<{
   title?: string;
 }> = ({ children, className, title, triggerClassName }) => {
   const [open, setOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  // 监听屏幕宽度
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  const { isMobile } = useResponsive();
 
   // 小屏用自定义底部弹窗
   if (isMobile) {
@@ -34,7 +29,7 @@ export const InfoPopover: FC<{
         />
         <AnimatePresence>
           {open && (
-            <>
+            <Portal>
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -69,7 +64,7 @@ export const InfoPopover: FC<{
                   {children}
                 </View>
               </motion.div>
-            </>
+            </Portal>
           )}
         </AnimatePresence>
       </>

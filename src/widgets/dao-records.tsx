@@ -63,7 +63,7 @@ export const MatrixBonusRecords: FC = () => {
     <Card>
       {/* 标签页 */}
       <Tabs data={tabData} activeIndex={activeTab} onChange={setActiveTab}>
-        <div className='flex-1 flex flex-col items-end'>
+        <div className='hidden flex-1 md:flex flex-col justify-center items-end'>
           <div className='text-base text-foreground'>
             {formatDecimal(22197, 0)} {tStaking('records')}
           </div>

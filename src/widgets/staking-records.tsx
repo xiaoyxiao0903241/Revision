@@ -62,11 +62,6 @@ export const StakingRecords: FC<{
   return (
     <Card>
       {/* 标签页 */}
-      <div className='flex-1 flex md:hidden items-center justify-end'>
-        <div className='text-base text-foreground'>
-          {total} {t('recordsCount')}
-        </div>
-      </div>
       <Tabs
         data={tabData}
         activeIndex={activeTab}

@@ -6,6 +6,7 @@ import ReactECharts from 'echarts-for-react';
 import { useTranslations } from 'next-intl';
 import React, { useMemo } from 'react';
 import { useChart } from '~/hooks/useChart';
+import { useResponsive } from '../hooks/useResponsive';
 import { formatKM } from '../lib/utils';
 
 // 小型图表组件
@@ -139,6 +140,7 @@ export const PieChart: React.FC<{
   className?: string;
   data: { value: number; name: string }[];
 }> = ({ className = '', data }) => {
+  const { isMobile } = useResponsive();
   const t = useTranslations('analytics');
   const { chartRef } = useChart();
   const chartOption = useMemo<EChartsOption>(() => {
@@ -169,15 +171,15 @@ export const PieChart: React.FC<{
       series: [
         {
           type: 'pie',
-          radius: ['70%', '90%'],
-          center: ['35%', '50%'],
+          radius: isMobile ? ['55%', '70%'] : ['70%', '90%'],
+          center: isMobile ? ['30%', '50%'] : ['35%', '50%'],
           avoidLabelOverlap: false,
           label: {
             show: true,
             position: 'center',
             formatter: () => {
               const total = data.reduce((sum, item) => sum + item.value, 0);
-              return `{number|${total}}\n{text|${t('total')}}`;
+              return `{number|${formatKM(total)}}\n{text|${t('total')}}`;
             },
             rich: {
               number: {
@@ -204,7 +206,7 @@ export const PieChart: React.FC<{
         },
       ],
     };
-  }, [data, t]);
+  }, [data, t, isMobile]);
 
   return (
     <div className={`pie-chart ${className} h-[180px]`}>

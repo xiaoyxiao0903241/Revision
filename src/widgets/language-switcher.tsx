@@ -138,7 +138,7 @@ export const LanguageSwitcherMobile = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className='fixed inset-0 bg-black/90 z-40 lg:hidden p-4 pt-20'
+              className='fixed inset-0 bg-black/90 z-40 lg:hidden p-4 pt-20 '
               onClick={e => {
                 e.stopPropagation();
                 setIsOpen(false);
@@ -153,33 +153,35 @@ export const LanguageSwitcherMobile = () => {
                   'w-full z-40 transform sidebar h-[calc(100vh-96px)] flex-1 md:hidden'
                 )}
               >
-                {LANGUAGES.map(language => (
-                  <div
-                    key={language.code}
-                    onClick={() => changeLanguage(language.code)}
-                    className={cn(
-                      'flex items-center justify-start gap-2 h-16 -ml-24 text-lg',
-                      locale === language.code ? 'text-foreground' : ''
-                    )}
-                  >
-                    {(() => {
-                      const Flag = Flags[language.flag as keyof typeof Flags];
-                      return Flag ? (
-                        <Flag
-                          title={language.name}
-                          className='shadow'
-                          style={{
-                            width: 24,
-                            height: 24,
-                            borderRadius: 16,
-                            objectFit: 'cover',
-                          }}
-                        />
-                      ) : null;
-                    })()}
-                    {language.name}
-                  </div>
-                ))}
+                <div className='w-full h-full flex flex-col -ml-24 gap-2 overflow-y-auto'>
+                  {LANGUAGES.map(language => (
+                    <div
+                      key={language.code}
+                      onClick={() => changeLanguage(language.code)}
+                      className={cn(
+                        'flex items-center justify-start gap-2 min-h-14 text-lg w-full',
+                        locale === language.code ? 'text-foreground' : ''
+                      )}
+                    >
+                      {(() => {
+                        const Flag = Flags[language.flag as keyof typeof Flags];
+                        return Flag ? (
+                          <Flag
+                            title={language.name}
+                            className='shadow'
+                            style={{
+                              width: 24,
+                              height: 24,
+                              borderRadius: 16,
+                              objectFit: 'cover',
+                            }}
+                          />
+                        ) : null;
+                      })()}
+                      {language.name}
+                    </div>
+                  ))}
+                </div>
               </motion.div>
             </motion.div>
           </>

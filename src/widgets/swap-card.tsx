@@ -31,7 +31,7 @@ export const SwapCard: FC<{
             {data.description}
           </span>
         </div>
-        <div className='space-y-2'>
+        <div className='space-y-2 flex-1'>
           <Input.Number
             value={value}
             onChange={onChange}
