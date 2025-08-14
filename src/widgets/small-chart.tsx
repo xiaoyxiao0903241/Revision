@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useMemo } from 'react';
-import ReactECharts from 'echarts-for-react';
+import dayjs from 'dayjs';
 import type { EChartsOption } from 'echarts';
+import ReactECharts from 'echarts-for-react';
 import { useTranslations } from 'next-intl';
+import React, { useMemo } from 'react';
 import { useChart } from '~/hooks/useChart';
+import { formatKM } from '../lib/utils';
 
 // 小型图表组件
 export const SmallChart: React.FC<{
@@ -45,9 +47,9 @@ export const SmallChart: React.FC<{
         },
       },
       grid: {
-        left: '8%',
-        right: '8%',
-        top: '15%',
+        left: '10%',
+        right: '0%',
+        top: '5%',
         bottom: '15%',
       },
       xAxis: {
@@ -61,9 +63,9 @@ export const SmallChart: React.FC<{
         axisLabel: {
           color: '#ffffff',
           fontSize: 10,
-          // formatter: (value: string) => {
-          //   return value.split("-")[1] // 只显示月份
-          // },
+          formatter: (value: string) => {
+            return dayjs(value).format('MM/DD');
+          },
         },
       },
       yAxis: {
@@ -83,9 +85,7 @@ export const SmallChart: React.FC<{
         axisLabel: {
           color: '#ffffff',
           fontSize: 10,
-          formatter: (value: number) => {
-            return value.toLocaleString();
-          },
+          formatter: formatKM,
         },
       },
       series: [

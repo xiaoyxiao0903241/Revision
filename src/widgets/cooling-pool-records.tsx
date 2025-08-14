@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { FC, ReactNode, useEffect, useState } from 'react';
-import { Button, Card, CardContent, Icon, Pager, Tabs } from '~/components';
+import { Button, Card, Icon, Pager, Tabs } from '~/components';
 import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { cn, formatHash, formatNumbedecimalScale } from '~/lib/utils';
@@ -26,7 +26,7 @@ const Cell = ({
   return (
     <td
       className={cn(
-        'py-3 px-4 gap-1 flex flex-col w-1/4 justify-start',
+        'py-3 px-4 gap-1 text-sm flex flex-col justify-start',
         className
       )}
     >
@@ -112,111 +112,106 @@ export const CoolingPoolRecords: FC = () => {
   }, [activeTab]);
   return (
     <Card>
-      <CardContent className='space-y-6'>
-        {/* 标签页 */}
-        <Tabs data={tabData} activeIndex={activeTab} onChange={setActiveTab}>
-          <div className='flex-1 flex flex-col items-end'>
-            <div className='text-base text-foreground'>
-              {total} {t('recordsCount')}
-            </div>
-          </div>
-        </Tabs>
-
-        {/* 记录表格 */}
-        <div className='overflow-x-auto'>
-          <table className='w-full'>
-            <tbody className='flex flex-col gap-1'>
-              {history.length > 0 ? (
-                history.map((record: ReciveItem) => (
-                  <tr
-                    key={record.hash}
-                    className='bg-foreground/5 mb-2 rounded-lg flex flex-row w-full'
-                  >
-                    <Cell
-                      title={t('event')}
-                      className={
-                        eventColors[
-                          record.yieldType as keyof typeof eventColors
-                        ]
-                      }
-                    >
-                      <Icon
-                        name={
-                          record.yieldType === 'claimed' ? 'event' : 'record'
-                        }
-                        size={16}
-                      />
-                      {record.yieldType === 'claimed'
-                        ? t('claimEvent')
-                        : t('receive')}
-                    </Cell>
-                    <Cell title={t('releaseNum')} className='w-1/6'>
-                      {formatNumbedecimalScale(record.amount, 2)} OLY
-                    </Cell>
-                    <Cell title={t('releaseDay')} className='w-1/6'>
-                      {record.day as string}
-                    </Cell>
-                    <Cell title={t('releaseRate')} className='w-1/6'>
-                      {record.roi as string}
-                    </Cell>
-                    <Cell title={t('transactionHash')} className='w-1/6'>
-                      <a
-                        href='#'
-                        className='underline text-sm'
-                        title={record.hash}
-                        onClick={() => {
-                          window.open(`https://bscscan.com/tx/${record.hash}`);
-                        }}
-                      >
-                        {formatHash(record.hash)}
-                      </a>
-                    </Cell>
-                    <Cell title={t('dateTime')}>{record.createdAt}</Cell>
-                  </tr>
-                ))
-              ) : (
-                <tr className='w-full'>
-                  <td
-                    colSpan={4}
-                    className='flex flex-col items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-4 gap-2'
-                  >
-                    {!userAddress ? (
-                      <>
-                        {t('walletNotConnected')}
-                        <ConnectWalletButton />
-                      </>
-                    ) : (
-                      <>
-                        {t('noRecords')}
-                        <Button
-                          clipDirection='topRight-bottomLeft'
-                          className='w-auto'
-                        >
-                          {t2('nodata')}
-                        </Button>
-                      </>
-                    )}
-                  </td>
-                </tr>
-              )}
-            </tbody>
-            {/* 分页 */}
-            {pages > 0 && (
-              <tfoot>
-                <tr>
-                  <td colSpan={4} className='flex justify-center items-center'>
-                    <Pager
-                      currentPage={page}
-                      totalPages={pages}
-                      onPageChange={setPage}
-                    />
-                  </td>
-                </tr>
-              </tfoot>
-            )}
-          </table>
+      {/* 标签页 */}
+      <div className='flex flex-1 md:hidden items-center justify-between'>
+        <div className='text-base text-foreground'>
+          {total} {t('recordsCount')}
         </div>
-      </CardContent>
+      </div>
+      <Tabs data={tabData} activeIndex={activeTab} onChange={setActiveTab}>
+        <div className='hidden flex-1 md:flex flex-col items-end justify-center'>
+          <div className='text-base text-foreground'>
+            {total} {t('recordsCount')}
+          </div>
+        </div>
+      </Tabs>
+
+      {/* 记录表格 */}
+      <div className='md:overflow-x-auto'>
+        <table className='w-full'>
+          <tbody className='flex flex-col gap-1'>
+            {history.length > 0 ? (
+              history.map((record: ReciveItem) => (
+                <tr
+                  key={record.hash}
+                  className='bg-foreground/5 mb-2 rounded-lg w-full grid grid-cols-2 md:grid-cols-6'
+                >
+                  <Cell
+                    title={t('event')}
+                    className={
+                      eventColors[record.yieldType as keyof typeof eventColors]
+                    }
+                  >
+                    <Icon
+                      name={record.yieldType === 'claimed' ? 'event' : 'record'}
+                      size={16}
+                    />
+                    {record.yieldType === 'claimed'
+                      ? t('claimEvent')
+                      : t('receive')}
+                  </Cell>
+                  <Cell title={t('releaseNum')}>
+                    {formatNumbedecimalScale(record.amount, 2)} OLY
+                  </Cell>
+                  <Cell title={t('releaseDay')}>{record.day as string}</Cell>
+                  <Cell title={t('releaseRate')}>{record.roi as string}</Cell>
+                  <Cell title={t('transactionHash')}>
+                    <a
+                      href='#'
+                      className='underline text-sm'
+                      title={record.hash}
+                      onClick={() => {
+                        window.open(`https://bscscan.com/tx/${record.hash}`);
+                      }}
+                    >
+                      {formatHash(record.hash)}
+                    </a>
+                  </Cell>
+                  <Cell title={t('dateTime')}>{record.createdAt}</Cell>
+                </tr>
+              ))
+            ) : (
+              <tr className='w-full'>
+                <td
+                  colSpan={4}
+                  className='flex flex-col items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-4 gap-2'
+                >
+                  {!userAddress ? (
+                    <>
+                      {t('walletNotConnected')}
+                      <ConnectWalletButton />
+                    </>
+                  ) : (
+                    <>
+                      {t('noRecords')}
+                      <Button
+                        clipDirection='topRight-bottomLeft'
+                        className='w-auto'
+                      >
+                        {t2('nodata')}
+                      </Button>
+                    </>
+                  )}
+                </td>
+              </tr>
+            )}
+          </tbody>
+          {/* 分页 */}
+          {pages > 0 && (
+            <tfoot>
+              <tr>
+                <td colSpan={4} className='flex justify-center items-center'>
+                  <Pager
+                    currentPage={page}
+                    totalPages={pages}
+                    onPageChange={setPage}
+                  />
+                </td>
+              </tr>
+            </tfoot>
+          )}
+        </table>
+      </div>
     </Card>
   );
 };

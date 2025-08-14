@@ -1,9 +1,11 @@
 'use client';
 
+import dayjs from 'dayjs';
 import type { EChartsOption } from 'echarts';
 import ReactECharts from 'echarts-for-react';
 import React, { useMemo } from 'react';
 import { useChart } from '~/hooks/useChart';
+import { formatKM } from '../lib/utils';
 
 // TVL图表组件
 export const TVLChart: React.FC<{
@@ -44,8 +46,8 @@ export const TVLChart: React.FC<{
         },
       },
       grid: {
-        left: '20%',
-        right: '0%',
+        left: '10%',
+        right: '2%',
         top: '5%',
         bottom: '20%',
       },
@@ -59,9 +61,9 @@ export const TVLChart: React.FC<{
         },
         axisLabel: {
           color: '#ffffff',
-          // formatter: (value: string) => {
-          //   return value.split("-")[1] // 只显示月份
-          // },
+          formatter: (value: string) => {
+            return dayjs(value).format('MM/DD');
+          },
         },
       },
       yAxis: {
@@ -83,9 +85,7 @@ export const TVLChart: React.FC<{
         },
         axisLabel: {
           color: '#ffffff',
-          formatter: (value: number) => {
-            return value.toLocaleString();
-          },
+          formatter: formatKM,
         },
       },
       series: [
