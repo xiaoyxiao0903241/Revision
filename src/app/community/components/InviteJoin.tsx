@@ -208,7 +208,7 @@ const InviteJoin = () => {
         <div className='flex flex-col gap-6  h-full'>
           {/* 左侧数据 */}
           <div className='space-y-4 flex-1'>
-            <div className='flex items-center'>
+            <div className='grid grid-cols-2 md:flex items-center'>
               <div className='flex flex-col flex-1'>
                 <span className='text-xs text-foreground/50'>
                   {t('totalReferralLocked')}

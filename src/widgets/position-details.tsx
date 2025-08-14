@@ -19,7 +19,7 @@ export const PositionDetails: FC<{
       <div className='text-foreground/50 font-medium'>
         {t('positionDetails')}
       </div>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-x-36 gap-y-6'>
+      <div className='grid grid-cols-2 gap-x-2 md:gap-x-36 gap-y-6'>
         <Statistics
           title={t('myStakedAmount')}
           value={data.myStakedAmount}

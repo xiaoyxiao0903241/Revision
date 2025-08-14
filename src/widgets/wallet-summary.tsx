@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
-import { Card, CardHeader, List, Statistics } from '~/components';
+import { Card, CardHeader, InfoPopover, List, Statistics } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import {
   formatCurrency,
@@ -18,7 +18,6 @@ import {
   getUserStakes,
 } from '~/wallet/lib/web3/stake';
 import { AddToWallet } from './addToWallet';
-import { InfoPopover } from './info-popover';
 
 export const WalletSummary: FC = () => {
   const t = useTranslations('staking');

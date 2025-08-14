@@ -3,6 +3,7 @@ import { useSafeState } from 'ahooks';
 import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { Card, CardHeader, List, Statistics } from '~/components';
+import { InfoPopover } from '~/components/';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { infoItems } from '~/hooks/useMock';
 import {
@@ -23,7 +24,6 @@ import {
   getUserStakes,
 } from '~/wallet/lib/web3/stake';
 import { AddToWallet } from './addToWallet';
-import { InfoPopover } from './info-popover';
 
 export const WalletSummaryLock: FC = () => {
   const t = useTranslations('staking');

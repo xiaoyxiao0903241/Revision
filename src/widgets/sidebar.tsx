@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Icon, IconFontName } from '~/components';
 import { cn } from '~/lib/utils';
+import { LanguageSwitcherMobile } from './language-switcher';
 
 interface NavigationItem {
   label: string;
@@ -282,6 +283,8 @@ export const SidebarContent = () => {
               height={32}
             />
           </a>
+          <div className='flex-1'></div>
+          <LanguageSwitcherMobile />
         </div>
       </div>
     </>

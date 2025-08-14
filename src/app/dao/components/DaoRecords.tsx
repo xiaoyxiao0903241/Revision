@@ -1,4 +1,6 @@
 'use client';
+import _ from 'lodash';
+import { useTranslations } from 'next-intl';
 import {
   forwardRef,
   useEffect,
@@ -7,12 +9,10 @@ import {
   useState,
 } from 'react';
 import { Card, CardContent, Icon, Tabs } from '~/components';
-import { useTranslations } from 'next-intl';
 import ProTable, { ProTableColumn } from '~/components/ProTable';
-import { rewardHistoryList, rewardList } from '~/services/auth/dao';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { formatDecimal } from '~/lib/utils';
-import _ from 'lodash';
+import { rewardHistoryList, rewardList } from '~/services/auth/dao';
 
 type DaoRecordsParams = {
   currentPage: number;
@@ -336,7 +336,7 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
         <CardContent className='space-y-6'>
           {/* 标签页 */}
           <Tabs data={tabData} activeIndex={activeTab} onChange={setActiveTab}>
-            <div className='flex-1 flex flex-col items-end'>
+            <div className='flex-1 flex flex-col justify-center items-end'>
               <div className='text-base text-foreground'>
                 {total} {tStaking('records')}
               </div>

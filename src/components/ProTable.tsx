@@ -1,11 +1,11 @@
-import React, { forwardRef, useCallback, useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useUserAddress } from '~/contexts/UserAddressContext';
-import { useTranslations } from 'next-intl';
-import { Button, Pager } from '~/components';
-import { cn, dayjs, formatHash } from '~/lib/utils';
-import Link from 'next/link';
 import _ from 'lodash';
+import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import React, { forwardRef, useCallback, useEffect, useState } from 'react';
+import { Button, Pager } from '~/components';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import { cn, dayjs, formatHash } from '~/lib/utils';
 
 export type valueType = 'text' | 'date' | 'dateTime' | 'hash';
 
@@ -187,18 +187,17 @@ const ProTable = forwardRef(
     }, [onRefreshRef, refresh]);
 
     return (
-      <div className='overflow-x-auto'>
+      <div className='md:overflow-x-auto'>
         <table className='w-full'>
-          <tbody className='space-y-2'>
+          <tbody className='space-y-2 w-full'>
             {tableData.map((record: T, index: number) => {
               const key = record[rowKey] || index;
               return (
                 <tr
                   key={`${key}-${index}`}
-                  className={cn('grid p-6 bg-foreground/5 rounded-md')}
-                  style={{
-                    gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
-                  }}
+                  className={cn(
+                    'grid p-6 grid-cols-2 md:flex bg-foreground/5 rounded-md'
+                  )}
                 >
                   {columns.map((column, colIndex) => {
                     // 获取单元格的值
@@ -296,7 +295,7 @@ const ProTable = forwardRef(
                     return (
                       <td
                         key={column.key}
-                        className='py-3 px-4 flex flex-col gap-1'
+                        className='py-3 px-4 flex flex-col gap-1 flex-1'
                       >
                         <span className='text-xs text-foreground/50'>
                           {column.title}
@@ -318,11 +317,11 @@ const ProTable = forwardRef(
                 </tr>
               );
             })}
-            {tableData.length === 0 && (
+            {tableData.length !== 0 && (
               <tr className='w-full p-6'>
                 <td
                   colSpan={5}
-                  className='flex flex-col items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-5 gap-2 mt-2'
+                  className='flex flex-col w-full items-center justify-center text-foreground/50 bg-foreground/5 rounded-lg p-5 gap-2 mt-2'
                 >
                   {!userAddress ? (
                     <>
@@ -339,7 +338,11 @@ const ProTable = forwardRef(
                       {appendNotDataText && appendNotDataText}
                       <Button
                         clipDirection='topRight-bottomLeft'
-                        className='w-auto'
+                        className='flex-wrap text-wrap'
+                        style={{
+                          whiteSpace: 'wrap',
+                          height: 'auto',
+                        }}
                       >
                         {notDataText || common('common.nodata')}
                       </Button>

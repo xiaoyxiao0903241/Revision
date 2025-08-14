@@ -13,7 +13,7 @@ export const Slippage: FC<{
   const t = useTranslations('swap');
   const [slipple, setSlipple] = useState('0.5');
   return (
-    <View className='bg-[#22285E] font-mono flex justify-between items-center p-4'>
+    <View className='bg-[#22285E] font-mono flex flex-col md:flex-row cl justify-start  md:justify-between md:items-center p-4 gap-2'>
       <h3 className='text-sm font-semibold'>{t('allowableSlippage')}</h3>
       <div className='flex space-x-2 items-center'>
         <RadioGroup value={value} onChange={onChange} options={options} />
