@@ -1,20 +1,27 @@
 import { useTranslations } from 'next-intl';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Button, Card, Input, List, Slider, View } from '~/components';
-import { formatCurrency, formatDecimal } from '~/lib/utils';
-import { useLockStore } from '~/store/lock';
+import {
+  formatCurrency,
+  formatDecimal,
+  formatNumbedecimalScale,
+} from '~/lib/utils';
+import { useNolockStore } from '~/store/noLock';
 
 export const StakingCalculator: FC<{
   rateEnabled?: boolean;
 }> = ({ rateEnabled = false }) => {
+  const { allnetReabalseNum, AllolyStakeNum, olyPrice } = useNolockStore();
+
   const t = useTranslations('staking');
-  const { olyPrice } = useLockStore();
   // 计算器状态
-  const [amount, setAmount] = useState('1000');
+  const [amount, setAmount] = useState('');
   const [stakingDuration, setStakingDuration] = useState(1);
-  const [rebaseApy, setRebaseApy] = useState(0.7);
-  const [currentOlyPrice, setOlyPrice] = useState(60);
+  const [rebaseApy, setRebaseApy] = useState(0.3);
+  const [currentOlyPrice, setOlyPrice] = useState(2);
+  const [nowOlyPrice, setNowOlyPrice] = useState(2);
   const [addAmount, setAddAmount] = useState(0.02);
+  const [apy, setApy] = useState<string>('0');
 
   // 计算模拟收益
   const calculateRewards = () => {
@@ -32,7 +39,7 @@ export const StakingCalculator: FC<{
     const apr = (roi / stakingDuration) * 12;
     return {
       duration: `${durationInMonths} ${t('months')}`,
-      rebaseApy: `${formatDecimal(rebaseApy)}%`,
+      rebaseApy: `${rebaseApy}%`,
       rebaseBoost: `${formatDecimal(addAmount * 100)}%`,
       yourStake: formatCurrency(Number(amount)),
       yourReward: formatCurrency(myProfitUsdt),
@@ -42,6 +49,23 @@ export const StakingCalculator: FC<{
   };
 
   const results = calculateRewards();
+
+  //计算下一次爆块收益率
+  useEffect(() => {
+    if (allnetReabalseNum && AllolyStakeNum) {
+      const rate = formatNumbedecimalScale(
+        (allnetReabalseNum / AllolyStakeNum) * 100,
+        4
+      );
+      setApy(rate);
+      setRebaseApy(Number(rate));
+    }
+  }, [allnetReabalseNum, AllolyStakeNum]);
+
+  useEffect(() => {
+    setOlyPrice(Number(formatNumbedecimalScale(olyPrice, 2)));
+    setNowOlyPrice(Number(formatNumbedecimalScale(olyPrice, 2)));
+  }, [olyPrice]);
   return (
     <Card className='p-6'>
       {/* 金额输入 */}
@@ -119,13 +143,14 @@ export const StakingCalculator: FC<{
         <div className='space-y-4'>
           <label className='text-sm font-medium text-white'>
             {t('rebaseApy', { value: rebaseApy })}
+            {Number(apy) === rebaseApy ? `(当前)` : null}
           </label>
           <Slider
             value={[rebaseApy]}
             onValueChange={value => setRebaseApy(value[0])}
             min={0.3}
             max={1.0}
-            step={0.01}
+            step={0.0001}
             indicators={[0.3, 0.5, 0.7, 0.9, 1.0].map(item => ({
               value: item,
               label: `${item}%`,
@@ -137,6 +162,7 @@ export const StakingCalculator: FC<{
         <div className='space-y-4'>
           <label className='text-sm font-medium text-white'>
             {t('olyPrice', { value: currentOlyPrice })}
+            {currentOlyPrice === nowOlyPrice ? '(当前)' : ''}
           </label>
           <Slider
             value={[currentOlyPrice]}

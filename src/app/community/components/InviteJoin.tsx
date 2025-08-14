@@ -1,5 +1,12 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { Abi } from 'viem';
+import { usePublicClient } from 'wagmi';
+import Trend from '~/assets/trend.svg';
 import {
   Button,
   Card,
@@ -8,26 +15,14 @@ import {
   Input,
   View,
 } from '~/components';
-import Link from 'next/link';
-import Trend from '~/assets/trend.svg';
-import { getInviteInfo } from '~/wallet/lib/web3/invite';
-import { useQuery } from '@tanstack/react-query';
 import { useUserAddress } from '~/contexts/UserAddressContext';
-import { toast } from 'sonner';
-import { usePublicClient } from 'wagmi';
-import { Abi } from 'viem';
+import { useContractError } from '~/hooks/useContractError';
+import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
+import { fallbackCopyText, formatAddress, formatte2Num } from '~/lib/utils';
+import { inviterInfo } from '~/services/auth/invite';
 import MaxInviteAbi from '~/wallet/constants/MatrixNetworkAbi.json';
 import { matrixNetwork } from '~/wallet/constants/tokens';
-import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
-import { useContractError } from '~/hooks/useContractError';
-import { usePathname, useSearchParams } from 'next/navigation';
-import {
-  getCookieLanguage,
-  formatAddress,
-  fallbackCopyText,
-  formatte2Num,
-} from '~/lib/utils';
-import { inviterInfo } from '~/services/auth/invite';
+import { getInviteInfo } from '~/wallet/lib/web3/invite';
 
 // 添加以太坊地址验证函数
 const isValidEthereumAddress = (address: string): boolean => {
@@ -48,7 +43,7 @@ const InviteJoin = () => {
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
   const [link, setLink] = useState('');
   const searchParams = useSearchParams();
-  const lang = getCookieLanguage();
+  // const lang = getCookieLanguage();
   const urlParamName = 'address';
 
   // 获取邀请信息
@@ -89,7 +84,7 @@ const InviteJoin = () => {
     } else {
       setLink('');
     }
-  }, [userAddress, lang]);
+  }, [userAddress]);
   const getInviteCodeFromUrl = useCallback(() => {
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
@@ -281,7 +276,7 @@ const InviteJoin = () => {
           <div className='space-y-4'>
             <div className='flex items-center gap-2'>
               <div className='space-y-1 flex-1'>
-                <label className='text-foreground/50 text-xs'>
+                <label className='text-foreground/50 text-base'>
                   {t('referralLink')}
                 </label>
                 <div className='flex gap-2 items-center'>

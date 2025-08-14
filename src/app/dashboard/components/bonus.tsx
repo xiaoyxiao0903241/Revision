@@ -16,6 +16,7 @@ import { getStakeNum } from '~/wallet/lib/web3/turbine';
 const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
   const safeMyMessInfo = myMessInfo || {};
   const t = useTranslations('dashboard');
+  const t2 = useTranslations('tooltip');
   const router = useRouter();
   const { olyPrice } = useNolockStore();
   const { userAddress } = useUserAddress();
@@ -109,6 +110,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
             }
             desc={`$${formatNumbedecimalScale(Number(safeMyMessInfo?.claimableBonus || 0) * olyPrice, 2)}`}
             size='sm'
+            info={<span>{t2('dash.can_claim_reards')}</span>}
           />
           {Number(safeMyMessInfo?.claimableBonus || 0) > 0 && (
             <Button
@@ -138,6 +140,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               }
               desc={`$${formatNumbedecimalScale((myReward?.allPending || 0) * olyPrice, 2)}`}
               size='sm'
+              info={<span>{t2('dash.rebase_claim_reards')}</span>}
             />
           </div>
           <div className='absolute left-0 top-0 bottom-[5px] w-[5px] bg-foreground/50'></div>
@@ -155,6 +158,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               }
               desc={`$${formatNumbedecimalScale((myReward?.allClaimable || 0) * olyPrice, 2)}`}
               size='sm'
+              info={<span>{t2('dash.hand_rebase_reards')}</span>}
             />
             {Number(myReward?.allClaimable || 0) > 0 && (
               <Button

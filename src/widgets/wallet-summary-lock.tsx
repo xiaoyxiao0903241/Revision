@@ -5,12 +5,17 @@ import { FC, useEffect, useState } from 'react';
 import { Card, CardHeader, List, Statistics } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { infoItems } from '~/hooks/useMock';
-import { formatCurrency, formatNumbedecimalScale } from '~/lib/utils';
+import {
+  formatCurrency,
+  formatNumbedecimalScale,
+  shortenAddress,
+} from '~/lib/utils';
 import { personStakeAmount, stakerNum } from '~/services/auth/dashboard';
 import { useLockStore } from '~/store/lock';
 import { OLY, staking } from '~/wallet/constants/tokens';
 import type { StakingItem } from '~/wallet/lib/web3/stake';
 import {
+  depositDayList,
   getAllnetReabalseNum,
   getBalanceToken,
   getNodeStakes,
@@ -18,9 +23,11 @@ import {
   getUserStakes,
 } from '~/wallet/lib/web3/stake';
 import { AddToWallet } from './addToWallet';
+import { InfoPopover } from './info-popover';
 
 export const WalletSummaryLock: FC = () => {
   const t = useTranslations('staking');
+  const t2 = useTranslations('tooltip');
   const { olyBalance, olyPrice } = useLockStore();
   const { userAddress } = useUserAddress();
   const [allStakeAmount, setAllStakeAmount] = useSafeState(0);
@@ -167,7 +174,11 @@ export const WalletSummaryLock: FC = () => {
             />
           </div>
           <div className='flex flex-col gap-2'>
-            <Statistics title={t('apr')} value={`${yearApy}%`} />
+            <Statistics
+              title={t('apr')}
+              value={`${yearApy}%`}
+              info={<span>{t2('stake.year_reate')}</span>}
+            />
             <div className='h-px bg-border/20 w-full'></div>
             <Statistics
               title={t('rebaseRewards')}
@@ -175,16 +186,6 @@ export const WalletSummaryLock: FC = () => {
               desc={formatCurrency(
                 Number(myStakeAmount?.lockReward * olyPrice)
               )}
-              info={
-                <div className='flex flex-col space-y-2'>
-                  {infoItems.map(item => (
-                    <div key={item.label} className='flex justify-between'>
-                      <span className='text-foreground/50'>{item.label}</span>
-                      <span className='text-secondary'>{item.value}</span>
-                    </div>
-                  ))}
-                </div>
-              }
             />
           </div>
         </div>
@@ -195,8 +196,27 @@ export const WalletSummaryLock: FC = () => {
           <List.Label className='font-chakrapetch text-white text-base'>
             {t('statistics')}
           </List.Label>
-          <List.Label className='gradient-text text-base'>
-            {t('viewOnBscScan')}
+          <List.Label className='text-gradient text-base flex items-center gap-x-2'>
+            <span>{t('viewOnBscScan')}</span>
+            <InfoPopover className='right-[70px]'>
+              {depositDayList.map((it, index) => (
+                <div
+                  className='flex justify-between cursor-pointer'
+                  key={index}
+                  onClick={() => {
+                    window.open(`https://bscscan.com/address/${it.token}`);
+                  }}
+                >
+                  <span className='text-foreground/50'>
+                    {it.day}&nbsp;
+                    {t('days')}
+                  </span>
+                  <div className='flex items-center gap-x-2'>
+                    <span>{shortenAddress(it.token)}</span>
+                  </div>
+                </div>
+              ))}
+            </InfoPopover>
           </List.Label>
         </List.Item>
         <List.Item>

@@ -48,7 +48,7 @@ export const StakingRecords: FC<{
   total: number;
 }> = ({ records, changeTab, total = 0 }) => {
   const t = useTranslations('staking');
-  const t2 = useTranslations('common');
+  // const t2 = useTranslations('common');
   const [activeTab, setActiveTab] = useState(0);
   const { userAddress } = useUserAddress();
   // 标签页数据
@@ -136,7 +136,7 @@ export const StakingRecords: FC<{
                           clipDirection='topRight-bottomLeft'
                           className='w-auto'
                         >
-                          {t2('nodata')}
+                          {t('stakeNow')}
                         </Button>
                       </>
                     )}

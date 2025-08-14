@@ -133,17 +133,17 @@ export const SidebarContent = () => {
   const footerItems: NavigationItem[] = [
     {
       label: t('documents'),
-      href: '/documents',
+      href: 'https://oly-one-i0t0dn4.gamma.site/',
       icon: '/images/icon/docs.png',
     },
     {
       label: t('viewOnAve'),
-      href: '/ave',
+      href: ' https://ave.ai/token/${TOKEN_ADDRESSES.OLY}-bsc',
       icon: '/images/icon/ave.png', // 使用默认图标
     },
     {
       label: t('viewOnDexScreener'),
-      href: '/dex-screener',
+      href: 'https://dexscreener.com/bsc/${TOKEN_ADDRESSES.OLY}',
       icon: '/images/icon/dex.png', // 使用默认图标
     },
   ];
@@ -216,15 +216,37 @@ export const SidebarContent = () => {
       <div className='flex-1'></div>
       {footerItems && (
         <div className='space-y-2'>
-          {footerItems.map(item => {
-            return <NavigationItem key={item.href} item={item} />;
+          {footerItems.map((item, index) => {
+            return (
+              <div
+                className='flex w-full items-center space-x-3 px-5 py-4 text-base font-medium transition-colors hover:bg-foreground/5 cursor-pointer'
+                onClick={() => {
+                  window.open(item.href);
+                }}
+                key={index}
+              >
+                <Image
+                  src={item.icon}
+                  alt={item.label}
+                  width={24}
+                  height={24}
+                />
+                <span>{item.label}</span>
+              </div>
+            );
           })}
         </div>
       )}
       {/* Social Links */}
-      <div>
+      <div className='py-10'>
         <div className='flex gap-6 px-5'>
-          <a href='#' aria-label='x'>
+          <a
+            href='#'
+            aria-label='x'
+            onClick={() => {
+              window.open('https://x.com/OLYONEGlobal');
+            }}
+          >
             <Image
               src='/images/icon/x.png'
               alt='Twitter'
@@ -232,7 +254,13 @@ export const SidebarContent = () => {
               height={32}
             />
           </a>
-          <a href='#' aria-label='Telegram'>
+          <a
+            href='#'
+            aria-label='Telegram'
+            onClick={() => {
+              window.open('https://t.me/OlyONECommunity');
+            }}
+          >
             <Image
               src='/images/icon/telegram.png'
               alt='Telegram'
@@ -240,7 +268,13 @@ export const SidebarContent = () => {
               height={32}
             />
           </a>
-          <a href='#' aria-label='YouTube'>
+          <a
+            href='#'
+            aria-label='YouTube'
+            onClick={() => {
+              window.open('https://www.youtube.com/@OLYONEGlobal');
+            }}
+          >
             <Image
               src='/images/icon/youtube.png'
               alt='YouTube'

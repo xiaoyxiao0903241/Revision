@@ -3,16 +3,27 @@ import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { Card, CardHeader, List, Statistics } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
-import { infoItems } from '~/hooks/useMock';
-import { formatCurrency, formatNumbedecimalScale } from '~/lib/utils';
+import {
+  formatCurrency,
+  formatNumbedecimalScale,
+  shortenAddress,
+} from '~/lib/utils';
 import { personStakeAmount, stakerNum } from '~/services/auth/dashboard';
 import { useNolockStore } from '~/store/noLock';
-import { OLY } from '~/wallet/constants/tokens';
-import { getTotalSupply } from '~/wallet/lib/web3/stake';
+import { demandStaking, OLY } from '~/wallet/constants/tokens';
+import type { StakingItem } from '~/wallet/lib/web3/stake';
+import {
+  getNodeStakes,
+  getTotalSupply,
+  getUserStakes,
+} from '~/wallet/lib/web3/stake';
 import { AddToWallet } from './addToWallet';
+import { InfoPopover } from './info-popover';
 
 export const WalletSummary: FC = () => {
   const t = useTranslations('staking');
+  const t2 = useTranslations('tooltip');
+  const t3 = useTranslations('common');
   const {
     olyBalance,
     olyPrice,
@@ -27,7 +38,7 @@ export const WalletSummary: FC = () => {
   const [yearRate, setYearRate] = useState<string>('0');
   const { userAddress } = useUserAddress();
   const [rebalseProfit, setRebalseProfit] = useState<number>(0);
-
+  const [stakeList, setStakeList] = useState<StakingItem[]>([]);
   //活期的质押人数
   const { data: stakerAmount } = useQuery({
     queryKey: ['getStakerAmount'],
@@ -62,6 +73,23 @@ export const WalletSummary: FC = () => {
     },
     enabled: Boolean(userAddress),
   });
+  //质押列表
+  const { data: myStakingList } = useQuery({
+    queryKey: ['UserStakes', userAddress],
+    queryFn: () => getUserStakes({ address: userAddress as `0x${string}` }),
+    enabled: Boolean(userAddress),
+    retry: 1,
+    refetchInterval: 42000,
+  });
+
+  //节点质押
+  const { data: myNodeStakingList } = useQuery({
+    queryKey: ['UserNodeStakes', userAddress],
+    queryFn: () => getNodeStakes({ address: userAddress as `0x${string}` }),
+    enabled: Boolean(userAddress),
+    retry: 1,
+    refetchInterval: 20000,
+  });
 
   useEffect(() => {
     const myStakeNum = hotDataStakeNum + afterHotData?.principal;
@@ -85,6 +113,25 @@ export const WalletSummary: FC = () => {
       setRebalseProfit(demandProfitInfo.rebalseProfit);
     }
   }, [demandProfitInfo]);
+
+  // 当前长期质押的数据
+  useEffect(() => {
+    const updateList = async () => {
+      if (myStakingList?.myStakingList || myNodeStakingList?.length) {
+        const list =
+          (myStakingList?.myStakingList.length &&
+            (myStakingList?.myStakingList as StakingItem[])) ||
+          [];
+        const nodeList = myNodeStakingList?.length
+          ? (myNodeStakingList as StakingItem[])
+          : [];
+
+        const allList = [...nodeList, ...list];
+        setStakeList(allList);
+      }
+    };
+    updateList();
+  }, [myStakingList?.myStakingList, myNodeStakingList]);
   return (
     <Card>
       <CardHeader className='space-y-3'>
@@ -100,19 +147,36 @@ export const WalletSummary: FC = () => {
               value={`${formatCurrency(myStakeNum, false)} OLY`}
               desc={formatCurrency(myStakeNum * olyPrice)}
               info={
-                <div className='flex flex-col space-y-2'>
-                  {infoItems.map(item => (
-                    <div key={item.label} className='flex justify-between'>
-                      <span className='text-foreground/50'>{item.label}</span>
-                      <span className='text-secondary'>{item.value}</span>
-                    </div>
-                  ))}
+                <div>
+                  {stakeList.length > 0 ? (
+                    stakeList.map((it, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className='flex justify-between items-center'
+                        >
+                          <span>
+                            {it.period} {t('days')}
+                          </span>
+                          <span className='text-[#4c6bdf]'>
+                            {formatNumbedecimalScale(it.pending, 2)} OLY
+                          </span>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div className='text-center'>{t3('nodata')}</div>
+                  )}
                 </div>
               }
             />
           </div>
           <div className='flex flex-col gap-2'>
-            <Statistics title={t('apr')} value={`${yearApy}%`} />
+            <Statistics
+              title={t('apr')}
+              value={`${yearApy}%`}
+              info={<span>{t2('stake.year_reate')}</span>}
+            />
             <div className='h-px bg-border/20 w-full'></div>
             <Statistics
               title={t('rebaseRewards')}
@@ -120,16 +184,6 @@ export const WalletSummary: FC = () => {
               desc={formatCurrency(
                 Number(myStakeAmount?.unlockReward * olyPrice)
               )}
-              info={
-                <div className='flex flex-col space-y-2'>
-                  {infoItems.map(item => (
-                    <div key={item.label} className='flex justify-between'>
-                      <span className='text-foreground/50'>{item.label}</span>
-                      <span className='text-secondary'>{item.value}</span>
-                    </div>
-                  ))}
-                </div>
-              }
             />
           </div>
         </div>
@@ -156,6 +210,7 @@ export const WalletSummary: FC = () => {
           title={'Unreleased Rewards'}
           value={`${formatCurrency(rebalseProfit, false)} OLY`}
           desc={formatCurrency(Number(rebalseProfit * olyPrice))}
+          info={<span>{t2('stake.unreabase_rwards')}</span>}
         ></Statistics>
       </CardHeader>
       <List className='py-4'>
@@ -163,8 +218,20 @@ export const WalletSummary: FC = () => {
           <List.Label className='font-chakrapetch text-white text-base'>
             {t('statistics')}
           </List.Label>
-          <List.Label className='text-gradient text-base'>
-            {t('viewOnBscScan')}
+          <List.Label className='text-gradient text-base  flex items-center gap-x-2'>
+            <span>{t('viewOnBscScan')}</span>
+            <InfoPopover className='right-[50px] w-auto'>
+              <div
+                className='flex justify-between cursor-pointer'
+                onClick={() => {
+                  window.open(`https://bscscan.com/address/${demandStaking}`);
+                }}
+              >
+                <div className='flex items-center gap-x-2'>
+                  <span>{shortenAddress(demandStaking)}</span>
+                </div>
+              </div>
+            </InfoPopover>
           </List.Label>
         </List.Item>
         <List.Item>
