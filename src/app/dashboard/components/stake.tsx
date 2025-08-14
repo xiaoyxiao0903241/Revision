@@ -27,44 +27,34 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
   const [totalDays, setTotalDays] = useState<number>(0);
   // 活期质押
   const {
-    olyBalance,
+    // olyBalance,
     olyPrice,
     afterHotData,
-    AllolyStakeNum,
-    allnetReabalseNum,
-    demandProfitInfo,
+    // AllolyStakeNum,
+    // allnetReabalseNum,
+    // demandProfitInfo,
   } = useNolockStore();
   const { userAddress } = useUserAddress();
-  console.log(afterHotData, olyPrice, 'afterHotData');
-  console.log(
-    olyBalance,
-    olyPrice,
-    afterHotData,
-    AllolyStakeNum,
-    allnetReabalseNum,
-    demandProfitInfo,
-    'ggggg'
-  );
 
   //质押列表
   const { data: myStakingList } = useQuery({
-    queryKey: ['UserStakes', userAddress],
+    queryKey: ['dashboardUserStakes', userAddress],
     queryFn: () => getUserStakes({ address: userAddress as `0x${string}` }),
     enabled: Boolean(userAddress),
-    retry: 1,
+    // retry: 1,
     refetchInterval: 20000,
   });
 
   //当前块
   const { data: currentBlock } = useQuery({
-    queryKey: ['currentBlock'],
+    queryKey: ['dashboarCurrentBlock'],
     queryFn: () => getCurrentBlock(),
     enabled: Boolean(userAddress),
   });
 
   //  节点质押
   const { data: myNodeStakingList } = useQuery({
-    queryKey: ['UserNodeStakes', userAddress],
+    queryKey: ['dashboarUserNodeStakes', userAddress],
     queryFn: () => getNodeStakes({ address: userAddress as `0x${string}` }),
     enabled: Boolean(userAddress),
     retry: 1,

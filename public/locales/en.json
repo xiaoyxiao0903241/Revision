@@ -369,7 +369,8 @@
     "netHolding": "Net Holding",
     "totalCommunityPerformance": "Total Community Performance",
     "joinTime": "Join Time",
-    "submit": "Submit"
+    "submit": "Submit",
+    "notData": "There are no recommended records for this address"
   },
   "analytics": {
     "title": "Analytics",

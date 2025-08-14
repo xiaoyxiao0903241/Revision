@@ -91,9 +91,8 @@ const Market = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
       return myMess(startTime, endTime, userAddress as `0x${string}`);
     },
     enabled: Boolean(userAddress && startTime && endTime),
-    refetchInterval: 20000,
   });
-  console.log('marketDatamarketDatamarketDatamarketData------');
+
   return (
     <Card className='flex flex-col md:flex-row gap-6'>
       <div className='w-full h-full xl:w-2/5 space-y-6'>

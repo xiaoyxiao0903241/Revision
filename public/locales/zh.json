@@ -328,7 +328,8 @@
     "netHolding": "持仓数量",
     "totalCommunityPerformance": "社区总业绩",
     "joinTime": "加入时间",
-    "submit": "提交"
+    "submit": "提交",
+    "notData": "此地址没有推荐记录"
   },
   "analytics": {
     "title": "分析",
@@ -425,7 +426,7 @@
     "cancel": "取消",
     "confirm": "确认",
     "connect_wallet": "連接錢包",
-    "nodata": "暫無數據",
+    "nodata": "暂无数据",
     "language": "中文繁體",
     "copyright": "© 2025 OLYONE DAO",
     "copy_success_message": "複製成功",

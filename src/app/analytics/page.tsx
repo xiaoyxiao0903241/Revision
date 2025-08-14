@@ -68,7 +68,7 @@ export default function AnalyticsPage() {
 
   //获取全网锁定质押的的oly数量
   const { data: AllLockOlyStakeNum } = useQuery({
-    queryKey: ['AllolyStakeNum', userAddress],
+    queryKey: ['analyticsAllolyStakeNum', userAddress],
     queryFn: () =>
       getBalanceToken({
         address: staking as `0x${string}`,

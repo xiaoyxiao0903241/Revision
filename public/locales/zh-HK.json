@@ -370,7 +370,8 @@
     "submit": "提交",
     "gain20ReferralRewards": "获得20%推荐奖励",
     "myReferralLink": "我的推荐链接",
-    "referralLinkDescription": "分享此链接给朋友,他们通过此链接注册并完成质押,你将获得20%的推荐奖励。"
+    "referralLinkDescription": "分享此链接给朋友,他们通过此链接注册并完成质押,你将获得20%的推荐奖励。",
+    "notData": "此地址没有推荐记录"
   },
   "analytics": {
     "title": "分析",
@@ -467,7 +468,7 @@
     "cancel": "取消",
     "confirm": "确认",
     "connect_wallet": "連接錢包",
-    "nodata": "暫無數據",
+    "nodata": "暂无数据",
     "language": "中文繁體",
     "copyright": "© 2025 OLYONE DAO",
     "copy_success_message": "複製成功",
