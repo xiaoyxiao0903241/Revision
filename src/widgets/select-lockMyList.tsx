@@ -55,23 +55,27 @@ export const DurationSelect: FC<{
       </SelectTrigger>
       <SelectContent>
         {userAddress ? (
-          options.map((it, index) => (
-            <SelectItem key={index} value={it.time?.toString() || ''}>
-              <div className='w-full flex justify-between'>
-                <div className='flex items-center'>
-                  <RoundedLogo className='w-5 h-5' />
-                  <span className='flex-1 font-semibold  ml-2'>
-                    {it.pending} OLY
+          options.length > 0 ? (
+            options.map((it, index) => (
+              <SelectItem key={index} value={it.time?.toString() || ''}>
+                <div className='w-full flex justify-between'>
+                  <div className='flex items-center'>
+                    <RoundedLogo className='w-5 h-5' />
+                    <span className='flex-1 font-semibold  ml-2'>
+                      {it.pending} OLY
+                    </span>
+                  </div>
+                  <span>
+                    {it
+                      ? `${it.period} ${t('days')}`
+                      : placeholder || t('selectDurationPlaceholder')}
                   </span>
                 </div>
-                <span>
-                  {it
-                    ? `${it.period} ${t('days')}`
-                    : placeholder || t('selectDurationPlaceholder')}
-                </span>
-              </div>
-            </SelectItem>
-          ))
+              </SelectItem>
+            ))
+          ) : (
+            <div className='text-center'>{t('noData')}</div>
+          )
         ) : (
           <div className='text-center'>
             <ConnectWalletButton className='text-xl  cursor-pointer px-6 !text-white text-5  min-w-[160px]   mx-auto' />

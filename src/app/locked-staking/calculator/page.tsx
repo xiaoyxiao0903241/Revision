@@ -1,13 +1,12 @@
 'use client';
-
 import { useTranslations } from 'next-intl';
 import { Alert } from '~/components';
 import { WalletSummary } from '~/widgets';
 import { StakingCalculator } from '~/widgets/staking-calculator';
-
 export default function CalculatorPage() {
   const t = useTranslations('staking');
   const tLockedStaking = useTranslations('lockedStaking');
+
   return (
     <div className='space-y-6'>
       {/* 顶部标题和描述 */}
