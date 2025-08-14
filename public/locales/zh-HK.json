@@ -389,7 +389,9 @@
     "no_lock_staking": "无锁定期质押",
     "locked_staking": "锁定质押",
     "lp_bonds": "LP债券",
-    "treasury_bonds": "国库债券"
+    "treasury_bonds": "国库债券",
+    "backingPrice": "托底价",
+    "Premium": "溢价指数"
   },
   "coolingPool": {
     "title": "冷却池",

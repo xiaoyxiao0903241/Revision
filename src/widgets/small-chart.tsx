@@ -45,8 +45,8 @@ export const SmallChart: React.FC<{
         },
       },
       grid: {
-        left: '8%',
-        right: '8%',
+        left: '12%',
+        right: '5%',
         top: '15%',
         bottom: '15%',
       },
@@ -81,10 +81,18 @@ export const SmallChart: React.FC<{
           },
         },
         axisLabel: {
+          // show: false,
           color: '#ffffff',
-          fontSize: 10,
           formatter: (value: number) => {
-            return value.toLocaleString();
+            if (value >= 1000000000) {
+              return `${(value / 1000000000).toFixed(0)}B`;
+            } else if (value >= 1000000) {
+              return `${(value / 1000000).toFixed(0)}M`;
+            } else if (value >= 1000) {
+              return `${(value / 1000).toFixed(0)}K`;
+            } else {
+              return value.toString();
+            }
           },
         },
       },

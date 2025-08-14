@@ -44,10 +44,10 @@ export const TVLChart: React.FC<{
         },
       },
       grid: {
-        left: '10%',
-        right: '10%',
+        left: '12%',
+        right: '5%',
         top: '15%',
-        bottom: '15%',
+        bottom: '18%',
       },
       xAxis: {
         type: 'category',
@@ -82,9 +82,18 @@ export const TVLChart: React.FC<{
           },
         },
         axisLabel: {
+          // show: false,
           color: '#ffffff',
           formatter: (value: number) => {
-            return value.toLocaleString();
+            if (value >= 1000000000) {
+              return `${(value / 1000000000).toFixed(0)}B`;
+            } else if (value >= 1000000) {
+              return `${(value / 1000000).toFixed(0)}M`;
+            } else if (value >= 1000) {
+              return `${(value / 1000).toFixed(0)}K`;
+            } else {
+              return value.toString();
+            }
           },
         },
       },
