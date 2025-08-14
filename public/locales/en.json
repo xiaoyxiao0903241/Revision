@@ -671,5 +671,45 @@
       "claim_success": "Claim Successful",
       "claim_failed": "Claim Failed"
     }
+  },
+  "tooltip": {
+    "dash": {
+      "life_rewards": "通过质押获得的总奖励",
+      "stake_left_time": "来自质押时间最长的一条记录",
+      "bond_rewards": "通过购买债券获得的总奖励",
+      "bonds_nleft_time": "来自债券剩余时间最长的一条记录",
+      "address_num": "持仓价值在$100以上的客户地址总数量/直接邀请的客户的地址总数",
+      "社区地址数量": "通过您直接或间接推荐的客户总数量",
+      "invite_serving": "众筹期间您购买的创世股东份额",
+      "all_value": "通过众筹获得的OLY代币的当前总价值",
+      "奖金总数量": "您已经获得的奖金总数量",
+      "最大奖金数量": "您能够获得的最大奖金数量是您个人持仓数量的6倍。增加您的个人持仓可以提高您能够获得的总奖金的上限。",
+      "can_claim_reards": "在DAO板块中您尚未领取的奖金总数量",
+      "rebase_claim_reards": "在冷却池中尚未释放的奖金总数量",
+      "hand_rebase_reards": "在冷却池中已经释放的奖金总数量"
+    },
+    "community": {
+      "推荐锁仓总量": "直接推荐的成员的持仓数量",
+      "社区锁仓总量": "社区所有成员的持仓数量",
+      "社区奖励": "通过直接推荐或间接推荐获得的社区总奖励"
+    },
+    "analytics": {
+      "total_value": "在OLYONE平台中参与质押以及购买债券的代币的当前总价值",
+      "circulation_market": "流通市值 = 当前OLY价格 × 在市场上流通的OLY数量",
+      "oly_circulation": "当前在市场上流通、可以自由交易的 OLY 代币数量",
+      "treasury_risk_free_value": "国库中用于托底的USDT数量",
+      "托底价Backing Price": "托底价 = 国库无风险价值 ÷ 流通量，是协议内部对每一枚OLY的价值支撑估值",
+      "溢價指數Premium": "溢价指数 = 市场价 ÷ 托底价，可以直观反映市场情绪和资产安全边际，当溢价指数>1时，市场价高于托底价，表示有溢价，市场对该资产的信心较高。",
+      "可运行周期Runway": "可运行周期 = Rebase池余额 ÷ (2 × 最近一次Rebase收益率)，計算可再支持多少天的獎勵支出，，並向 EM 模組發出鑄幣比例建議，調控資源續航。"
+    },
+    "dao": {
+      "receive": "奖金将进入冷却池"
+    },
+    "stake": {
+      "receive": "爆块奖励将进入冷却池",
+      "解除质押/您将收到": "解除的质押份额将立即发送到您的钱包",
+      "year_reate": "年华收益率",
+      "unreabase_rwards": "Unreleased Rewards"
+    }
   }
 }
