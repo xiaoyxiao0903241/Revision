@@ -1,4 +1,5 @@
 'use client';
+import { AnimatePresence, motion } from 'motion/react';
 import { useEffect } from 'react';
 import { cn } from '~/lib/utils';
 import { SidebarContent } from './sidebar';
@@ -35,29 +36,37 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
     };
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
-
   return (
     <>
       {/* 遮罩层 */}
-      <div
-        className='fixed inset-0 bg-black/90 z-40 lg:hidden p-4 pt-20'
-        onClick={onClose}
-      >
-        {/* 侧边栏 */}
-        <div
-          className={cn(
-            'w-full z-50 transform sidebar h-[calc(100vh-96px)] flex-1 md:hidden',
-            isOpen ? 'translate-x-0' : '-translate-x-full'
-          )}
-        >
-          <nav className='space-y-6 h-full w-[calc(100vw-32px)] py-4'>
-            <div className='h-full w-full overflow-y-auto space-y-4'>
-              <SidebarContent />
-            </div>
-          </nav>
-        </div>
-      </div>
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className='fixed inset-0 bg-black/90 z-40 lg:hidden p-4 pt-20 backdrop-blur-sm'
+              onClick={onClose}
+            >
+              <motion.div
+                initial={{ x: '100%' }}
+                animate={{ x: 0 }}
+                exit={{ x: '100%' }}
+                className={cn(
+                  'w-full z-40 transform sidebar h-[calc(100vh-96px)] flex-1 md:hidden'
+                )}
+              >
+                <nav className='space-y-6 h-full w-[calc(100vw-32px)] py-4'>
+                  <div className='h-full w-full overflow-y-auto space-y-4'>
+                    <SidebarContent />
+                  </div>
+                </nav>
+              </motion.div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 }

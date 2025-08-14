@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { FC, ReactNode, useEffect, useState } from 'react';
+import Close from '~/assets/close.svg';
 import InfoIcon from '~/assets/info.svg';
 import { cn } from '~/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '../components/popover';
@@ -33,15 +34,19 @@ export const InfoPopover: FC<{
         />
         <AnimatePresence>
           {open && (
-            <motion.div
-              className='fixed top-0 right-0 bottom-0 left-0 z-50 bg-black/50'
-              onClick={() => setOpen(false)}
-            >
-              <div
-                className={cn(
-                  'fixed left-4 bottom-0 right-4 z-50 p-4',
-                  className
-                )}
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className='fixed top-0 right-0 bottom-0 left-0 z-50 bg-black/50'
+                onClick={() => setOpen(false)}
+              />
+              <motion.div
+                initial={{ y: 100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 100, opacity: 0 }}
+                className={cn('fixed left-1 bottom-4 right-1 z-50', className)}
               >
                 <View
                   clipDirection='topLeft-bottomRight'
@@ -49,17 +54,22 @@ export const InfoPopover: FC<{
                   className='relative shadow-[inset_0_0_10px_rgba(84,119,247,0.3)] p-4 bg-[#171837]/80 backdrop-blur-sm'
                 >
                   {title ? (
-                    <div className='flex items-center'>
+                    <div className='flex items-center w-full justify-between'>
                       <span className='text-white text-base font-semibold'>
                         {title}
                       </span>
-                      <span onClick={() => setOpen(false)}>X</span>
+                      <div
+                        className='p-2 cursor-pointer'
+                        onClick={() => setOpen(false)}
+                      >
+                        <Close className='w-4 h-4 text-white' />
+                      </div>
                     </div>
                   ) : null}
                   {children}
                 </View>
-              </div>
-            </motion.div>
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
       </>

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Icon, IconFontName } from '~/components';
 import { cn } from '~/lib/utils';
+import { LanguageSwitcherMobile } from './language-switcher';
 
 interface NavigationItem {
   label: string;
@@ -223,7 +224,7 @@ export const SidebarContent = () => {
       )}
       {/* Social Links */}
       <div>
-        <div className='flex gap-6 px-5'>
+        <div className='flex items-center  gap-6 px-5'>
           <a href='#' aria-label='x'>
             <Image
               src='/images/icon/x.png'
@@ -248,6 +249,8 @@ export const SidebarContent = () => {
               height={32}
             />
           </a>
+          <div className='flex-1'></div>
+          <LanguageSwitcherMobile />
         </div>
       </div>
     </>
