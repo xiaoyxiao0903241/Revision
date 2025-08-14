@@ -1,24 +1,23 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { Alert, Button, Card, CardContent, Notification } from '~/components';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { Abi, parseUnits } from 'viem';
+import { usePublicClient } from 'wagmi';
+import { Alert, Button, Card, Notification } from '~/components';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
+import { formatNumbedecimalScale } from '~/lib/utils';
+import { useNolockStore } from '~/store/noLock';
+import DemandStakingAbi from '~/wallet/constants/DemandStakingAbi.json';
+import { demandStaking } from '~/wallet/constants/tokens';
+import type { periodItem } from '~/wallet/lib/web3/claim';
+import { getClaimPeriod } from '~/wallet/lib/web3/claim';
 import { WalletSummary } from '~/widgets';
 import { AmountCard } from '~/widgets/amount-card';
 import { ClaimSummary } from '~/widgets/claim-summary';
 import { DurationSelect } from '~/widgets/select';
-import { useNolockStore } from '~/store/noLock';
-import { formatNumbedecimalScale } from '~/lib/utils';
-import { useUserAddress } from '~/contexts/UserAddressContext';
-import { usePublicClient } from 'wagmi';
-import { toast } from 'sonner';
-import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
-import DemandStakingAbi from '~/wallet/constants/DemandStakingAbi.json';
-import { demandStaking } from '~/wallet/constants/tokens';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Abi, parseUnits } from 'viem';
-import { getClaimPeriod } from '~/wallet/lib/web3/claim';
-import type { periodItem } from '~/wallet/lib/web3/claim';
-import { useContractError } from '~/hooks/useContractError';
 
 interface StakInfo {
   stakNum: number;
@@ -141,65 +140,63 @@ export default function ClaimPage() {
         <div className='space-y-6'>
           {/* 分段控制器 */}
           <Card>
-            <CardContent className='space-y-6'>
-              <AmountCard
-                data={{
-                  value: claimAmount,
-                  desc: Number(claimAmount) * olyPrice,
-                  balance: normalProfit
-                    ? Number(formatNumbedecimalScale(normalProfit, 2))
-                    : 0,
-                }}
-                onChange={value => {
-                  if (Number(value) > allProfit) {
-                    setClaimAmount(allProfit.toString());
-                  } else {
-                    setClaimAmount(value);
-                  }
-                }}
-                description={t('balance')}
-              />
-              <Notification>{tNoLockedStaking('claimInfo')}</Notification>
-              <DurationSelect
-                options={periodList}
-                value={lockIndex}
-                placeholder={tNoLockedStaking('selectReleasePeriod')}
-                onChange={value => {
-                  setRate(Number(periodList[value].rate.split('%')[0]));
-                  setLockIndex(value);
-                }}
-              />
-              <ClaimSummary
-                data={{
-                  amount: Number(claimAmount) * ((100 - rate) / 100),
-                  taxRate: rate,
-                  incomeTax: Number(claimAmount) * (rate / 100),
-                }}
-              />
+            <AmountCard
+              data={{
+                value: claimAmount,
+                desc: Number(claimAmount) * olyPrice,
+                balance: normalProfit
+                  ? Number(formatNumbedecimalScale(normalProfit, 2))
+                  : 0,
+              }}
+              onChange={value => {
+                if (Number(value) > allProfit) {
+                  setClaimAmount(allProfit.toString());
+                } else {
+                  setClaimAmount(value);
+                }
+              }}
+              description={t('balance')}
+            />
+            <Notification>{tNoLockedStaking('claimInfo')}</Notification>
+            <DurationSelect
+              options={periodList}
+              value={lockIndex}
+              placeholder={tNoLockedStaking('selectReleasePeriod')}
+              onChange={value => {
+                setRate(Number(periodList[value].rate.split('%')[0]));
+                setLockIndex(value);
+              }}
+            />
+            <ClaimSummary
+              data={{
+                amount: Number(claimAmount) * ((100 - rate) / 100),
+                taxRate: rate,
+                incomeTax: Number(claimAmount) * (rate / 100),
+              }}
+            />
 
-              {/* 领取按钮 */}
-              <Button
-                clipDirection='topRight-bottomLeft'
-                className='w-full'
-                variant={
-                  normalProfit < 0.0001 ||
-                  isDisabled ||
-                  (rebalseProfit > 0 && hotDataInfo.stakNum > 0) ||
-                  Number(claimAmount) === 0
-                    ? 'disabled'
-                    : 'primary'
-                }
-                disabled={
-                  normalProfit < 0.0001 ||
-                  isDisabled ||
-                  (rebalseProfit > 0 && hotDataInfo.stakNum > 0) ||
-                  Number(claimAmount) === 0
-                }
-                onClick={claimInterest}
-              >
-                {t('claimButton')}
-              </Button>
-            </CardContent>
+            {/* 领取按钮 */}
+            <Button
+              clipDirection='topRight-bottomLeft'
+              className='w-full'
+              variant={
+                normalProfit < 0.0001 ||
+                isDisabled ||
+                (rebalseProfit > 0 && hotDataInfo.stakNum > 0) ||
+                Number(claimAmount) === 0
+                  ? 'disabled'
+                  : 'primary'
+              }
+              disabled={
+                normalProfit < 0.0001 ||
+                isDisabled ||
+                (rebalseProfit > 0 && hotDataInfo.stakNum > 0) ||
+                Number(claimAmount) === 0
+              }
+              onClick={claimInterest}
+            >
+              {t('claimButton')}
+            </Button>
           </Card>
         </div>
 

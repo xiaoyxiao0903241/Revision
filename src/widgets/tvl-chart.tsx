@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useMemo } from 'react';
-import ReactECharts from 'echarts-for-react';
+import dayjs from 'dayjs';
 import type { EChartsOption } from 'echarts';
+import ReactECharts from 'echarts-for-react';
+import React, { useMemo } from 'react';
 import { useChart } from '~/hooks/useChart';
 
 // TVL图表组件
@@ -59,9 +60,9 @@ export const TVLChart: React.FC<{
         },
         axisLabel: {
           color: '#ffffff',
-          // formatter: (value: string) => {
-          //   return value.split("-")[1] // 只显示月份
-          // },
+          formatter: (value: string) => {
+            return dayjs(value).format('MM/DD');
+          },
         },
       },
       yAxis: {
@@ -132,7 +133,7 @@ export const TVLChart: React.FC<{
   }, [dataSource]);
 
   return (
-    <div className={`tvl-chart w-full h-full ${className}`}>
+    <div className={`tvl-chart w-full h-[200px] md:h-full  ${className}`}>
       <ReactECharts
         option={chartOption}
         ref={chartRef}

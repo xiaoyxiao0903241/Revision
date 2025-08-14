@@ -1,15 +1,15 @@
 import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
+import 'dayjs/locale/en';
+import 'dayjs/locale/zh';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+import { twMerge } from 'tailwind-merge';
 
 // 扩展 dayjs 以支持时区
 dayjs.extend(utc);
 dayjs.extend(timezone);
-import 'dayjs/locale/zh';
-import 'dayjs/locale/en';
-import relativeTime from 'dayjs/plugin/relativeTime';
 
 dayjs.extend(relativeTime);
 
@@ -313,6 +313,17 @@ export const formatterNum2 = new Intl.NumberFormat('en', {
   compactDisplay: 'short',
   maximumFractionDigits: 2,
 });
+
+// 数字格式化为 K/M 结尾
+export function formatKM(num: number): string {
+  if (num >= 1_000_000) {
+    return (num / 1_000_000).toFixed(2).replace(/\.00$/, '') + 'M';
+  }
+  if (num >= 1_000) {
+    return (num / 1_000).toFixed(2).replace(/\.00$/, '') + 'K';
+  }
+  return num.toString();
+}
 
 let scrollPosition = 0;
 

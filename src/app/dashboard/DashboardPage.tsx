@@ -131,7 +131,7 @@ export default function DashboardPage() {
       {/* 社区和众筹计划区域 */}
       <div className='nine-patch-frame alert relative w-full grid grid-cols-1 lg:grid-cols-2 gap-6'>
         {/* 社区 */}
-        <div className='p-6 flex flex-col gap-6 lg:border-r lg:border-secondary/20 lg:border-dashed'>
+        <div className='p-6 flex flex-col gap-6 border-b lg:border-r border-secondary/20 border-dashed'>
           <div className='flex items-center gap-2'>
             <Image
               src='/images/icon/community.png'

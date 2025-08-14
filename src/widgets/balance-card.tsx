@@ -1,10 +1,10 @@
 import { useTranslations } from 'next-intl';
-import { FC, useState, useEffect } from 'react';
+import Image from 'next/image';
+import { FC, useEffect, useState } from 'react';
 import { RadioGroup } from '~/components';
 import { useMock } from '~/hooks/useMock';
-import { useMockStore } from '~/store/mock';
 import { cn } from '~/lib/utils';
-import Image from 'next/image';
+import { useMockStore } from '~/store/mock';
 
 export const BalanceCard: FC<{
   balance: string;
@@ -35,7 +35,7 @@ export const BalanceCard: FC<{
     }
   }, [closePer]);
   return (
-    <div className='flex items-center justify-between p-4'>
+    <div className='flex flex-col md:flex-row items-start md:items-center justify-between p-4 gap-2'>
       <div className='text-sm text-gray-400 flex items-center gap-2'>
         <span>{t('myWallet')}</span>{' '}
         <span className='text-foreground'>
