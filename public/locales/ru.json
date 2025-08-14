@@ -283,7 +283,9 @@
     "no_lock_staking": "No-lock Staking",
     "locked_staking": "Locked Staking",
     "lp_bonds": "LP Bonds",
-    "treasury_bonds": "Treasury Bonds"
+    "treasury_bonds": "Treasury Bonds",
+    "backingPrice": "Backing Price",
+    "Premium": "Premium"
   },
   "coolingPool": {
     "title": "Cooling Pool",

@@ -10,7 +10,7 @@ import { dashMess } from '~/services/auth/dashboard';
 import { homeBaseData } from '~/services/auth/home';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
-import { getBalanceToken } from '~/wallet/lib/web3/stake';
+import { getBalanceToken, getTotalSupply } from '~/wallet/lib/web3/stake';
 import { OLY, staking } from '~/wallet/constants/tokens';
 import { useNolockStore } from '~/store/noLock';
 
@@ -28,27 +28,34 @@ export default function AnalyticsPage() {
   const { userAddress } = useUserAddress();
   const [depositList, setDepositList] = useState<Array<[string, number]>>([]);
   // const [priceList, setPriceList] = useState<smallChartData>({dates: [], data: []});
+  const { olyPrice, AllolyStakeNum } = useNolockStore();
   const [marketList, setMarketList] = useState<smallChartData>({
     dates: [],
     data: [],
   });
-  const [treasuryList, setTreasuryList] = useState<smallChartData>({
-    dates: [],
-    data: [],
-  });
+  // const [treasuryList, setTreasuryList] = useState<smallChartData>({
+  //   dates: [],
+  //   data: [],
+  // });
   const [lpBondMarketCapList, setLpBondMarketCapList] =
     useState<smallChartData>({ dates: [], data: [] });
   const [supplyList, setSupplyList] = useState<smallChartData>({
     dates: [],
     data: [],
   });
+  const [backingPriceList, setBackingPriceList] = useState<smallChartData>({
+    dates: [],
+    data: [],
+  });
+  const [premiumList, setPremiumList] = useState<smallChartData>({
+    dates: [],
+    data: [],
+  });
   const [baseInfo, setBaseInfo] = useState({});
-
-  const { AllolyStakeNum } = useNolockStore();
 
   //质押列表
   const { data: dashMessInfo } = useQuery({
-    queryKey: ['dashMess', userAddress],
+    queryKey: ['analyticsDashMess', userAddress],
     queryFn: () =>
       dashMess(
         dayjs().subtract(1, 'y').format('YYYY-MM-DD'),
@@ -66,6 +73,8 @@ export default function AnalyticsPage() {
     refetchInterval: 20000,
   });
 
+  console.log(dashMessInfo, 'dashMessInfodashMessInfo');
+
   //获取全网锁定质押的的oly数量
   const { data: AllLockOlyStakeNum } = useQuery({
     queryKey: ['analyticsAllolyStakeNum', userAddress],
@@ -80,13 +89,33 @@ export default function AnalyticsPage() {
     refetchInterval: 600000,
   });
 
+  //oly的总量
+  const { data: totalOlyNum } = useQuery({
+    queryKey: ['analyticsTotalSupply', userAddress],
+    queryFn: async () => {
+      const response = await getTotalSupply({
+        TOKEN_ADDRESSES: OLY,
+        decimal: 9,
+      });
+      return response || null;
+    },
+  });
+
   useEffect(() => {
     setBaseInfo({
       ...homeBaseInfo,
       AllolyStakeNum: AllolyStakeNum,
       AllLockOlyStakeNum: AllLockOlyStakeNum || 0,
+      tokenMarketCap: (totalOlyNum || 0) * olyPrice,
     });
-  }, [AllolyStakeNum, AllolyStakeNum, homeBaseInfo, AllLockOlyStakeNum]);
+  }, [
+    AllolyStakeNum,
+    AllolyStakeNum,
+    homeBaseInfo,
+    AllLockOlyStakeNum,
+    totalOlyNum,
+    olyPrice,
+  ]);
 
   const formatData = (data: DepositItem[]) => {
     const dateArr: string[] = [];
@@ -102,9 +131,11 @@ export default function AnalyticsPage() {
     const depositList = dashMessInfo?.depositList || [];
     // const priceList = dashMessInfo?.priceList || [];
     const marketList = dashMessInfo?.marketList || [];
-    const treasuryList = dashMessInfo?.treasuryList || [];
+    // const treasuryList = dashMessInfo?.treasuryList || [];
     const lpBondMarketCapList = dashMessInfo?.lpBondMarketCapList || [];
     const supplyList = dashMessInfo?.supplyList || [];
+    const backingPriceList = dashMessInfo?.backingPriceList || [];
+    const premiumList = dashMessInfo?.PremiumList || [];
     if (depositList?.length) {
       const formattedList = depositList.map(item => {
         return [
@@ -123,10 +154,10 @@ export default function AnalyticsPage() {
       const formattedList = formatData(marketList);
       setMarketList(formattedList);
     }
-    if (treasuryList?.length) {
-      const formattedList = formatData(treasuryList);
-      setTreasuryList(formattedList);
-    }
+    // if (treasuryList?.length) {
+    //   const formattedList = formatData(treasuryList);
+    //   setTreasuryList(formattedList);
+    // }
     if (lpBondMarketCapList?.length) {
       const formattedList = formatData(lpBondMarketCapList);
       setLpBondMarketCapList(formattedList);
@@ -135,6 +166,16 @@ export default function AnalyticsPage() {
     if (supplyList?.length) {
       const formattedList = formatData(supplyList);
       setSupplyList(formattedList);
+    }
+    // 托底价格
+    if (backingPriceList?.length) {
+      const formattedList = formatData(backingPriceList);
+      setBackingPriceList(formattedList);
+    }
+    // 托底价格
+    if (premiumList?.length) {
+      const formattedList = formatData(premiumList);
+      setPremiumList(formattedList);
     }
   }, [dashMessInfo]);
 
@@ -248,7 +289,7 @@ export default function AnalyticsPage() {
           </Card>
 
           {/* 国库??? ① */}
-          <Card>
+          {/* <Card>
             <div className='flex items-center gap-2 '>
               <h4 className='text-xl font-semibold text-white'>
                 {t('treasury_unknown')}
@@ -263,6 +304,44 @@ export default function AnalyticsPage() {
               className='h-[272px]'
               title={t('treasury_unknown')}
               dataSource={treasuryList || []}
+            />
+          </Card> */}
+
+          {/* 托底价格 */}
+          <Card>
+            <div className='flex items-center gap-2 '>
+              <h4 className='text-xl font-semibold text-white'>
+                {t('backingPrice')}
+              </h4>
+              <InfoPopover>
+                <p className='text-white font-mono text-sm break-all whitespace-normal'>
+                  分析页面说明
+                </p>
+              </InfoPopover>
+            </div>
+            <SmallChart
+              className='h-[272px]'
+              title={t('backingPrice')}
+              dataSource={backingPriceList || []}
+            />
+          </Card>
+
+          {/* 溢价指数 */}
+          <Card>
+            <div className='flex items-center gap-2 '>
+              <h4 className='text-xl font-semibold text-white'>
+                {t('Premium')}
+              </h4>
+              <InfoPopover>
+                <p className='text-white font-mono text-sm break-all whitespace-normal'>
+                  分析页面说明
+                </p>
+              </InfoPopover>
+            </div>
+            <SmallChart
+              className='h-[272px]'
+              title={t('Premium')}
+              dataSource={premiumList || []}
             />
           </Card>
         </div>

@@ -35,6 +35,7 @@ export const dashMess = async (startTime: string, endTime: string) => {
   });
 
   if (response.ok) {
+    // tokenTotalSupply 流通量
     const data = await response.json();
     const marketList: airItem[] = []; //市值
     const supplyList: airItem[] = []; //币的供应量值
@@ -43,6 +44,8 @@ export const dashMess = async (startTime: string, endTime: string) => {
     // let lpList = [];//lp
     const depositList: airItem[] = []; //质押
     const lpBondMarketCapList: airItem[] = []; //流动债券
+    const backingPriceList: airItem[] = []; // 托底价格
+    const PremiumList: airItem[] = []; // 托底价格
 
     if (data.data.records.length) {
       const list = data.data.records;
@@ -50,6 +53,11 @@ export const dashMess = async (startTime: string, endTime: string) => {
         const value = (
           Number(it.tokenTotalSupply) * Number(it.tokenPrice)
         ).toFixed(4);
+        // 托底价格
+        const backingPrice =
+          Number(it.liquidityBondMarketCap) / Number(it.tokenTotalSupply);
+        // 溢价指数
+        const Premium = backingPrice !== 0 ? Number(value) / backingPrice : 0;
         marketList.push({
           amount: value,
           week: getWeekday(it.createdAt),
@@ -89,8 +97,18 @@ export const dashMess = async (startTime: string, endTime: string) => {
           week: getWeekday(it.createdAt),
           createdAt: formatTimeToLocal(it.createdAt),
         });
+        backingPriceList.push({
+          amount: Number(backingPrice).toFixed(4),
+          week: getWeekday(it.createdAt),
+          createdAt: formatTimeToLocal(it.createdAt),
+        });
+        PremiumList.push({
+          amount: Number(Premium).toFixed(4),
+          week: getWeekday(it.createdAt),
+          createdAt: formatTimeToLocal(it.createdAt),
+        });
       });
-      console.log(priceList);
+
       return {
         marketList,
         supplyList,
@@ -98,6 +116,8 @@ export const dashMess = async (startTime: string, endTime: string) => {
         depositList,
         treasuryList,
         lpBondMarketCapList,
+        backingPriceList,
+        PremiumList,
       };
     }
     return null;
