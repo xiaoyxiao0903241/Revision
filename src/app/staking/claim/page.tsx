@@ -7,6 +7,7 @@ import { Abi, parseUnits } from 'viem';
 import { usePublicClient } from 'wagmi';
 import { Alert, Button, Card, Notification } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useContractError } from '~/hooks/useContractError';
 import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
 import { formatNumbedecimalScale } from '~/lib/utils';
 import { useNolockStore } from '~/store/noLock';
@@ -143,7 +144,7 @@ export default function ClaimPage() {
             <AmountCard
               data={{
                 value: claimAmount,
-                desc: Number(claimAmount) * olyPrice,
+                desc: Number(claimAmount || 0) * olyPrice,
                 balance: normalProfit
                   ? Number(formatNumbedecimalScale(normalProfit, 2))
                   : 0,

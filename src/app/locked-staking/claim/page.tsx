@@ -328,8 +328,8 @@ export default function ClaimPage() {
                     : boostAmount,
                 desc:
                   selectedClaimType === 'rebaseReward'
-                    ? Number(curStakeItem?.blockReward) * olyPrice
-                    : Number(curStakeItem?.interest) * olyPrice,
+                    ? Number(curStakeItem?.blockReward || 0) * olyPrice
+                    : Number(curStakeItem?.interest || 0) * olyPrice,
                 balance:
                   selectedClaimType === 'rebaseReward'
                     ? curStakeItem
