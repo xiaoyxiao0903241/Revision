@@ -194,7 +194,7 @@ export default function SwapPage() {
         hash,
       });
       if (result.status === 'success') {
-        toast.success('');
+        toast.success(t2('toast.approval_success'));
         // 重新获取 token 数据以更新授权状态
         const data = await fetchTokenData({
           address: userAddress,
