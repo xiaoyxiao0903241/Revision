@@ -7,6 +7,7 @@ import { Abi, parseUnits } from 'viem';
 import { usePublicClient } from 'wagmi';
 import { Alert, Button, Card, Notification } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useContractError } from '~/hooks/useContractError';
 import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
 import { formatNumbedecimalScale } from '~/lib/utils';
 import { useNolockStore } from '~/store/noLock';
@@ -41,6 +42,7 @@ export default function ClaimPage() {
   const [periodList, setPeriodList] = useState<periodItem[]>([]);
   // const [curPeriod, setCurPeriod] = useState<periodItem | null>(null);
   const [rate, setRate] = useState(0);
+  const { handleContractError, isContractError } = useContractError();
 
   const { data: list } = useQuery({
     queryKey: ['claimPeriod'],
@@ -85,10 +87,15 @@ export default function ClaimPage() {
         });
       }
     } catch (error: unknown) {
-      console.log(error);
-      toast.error('error', {
-        id: toastId,
-      });
+      if (isContractError(error as Error)) {
+        const errorMessage = handleContractError(error as Error);
+        toast.error(errorMessage);
+      } else {
+        toast.error('error', {
+          id: toastId,
+        });
+        console.log(error);
+      }
     } finally {
       // toast.dismiss(toastId)
       setIsDisabled(false);
@@ -137,7 +144,7 @@ export default function ClaimPage() {
             <AmountCard
               data={{
                 value: claimAmount,
-                desc: Number(claimAmount) * olyPrice,
+                desc: Number(claimAmount || 0) * olyPrice,
                 balance: normalProfit
                   ? Number(formatNumbedecimalScale(normalProfit, 2))
                   : 0,

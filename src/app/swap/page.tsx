@@ -205,12 +205,12 @@ export default function SwapPage() {
         setAllowance(data.allowance);
       }
     } catch (error: unknown) {
-      console.error('Approval failed:', error);
-      const err = error as { message?: string };
-      if (err?.message?.includes('User rejected')) {
-        toast.error(t2('toast.user_rejected_approval'));
+      if (isContractError(error as Error)) {
+        const errorMessage = handleContractError(error as Error);
+        toast.error(errorMessage);
       } else {
         toast.error(t2('toast.approval_failed'));
+        console.error('Approval failed:', error);
       }
     } finally {
       setIsApproving(false);
@@ -292,7 +292,6 @@ export default function SwapPage() {
         console.error('Transaction failed:', txReceipt);
       }
     } catch (error: unknown) {
-      console.log('error', error);
       if (isContractError(error as Error)) {
         const errorMessage = handleContractError(error as Error);
         toast.error(errorMessage, { id: toastId });
@@ -302,23 +301,28 @@ export default function SwapPage() {
           toast.error(t2('toast.user_rejected'), {
             id: toastId,
           });
-        } else if (err?.message?.includes('insufficient')) {
-          toast.error(t2('toast.insufficient_balance'), {
-            id: toastId,
-          });
-        } else if (err?.message?.includes('slippage')) {
-          toast.error(t2('toast.slippage_too_high'), {
-            id: toastId,
-          });
-        } else if (err?.message?.includes('expired')) {
-          toast.error(t2('toast.transaction_expired'), {
-            id: toastId,
-          });
         } else {
+          console.error(error);
           toast.error(t2('toast.swap_error'), {
             id: toastId,
           });
         }
+        // } else if (err?.message?.includes('insufficient')) {
+        //   toast.error(t2('toast.insufficient_balance'), {
+        //     id: toastId,
+        //   });
+        // } else if (err?.message?.includes('slippage')) {
+        //   toast.error(t2('toast.slippage_too_high'), {
+        //     id: toastId,
+        //   });
+        // } else if (err?.message?.includes('expired')) {
+        //   toast.error(t2('toast.transaction_expired'), {
+        //     id: toastId,
+        //   });
+        // } else {
+        //   toast.error(t2('toast.swap_error'), {
+        //     id: toastId,
+        //   });
       }
     } finally {
       setIsSwapping(false);

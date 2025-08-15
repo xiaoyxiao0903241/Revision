@@ -333,7 +333,7 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
 
     return (
       <Card>
-        <CardContent className='space-y-6'>
+        <CardContent className='space-y-6 px-0 md:px-6'>
           {/* 标签页 */}
           <Tabs data={tabData} activeIndex={activeTab} onChange={setActiveTab}>
             <div className='flex-1 flex flex-col justify-center items-end'>

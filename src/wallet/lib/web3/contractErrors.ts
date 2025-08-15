@@ -10,7 +10,7 @@ export const errorMap: Record<string, string> = {
   'Ownable: new owner is the zero address': 'ownable.zero_address',
   'Ownable: must be new owner to pull': 'ownable.must_be_new_owner',
   'Caller is not authorized to stake bonds': 'staking.unauthorized_bonds',
-  'Caller is not authorized to stake': 'staking.unauthorized',
+  'Caller is not authorized to stake': 'fee.unauthorized',
   'Amount exceeds': 'staking.amount_exceeds',
   'Ownable: caller is not the owner': 'ownable.not_owner',
 
@@ -186,6 +186,13 @@ export const errorMap: Record<string, string> = {
   'Invalid pair': 'calculator.invalid_pair',
   // UserRejected
   'User rejected': 'user_rejected',
+  'already joined': 'referral.already_joined',
+  'invalid referrer': 'invalid_referrer',
+  AccessControlBadConfirmation: 'user_AccessControlBadConfirmation',
+  AccessControlUnauthorizedAccount: 'user_AccessControlUnauthorizedAccount',
+  expired: 'toast.transaction_expired',
+  slippage: 'toast.slippage_too_high',
+  insufficient: 'toast.insufficient_balance',
 };
 
 /**

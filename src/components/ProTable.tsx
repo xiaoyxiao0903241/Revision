@@ -317,7 +317,7 @@ const ProTable = forwardRef(
                 </tr>
               );
             })}
-            {tableData.length !== 0 && (
+            {tableData.length === 0 && (
               <tr className='w-full p-6'>
                 <td
                   colSpan={5}

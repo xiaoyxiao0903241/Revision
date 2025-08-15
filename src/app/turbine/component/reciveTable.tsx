@@ -8,6 +8,7 @@ import { Abi } from 'viem';
 import { usePublicClient } from 'wagmi';
 import { Card } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useContractError } from '~/hooks/useContractError';
 import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
 import { getCurrentBlock } from '~/lib/multicall';
 import { formatNumbedecimalScale } from '~/lib/utils';
@@ -38,6 +39,7 @@ export const ReciveTable = ({ unitPrice }: Props) => {
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
   const queryClient = useQueryClient();
+  const { handleContractError, isContractError } = useContractError();
 
   //当前块的高度
   const { data: currentBlock } = useQuery({
@@ -113,10 +115,15 @@ export const ReciveTable = ({ unitPrice }: Props) => {
         });
       }
     } catch (error: unknown) {
-      console.log(error);
-      toast.error('error', {
-        id: toastId,
-      });
+      if (isContractError(error as Error)) {
+        const errorMessage = handleContractError(error as Error);
+        toast.error(errorMessage);
+      } else {
+        toast.error('error', {
+          id: toastId,
+        });
+        console.log(error);
+      }
     } finally {
       setCurrent(10000);
       setIsDisabled(false);

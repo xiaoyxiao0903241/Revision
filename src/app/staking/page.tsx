@@ -18,6 +18,7 @@ import { formatNumbedecimalScale } from '~/lib/utils';
 import { useNolockStore } from '~/store/noLock';
 import DemandStakingAbi from '~/wallet/constants/DemandStakingAbi.json';
 import { getInviteInfo } from '~/wallet/lib/web3/invite';
+import { useContractError } from '~/hooks/useContractError';
 
 export default function StakingPage() {
   const t = useTranslations('staking');
@@ -35,6 +36,7 @@ export default function StakingPage() {
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const [olyToUsdt, setolyToUsdt] = useState('0');
+  const { handleContractError, isContractError } = useContractError();
 
   const {
     olyBalance,
@@ -87,8 +89,13 @@ export default function StakingPage() {
         await refetchAllowanceOly();
       }
     } catch (error: unknown) {
-      console.log(error);
-      toast.error('error');
+      if (isContractError(error as Error)) {
+        const errorMessage = handleContractError(error as Error);
+        toast.error(errorMessage);
+      } else {
+        toast.error('error');
+        console.log(error);
+      }
     } finally {
       setIsLoading(false);
       setIsDisabled(false);
@@ -152,10 +159,15 @@ export default function StakingPage() {
         });
       }
     } catch (error: unknown) {
-      console.log(error);
-      toast.error('error', {
-        id: toastId,
-      });
+      if (isContractError(error as Error)) {
+        const errorMessage = handleContractError(error as Error);
+        toast.error(errorMessage);
+      } else {
+        toast.error('error', {
+          id: toastId,
+        });
+        console.log(error);
+      }
     } finally {
       setIsLoading(false);
       setIsDisabled(false);

@@ -145,6 +145,7 @@
     "claimable": "可领取",
     "use_max": "最大",
     "max_bonus_info": "您能够获得的最大奖金数量是您个人持仓数量的6倍。增加您的个人持仓可以提高您能够获得的总奖金的上限。当前<highlight>{rate}</highlight>。",
+    "max_bonus_info_max": "您的奖金已达到最大领取数。增加您的个人持仓可以提高您能够获得的总奖金的上限。",
     "super_bonus_title": "平超奖",
     "referral_bonus_title": "推荐奖",
     "select_release_period": "选择释放期限",
@@ -547,17 +548,160 @@
       },
       "matrix": {
         "already_actived": "已啟用",
-        "invalid_address": "無效的地址",
         "invalid_initialization": "無效的初始化",
         "invalid_length": "無效的長度",
         "not_activated": "未啟用",
         "not_initializing": "未初始化",
         "ownable_invalid_owner": "無效的擁有者地址",
-        "ownable_unauthorized_account": "未授權的帳戶操作"
+        "ownable_unauthorized_account": "未授權的帳戶操作",
+        "empty_list": "地址列表为空",
+        "first_zero": "第一个地址不能为零地址",
+        "zero_address": "不允许零地址",
+        "already_active": "已经激活",
+        "referrer_inactive": "推荐人未激活",
+        "invalid_address": "无效地址",
+        "not_active": "未激活",
+        "index_overflow": "起始索引溢出"
       },
-      "user_rejected": "用戶取消了交易"
+      "user_rejected": "用戶取消了交易",
+      "staking": {
+        "amount_exceeds": "质押金额超过限制",
+        "unauthorized_bonds": "调用者无权质押债券"
+      },
+      "turbine": {
+        "owner_only": "只有所有者可以执行此操作",
+        "no_claims": "没有可领取的奖励",
+        "invalid_claim": "无效的领取请求",
+        "no_silence": "没有可领取的奖励",
+        "silent_time": "冷却池中没有可领取的奖励",
+        "insufficient_balance": "涡轮余额不足",
+        "invalid_demand_staking": "无效的需求质押地址"
+      },
+      "treasury": {
+        "addition_overflow": "加法溢出",
+        "multiplication_overflow": "乘法溢出",
+        "non_contract": "调用非合约地址（国库）",
+        "insufficient_balance": "余额不足",
+        "not_approved": "未批准",
+        "not_accepted": "未接受",
+        "debt_limit": "超出债务限制",
+        "no_debt": "无未偿债务",
+        "outstanding_debt": "存在未偿债务",
+        "no_collateral": "无锁定抵押品",
+        "insufficient_reserves": "储备金不足",
+        "must_queue": "必须排队",
+        "queue_not_expired": "队列未到期"
+      },
+      "lp": {
+        "transfer_failed": "转账失败",
+        "transfer_from_failed": "从地址转账失败",
+        "approve_failed": "授权失败",
+        "zero_ohm": "OHM地址不能为零",
+        "zero_router": "路由地址不能为零",
+        "zero_bond": "债券合约地址不能为零",
+        "slippage": "滑点不能超过100%",
+        "bond_not_set": "债券合约未设置",
+        "invalid_depositor": "无效的存款人地址",
+        "zero_amount": "金额必须大于0",
+        "no_pair": "交易对不存在",
+        "no_lp_tokens": "未收到LP代币",
+        "lp_approval_failed": "LP授权失败",
+        "bond_deposit_failed": "债券存款失败",
+        "atomic_failed": "原子操作失败",
+        "zero_amount_in": "输入金额必须大于0",
+        "insufficient_allowance": "授权额度不足",
+        "swap_failed": "兑换失败：未收到代币",
+        "approve_token_b_failed": "代币B授权失败",
+        "approve_usdt_failed": "USDT授权失败"
+      },
+      "distributor": {
+        "erc20_failed": "ERC20操作失败",
+        "insufficient_balance": "余额不足",
+        "send_failed": "发送价值失败",
+        "call_balance": "调用余额不足",
+        "non_contract": "调用非合约地址",
+        "low_level_failed": "低级调用失败"
+      },
+      "dao": {
+        "already_exists": "已存在",
+        "claim_completed": "领取已完成",
+        "insufficient_balance": "DAO余额不足"
+      },
+      "demand": {
+        "invalid_amount": "无效的金额",
+        "access_control_bad_confirmation": "访问控制确认失败",
+        "access_control_unauthorized_account": "未授权账户",
+        "invalid_initialization": "初始化无效",
+        "not_initializing": "未初始化",
+        "safe_erc20_failed_operation": "ERC20操作失败"
+      },
+      "yield": {
+        "invalid_index": "无效的索引",
+        "invalid_amount": "无效的金额",
+        "invalid_address": "无效的地址"
+      },
+      "reward": {
+        "invalid_signer": "无效的签名者",
+        "invalid_data": "无效的数据"
+      },
+      "sohm": {
+        "invalid_signature": "无效的签名",
+        "call_failed": "低级调用失败",
+        "call_with_value_failed": "带值的低级调用失败",
+        "static_call_failed": "低级静态调用失败",
+        "delegate_call_failed": "低级委托调用失败"
+      },
+      "bond": {
+        "already_initialized": "已初始化",
+        "invalid_ohm": "无效的OHM地址",
+        "invalid_sohm": "无效的sOHM地址",
+        "invalid_principle": "无效的本金地址",
+        "invalid_treasury": "无效的国库地址",
+        "invalid_dao": "无效的DAO地址",
+        "invalid_owner": "无效的所有者地址",
+        "not_initialized": "未初始化",
+        "init_from_zero": "债券必须从0开始初始化",
+        "vesting_time": "锁定期必须超过36小时",
+        "payout_limit": "支付金额不能超过5%",
+        "dao_fee": "DAO费用不能超过支付金额",
+        "user_inactive": "用户未激活",
+        "max_capacity": "达到最大容量",
+        "too_small": "债券金额过小",
+        "too_large": "债券金额过大",
+        "invalid_index": "无效的债券索引",
+        "not_exist": "债券不存在",
+        "no_stake": "无活跃质押",
+        "stake_mismatch": "质押索引不匹配",
+        "balance_exceeded": "金额超出余额",
+        "owner_only": "只有所有者可以领取",
+        "no_profit": "无利润可领取",
+        "profit_exceeded": "利润超出金额",
+        "invalid_locker": "无效的收益锁地址"
+      },
+      "long": {
+        "invalid_index": "无效的质押索引",
+        "stake_failed": "质押失败",
+        "invalid_amount": "无效的金额"
+      },
+      "ohm": {
+        "invalid_fee_receiver": "无效的费用接收者",
+        "invalid_fee_ratio": "无效的买入费用比率"
+      },
+      "calculator": {
+        "transfer_from_failed": "从地址转账失败",
+        "transfer_failed": "转账失败",
+        "approve_failed": "授权失败",
+        "eth_transfer_failed": "ETH转账失败",
+        "invalid_pair": "无效的交易对"
+      },
+      "referral": {
+        "already_joined": "已经加入推荐计划"
+      },
+      "invalid_referrer": "无效的推荐人"
     },
-    "invite_not_active": "您的賬戶需要綁定推薦人地址"
+    "invite_not_active": "您的賬戶需要綁定推薦人地址",
+    "user_AccessControlBadConfirmation": "交易确认错误",
+    "user_AccessControlUnauthorizedAccount": "未授权帐户"
   },
   "exchange": {
     "toast": {

@@ -21,6 +21,7 @@ import debounce from 'lodash/debounce';
 import { toast } from 'sonner';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ReciveTable } from './component/reciveTable';
+import { useContractError } from '~/hooks/useContractError';
 
 export default function TurbinePage() {
   const t = useTranslations('turbine');
@@ -40,6 +41,7 @@ export default function TurbinePage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { writeContractAsync } = useWriteContract();
   const queryClient = useQueryClient();
+  const { handleContractError, isContractError } = useContractError();
 
   //USDT余额
   const { data: balance, refetch: refetchBalance } = useQuery({
@@ -134,10 +136,15 @@ export default function TurbinePage() {
         });
       }
     } catch (error: unknown) {
-      console.log(error);
-      toast.error('error', {
-        id: toastId,
-      });
+      if (isContractError(error as Error)) {
+        const errorMessage = handleContractError(error as Error);
+        toast.error(errorMessage);
+      } else {
+        toast.error('error', {
+          id: toastId,
+        });
+        console.log(error);
+      }
     } finally {
       setIsLoading(false);
       setIsDisabled(false);
@@ -166,8 +173,13 @@ export default function TurbinePage() {
           });
         }
       } catch (error: unknown) {
-        console.log(error);
-        toast.error('error');
+        if (isContractError(error as Error)) {
+          const errorMessage = handleContractError(error as Error);
+          toast.error(errorMessage);
+        } else {
+          toast.error('error');
+          console.log(error);
+        }
       } finally {
         setIsLoading(false);
         setIsDisabled(false);
