@@ -176,4 +176,4 @@ export const TOKEN_ADDRESSES = {
 } as const;
 
 export const chainId = bscTestnet.id;
-export const blocks = 1.5;
+export const blocks = 0.75;

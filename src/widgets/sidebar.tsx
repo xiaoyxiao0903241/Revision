@@ -167,6 +167,8 @@ export const SidebarContent = () => {
     {} as Record<string, NavigationItem[]>
   );
 
+  console.log(groupedItems, 'groupedItems111');
+
   return (
     <>
       {/* Main Navigation */}
