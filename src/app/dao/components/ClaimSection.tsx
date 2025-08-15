@@ -93,7 +93,6 @@ export const ClaimSection = ({
   const { handleContractError, isContractError } = useContractError();
 
   const { time, lastStakeTimestamp } = useNolockStore();
-
   useEffect(() => {
     setCurrentRate(Number(currentPeriodInfo?.rate?.split('%')[0]));
   }, [currentPeriodInfo]);
@@ -226,12 +225,28 @@ export const ClaimSection = ({
         </div>
       </View>
       {/* 信息提示 */}
-      <Notification>
-        {t.rich('max_bonus_info', {
-          rate: `x${rewardData?.ratio || 0}`,
-          highlight: chunks => <span className='text-white'>{chunks}</span>,
-        })}
-      </Notification>
+      {Number(rewardData?.ratio || 0) > 0 ? (
+        Number(rewardData?.ratio || 0) < 6 ? (
+          <Notification>
+            {t.rich('max_bonus_info', {
+              rate: `x${rewardData?.ratio || 0}`,
+              highlight: chunks => <span className='text-white'>{chunks}</span>,
+            })}
+          </Notification>
+        ) : (
+          <Notification>{t('max_bonus_info_max')}</Notification>
+        )
+      ) : (
+        <></>
+      )}
+      {Number(rewardData?.ratio || 0) > 0 && (
+        <Notification>
+          {t.rich('max_bonus_info', {
+            rate: `x${rewardData?.ratio || 0}`,
+            highlight: chunks => <span className='text-white'>{chunks}</span>,
+          })}
+        </Notification>
+      )}
 
       {/* 释放期限选择 */}
       <Select

@@ -67,7 +67,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
         <span className='text-white text-xl font-semibold'>{t('rewards')}</span>
       </div>
       {/* 顶部统计 */}
-      <div className='grid grid-cols-2 gap-6 w-full xl:w-1/2'>
+      {/* <div className='grid grid-cols-2 gap-6 w-full xl:w-1/2'>
         <Statistics
           title={t('totalRewardsAmount')}
           value={`${formatNumbedecimalScale(safeMyMessInfo?.totalBonus || 0, 2)} OLY`}
@@ -78,7 +78,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
           value={`${formatNumbedecimalScale(Number(safeMyMessInfo?.maxBonus || 0), 2)} OLY`}
           size='md'
         />
-      </div>
+      </div> */}
 
       {/* 奖金卡片网格 */}
       <div className='lg:grid hidden grid-cols-4'>
@@ -147,7 +147,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
 
         {/* 已经释放的奖金数量 */}
         <div className='row-span-2 relative'>
-          <div className='px-6 w-full h-full bg-[#1E204C] py-7 flex gap-4 items-center justify-between'>
+          <div className='px-6 w-full h-full bg-[#1E204C] py-7 flex gap-4 flex-col items-start justify-center'>
             <Statistics
               title={t('releasedRewardsAmount')}
               value={
@@ -204,7 +204,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
 
         {/* 已解锁的奖金数量 */}
         <div className='relative'>
-          <div className='px-6 w-full h-full bg-[#1E204C] py-7 flex gap-4 items-center justify-between'>
+          <div className='px-6 w-full h-full bg-[#1E204C] py-7 flex gap-4 flex-col items-start justify-center'>
             <div>
               <div className='text-foreground/50 text-xs'>
                 {t('unlockedRewardsAmount')}

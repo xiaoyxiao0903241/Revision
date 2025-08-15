@@ -119,6 +119,7 @@
     "claimable": "Claimable",
     "use_max": "Use MAX",
     "max_bonus_info": "The maximum bonus you can receive is 6 times your personal holding amount. Increasing your personal holding can increase the upper limit of the total bonus you can receive. Currently <highlight>{rate}</highlight>.",
+    "max_bonus_info_max": "Your bonus has reached the maximum claim amount. Increasing your personal holdings can increase the upper limit of the total bonus you can receive.",
     "super_bonus_title": "Flat Level Over-level Bonus",
     "referral_bonus_title": "Referral Bonus",
     "select_release_period": "Select Release Period",

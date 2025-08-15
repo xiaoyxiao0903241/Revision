@@ -145,6 +145,7 @@
     "claimable": "可领取",
     "use_max": "最大",
     "max_bonus_info": "您能够获得的最大奖金数量是您个人持仓数量的6倍。增加您的个人持仓可以提高您能够获得的总奖金的上限。当前<highlight>{rate}</highlight>。",
+    "max_bonus_info_max": "您的奖金已达到最大领取数。增加您的个人持仓可以提高您能够获得的总奖金的上限。",
     "super_bonus_title": "平超奖",
     "referral_bonus_title": "推荐奖",
     "select_release_period": "选择释放期限",

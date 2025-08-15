@@ -201,12 +201,12 @@ const InviteJoin = () => {
                 </span>
               </div>
               <div className='flex flex-col flex-1'>
-                <span className='text-xs text-foreground/50'>
+                {/* <span className='text-xs text-foreground/50'>
                   {t('communityRewards')}
                 </span>
                 <span className='text-white font-mono text-lg'>
                   {formatte2Num.format(InviterAmountInfo?.totalBonus || 0)} OLY
-                </span>
+                </span> */}
               </div>
             </div>
 
