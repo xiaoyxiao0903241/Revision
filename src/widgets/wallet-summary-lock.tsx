@@ -234,7 +234,8 @@ export const WalletSummaryLock: FC = () => {
         <List.Item>
           <List.Label>{t('stakers')}</List.Label>
           <List.Value>
-            {stakerAmount?.lockUniqueCount + stakerAmount?.nodeUniqueCount || 0}
+            {(stakerAmount?.lockUniqueCount || 0) +
+              (stakerAmount?.nodeUniqueCount || 0)}
           </List.Value>
         </List.Item>
         <List.Item>
