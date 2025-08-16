@@ -22,7 +22,7 @@ import { useUserAddress } from '~/contexts/UserAddressContext';
 import { useContractError } from '~/hooks/useContractError';
 import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
 import { usePeriods } from '~/hooks/userPeriod';
-import { formatte2Num } from '~/lib/utils';
+import { formatNumbedecimalScale } from '~/lib/utils';
 import { getClaimReward, rewardClaimed } from '~/services/auth/dao';
 import { useNolockStore } from '~/store/noLock';
 import RewardPoolV7Abi from '~/wallet/constants/RewardPoolV7.json';
@@ -101,8 +101,7 @@ export const ClaimSection = ({
   useEffect(() => {
     if (nextBlock && currentBlock) {
       const time = nextBlock - currentBlock < 0 ? 0 : nextBlock - currentBlock;
-      const tenMinutesInBlocks = 600;
-      setCutDownTime(time + tenMinutesInBlocks);
+      setCutDownTime(time);
     }
   }, [currentBlock, nextBlock]);
 
@@ -199,10 +198,13 @@ export const ClaimSection = ({
   return (
     <Card>
       {/* 倒计时 */}
-      <div className='flex items-center text-sm gap-2'>
-        <p className='text-foreground/50'>{t('next_payout_in')}:</p>
-        <CountdownDisplay blocks={BigInt(cutDownTime)} isShowDay={false} />
-      </div>
+
+      {type !== 'service' && (
+        <div className='flex items-center text-sm gap-2'>
+          <p className='text-foreground/50'>{t('next_payout_in')}:</p>
+          <CountdownDisplay blocks={BigInt(cutDownTime)} isShowDay={false} />
+        </div>
+      )}
       <View className='bg-[#22285E] px-4' clipDirection='topRight-bottomLeft'>
         <div className='flex items-center justify-between  py-4'>
           <div>
@@ -210,7 +212,7 @@ export const ClaimSection = ({
               {t('amount')}
             </label>
             <div className='flex gap-2 text-white font-mono text-3xl'>
-              {formatte2Num.format(rewardData?.unclaimedAmount || 0)}
+              {formatNumbedecimalScale(rewardData?.unclaimedAmount || 0, 6)}
             </div>
           </div>
           <div className='flex items-center gap-1'>
@@ -233,14 +235,6 @@ export const ClaimSection = ({
         )
       ) : (
         <></>
-      )}
-      {Number(rewardData?.ratio || 0) > 0 && (
-        <Notification>
-          {t.rich('max_bonus_info', {
-            rate: `x${rewardData?.ratio || 0}`,
-            highlight: chunks => <span className='text-white'>{chunks}</span>,
-          })}
-        </Notification>
       )}
 
       {/* 释放期限选择 */}

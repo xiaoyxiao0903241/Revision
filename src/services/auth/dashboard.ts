@@ -1,7 +1,7 @@
 import { publicFetch, authFetch } from '../index';
 import { formatTimeToLocal, getWeekday } from '~/lib/utils';
 
-interface responseItem {
+export interface responseItem {
   amount: number;
   createdAt: string;
   week: string;
@@ -14,12 +14,30 @@ interface responseItem {
   lpBondMarketCap: number;
   liquidityBondMarketCap: number;
   stableBondMarketCap: number;
+  TVL: number;
 }
 export interface airItem {
   amount: string;
   week: string;
   createdAt: string;
 }
+
+export const responseItemDefault: responseItem = {
+  amount: 0,
+  createdAt: '',
+  week: '',
+  tokenTotalSupply: 0,
+  tokenPrice: 0,
+  treasuryMarketCap: 0,
+  lpMarketCap: 0,
+  longStakedAmount: 0,
+  flexibleStakedAmount: 0,
+  lpBondMarketCap: 0,
+  liquidityBondMarketCap: 0,
+  stableBondMarketCap: 0,
+  TVL: 0,
+};
+
 //仪表盘
 export const dashMess = async (startTime: string, endTime: string) => {
   const parmas = {
@@ -49,27 +67,52 @@ export const dashMess = async (startTime: string, endTime: string) => {
 
     if (data.data.records.length) {
       const list = data.data.records;
+      // 过滤出坐今天昨天的数据
+      let todayObj: responseItem = responseItemDefault;
+      let yesterdayObj: responseItem = responseItemDefault;
+      const today = new Date();
+      const yesterday = new Date();
+      yesterday.setDate(today.getDate() - 1);
+
+      const todayStr = today.toISOString().split('T')[0];
+      const yesterdayStr = yesterday.toISOString().split('T')[0];
+
       list.map((it: responseItem) => {
         const value = (
           Number(it.tokenTotalSupply) * Number(it.tokenPrice)
-        ).toFixed(4);
+        ).toFixed(6);
         // 托底价格
         const backingPrice =
           Number(it.liquidityBondMarketCap) / Number(it.tokenTotalSupply);
         // 溢价指数
         const Premium = backingPrice !== 0 ? Number(value) / backingPrice : 0;
+        const depositNum = (
+          Number(it.longStakedAmount) + Number(it.flexibleStakedAmount)
+        ).toFixed(6);
+        const itemDateStr = it.createdAt.split(' ')[0]; // YYYY-MM-DD
+        const item = {
+          ...it,
+          TVL: Number(depositNum),
+        };
+
+        if (itemDateStr === todayStr) {
+          todayObj = item;
+        } else if (itemDateStr === yesterdayStr) {
+          yesterdayObj = item;
+        }
+
         marketList.push({
           amount: value,
           week: getWeekday(it.createdAt),
           createdAt: formatTimeToLocal(it.createdAt),
         });
         supplyList.push({
-          amount: Number(it.tokenTotalSupply).toFixed(4),
+          amount: Number(it.tokenTotalSupply).toFixed(6),
           week: getWeekday(it.createdAt),
           createdAt: formatTimeToLocal(it.createdAt),
         });
         priceList.push({
-          amount: Number(it.tokenPrice).toFixed(4),
+          amount: Number(it.tokenPrice).toFixed(6),
           week: getWeekday(it.createdAt),
           createdAt: formatTimeToLocal(it.createdAt),
         });
@@ -79,13 +122,11 @@ export const dashMess = async (startTime: string, endTime: string) => {
         //     }
         // );
         treasuryList.push({
-          amount: Number(it.stableBondMarketCap).toFixed(4),
+          amount: Number(it.stableBondMarketCap).toFixed(6),
           week: getWeekday(it.createdAt),
           createdAt: formatTimeToLocal(it.createdAt),
         });
-        const depositNum = (
-          Number(it.longStakedAmount) + Number(it.flexibleStakedAmount)
-        ).toFixed(4);
+
         depositList.push({
           amount: depositNum,
           week: getWeekday(it.createdAt),
@@ -93,17 +134,17 @@ export const dashMess = async (startTime: string, endTime: string) => {
         });
 
         lpBondMarketCapList.push({
-          amount: Number(it.liquidityBondMarketCap).toFixed(4),
+          amount: Number(it.liquidityBondMarketCap).toFixed(6),
           week: getWeekday(it.createdAt),
           createdAt: formatTimeToLocal(it.createdAt),
         });
         backingPriceList.push({
-          amount: Number(backingPrice).toFixed(4),
+          amount: Number(backingPrice).toFixed(6),
           week: getWeekday(it.createdAt),
           createdAt: formatTimeToLocal(it.createdAt),
         });
         PremiumList.push({
-          amount: Number(Premium).toFixed(4),
+          amount: Number(Premium).toFixed(6),
           week: getWeekday(it.createdAt),
           createdAt: formatTimeToLocal(it.createdAt),
         });
@@ -118,6 +159,8 @@ export const dashMess = async (startTime: string, endTime: string) => {
         lpBondMarketCapList,
         backingPriceList,
         PremiumList,
+        todayObj,
+        yesterdayObj,
       };
     }
     return null;

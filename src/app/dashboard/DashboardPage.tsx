@@ -9,10 +9,11 @@ import { useUserAddress } from '~/contexts/UserAddressContext';
 import { dayjs, formatNumbedecimalScale } from '~/lib/utils';
 import { myMess } from '~/services/auth/dashboard';
 import { nodeSummary } from '~/services/auth/node';
-import { getSaleOverview } from '~/wallet/lib/web3/node';
+// import { getSaleOverview } from '~/wallet/lib/web3/node';
 import Bonus from './components/bonus';
 import Market from './components/market';
 import Stake from './components/stake';
+import { useNolockStore } from '~/store/noLock';
 
 export type myMessDataType = {
   bondRewardAmount: string;
@@ -48,12 +49,12 @@ const defaultMyMessData: myMessDataType = {
 export default function DashboardPage() {
   const t = useTranslations('dashboard');
   const t2 = useTranslations('tooltip');
-
+  const { olyPrice } = useNolockStore();
   const [myMessInfo, setMyMessInfo] = useSafeState<myMessDataType>();
-  const [saleAmount, setSaleAmount] = useState<string>('0.00');
+  const [saleAmount, setSaleAmount] = useState<number>(0);
   const [nodeAmount, setNodeAmount] = useState<number>(0);
   const [startTime] = useState<string>(
-    dayjs().subtract(1, 'month').format('YYYY-MM-DD')
+    dayjs().subtract(1, 'year').format('YYYY-MM-DD')
   );
   const [endTime] = useState<string>(dayjs().format('YYYY-MM-DD'));
   const { userAddress } = useUserAddress();
@@ -69,12 +70,12 @@ export default function DashboardPage() {
   console.log(myMessData, 'mymyMessData');
 
   // 获取当前总价
-  const { data: saleOverview } = useQuery({
-    queryKey: ['getSaleOverview', userAddress],
-    queryFn: () => getSaleOverview({ address: userAddress as `0x${string}` }),
-    enabled: Boolean(userAddress),
-    // refetchInterval: 34000,
-  });
+  // const { data: saleOverview } = useQuery({
+  //   queryKey: ['getSaleOverview', userAddress],
+  //   queryFn: () => getSaleOverview({ address: userAddress as `0x${string}` }),
+  //   enabled: Boolean(userAddress),
+  //   // refetchInterval: 34000,
+  // });
 
   // 我的节点总额
   const { data: nodeSummaryData } = useQuery({
@@ -93,25 +94,26 @@ export default function DashboardPage() {
           (nodeTotal += Number(item.amount))
       );
     }
+    setSaleAmount(nodeTotal * (olyPrice || 0));
     setNodeAmount(nodeTotal);
-  }, [nodeSummaryData]);
+  }, [nodeSummaryData, olyPrice]);
 
-  useEffect(() => {
-    if (saleOverview?.salesInfo) {
-      let amount = BigInt(0);
-      const salesInfo = saleOverview.salesInfo;
-      Object.keys(salesInfo)
-        .map(key => Number(key) as keyof typeof salesInfo)
-        .forEach(key => {
-          const item = salesInfo[key];
-          if (item !== null) {
-            amount += item.amount;
-          }
-        });
-      const formattedAmount = (Number(amount) / 1e18).toFixed(2);
-      setSaleAmount(formattedAmount);
-    }
-  }, [saleOverview]);
+  // useEffect(() => {
+  //   if (saleOverview?.salesInfo) {
+  //     let amount = BigInt(0);
+  //     const salesInfo = saleOverview.salesInfo;
+  //     Object.keys(salesInfo)
+  //       .map(key => Number(key) as keyof typeof salesInfo)
+  //       .forEach(key => {
+  //         const item = salesInfo[key];
+  //         if (item !== null) {
+  //           amount += item.amount;
+  //         }
+  //       });
+  //     const formattedAmount = (Number(amount) / 1e18).toFixed(2);
+
+  //   }
+  // }, [saleOverview]);
 
   useEffect(() => {
     setMyMessInfo(myMessData);
@@ -147,7 +149,7 @@ export default function DashboardPage() {
             <Statistics
               title={t('directReferral')}
               info=''
-              value={`${myMessInfo?.referralCount || 0}/10`}
+              value={`${myMessInfo?.validReferralCount || 0}/${myMessInfo?.referralCount || 0}`}
               size='sm'
             />
             <Statistics

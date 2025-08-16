@@ -4,7 +4,7 @@ import { useSafeState } from 'ahooks';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import GrayLogo from '~/assets/gray-logo.svg';
 import { Button, Card, Statistics, View } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
@@ -23,9 +23,11 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
   const t2 = useTranslations('tooltip');
   const router = useRouter();
   const [allStakeAmount, setAllStakeAmount] = useSafeState(0);
+  const [rebalseProfit, setRebalseProfit] = useState<number>(0);
   // const [stakList, setstakList] = useState<StakingItem[]>([]);
   // 活期质押
-  const { olyPrice, afterHotData, hotDataStakeNum } = useNolockStore();
+  const { olyPrice, afterHotData, hotDataStakeNum, demandProfitInfo } =
+    useNolockStore();
   const { userAddress } = useUserAddress();
   //质押列表
   const { data: myStakingList } = useQuery({
@@ -89,6 +91,7 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
     const updateList = async () => {
       let allStakeAmount =
         Number(hotDataStakeNum || 0) + Number(afterHotData?.principal || 0);
+      let rebalseProfit = Number(demandProfitInfo?.rebalseProfit || 0);
       // let totalDays = 0;
       console.log(myStakingList, myNodeStakingList, '5555555');
       if (myStakingList?.myStakingList || myNodeStakingList?.length) {
@@ -103,6 +106,7 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
         const allList = [...nodeList, ...list];
         const updatedList = allList.map(it => {
           allStakeAmount += it.pending;
+          rebalseProfit += it.claimableBalance;
           const time = String(
             Number(it.expiry) - curBlock < 0
               ? '0'
@@ -118,6 +122,7 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
             isShow: false,
           };
         });
+        setRebalseProfit(rebalseProfit);
         console.log(updatedList, 'updatedList');
         // setstakList(updatedList);
         setAllStakeAmount(allStakeAmount);
@@ -131,6 +136,7 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
     myNodeStakingList,
     afterHotData,
     currentBlock,
+    demandProfitInfo,
   ]);
 
   return (
@@ -165,7 +171,7 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
           >
             <Statistics
               title={t('pendingRewardsBalance')}
-              value={`${formatNumbedecimalScale(safeMyMessInfo?.claimableBonus ?? 0, 2)} OLY`}
+              value={`${formatNumbedecimalScale(rebalseProfit ?? 0, 6)} OLY`}
               desc={`${formatCurrency(olyPrice * Number(safeMyMessInfo?.claimableBonus ?? 0))}`}
               size='md'
             />
@@ -174,8 +180,8 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
         <div className='border-t border-foreground/10 w-full'></div>
         <PositionDetails
           data={{
-            myStakedAmount: `${formatNumbedecimalScale(allStakeAmount || 0, 2)} OLY`,
-            lifetimeRewards: `${formatNumbedecimalScale(safeMyMessInfo?.stakedRewardAmount || 0, 2)} OLY`,
+            myStakedAmount: `${formatNumbedecimalScale(allStakeAmount || 0, 6)} OLY`,
+            lifetimeRewards: `${formatNumbedecimalScale(safeMyMessInfo?.stakedRewardAmount || 0, 6)} OLY`,
             timeInPool: `${getLongestStakingRemainingTime()} d`,
             olyPrice: olyPrice || 0,
             info1: t2('dash.life_rewards'),
@@ -210,7 +216,7 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
           >
             <Statistics
               title={t('pendingRewardsBalance')}
-              value={`${formatNumbedecimalScale(safeMyMessInfo?.bondRewardAmount ?? 0, 2)} OLY`}
+              value={`${formatNumbedecimalScale(safeMyMessInfo?.bondRewardAmount ?? 0, 6)} OLY`}
               desc='$0.00'
               size='md'
             />
@@ -221,7 +227,7 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
         <PositionDetails
           data={{
             myStakedAmount: '0.00 OLY',
-            lifetimeRewards: `${formatNumbedecimalScale(safeMyMessInfo?.bondRewardAmount || 0, 2)} OLY`,
+            lifetimeRewards: `${formatNumbedecimalScale(safeMyMessInfo?.bondRewardAmount || 0, 6)} OLY`,
             timeInPool: '0 d',
             olyPrice: olyPrice || 0,
             info1: t2('dash.bond_rewards'),

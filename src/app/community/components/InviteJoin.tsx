@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -11,14 +10,18 @@ import {
   Button,
   Card,
   CardContent,
-  InfoPopover,
+  // InfoPopover,
   Input,
   View,
 } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { useContractError } from '~/hooks/useContractError';
 import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
-import { fallbackCopyText, formatAddress, formatte2Num } from '~/lib/utils';
+import {
+  fallbackCopyText,
+  formatAddress,
+  formatNumbedecimalScale,
+} from '~/lib/utils';
 import { inviterInfo } from '~/services/auth/invite';
 import MaxInviteAbi from '~/wallet/constants/MatrixNetworkAbi.json';
 import { matrixNetwork } from '~/wallet/constants/tokens';
@@ -33,6 +36,7 @@ const isValidEthereumAddress = (address: string): boolean => {
 const InviteJoin = () => {
   const t = useTranslations('community');
   const inviteT = useTranslations('invite');
+  const commonT = useTranslations('common');
   const pathname = usePathname();
   const { userAddress } = useUserAddress();
   const publicClient = usePublicClient();
@@ -159,10 +163,12 @@ const InviteJoin = () => {
     try {
       if (navigator?.clipboard?.writeText) {
         await navigator.clipboard.writeText(link);
+        toast.success(commonT('copy_success_message'));
         return;
       }
       const success = await fallbackCopyText(link);
       if (success) {
+        toast.success(commonT('copySuccess'));
         return;
       }
     } catch (error) {
@@ -188,7 +194,10 @@ const InviteJoin = () => {
                   {t('totalReferralLocked')}
                 </span>
                 <span className='text-white font-mono text-lg'>
-                  {formatte2Num.format(InviterAmountInfo?.referralAmount || 0)}{' '}
+                  {formatNumbedecimalScale(
+                    InviterAmountInfo?.referralAmount || 0,
+                    6
+                  )}{' '}
                   OLY
                 </span>
               </div>
@@ -197,7 +206,11 @@ const InviteJoin = () => {
                   {t('totalCommunityLocked')}
                 </span>
                 <span className='text-white font-mono text-lg'>
-                  {formatte2Num.format(InviterAmountInfo?.totalAmount || 0)} OLY
+                  {formatNumbedecimalScale(
+                    InviterAmountInfo?.totalAmount || 0,
+                    6
+                  )}{' '}
+                  OLY
                 </span>
               </div>
               <div className='flex flex-col flex-1'>
@@ -258,18 +271,6 @@ const InviteJoin = () => {
                     {inviteInfo?.isActive ? (
                       <>
                         <span>{link}</span>
-                        <InfoPopover
-                          triggerClassName='inline ml-2'
-                          className='w-80'
-                        >
-                          <Link
-                            target='_blank'
-                            href={link}
-                            className='text-white font-mono text-sm break-all whitespace-normal underline'
-                          >
-                            {link}
-                          </Link>
-                        </InfoPopover>
                       </>
                     ) : (
                       <span className='opacity-50'>

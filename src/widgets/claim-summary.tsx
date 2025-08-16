@@ -29,7 +29,7 @@ export const ClaimSummary: FC<{
           </InfoPopover>
         </List.Label>
         <List.Value className='text-xl font-mono'>
-          {formatCurrency(data.amount, false)} OLY
+          {formatDecimal(data.amount, 6)} OLY
         </List.Value>
       </List.Item>
       <List.Item>
