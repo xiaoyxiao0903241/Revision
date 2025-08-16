@@ -4,7 +4,7 @@ import { useSafeState } from 'ahooks';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import GrayLogo from '~/assets/gray-logo.svg';
 import { Button, Card, Statistics, View } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
@@ -24,18 +24,9 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
   const router = useRouter();
   const [allStakeAmount, setAllStakeAmount] = useSafeState(0);
   // const [stakList, setstakList] = useState<StakingItem[]>([]);
-  const [totalDays, setTotalDays] = useState<number>(0);
   // 活期质押
-  const {
-    // olyBalance,
-    olyPrice,
-    afterHotData,
-    // AllolyStakeNum,
-    // allnetReabalseNum,
-    // demandProfitInfo,
-  } = useNolockStore();
+  const { olyPrice, afterHotData, hotDataStakeNum } = useNolockStore();
   const { userAddress } = useUserAddress();
-
   //质押列表
   const { data: myStakingList } = useQuery({
     queryKey: ['dashboardUserStakes', userAddress],
@@ -61,11 +52,44 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
     refetchInterval: 20000,
   });
 
+  // 获取长期质押时间最长的一条记录的剩余时间
+  const getLongestStakingRemainingTime = () => {
+    if (
+      !myStakingList?.myStakingList ||
+      myStakingList.myStakingList.length === 0
+    ) {
+      return 0;
+    }
+
+    // 过滤出长期质押记录并找出时间最长的一条
+    const longestStaking = myStakingList.myStakingList.reduce(
+      (prev, current) => {
+        return parseInt(current.period) > parseInt(prev.period)
+          ? current
+          : prev;
+      }
+    );
+
+    // 计算剩余时间
+    const curBlock = Number(currentBlock);
+    const time = String(
+      Number(longestStaking.expiry) - curBlock < 0
+        ? '0'
+        : Number(longestStaking.expiry) - curBlock
+    );
+
+    // 转换为秒数
+    const remainingSeconds = Number(time) * blocksNum;
+    const days = Math.floor(remainingSeconds / (24 * 60 * 60));
+    return days;
+  };
+
   //获取质押总数量
   useEffect(() => {
     const updateList = async () => {
-      let allStakeAmount = 0;
-      let totalDays = 0;
+      let allStakeAmount =
+        Number(hotDataStakeNum || 0) + Number(afterHotData?.principal || 0);
+      // let totalDays = 0;
       console.log(myStakingList, myNodeStakingList, '5555555');
       if (myStakingList?.myStakingList || myNodeStakingList?.length) {
         const list =
@@ -84,24 +108,18 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               ? '0'
               : Number(it.expiry) - curBlock
           );
-          const remainingSeconds = Number(time) * blocksNum;
-          const days = Math.floor(remainingSeconds / (24 * 60 * 60));
+          // const remainingSeconds = Number(time) * blocksNum;
+          // const days = Math.floor(remainingSeconds / (24 * 60 * 60));
           // it.period
-          totalDays += Number(it.period || 0) - days;
+          // totalDays += Number(it.period || 0) - days;
           return {
             ...it,
             time,
             isShow: false,
           };
         });
-        // allList.forEach((it) => (allStakeAmount += it.pending));
-        if (afterHotData?.principal) {
-          allStakeAmount =
-            allStakeAmount + Number(afterHotData?.principal ?? 0);
-        }
-        console.log(updatedList, totalDays, 'updatedList');
+        console.log(updatedList, 'updatedList');
         // setstakList(updatedList);
-        setTotalDays(totalDays);
         setAllStakeAmount(allStakeAmount);
       }
     };
@@ -158,7 +176,7 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
           data={{
             myStakedAmount: `${formatNumbedecimalScale(allStakeAmount || 0, 2)} OLY`,
             lifetimeRewards: `${formatNumbedecimalScale(safeMyMessInfo?.stakedRewardAmount || 0, 2)} OLY`,
-            timeInPool: `${totalDays} d`,
+            timeInPool: `${getLongestStakingRemainingTime()} d`,
             olyPrice: olyPrice || 0,
             info1: t2('dash.life_rewards'),
             info2: t2('dash.stake_left_time'),

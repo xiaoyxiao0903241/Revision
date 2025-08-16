@@ -91,7 +91,7 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
         },
       },
       {
-        title: tStaking('amount'),
+        title: t('bonus_amount'),
         dataIndex: 'amount',
         key: 'amount',
         render: (value: string | number | boolean | undefined) => {

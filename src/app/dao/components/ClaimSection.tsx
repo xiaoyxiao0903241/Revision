@@ -5,10 +5,10 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Abi } from 'viem';
 import { usePublicClient } from 'wagmi';
-import CountdownTimer from '~/app/staking/unstake/component/countDownTimer';
 import {
   Button,
   Card,
+  CountdownDisplay,
   Notification,
   RoundedLogo,
   Select,
@@ -22,7 +22,7 @@ import { useUserAddress } from '~/contexts/UserAddressContext';
 import { useContractError } from '~/hooks/useContractError';
 import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
 import { usePeriods } from '~/hooks/userPeriod';
-import { dayjs, formatte2Num } from '~/lib/utils';
+import { formatte2Num } from '~/lib/utils';
 import { getClaimReward, rewardClaimed } from '~/services/auth/dao';
 import { useNolockStore } from '~/store/noLock';
 import RewardPoolV7Abi from '~/wallet/constants/RewardPoolV7.json';
@@ -91,19 +91,20 @@ export const ClaimSection = ({
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
   const publicClient = usePublicClient();
   const { handleContractError, isContractError } = useContractError();
-
-  const { time, lastStakeTimestamp } = useNolockStore();
+  const [cutDownTime, setCutDownTime] = useState<number>(0);
+  const { currentBlock, nextBlock } = useNolockStore();
   useEffect(() => {
     setCurrentRate(Number(currentPeriodInfo?.rate?.split('%')[0]));
   }, [currentPeriodInfo]);
 
-  //计算rebase倒计时
-  // useEffect(() => {
-  //   if (nextBlock && currentBlock) {
-  //     const time = nextBlock - currentBlock < 0 ? 0 : nextBlock - currentBlock + 600
-  //     setCutDownTime(time);
-  //   }
-  // }, [currentBlock, nextBlock]);
+  // 计算rebase倒计时
+  useEffect(() => {
+    if (nextBlock && currentBlock) {
+      const time = nextBlock - currentBlock < 0 ? 0 : nextBlock - currentBlock;
+      const tenMinutesInBlocks = 600;
+      setCutDownTime(time + tenMinutesInBlocks);
+    }
+  }, [currentBlock, nextBlock]);
 
   let toastId: string | number | undefined;
   const claimRewardMutation = useMutation({
@@ -200,13 +201,7 @@ export const ClaimSection = ({
       {/* 倒计时 */}
       <div className='flex items-center text-sm gap-2'>
         <p className='text-foreground/50'>{t('next_payout_in')}:</p>
-        {lastStakeTimestamp > 0 ? (
-          <CountdownTimer
-            time={dayjs(time).add(10, 'minutes').format('YYYY-MM-DD HH:mm:ss')}
-          />
-        ) : (
-          <CountdownTimer time={String(0)} />
-        )}
+        <CountdownDisplay blocks={BigInt(cutDownTime)} isShowDay={false} />
       </div>
       <View className='bg-[#22285E] px-4' clipDirection='topRight-bottomLeft'>
         <div className='flex items-center justify-between  py-4'>

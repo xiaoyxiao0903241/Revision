@@ -25,8 +25,8 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
     queryKey: ['getRewardList', userAddress],
     queryFn: () => newRewardList({ address: userAddress as string }),
     enabled: Boolean(userAddress),
-    retry: 1,
-    refetchInterval: 30000,
+    // retry: 1,
+    // refetchInterval: 30000,
   });
 
   // const { data: coolAllCLaimAmountData } = useQuery({
@@ -42,8 +42,8 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
     queryKey: ['turbineMess', userAddress],
     queryFn: () => turbineMess(userAddress as string),
     enabled: Boolean(userAddress),
-    retry: 1,
-    refetchInterval: 30000,
+    // retry: 1,
+    // refetchInterval: 30000,
   });
 
   // 获取涡轮可解锁的数量
@@ -51,8 +51,8 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
     queryKey: ['userStakeNum', userAddress],
     queryFn: () => getStakeNum({ address: userAddress as `0x${string}` }),
     enabled: Boolean(userAddress),
-    retry: 1,
-    refetchInterval: 25000,
+    // retry: 1,
+    // refetchInterval: 25000,
   });
 
   return (
