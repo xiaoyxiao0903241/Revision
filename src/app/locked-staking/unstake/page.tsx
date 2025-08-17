@@ -27,7 +27,7 @@ import {
   getNodeStakes,
   getUserStakes,
 } from '~/wallet/lib/web3/stake';
-import { WalletSummary } from '~/widgets';
+import { WalletSummaryLock } from '~/widgets';
 import { AmountTicker } from '~/widgets/amount-ticker';
 import { DurationSelect } from '~/widgets/select-lockMyList';
 
@@ -287,7 +287,7 @@ export default function UnstakePage() {
           </Card>
         </div>
         <div>
-          <WalletSummary />
+          <WalletSummaryLock />
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
+import { ReactNode } from 'react';
+import Info from '~/assets/info.svg';
 import { cn } from '~/lib/utils';
 import { Icon, IconFontName } from './icon';
-import Info from '~/assets/info.svg';
-import { ReactNode } from 'react';
 export function Alert({
   className,
   icon,

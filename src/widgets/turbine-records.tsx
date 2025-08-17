@@ -4,7 +4,7 @@ import { FC, ReactNode, useEffect, useState } from 'react';
 import { Button, Card, Icon, Pager, Tabs } from '~/components';
 import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
 import { useUserAddress } from '~/contexts/UserAddressContext';
-import { cn, formatDecimal, formatHash } from '~/lib/utils';
+import { cn, formatDecimal, formatHash, formatTimeToLocal } from '~/lib/utils';
 import { turbineRecord } from '~/services/auth/turbine';
 
 // 事件颜色映射
@@ -157,7 +157,9 @@ export const TurbineRecords: FC = () => {
                       {formatHash(record.hash)}
                     </a>
                   </Cell>
-                  <Cell title={t('dateTime')}>{record.createdAt}</Cell>
+                  <Cell title={t('dateTime')}>
+                    {formatTimeToLocal(record.createdAt)}
+                  </Cell>
                 </tr>
               ))
             ) : (

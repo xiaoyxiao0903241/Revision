@@ -3,7 +3,7 @@ import { FC, ReactNode, useState } from 'react';
 import { Button, Card, Icon, Tabs } from '~/components';
 import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
 import { useUserAddress } from '~/contexts/UserAddressContext';
-import { cn, formatDecimal, formatHash } from '~/lib/utils';
+import { cn, formatDecimal, formatHash, formatTimeToLocal } from '~/lib/utils';
 
 // 事件颜色映射
 const eventColors = {
@@ -110,7 +110,9 @@ export const StakingRecords: FC<{
                   <Cell title={t('amount')}>
                     {formatDecimal(Number(record.amount), 2)}
                   </Cell>
-                  <Cell title={t('dateTime')}>{record.createdAt}</Cell>
+                  <Cell title={t('dateTime')}>
+                    {formatTimeToLocal(record.createdAt)}
+                  </Cell>
                 </tr>
               ))
             ) : (

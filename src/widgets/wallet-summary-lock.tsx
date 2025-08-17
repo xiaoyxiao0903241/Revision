@@ -3,9 +3,8 @@ import { useSafeState } from 'ahooks';
 import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { Card, CardHeader, List, Statistics } from '~/components';
-import { InfoPopover } from '~/components/';
+import { BscScanLook } from '~/components/';
 import { useUserAddress } from '~/contexts/UserAddressContext';
-import { infoItems } from '~/hooks/useMock';
 import {
   formatCurrency,
   formatNumbedecimalScale,
@@ -28,11 +27,14 @@ import { AddToWallet } from './addToWallet';
 export const WalletSummaryLock: FC = () => {
   const t = useTranslations('staking');
   const t2 = useTranslations('tooltip');
+  const t3 = useTranslations('common');
+
   const { olyBalance, olyPrice } = useLockStore();
   const { userAddress } = useUserAddress();
   const [allStakeAmount, setAllStakeAmount] = useSafeState(0);
   const [yearApy, setYearApy] = useState<string>('0');
   const [yearRate, setYearRate] = useState<string>('0');
+  const [stakeList, setStakeList] = useState<StakingItem[]>([]);
 
   //长期的质押人数
   const { data: stakerAmount } = useQuery({
@@ -136,6 +138,22 @@ export const WalletSummaryLock: FC = () => {
 
         const allList = [...nodeList, ...list];
         allList.forEach(it => (allStakeAmount += it.pending));
+        const newList = Object.values(
+          allList.reduce(
+            (
+              acc: Record<string, { period: string; pending: number }>,
+              { period, pending }
+            ) => {
+              if (!acc[period]) {
+                acc[period] = { period, pending: 0 };
+              }
+              acc[period].pending += pending;
+              return acc;
+            },
+            {}
+          )
+        ) as StakingItem[];
+        setStakeList(newList);
         setAllStakeAmount(allStakeAmount);
       }
     };
@@ -162,13 +180,26 @@ export const WalletSummaryLock: FC = () => {
               value={`${formatCurrency(allStakeAmount, false)} OLY`}
               desc={formatCurrency(olyPrice * allStakeAmount)}
               info={
-                <div className='flex flex-col space-y-2'>
-                  {infoItems.map(item => (
-                    <div key={item.label} className='flex justify-between'>
-                      <span className='text-foreground/50'>{item.label}</span>
-                      <span className='text-secondary'>{item.value}</span>
-                    </div>
-                  ))}
+                <div>
+                  {stakeList.length > 0 ? (
+                    stakeList.map((it, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className='flex justify-between items-center'
+                        >
+                          <span>
+                            {it.period} {t('days')}
+                          </span>
+                          <span className='text-[#4c6bdf]'>
+                            {formatNumbedecimalScale(it.pending, 2)} OLY
+                          </span>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div className='text-center'>{t3('nodata')}</div>
+                  )}
                 </div>
               }
             />
@@ -197,8 +228,7 @@ export const WalletSummaryLock: FC = () => {
             {t('statistics')}
           </List.Label>
           <List.Label className='text-gradient text-base flex items-center gap-x-2'>
-            <span>{t('viewOnBscScan')}</span>
-            <InfoPopover className='right-[70px]'>
+            <BscScanLook className='md:right-[10px]'>
               {depositDayList.map((it, index) => (
                 <div
                   className='flex justify-between cursor-pointer'
@@ -216,7 +246,7 @@ export const WalletSummaryLock: FC = () => {
                   </div>
                 </div>
               ))}
-            </InfoPopover>
+            </BscScanLook>
           </List.Label>
         </List.Item>
         <List.Item>

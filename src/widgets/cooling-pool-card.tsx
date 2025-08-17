@@ -92,7 +92,7 @@ export const CoolingPoolCard: FC<CoolingPoolCardProps> = ({
     >
       <div className={cn('flex gap-2 md:flex-col items-center')}>
         {/* 动画齿轮图标 */}
-        <div className='flex flex-col w-1/3 md:w-2/3 items-center'>
+        <div className='flex flex-col  items-center'>
           <div
             className={cn(
               'w-full  aspect-square flex items-center justify-center p-4'
@@ -112,7 +112,7 @@ export const CoolingPoolCard: FC<CoolingPoolCardProps> = ({
           </div>
           <div className='text-xs text-foreground/50'>{t('released')}</div>
         </div>
-        <div className='flex-1'>
+        <div className='w-full'>
           {/* 等待释放数量 */}
           <div className='flex w-full items-center justify-between my-2'>
             <div className='text-xs text-foreground/50'>
@@ -166,7 +166,9 @@ export const CoolingPoolCard: FC<CoolingPoolCardProps> = ({
           {/* 领取按钮 */}
           <Button
             className='w-full h-8 md:h-12'
-            disabled={data.disabled || isDisabled}
+            disabled={
+              data.disabled || isDisabled || Number(data.claimable) < 0.0001
+            }
             onClick={claimReward}
             clipDirection='topLeft-bottomRight'
           >
