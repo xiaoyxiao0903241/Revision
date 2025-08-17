@@ -333,7 +333,8 @@
     "totalCommunityPerformance": "社区锁仓总量",
     "joinTime": "加入时间",
     "submit": "提交",
-    "notData": "此地址没有推荐相关的记录"
+    "notData": "此地址没有推荐相关的记录",
+    "nobindDescription": "请先绑定推荐人地址"
   },
   "analytics": {
     "title": "分析",

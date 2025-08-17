@@ -41,7 +41,7 @@ export const TVLChart: React.FC<{
           }>;
           const data = paramArray[0];
           return `<div style="font-weight: bold; margin-bottom: 8px;">${data.axisValue}</div>
-                  <div>TVL: <span style="color: #8B5CF6;">${data.value[1]}</span></div>`;
+                  <div>TVL: <span style="color: #8B5CF6;">$${data.value[1]}</span></div>`;
         },
       },
       grid: {
