@@ -71,7 +71,7 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
             const color = param.seriesName === '总业绩' ? '#B408D7' : '#FF6B35';
             html += `<div>${
               param.seriesName
-            }: <span style="color: ${color};">${param.data.toLocaleString()} OLY</span></div>`;
+            }: <span style="color: ${color};">${formatNumbedecimalScale(param.data || 0, 2)} OLY</span></div>`;
           });
 
           return html;

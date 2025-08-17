@@ -40,6 +40,7 @@ export type TVLDataSourceType = {
 };
 export default function AnalyticsPage() {
   const t = useTranslations('analytics');
+  const t2 = useTranslations('tooltip');
   const { userAddress } = useUserAddress();
   const { olyPrice } = useNolockStore();
   const [depositList, setDepositList] = useState<Array<[string, string]>>([]);
@@ -292,7 +293,7 @@ export default function AnalyticsPage() {
                 </span>
                 <InfoPopover>
                   <p className='text-white font-mono text-sm break-all whitespace-normal'>
-                    预览图表说明
+                    {t2('analytics.total_value')}
                   </p>
                 </InfoPopover>
               </div>
@@ -321,7 +322,7 @@ export default function AnalyticsPage() {
               </h4>
               <InfoPopover>
                 <p className='text-white font-mono text-sm break-all whitespace-normal'>
-                  分析页面说明
+                  {t2('analytics.circulation_market')}
                 </p>
               </InfoPopover>
             </div>
@@ -341,7 +342,7 @@ export default function AnalyticsPage() {
               </h4>
               <InfoPopover>
                 <p className='text-white font-mono text-sm break-all whitespace-normal'>
-                  分析页面说明
+                  {t2('analytics.oly_circulation')}
                 </p>
               </InfoPopover>
             </div>
