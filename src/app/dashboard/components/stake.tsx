@@ -185,7 +185,7 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               safeMyMessInfo?.stakedRewardAmount || 0,
               2
             ), // `${formatNumbedecimalScale(safeMyMessInfo?.stakedRewardAmount || 0, 2)} OLY`,
-            timeInPool: `${getLongestStakingRemainingTime()} d`,
+            timeInPool: `${getLongestStakingRemainingTime()} ${t('days')}`,
             olyPrice: olyPrice || 0,
             info1: t2('dash.life_rewards'),
             info2: t2('dash.stake_left_time'),
@@ -232,7 +232,7 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
             type: 'bonus',
             myStakedAmount: '0.00',
             lifetimeRewards: `${formatNumbedecimalScale(safeMyMessInfo?.bondRewardAmount || 0, 2)}`,
-            timeInPool: '0 d',
+            timeInPool: `0 ${t('days')}`,
             olyPrice: olyPrice || 0,
             info1: t2('dash.bond_rewards'),
             info2: t2('dash.bonds_nleft_time'),

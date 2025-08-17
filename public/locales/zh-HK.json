@@ -417,6 +417,7 @@
     "turbineRewardsAmount": "涡轮中的奖金数量",
     "unlockedRewardsAmount": "涡轮中已解锁的数量",
     "claim": "领取",
+    "days": "天",
     "timeFilters": {
       "all": "全部",
       "1m": "1月",
