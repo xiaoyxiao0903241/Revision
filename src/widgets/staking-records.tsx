@@ -94,7 +94,11 @@ export const StakingRecords: FC<{
                     }
                   >
                     <Icon name='event' size={16} />
-                    {record.recordType}
+                    {record.recordType === 'deposit'
+                      ? t('stake')
+                      : record.recordType === 'principal'
+                        ? t('unstake')
+                        : t('claim')}
                   </Cell>
                   <Cell title={t('transactionHash')}>
                     <span

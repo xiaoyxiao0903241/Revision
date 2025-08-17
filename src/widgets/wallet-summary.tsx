@@ -1,7 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
-import { BscScanLook, Card, CardHeader, List, Statistics } from '~/components';
+import {
+  BscScanLook,
+  Card,
+  CardHeader,
+  InfoPopover,
+  List,
+  Statistics,
+} from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import {
   formatCurrency,
@@ -11,18 +18,13 @@ import {
 import { personStakeAmount, stakerNum } from '~/services/auth/dashboard';
 import { useNolockStore } from '~/store/noLock';
 import { demandStaking, OLY } from '~/wallet/constants/tokens';
-import type { StakingItem } from '~/wallet/lib/web3/stake';
-import {
-  getNodeStakes,
-  getTotalSupply,
-  getUserStakes,
-} from '~/wallet/lib/web3/stake';
+import { getTotalSupply } from '~/wallet/lib/web3/stake';
 import { AddToWallet } from './addToWallet';
 
 export const WalletSummary: FC = () => {
   const t = useTranslations('staking');
   const t2 = useTranslations('tooltip');
-  const t3 = useTranslations('common');
+  // const t3 = useTranslations('common');
   const {
     olyBalance,
     olyPrice,
@@ -37,7 +39,6 @@ export const WalletSummary: FC = () => {
   const [yearRate, setYearRate] = useState<string>('0');
   const { userAddress } = useUserAddress();
   const [rebalseProfit, setRebalseProfit] = useState<number>(0);
-  const [stakeList, setStakeList] = useState<StakingItem[]>([]);
   //活期的质押人数
   const { data: stakerAmount } = useQuery({
     queryKey: ['getStakerAmount'],
@@ -72,23 +73,6 @@ export const WalletSummary: FC = () => {
     },
     enabled: Boolean(userAddress),
   });
-  //质押列表
-  const { data: myStakingList } = useQuery({
-    queryKey: ['UserStakes', userAddress],
-    queryFn: () => getUserStakes({ address: userAddress as `0x${string}` }),
-    enabled: Boolean(userAddress),
-    retry: 1,
-    refetchInterval: 42000,
-  });
-
-  //节点质押
-  const { data: myNodeStakingList } = useQuery({
-    queryKey: ['UserNodeStakes', userAddress],
-    queryFn: () => getNodeStakes({ address: userAddress as `0x${string}` }),
-    enabled: Boolean(userAddress),
-    retry: 1,
-    refetchInterval: 20000,
-  });
 
   useEffect(() => {
     const myStakeNum = hotDataStakeNum + afterHotData?.principal;
@@ -113,24 +97,6 @@ export const WalletSummary: FC = () => {
     }
   }, [demandProfitInfo]);
 
-  // 当前长期质押的数据
-  useEffect(() => {
-    const updateList = async () => {
-      if (myStakingList?.myStakingList || myNodeStakingList?.length) {
-        const list =
-          (myStakingList?.myStakingList.length &&
-            (myStakingList?.myStakingList as StakingItem[])) ||
-          [];
-        const nodeList = myNodeStakingList?.length
-          ? (myNodeStakingList as StakingItem[])
-          : [];
-
-        const allList = [...nodeList, ...list];
-        setStakeList(allList);
-      }
-    };
-    updateList();
-  }, [myStakingList?.myStakingList, myNodeStakingList]);
   return (
     <Card>
       <CardHeader className='space-y-3'>
@@ -145,29 +111,6 @@ export const WalletSummary: FC = () => {
               title={t('stakedAmount')}
               value={`${formatCurrency(myStakeNum, false)} OLY`}
               desc={formatCurrency(myStakeNum * olyPrice)}
-              info={
-                <div>
-                  {stakeList.length > 0 ? (
-                    stakeList.map((it, index) => {
-                      return (
-                        <div
-                          key={index}
-                          className='flex justify-between items-center'
-                        >
-                          <span>
-                            {it.period} {t('days')}
-                          </span>
-                          <span className='text-[#4c6bdf]'>
-                            {formatNumbedecimalScale(it.pending, 2)} OLY
-                          </span>
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <div className='text-center'>{t3('nodata')}</div>
-                  )}
-                </div>
-              }
             />
           </div>
           <div className='flex flex-col gap-2'>
@@ -186,24 +129,6 @@ export const WalletSummary: FC = () => {
             />
           </div>
         </div>
-
-        {/* <Button
-          variant="accent"
-          size="sm"
-          clipSize={8}
-          className="gap-2"
-          clipDirection="topLeft-bottomRight"
-        >
-          <div className="w-4 h-4 rounded-full bg-white flex items-center justify-center">
-            <Image
-              src="/images/widgets/logo.png"
-              alt="logo"
-              width={16}
-              height={16}
-            />
-          </div>
-          <span className="text-black">{t("addToMetaMask")}</span>
-        </Button> */}
         <AddToWallet></AddToWallet>
         <Statistics
           title={t('Unreleased-Rewards')}
@@ -233,7 +158,12 @@ export const WalletSummary: FC = () => {
           </List.Label>
         </List.Item>
         <List.Item>
-          <List.Label>{t('annualPercentageRate')}</List.Label>
+          <List.Label className='flex items-center gap-1'>
+            {t('annualPercentageRate')}
+            <InfoPopover>
+              <div className='flex flex-col space-y-2'>{t2('stake.APR')}</div>
+            </InfoPopover>
+          </List.Label>
           <List.Value className='text-success'>{yearRate}%</List.Value>
         </List.Item>
         <List.Item>

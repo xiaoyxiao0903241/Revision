@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { InfoPopover, Input, View } from '~/components';
+import { Input, View } from '~/components';
 import { cn, formatDecimal, formatNumbedecimalScale } from '~/lib/utils';
 
 export interface Balance {
@@ -59,9 +59,6 @@ export const SwapCard: FC<{
                 >
                   ({`${formatDecimal(data.profit ?? 0)}%`})
                 </span>
-                <InfoPopover triggerClassName='w-4 h-4 ml-2 text-warning'>
-                  <div className='w-40'>交易手续费</div>
-                </InfoPopover>
               </>
             ) : null}
           </div>
