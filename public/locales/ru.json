@@ -21,7 +21,24 @@
   "header": {
     "language": "Язык",
     "network": "BNB Smart Chain",
-    "wallet": "Кошелек"
+    "wallet": "Кошелек",
+    "connect": "Подключить кошелек"
+  },
+  "invite": {
+    "title": "Пригласить",
+    "description": "Пригласите друзей участвовать в стейкинге и получайте дополнительные награды",
+    "referralCode": "Реферальный код",
+    "enterReferralCode": "Введите реферальный код",
+    "submit": "Отправить",
+    "copyReferralLink": "Скопировать реферальную ссылку",
+    "inviteSuccess": "Приглашение успешно",
+    "invalidReferralCode": "Недействительный реферальный код"
+  },
+  "netWork": {
+    "changeNet": "Нажмите для переключения сети",
+    "connect": "Пожалуйста, сначала подключите кошелек",
+    "noSupport": "Неизвестная сеть",
+    "NotConnected": "Сеть не подключена"
   },
   "staking": {
     "stake": "Stake",

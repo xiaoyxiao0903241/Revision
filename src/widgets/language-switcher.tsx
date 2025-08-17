@@ -42,11 +42,11 @@ const useLanguages = () => {
   );
 
   useEffect(() => {
-    const locale = getInitialLocale();
-    if (locale) {
-      handleLanguageChange(locale);
+    const initialLocale = getInitialLocale();
+    if (initialLocale && initialLocale !== locale) {
+      handleLanguageChange(initialLocale);
     }
-  }, [handleLanguageChange]);
+  }, []);
   return {
     locale,
     changeLanguage: handleLanguageChange,

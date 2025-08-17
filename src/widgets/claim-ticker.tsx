@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { Button } from '~/components/button';
 import { useTranslations } from 'next-intl';

@@ -25,6 +25,22 @@
     "wallet": "Wallet",
     "connect": "Connect Wallet"
   },
+  "invite": {
+    "title": "Invite",
+    "description": "Invite friends to participate in staking and earn additional rewards",
+    "referralCode": "Referral Code",
+    "enterReferralCode": "Enter Referral Code",
+    "submit": "Submit",
+    "copyReferralLink": "Copy Referral Link",
+    "inviteSuccess": "Invitation Successful",
+    "invalidReferralCode": "Invalid Referral Code"
+  },
+  "netWork": {
+    "changeNet": "Click to Switch Network",
+    "connect": "Please Connect Wallet First",
+    "noSupport": "Unknown Network",
+    "NotConnected": "Network Not Connected"
+  },
   "staking": {
     "stake": "Stake",
     "unstake": "Unstake",
@@ -490,7 +506,6 @@
     "receive": "Receive",
     "assets": "Assets",
     "account": "Account",
-    "mywallet": "Wallet",
     "myWallet": "My Wallet",
     "position": "Position",
     "reward": "Reward",
@@ -499,6 +514,22 @@
     "rebaseReward": "Rebase Reward",
     "totalBonus": "Total Bonus",
     "myAccount": "My Account",
+    "unlockOver": "Unlock Completed",
+    "addToken": "Add to Wallet",
+    "add_tip": "Current wallet does not support adding token function, please copy address and add manually!",
+    "add_err": "Please install wallet plugin first",
+    "nextBlockRate": "Next Block Reward Rate",
+    "next_earnings": "Next Block Reward",
+    "unpledgeing": "Unstaking in progress...",
+    "unpledge": "Unstake",
+    "nodata": "No data",
+    "language": "English",
+    "copyright": "© 2025 OLYONE DAO",
+    "copy_success_message": "Copy Successful",
+    "copy_error_message": "Copy Failed",
+    "expired": "Countdown Ended",
+    "unclaimed_reward": "Claimable Rewards",
+    "connect_wallet": "Connect Wallet",
     "unlockOver": "Unlock Completed",
     "addToken": "添加到钱包",
     "add_tip": "The current wallet does not support adding tokens automatically. Please copy the address and add it manually!",
@@ -533,7 +564,12 @@
       "rejectedSign": "The user rejected the signature",
       "signing": "Signing...",
       "please_sign": "Please sign to login",
-      "assets": "Assets"
+      "assets": "Assets",
+      "sign_success": "Signature Successful",
+      "sign_failed": "Network Error, Please Try Again",
+      "rejectedSign": "User Rejected Signature",
+      "signing": "Signing in progress...",
+      "please_sign": "Please Sign to Login"
     }
   },
   "contract": {
@@ -678,21 +714,39 @@
       "claim_failed": "Claim Failed"
     }
   },
+  "bonds": {
+    "title": "Bonds",
+    "description": "Purchase bonds to earn rewards",
+    "lpBonds": "LP Bonds",
+    "treasuryBonds": "Treasury Bonds",
+    "purchase": "Purchase",
+    "redeem": "Redeem",
+    "bondPrice": "Bond Price",
+    "marketPrice": "Market Price",
+    "discount": "Discount",
+    "vestingTerm": "Vesting Term",
+    "maxPayout": "Max Payout",
+    "purchased": "Purchased",
+    "pending": "Pending",
+    "claimable": "Claimable"
+  },
   "tooltip": {
     "dash": {
-      "life_rewards": "通过质押获得的总奖励",
-      "stake_left_time": "来自质押时间最长的一条记录",
-      "bond_rewards": "通过购买债券获得的总奖励",
-      "bonds_nleft_time": "来自债券剩余时间最长的一条记录",
-      "address_num": "持仓价值在$100以上的客户地址总数量/直接邀请的客户的地址总数",
-      "社区地址数量": "通过您直接或间接推荐的客户总数量",
-      "invite_serving": "众筹期间您购买的创世股东份额",
-      "all_value": "通过众筹获得的OLY代币的当前总价值",
-      "奖金总数量": "您已经获得的奖金总数量",
-      "最大奖金数量": "您能够获得的最大奖金数量是您个人持仓数量的6倍。增加您的个人持仓可以提高您能够获得的总奖金的上限。",
-      "can_claim_reards": "在DAO板块中您尚未领取的奖金总数量",
-      "rebase_claim_reards": "在冷却池中尚未释放的奖金总数量",
-      "hand_rebase_reards": "在冷却池中已经释放的奖金总数量"
+      "life_rewards": "Total rewards earned through staking",
+      "stake_left_time": "From the staking record with the longest time",
+      "bond_rewards": "Total rewards earned through purchasing bonds",
+      "bonds_nleft_time": "From the bond record with the longest remaining time",
+      "address_num": "Total number of customer addresses with holdings value above $100 / Total number of directly invited customer addresses",
+      "社区地址数量": "Total number of customers recommended by you directly or indirectly",
+      "invite_serving": "Genesis shareholder shares you purchased during the crowdfunding period",
+      "all_value": "Current total value of OLY tokens obtained through crowdfunding",
+      "奖金总数量": "Total amount of bonuses you have earned",
+      "最大奖金数量": "The maximum bonus you can receive is 6 times your personal holding amount. Increasing your personal holding can increase the upper limit of the total bonus you can receive.",
+      "can_claim_reards": "Total amount of unclaimed bonuses in the DAO section",
+      "rebase_claim_reards": "Total amount of unreleased bonuses in the cooling pool",
+      "hand_rebase_reards": "Total amount of released bonuses in the cooling pool",
+      "turbine_rewards": "Amount of rewards in turbine",
+      "unlocked_turbine_rewards": "Amount of unlocked rewards in turbine"
     },
     "community": {
       "推荐锁仓总量": "直接推荐的成员的持仓数量",

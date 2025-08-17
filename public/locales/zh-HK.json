@@ -204,7 +204,6 @@
     "onOly": "您暂未有可解除的OLY",
     "overMore": "超过了最大可解除的数量",
     "addInOly": "请输入解除质押的数量",
-    "unLock_sucess": "解除质押成功",
     "cant_unclock": "质押锁定期阶段,无法解除",
     "unlock_sucess": "释放成功",
     "unlock_fail": "释放失败"
@@ -450,7 +449,6 @@
     "receive": "接收",
     "assets": "资产",
     "account": "账户",
-    "mywallet": "钱包",
     "myWallet": "我的钱包",
     "position": "持仓",
     "reward": "奖励",

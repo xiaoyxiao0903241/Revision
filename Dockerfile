@@ -11,7 +11,7 @@ COPY . .
 RUN pnpm run build
 
 FROM nginx:alpine AS static-server
-COPY --from=builder /app/out /usr/share/nginx/html
+COPY --from=builder /pages/out /usr/share/nginx/html
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

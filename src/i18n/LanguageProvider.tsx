@@ -1,4 +1,3 @@
-'use client';
 import {
   ReactNode,
   useState,
@@ -38,13 +37,17 @@ export function LanguageProvider({
     const newMessages = await loadMessages(newLocale);
     setLocale(newLocale);
     setMessages(newMessages);
+    // 同步更新localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('oly_locale', newLocale);
+    }
   };
   useEffect(() => {
-    const savedLocale = localStorage.getItem('akas_locale');
+    const savedLocale = localStorage.getItem('oly_locale');
     if (savedLocale && savedLocale !== locale) {
       changeLanguage(savedLocale);
     }
-  }, [locale]);
+  }, []);
 
   return (
     <LanguageContext.Provider value={{ locale, changeLanguage }}>

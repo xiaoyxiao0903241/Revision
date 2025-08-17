@@ -21,7 +21,24 @@
   "header": {
     "language": "Sprache",
     "network": "BNB Smart Chain",
-    "wallet": "Wallet"
+    "wallet": "Wallet",
+    "connect": "Wallet verbinden"
+  },
+  "invite": {
+    "title": "Einladen",
+    "description": "Freunde zum Staking einladen und zusätzliche Belohnungen verdienen",
+    "referralCode": "Empfehlungscode",
+    "enterReferralCode": "Empfehlungscode eingeben",
+    "submit": "Senden",
+    "copyReferralLink": "Empfehlungslink kopieren",
+    "inviteSuccess": "Einladung erfolgreich",
+    "invalidReferralCode": "Ungültiger Empfehlungscode"
+  },
+  "netWork": {
+    "changeNet": "Klicken Sie zum Wechseln des Netzwerks",
+    "connect": "Bitte verbinden Sie zuerst Ihr Wallet",
+    "noSupport": "Unbekanntes Netzwerk",
+    "NotConnected": "Netzwerk nicht verbunden"
   },
   "staking": {
     "stake": "Stake",
@@ -379,7 +396,23 @@
     "bonds": "Bonds",
     "rebaseReward": "Rebase Reward",
     "totalBonus": "Total Bonus",
-    "myAccount": "My Account"
+    "myAccount": "My Account",
+    "unlockOver": "Entsperrung abgeschlossen",
+    "addToken": "Zu Wallet hinzufügen",
+    "add_tip": "Das aktuelle Wallet unterstützt die automatische Token-Hinzufügung nicht. Bitte kopieren Sie die Adresse und fügen Sie sie manuell hinzu!",
+    "add_err": "Bitte installieren Sie zuerst das Wallet-Plugin",
+    "nextBlockRate": "Nächste Block-Belohnungsrate",
+    "next_earnings": "Nächste Block-Belohnung",
+    "unpledgeing": "Unstaking läuft...",
+    "unpledge": "Unstaking",
+    "nodata": "Keine Daten",
+    "language": "Deutsch",
+    "copyright": "© 2025 OLYONE DAO",
+    "copy_success_message": "Kopieren erfolgreich",
+    "copy_error_message": "Kopieren fehlgeschlagen",
+    "expired": "Countdown beendet",
+    "unclaimed_reward": "Verfügbare Belohnungen",
+    "connect_wallet": "Wallet verbinden"
   },
   "notFound": {
     "comingSoon": "New version launching soon.",

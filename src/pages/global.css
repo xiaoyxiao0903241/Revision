@@ -1,0 +1,481 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 291.4 91.2% 44.1%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 227.1 91.2% 64.9%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --border: 227.1 91.2% 64.9%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 84% 65%;
+    --destructive-foreground: 210 40% 98%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --warning: 38.8 100% 50%;
+    --success: 142.1 76.2% 36.3%;
+    --radius: 12px;
+  }
+}
+
+/* iconfont 字体图标定义 */
+@font-face {
+  font-family: 'iconfont'; /* Project id 4989841 */
+  src:
+    url('/fonts/iconfont.woff2?t=1754133405093') format('woff2'),
+    url('/fonts/iconfont.woff?t=1754133405093') format('woff'),
+    url('/fonts/iconfont.ttf?t=1754133405093') format('truetype');
+}
+
+.iconfont {
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 字体定义 */
+@font-face {
+  font-family: 'ChakraPetch';
+  src: url('/fonts/ChakraPetch-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ChakraPetch';
+  src: url('/fonts/ChakraPetch-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ChakraPetch';
+  src: url('/fonts/ChakraPetch-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ChakraPetch';
+  src: url('/fonts/ChakraPetch-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ChakraPetch';
+  src: url('/fonts/ChakraPetch-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ChakraPetch';
+  src: url('/fonts/ChakraPetch-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ChakraPetch';
+  src: url('/fonts/ChakraPetch-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ChakraPetch';
+  src: url('/fonts/ChakraPetch-SemiBoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ChakraPetch';
+  src: url('/fonts/ChakraPetch-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ChakraPetch';
+  src: url('/fonts/ChakraPetch-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Oxanium 字体定义 */
+@font-face {
+  font-family: 'Oxanium';
+  src: url('/fonts/Oxanium-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Oxanium';
+  src: url('/fonts/Oxanium-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Oxanium';
+  src: url('/fonts/Oxanium-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Oxanium';
+  src: url('/fonts/Oxanium-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Oxanium';
+  src: url('/fonts/Oxanium-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Oxanium';
+  src: url('/fonts/Oxanium-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Oxanium';
+  src: url('/fonts/Oxanium-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'VCR-OSD-Mono';
+  src: url('/fonts/Vcr-Osd-Mono.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'ChakraPetch', sans-serif;
+    background-image: url('/images/background/global.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  .absolute-center-x {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .gradient {
+    @apply bg-gradient-to-r from-[#B408D7] to-[#576AF4];
+  }
+  .text-gradient {
+    @apply bg-gradient-to-r from-[#B408D7] to-[#576AF4] text-transparent bg-clip-text;
+  }
+}
+
+@layer components {
+  /* 九宫格边框 */
+  .nine-patch-frame {
+    display: inline-block;
+    border-style: solid;
+    border-image-repeat: stretch;
+    box-sizing: border-box;
+  }
+  /* 侧边栏 */
+  .sidebar {
+    width: 260px;
+    border-width: 32px 32px 32px 120px;
+    border-image: url('/images/background/sidebar.png');
+    border-image-slice: 32 32 32 120 fill;
+  }
+  /* 直接子元素样式 */
+  .sidebar > nav {
+    margin: -32px;
+    margin-left: -120px;
+    margin-bottom: -16px;
+  }
+  /* 卡片 */
+  .card-body {
+    border-width: 32px 32px 32px 192px;
+    border-image: url('/images/background/card-body.png');
+    border-image-slice: 32 32 32 192 fill;
+  }
+  /* 直接子元素样式 */
+  .card-body > div {
+    margin: -32px;
+    margin-left: -192px;
+    margin-bottom: -16px;
+  }
+  .community-body {
+    border-width: 32px 32px 32px 192px;
+    border-image: url('/images/background/community-body.png');
+    border-image-slice: 32 32 32 192 fill;
+  }
+  /* 直接子元素样式 */
+  .community-body > div {
+    margin: -32px;
+    margin-left: -192px;
+    margin-bottom: -16px;
+  }
+  .flat-body {
+    border-width: 32px 32px 32px 192px;
+    border-image: url('/images/background/flat-body.png');
+    border-image-slice: 32 32 32 192 fill;
+  }
+  /* 直接子元素样式 */
+  .flat-body > div {
+    margin: -32px;
+    margin-left: -192px;
+    margin-bottom: -16px;
+  }
+
+  .grid-body {
+    border-width: 0px 0px 0px 192px;
+    border-image: url('/images/background/grid-body.png');
+    border-image-slice: 0 0 0 192 fill;
+  }
+  /* 直接子元素样式 */
+  .grid-body > div {
+    margin: 0px;
+    margin-left: -192px;
+    margin-bottom: -16px;
+  }
+  /* 卡片头部 */
+  .card-header {
+    border-width: 32px 192px 32px 32px;
+    border-image: url('/images/background/card-header.png');
+    border-image-slice: 32 192 32 32 fill;
+  }
+  .card-header > div {
+    margin: -32px;
+    margin-right: -192px;
+    margin-bottom: -16px;
+  }
+
+  .alert {
+    border-width: 4px 32px 4px 4px;
+    border-image: url('/images/background/alert.png');
+    border-image-slice: 4 32 4 4 fill;
+  }
+  .alert > div {
+    margin: -4px -32px -4px -4px;
+  }
+
+  /* View 组件带边框的斜切效果 */
+  .view-with-border {
+    position: relative;
+  }
+
+  .view-with-border::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    background: rgba(255, 255, 255, 0.8) !important;
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+    z-index: 0;
+    pointer-events: none;
+    display: block !important;
+  }
+
+  .view-with-border::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+    display: block !important;
+  }
+
+  /* Oxanium 字体类 */
+  .oxanium {
+    font-family: 'Oxanium', sans-serif;
+  }
+
+  .oxanium-light {
+    font-family: 'Oxanium', sans-serif;
+    font-weight: 300;
+  }
+
+  .oxanium-regular {
+    font-family: 'Oxanium', sans-serif;
+    font-weight: 400;
+  }
+
+  .oxanium-medium {
+    font-family: 'Oxanium', sans-serif;
+    font-weight: 500;
+  }
+
+  .oxanium-semibold {
+    font-family: 'Oxanium', sans-serif;
+    font-weight: 600;
+  }
+
+  .oxanium-bold {
+    font-family: 'Oxanium', sans-serif;
+    font-weight: 700;
+  }
+
+  .oxanium-extrabold {
+    font-family: 'Oxanium', sans-serif;
+    font-weight: 800;
+  }
+
+  /* 冷却池齿轮动画 */
+  @keyframes spin-reverse {
+    from {
+      transform: rotate(360deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+
+  .animate-spin-reverse {
+    animation: spin-reverse 3s linear infinite;
+  }
+
+  /* 斜纹动画 */
+  @keyframes stripes {
+    0% {
+      /* background-position: 0 0; */
+      transform: translateX(-8px);
+    }
+    100% {
+      /* background-position: 8px 8px; */
+      transform: translateX(0px);
+    }
+  }
+
+  .animate-stripes {
+    animation: stripes 1s linear infinite;
+  }
+
+  /* NProgress 进度条自定义样式 */
+  /* 进度条主体 */
+  #nprogress .bar {
+    background: linear-gradient(90deg, #b408d7 0%, #576af4 100%) !important;
+    height: 3px !important;
+    box-shadow:
+      0 0 10px rgba(180, 8, 215, 0.5),
+      0 0 5px rgba(87, 106, 244, 0.5) !important;
+  }
+
+  /* 进度条右侧的小球 */
+  #nprogress .peg {
+    box-shadow:
+      0 0 10px #b408d7,
+      0 0 5px #b408d7 !important;
+  }
+
+  /* 旋转器（spinner） */
+  #nprogress .spinner {
+    top: 15px !important;
+    right: 15px !important;
+  }
+
+  #nprogress .spinner-icon {
+    width: 18px !important;
+    height: 18px !important;
+    border: 2px solid transparent !important;
+    border-top-color: #b408d7 !important;
+    border-left-color: #576af4 !important;
+    border-radius: 50% !important;
+    animation: nprogress-spinner 400ms linear infinite !important;
+  }
+
+  /* 旋转动画 */
+  @keyframes nprogress-spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* 进度条容器 */
+  #nprogress {
+    pointer-events: none !important;
+  }
+
+  #nprogress .bar {
+    position: fixed !important;
+    z-index: 1031 !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 3px !important;
+  }
+
+  /* 移动端隐藏所有滚动条 */
+  @media (max-width: 767px) {
+    /* 隐藏 Webkit 浏览器滚动条 */
+    ::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+    /* 隐藏 Firefox 滚动条 */
+    html,
+    body,
+    * {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+  }
+}

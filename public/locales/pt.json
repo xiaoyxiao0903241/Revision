@@ -21,7 +21,24 @@
   "header": {
     "language": "Idioma",
     "network": "BNB Smart Chain",
-    "wallet": "Carteira"
+    "wallet": "Carteira",
+    "connect": "Conectar Carteira"
+  },
+  "invite": {
+    "title": "Convidar",
+    "description": "Convide amigos para participar do staking e ganhe recompensas adicionais",
+    "referralCode": "Código de Referência",
+    "enterReferralCode": "Digite o Código de Referência",
+    "submit": "Enviar",
+    "copyReferralLink": "Copiar Link de Referência",
+    "inviteSuccess": "Convite Bem-sucedido",
+    "invalidReferralCode": "Código de Referência Inválido"
+  },
+  "netWork": {
+    "changeNet": "Clique para trocar de rede",
+    "connect": "Por favor, conecte sua carteira primeiro",
+    "noSupport": "Rede desconhecida",
+    "NotConnected": "Rede não conectada"
   },
   "staking": {
     "stake": "Stake",

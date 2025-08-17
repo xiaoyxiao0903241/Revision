@@ -21,7 +21,24 @@
   "header": {
     "language": "Idioma",
     "network": "BNB Smart Chain",
-    "wallet": "Billetera"
+    "wallet": "Billetera",
+    "connect": "Conectar Billetera"
+  },
+  "invite": {
+    "title": "Invitar",
+    "description": "Invita amigos a participar en staking y gana recompensas adicionales",
+    "referralCode": "Código de Referencia",
+    "enterReferralCode": "Ingresa Código de Referencia",
+    "submit": "Enviar",
+    "copyReferralLink": "Copiar Enlace de Referencia",
+    "inviteSuccess": "Invitación Exitosa",
+    "invalidReferralCode": "Código de Referencia Inválido"
+  },
+  "netWork": {
+    "changeNet": "Haz clic para cambiar de red",
+    "connect": "Por favor conecta tu billetera primero",
+    "noSupport": "Red desconocida",
+    "NotConnected": "Red no conectada"
   },
   "staking": {
     "stake": "Stake",
@@ -379,7 +396,23 @@
     "bonds": "Bonds",
     "rebaseReward": "Rebase Reward",
     "totalBonus": "Total Bonus",
-    "myAccount": "My Account"
+    "myAccount": "My Account",
+    "unlockOver": "Desbloqueo completado",
+    "addToken": "Agregar a Billetera",
+    "add_tip": "La billetera actual no soporta la función de agregar tokens automáticamente. ¡Por favor copia la dirección y agrégala manualmente!",
+    "add_err": "Por favor instala el plugin de billetera primero",
+    "nextBlockRate": "Tasa de Recompensa del Próximo Bloque",
+    "next_earnings": "Recompensa del Próximo Bloque",
+    "unpledgeing": "Unstaking en progreso...",
+    "unpledge": "Unstaking",
+    "nodata": "Sin datos",
+    "language": "Español",
+    "copyright": "© 2025 OLYONE DAO",
+    "copy_success_message": "Copia exitosa",
+    "copy_error_message": "Copia fallida",
+    "expired": "Cuenta regresiva terminada",
+    "unclaimed_reward": "Recompensas reclamables",
+    "connect_wallet": "Conectar Billetera"
   },
   "notFound": {
     "comingSoon": "New version launching soon.",

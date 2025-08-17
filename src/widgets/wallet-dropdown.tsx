@@ -1,4 +1,3 @@
-'use client';
 import { useQuery } from '@tanstack/react-query';
 import ClipboardJS from 'clipboard';
 import { useTranslations } from 'next-intl';
@@ -453,7 +452,7 @@ export function WalletDropdown({
 
           <Segments
             options={[
-              { value: 'wallet', label: t('mywallet') },
+              { value: 'wallet', label: t('myWallet') },
               { value: 'account', label: t('account') },
             ]}
             value={activeTab}

@@ -21,7 +21,24 @@
   "header": {
     "language": "Ngôn ngữ",
     "network": "BNB Smart Chain",
-    "wallet": "Ví"
+    "wallet": "Ví",
+    "connect": "Kết nối Ví"
+  },
+  "invite": {
+    "title": "Mời",
+    "description": "Mời bạn bè tham gia staking và nhận thêm phần thưởng",
+    "referralCode": "Mã giới thiệu",
+    "enterReferralCode": "Nhập mã giới thiệu",
+    "submit": "Gửi",
+    "copyReferralLink": "Sao chép liên kết giới thiệu",
+    "inviteSuccess": "Mời thành công",
+    "invalidReferralCode": "Mã giới thiệu không hợp lệ"
+  },
+  "netWork": {
+    "changeNet": "Nhấp để chuyển đổi mạng",
+    "connect": "Vui lòng kết nối ví trước",
+    "noSupport": "Mạng không xác định",
+    "NotConnected": "Mạng chưa kết nối"
   },
   "staking": {
     "stake": "Stake",
