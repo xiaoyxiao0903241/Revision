@@ -119,7 +119,7 @@ const Market = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               </View>
               <Statistics
                 title={t('totalPerformance')}
-                value={`${formatNumbedecimalScale(safeMyMessInfo.market || 0, 6)} OLY`}
+                value={`${formatNumbedecimalScale(safeMyMessInfo.market || 0, 2)} OLY`}
                 desc={`${formatCurrency(olyPrice * Number(safeMyMessInfo?.market ?? 0))}`}
                 size='sm'
               />
@@ -134,7 +134,7 @@ const Market = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               </View>
               <Statistics
                 title={t('smallTeamPerformance')}
-                value={`${formatNumbedecimalScale(safeMyMessInfo.smallMarket || 0, 6)} OLY`}
+                value={`${formatNumbedecimalScale(safeMyMessInfo.smallMarket || 0, 2)} OLY`}
                 desc={`${formatCurrency(olyPrice * Number(safeMyMessInfo?.smallMarket ?? 0))}`}
                 size='sm'
               />

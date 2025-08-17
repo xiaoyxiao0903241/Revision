@@ -105,7 +105,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
           <div className='flex flex-col gap-2 items-center justify-center'>
             <div>{t('rewardPool')}</div>
             <div className='font-mono text-2xl font-bold text-gradient'>
-              {formatNumbedecimalScale(totalBonus || 0, 6)} OLY
+              {formatNumbedecimalScale(totalBonus || 0, 2)} OLY
             </div>
             <div className='text-foreground/50 text-xs'>
               ${formatNumbedecimalScale(Number(totalBonus || 0) * olyPrice, 2)}
@@ -119,7 +119,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
             title={t('claimableRewardsAmount')}
             value={
               safeMyMessInfo?.claimableBonus
-                ? `${formatNumbedecimalScale(safeMyMessInfo?.claimableBonus || 0, 6)} OLY`
+                ? `${formatNumbedecimalScale(safeMyMessInfo?.claimableBonus || 0, 2)} OLY`
                 : '0 OLY'
             }
             desc={`$${formatNumbedecimalScale(Number(safeMyMessInfo?.claimableBonus || 0) * olyPrice, 2)}`}
@@ -148,7 +148,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               title={t('rewardsInRelease')}
               value={
                 myReward?.allPending
-                  ? `${formatNumbedecimalScale(myReward?.allPending || 0, 6)} OLY`
+                  ? `${formatNumbedecimalScale(myReward?.allPending || 0, 2)} OLY`
                   : '0 OLY'
               }
               desc={`$${formatNumbedecimalScale((myReward?.allPending || 0) * olyPrice, 2)}`}
@@ -166,7 +166,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               title={t('releasedRewardsAmount')}
               value={
                 myReward?.allClaimable
-                  ? `${formatNumbedecimalScale(myReward?.allClaimable || 0, 6)} OLY`
+                  ? `${formatNumbedecimalScale(myReward?.allClaimable || 0, 2)} OLY`
                   : '0 OLY'
               }
               desc={`$${formatNumbedecimalScale((myReward?.allClaimable || 0) * olyPrice, 2)}`}
@@ -197,7 +197,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               {t('turbineRewardsAmount')}
             </div>
             <div className='text-foreground/50 font-mono text-xl'>
-              {formatNumbedecimalScale(turbineMessData?.receivedAmount || 0, 6)}{' '}
+              {formatNumbedecimalScale(turbineMessData?.receivedAmount || 0, 2)}{' '}
               OLY
             </div>
             <div className='text-foreground/50 text-xs'>
@@ -219,7 +219,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
                 {t('unlockedRewardsAmount')}
               </div>
               <div className='text-foreground/50 font-mono text-xl'>
-                {formatNumbedecimalScale(turbineAmount || 0, 6)} OLY
+                {formatNumbedecimalScale(turbineAmount || 0, 2)} OLY
               </div>
               <div className='text-foreground/50 text-xs'>
                 ${formatNumbedecimalScale((turbineAmount || 0) * olyPrice, 2)}
@@ -248,7 +248,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
           <div className='flex flex-col py-4 gap-2 items-center justify-center'>
             <div>{t('rewardPool')}</div>
             <div className='font-mono text-2xl font-bold text-gradient'>
-              {formatNumbedecimalScale(safeMyMessInfo?.totalBonus || 0, 6)} OLY
+              {formatNumbedecimalScale(safeMyMessInfo?.totalBonus || 0, 2)} OLY
             </div>
             <div className='text-foreground/50 text-xs'>
               $
@@ -267,7 +267,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
             title={t('claimableRewardsAmount')}
             value={
               safeMyMessInfo?.claimableBonus
-                ? `${formatNumbedecimalScale(safeMyMessInfo?.claimableBonus || 0, 6)} OLY`
+                ? `${formatNumbedecimalScale(safeMyMessInfo?.claimableBonus || 0, 2)} OLY`
                 : '0 OLY'
             }
             desc={`$${formatNumbedecimalScale(Number(safeMyMessInfo?.claimableBonus || 0) * olyPrice, 2)}`}
@@ -294,7 +294,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               title={t('rewardsInRelease')}
               value={
                 myReward?.allPending
-                  ? `${formatNumbedecimalScale(myReward?.allPending || 0, 6)} OLY`
+                  ? `${formatNumbedecimalScale(myReward?.allPending || 0, 2)} OLY`
                   : '0 OLY'
               }
               desc={`$${formatNumbedecimalScale((myReward?.allPending || 0) * olyPrice, 2)}`}
@@ -311,7 +311,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               title={t('releasedRewardsAmount')}
               value={
                 myReward?.allClaimable
-                  ? `${formatNumbedecimalScale(myReward?.allClaimable || 0, 6)} OLY`
+                  ? `${formatNumbedecimalScale(myReward?.allClaimable || 0, 2)} OLY`
                   : '0 OLY'
               }
               desc={`$${formatNumbedecimalScale((myReward?.allClaimable || 0) * olyPrice, 2)}`}
@@ -341,7 +341,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               {t('turbineRewardsAmount')}
             </div>
             <div className='text-foreground/50 font-mono text-xl'>
-              {formatNumbedecimalScale(turbineMessData?.receivedAmount || 0, 6)}{' '}
+              {formatNumbedecimalScale(turbineMessData?.receivedAmount || 0, 2)}{' '}
               OLY
             </div>
             <div className='text-foreground/50 text-xs'>
@@ -363,7 +363,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
                 {t('unlockedRewardsAmount')}
               </div>
               <div className='text-foreground/50 font-mono text-xl'>
-                {formatNumbedecimalScale(turbineAmount || 0, 6)} OLY
+                {formatNumbedecimalScale(turbineAmount || 0, 2)} OLY
               </div>
               <div className='text-foreground/50 text-xs'>
                 ${formatNumbedecimalScale((turbineAmount || 0) * olyPrice, 2)}
