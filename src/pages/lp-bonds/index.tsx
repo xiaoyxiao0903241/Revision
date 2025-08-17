@@ -1,4 +1,5 @@
-import { notFound } from 'next/navigation';
+import LocaleNotFound from '../not-found';
+
 export default function LPBonds() {
-  notFound();
+  return <LocaleNotFound />;
 }

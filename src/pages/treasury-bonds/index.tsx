@@ -1,4 +1,5 @@
-import { notFound } from 'next/navigation';
-export default function TreasuryBonds() {
-  notFound();
+import LocaleNotFound from '../not-found';
+
+export default function LPBonds() {
+  return <LocaleNotFound />;
 }
