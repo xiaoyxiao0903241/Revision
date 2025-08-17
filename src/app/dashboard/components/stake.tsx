@@ -172,7 +172,7 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
             <Statistics
               title={t('pendingRewardsBalance')}
               value={`${formatNumbedecimalScale(rebalseProfit ?? 0, 6)} OLY`}
-              desc={`${formatCurrency(olyPrice * Number(safeMyMessInfo?.claimableBonus ?? 0))}`}
+              desc={`${formatCurrency(olyPrice * Number(rebalseProfit ?? 0))}`}
               size='md'
             />
           </View>
@@ -180,8 +180,11 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
         <div className='border-t border-foreground/10 w-full'></div>
         <PositionDetails
           data={{
-            myStakedAmount: `${formatNumbedecimalScale(allStakeAmount || 0, 6)} OLY`,
-            lifetimeRewards: `${formatNumbedecimalScale(safeMyMessInfo?.stakedRewardAmount || 0, 6)} OLY`,
+            myStakedAmount: String(allStakeAmount), // `${formatNumbedecimalScale(allStakeAmount || 0, 6)} OLY`,
+            lifetimeRewards: formatNumbedecimalScale(
+              safeMyMessInfo?.stakedRewardAmount || 0,
+              6
+            ), // `${formatNumbedecimalScale(safeMyMessInfo?.stakedRewardAmount || 0, 6)} OLY`,
             timeInPool: `${getLongestStakingRemainingTime()} d`,
             olyPrice: olyPrice || 0,
             info1: t2('dash.life_rewards'),
