@@ -156,7 +156,10 @@
     "noRecords": "This address has no evangelist bonus-related transaction records.",
     "superNoRecords": "This address has no super bonus-related transaction records.",
     "referralNoRecords": "This address has no referral bonus-related transaction records.",
-    "stakeNow": "Stake Now"
+    "stakeNow": "Stake Now",
+    "net_position_quantity": "Net holdings",
+    "unlock_number_of_preaching_members": "Unlock number of preaching members",
+    "quantity_claimed": "Quantity claimed"
   },
   "noLockedStaking": {
     "title": "No-Lock Staking",

@@ -47,6 +47,7 @@ const SwapButton = dynamic(() => import('./component/SwapButton'), {
 export default function SwapPage() {
   const t = useTranslations('swap');
   const t2 = useTranslations('exchange');
+  const t3 = useTranslations('navigation');
   const { decimal, walletConnected: isLoading } = useMock();
   const [source, setSource] = React.useState<'USDT' | 'OLY'>('USDT');
   const [amount, setAmount] = useState('');
@@ -464,7 +465,7 @@ export default function SwapPage() {
       {/* 页面标题和描述 */}
       <Alert
         icon='swap'
-        title={t('title')}
+        title={t3('swap')}
         description={t('searchBestPrice')}
       />
 

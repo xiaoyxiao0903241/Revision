@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { useNolockStore } from '~/store/noLock';
 import { serviceReward } from '~/services/auth/dao';
-import { formatNumbedecimalScale, formatte2Num } from '~/lib/utils';
+import { formatNumbedecimalScale } from '~/lib/utils';
 import { ClaimSection } from '../components/ClaimSection';
 import DaoRecords, { DaoRecordsRef } from '../components/DaoRecords';
 import { useRef } from 'react';
@@ -56,7 +56,7 @@ export default function SuperBonusPage() {
             <div className='grid grid-cols-2 gap-4'>
               <Statistics
                 title={t('net_holding')}
-                value={`${formatte2Num.format(serviceRewardData?.totalDepositAmount || 0)} OLY`}
+                value={`${formatNumbedecimalScale(serviceRewardData?.totalDepositAmount || 0, 6)} OLY`}
                 desc={`$${formatNumbedecimalScale((serviceRewardData?.totalDepositAmount || 0) * olyPrice, 2)}`}
               />
               <Statistics
@@ -68,7 +68,7 @@ export default function SuperBonusPage() {
             <div className='grid grid-cols-2 gap-4'>
               <Statistics
                 title={t('total_bonus_amount')}
-                value={`${formatte2Num.format(serviceRewardData?.totalBonus || 0)} OLY`}
+                value={`${formatNumbedecimalScale(serviceRewardData?.totalBonus || 0, 6)} OLY`}
                 desc={`$${formatNumbedecimalScale((serviceRewardData?.totalBonus || 0) * olyPrice, 2)}`}
               />
             </div>

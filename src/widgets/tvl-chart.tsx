@@ -11,7 +11,7 @@ export const TVLChart: React.FC<{
   width?: string | number;
   height?: string | number;
   className?: string;
-  dataSource: Array<[string, number]>;
+  dataSource: Array<[string, string]>;
 }> = ({ dataSource, className = '' }) => {
   const { chartRef } = useChart();
   const chartOption = useMemo<EChartsOption>(() => {

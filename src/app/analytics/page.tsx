@@ -6,13 +6,17 @@ import { Alert, Card, InfoPopover, View } from '~/components';
 import { TVLChart, SmallChart, TVLStats } from '~/widgets';
 import { useQuery } from '@tanstack/react-query';
 import { useUserAddress } from '~/contexts/UserAddressContext';
-import { dashMess } from '~/services/auth/dashboard';
-import { homeBaseData } from '~/services/auth/home';
+import {
+  dashMess,
+  responseItem,
+  responseItemDefault,
+} from '~/services/auth/dashboard';
+// import { homeBaseData } from '~/services/auth/home';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
-import { getBalanceToken, getTotalSupply } from '~/wallet/lib/web3/stake';
-import { OLY, staking } from '~/wallet/constants/tokens';
-import { useNolockStore } from '~/store/noLock';
+// import { getBalanceToken, getTotalSupply } from '~/wallet/lib/web3/stake';
+// import { OLY, staking } from '~/wallet/constants/tokens';
+// import { useNolockStore } from '~/store/noLock';
 
 type DepositItem = {
   createdAt: string;
@@ -23,12 +27,26 @@ type smallChartData = {
   dates: string[];
   data: number[];
 };
+
+export type TVLDataSourceType = {
+  tokenMarketCap?: number;
+  lpMarketCap?: number;
+  treasuryMarketCap?: number;
+  AllolyStakeNum?: number;
+  AllLockOlyStakeNum?: number;
+  flexibleStakedAmount: number;
+  longStakedAmount: number;
+};
 export default function AnalyticsPage() {
   const t = useTranslations('analytics');
   const { userAddress } = useUserAddress();
-  const [depositList, setDepositList] = useState<Array<[string, number]>>([]);
+  const [depositList, setDepositList] = useState<Array<[string, string]>>([]);
+  const [todayObj, setTodayObj] = useState<responseItem>(responseItemDefault);
+  const [yesterdayObj, setYesterdayObj] =
+    useState<responseItem>(responseItemDefault);
+
   // const [priceList, setPriceList] = useState<smallChartData>({dates: [], data: []});
-  const { olyPrice, AllolyStakeNum } = useNolockStore();
+  // const { olyPrice, AllolyStakeNum } = useNolockStore();
   const [marketList, setMarketList] = useState<smallChartData>({
     dates: [],
     data: [],
@@ -37,21 +55,25 @@ export default function AnalyticsPage() {
   //   dates: [],
   //   data: [],
   // });
-  const [lpBondMarketCapList, setLpBondMarketCapList] =
-    useState<smallChartData>({ dates: [], data: [] });
+
+  // const [lpBondMarketCapList, setLpBondMarketCapList] =
+  //   useState<smallChartData>({ dates: [], data: [] });
   const [supplyList, setSupplyList] = useState<smallChartData>({
     dates: [],
     data: [],
   });
-  const [backingPriceList, setBackingPriceList] = useState<smallChartData>({
-    dates: [],
-    data: [],
-  });
-  const [premiumList, setPremiumList] = useState<smallChartData>({
-    dates: [],
-    data: [],
-  });
-  const [baseInfo, setBaseInfo] = useState({});
+  // const [backingPriceList, setBackingPriceList] = useState<smallChartData>({
+  //   dates: [],
+  //   data: [],
+  // });
+  // const [premiumList, setPremiumList] = useState<smallChartData>({
+  //   dates: [],
+  //   data: [],
+  // });
+  // const [baseInfo, setBaseInfo] = useState<TVLDataSourceType>({
+  //   flexibleStakedAmount: 0,
+  //   longStakedAmount: 0
+  // });
 
   //质押列表
   const { data: dashMessInfo } = useQuery({
@@ -62,60 +84,61 @@ export default function AnalyticsPage() {
         dayjs().format('YYYY-MM-DD')
       ),
     enabled: Boolean(userAddress),
-    retry: 1,
-    refetchInterval: 20000,
+    // retry: 1,
+    // refetchInterval: 20000,
   });
-  const { data: homeBaseInfo } = useQuery({
-    queryKey: ['homeBaseData', userAddress],
-    queryFn: () => homeBaseData(),
-    enabled: Boolean(userAddress),
-    retry: 1,
-    refetchInterval: 20000,
-  });
+  // const { data: homeBaseInfo } = useQuery({
+  //   queryKey: ['homeBaseData', userAddress],
+  //   queryFn: () => homeBaseData(),
+  //   enabled: Boolean(userAddress),
+  //   // retry: 1,
+  //   // refetchInterval: 20000,
+  // });
 
   console.log(dashMessInfo, 'dashMessInfodashMessInfo');
 
   //获取全网锁定质押的的oly数量
-  const { data: AllLockOlyStakeNum } = useQuery({
-    queryKey: ['analyticsAllolyStakeNum', userAddress],
-    queryFn: () =>
-      getBalanceToken({
-        address: staking as `0x${string}`,
-        TOKEN_ADDRESSES: OLY,
-        decimal: 9,
-      }),
-    enabled: Boolean(userAddress),
-    retry: 1,
-    refetchInterval: 600000,
-  });
+  // const { data: AllLockOlyStakeNum } = useQuery({
+  //   queryKey: ['analyticsAllolyStakeNum', userAddress],
+  //   queryFn: () =>
+  //     getBalanceToken({
+  //       address: staking as `0x${string}`,
+  //       TOKEN_ADDRESSES: OLY,
+  //       decimal: 9,
+  //     }),
+  //   enabled: Boolean(userAddress),
+  //   // retry: 1,
+  //   // refetchInterval: 600000,
+  // });
 
   //oly的总量
-  const { data: totalOlyNum } = useQuery({
-    queryKey: ['analyticsTotalSupply', userAddress],
-    queryFn: async () => {
-      const response = await getTotalSupply({
-        TOKEN_ADDRESSES: OLY,
-        decimal: 9,
-      });
-      return response || null;
-    },
-  });
+  // const { data: totalOlyNum } = useQuery({
+  //   queryKey: ['analyticsTotalSupply', userAddress],
+  //   queryFn: async () => {
+  //     const response = await getTotalSupply({
+  //       TOKEN_ADDRESSES: OLY,
+  //       decimal: 9,
+  //     });
+  //     return response || null;
+  //   },
+  // });
 
-  useEffect(() => {
-    setBaseInfo({
-      ...homeBaseInfo,
-      AllolyStakeNum: AllolyStakeNum,
-      AllLockOlyStakeNum: AllLockOlyStakeNum || 0,
-      tokenMarketCap: (totalOlyNum || 0) * olyPrice,
-    });
-  }, [
-    AllolyStakeNum,
-    AllolyStakeNum,
-    homeBaseInfo,
-    AllLockOlyStakeNum,
-    totalOlyNum,
-    olyPrice,
-  ]);
+  // useEffect(() => {
+  //   setBaseInfo({
+  //     ...homeBaseInfo,
+  //     AllolyStakeNum: AllolyStakeNum,
+  //     AllLockOlyStakeNum: AllLockOlyStakeNum || 0,
+  //     tokenMarketCap: (totalOlyNum || 0) * olyPrice,
+  //   });
+  //   console.log(baseInfo, 'baseInfo');
+  // }, [
+  //   AllolyStakeNum,
+  //   AllolyStakeNum,
+  //   homeBaseInfo,
+  //   AllLockOlyStakeNum,
+  //   totalOlyNum,
+  //   olyPrice,
+  // ]);
 
   const formatData = (data: DepositItem[]) => {
     const dateArr: string[] = [];
@@ -132,16 +155,20 @@ export default function AnalyticsPage() {
     // const priceList = dashMessInfo?.priceList || [];
     const marketList = dashMessInfo?.marketList || [];
     // const treasuryList = dashMessInfo?.treasuryList || [];
-    const lpBondMarketCapList = dashMessInfo?.lpBondMarketCapList || [];
+    // const lpBondMarketCapList = dashMessInfo?.lpBondMarketCapList || [];
     const supplyList = dashMessInfo?.supplyList || [];
-    const backingPriceList = dashMessInfo?.backingPriceList || [];
-    const premiumList = dashMessInfo?.PremiumList || [];
+    // const backingPriceList = dashMessInfo?.backingPriceList || [];
+    // const premiumList = dashMessInfo?.PremiumList || [];
+
+    setTodayObj(dashMessInfo?.todayObj || responseItemDefault);
+    setYesterdayObj(dashMessInfo?.yesterdayObj || responseItemDefault);
+
     if (depositList?.length) {
       const formattedList = depositList.map(item => {
-        return [
-          dayjs(item.createdAt).format('YYYY-MM-DD'),
-          Number(item.amount),
-        ] as [string, number];
+        return [dayjs(item.createdAt).format('YYYY-MM-DD'), item.amount] as [
+          string,
+          string,
+        ];
       });
       setDepositList(formattedList);
     }
@@ -158,25 +185,25 @@ export default function AnalyticsPage() {
     //   const formattedList = formatData(treasuryList);
     //   setTreasuryList(formattedList);
     // }
-    if (lpBondMarketCapList?.length) {
-      const formattedList = formatData(lpBondMarketCapList);
-      setLpBondMarketCapList(formattedList);
-    }
+    // if (lpBondMarketCapList?.length) {
+    //   const formattedList = formatData(lpBondMarketCapList);
+    //   setLpBondMarketCapList(formattedList);
+    // }
     // 流通量
     if (supplyList?.length) {
       const formattedList = formatData(supplyList);
       setSupplyList(formattedList);
     }
     // 托底价格
-    if (backingPriceList?.length) {
-      const formattedList = formatData(backingPriceList);
-      setBackingPriceList(formattedList);
-    }
+    // if (backingPriceList?.length) {
+    //   const formattedList = formatData(backingPriceList);
+    //   setBackingPriceList(formattedList);
+    // }
     // 托底价格
-    if (premiumList?.length) {
-      const formattedList = formatData(premiumList);
-      setPremiumList(formattedList);
-    }
+    // if (premiumList?.length) {
+    //   const formattedList = formatData(premiumList);
+    //   setPremiumList(formattedList);
+    // }
   }, [dashMessInfo]);
 
   return (
@@ -223,7 +250,7 @@ export default function AnalyticsPage() {
                 clipDirection='topLeft-bottomRight'
                 className='w-full py-5 px-6 bg-gradient-to-b from-[#333E8E]/30 to-[#576AF4]/30'
               >
-                <TVLStats dataSource={baseInfo} />
+                <TVLStats todayObj={todayObj} yesterdayObj={yesterdayObj} />
               </View>
             </div>
           </div>
@@ -270,7 +297,7 @@ export default function AnalyticsPage() {
           </Card>
 
           {/* 国库无风险价值 */}
-          <Card>
+          {/* <Card>
             <div className='flex items-center gap-2 '>
               <h4 className='text-xl font-semibold text-white'>
                 {t('treasury_risk_free_value')}
@@ -286,7 +313,7 @@ export default function AnalyticsPage() {
               title={t('treasury_risk_free_value')}
               dataSource={lpBondMarketCapList || []}
             />
-          </Card>
+          </Card> */}
 
           {/* 国库??? ① */}
           {/* <Card>
@@ -308,7 +335,7 @@ export default function AnalyticsPage() {
           </Card> */}
 
           {/* 托底价格 */}
-          <Card>
+          {/* <Card>
             <div className='flex items-center gap-2 '>
               <h4 className='text-xl font-semibold text-white'>
                 {t('backingPrice')}
@@ -324,10 +351,10 @@ export default function AnalyticsPage() {
               title={t('backingPrice')}
               dataSource={backingPriceList || []}
             />
-          </Card>
+          </Card> */}
 
           {/* 溢价指数 */}
-          <Card>
+          {/* <Card>
             <div className='flex items-center gap-2 '>
               <h4 className='text-xl font-semibold text-white'>
                 {t('Premium')}
@@ -343,7 +370,7 @@ export default function AnalyticsPage() {
               title={t('Premium')}
               dataSource={premiumList || []}
             />
-          </Card>
+          </Card> */}
         </div>
       </div>
     </div>

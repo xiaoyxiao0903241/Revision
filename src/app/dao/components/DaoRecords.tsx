@@ -11,7 +11,8 @@ import {
 import { Card, CardContent, Icon, Tabs } from '~/components';
 import ProTable, { ProTableColumn } from '~/components/ProTable';
 import { useUserAddress } from '~/contexts/UserAddressContext';
-import { formatDecimal } from '~/lib/utils';
+import { usePeriods } from '~/hooks/userPeriod';
+import { formatNumbedecimalScale } from '~/lib/utils';
 import { rewardHistoryList, rewardList } from '~/services/auth/dao';
 
 type DaoRecordsParams = {
@@ -40,6 +41,7 @@ type DaoRecordItem = {
   fromAddress?: string;
   interest?: string;
   recipient?: string;
+  sendAmount?: string;
 };
 
 export type DaoRecordsRef = {
@@ -50,12 +52,36 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
   ({ type }, ref) => {
     const t = useTranslations('dao');
     const tStaking = useTranslations('staking');
-    const tSwap = useTranslations('swap');
+    const tTurbine = useTranslations('turbine');
     const [activeTab, setActiveTab] = useState(0);
     const { userAddress } = useUserAddress();
     const [total, setTotal] = useState<number>(0);
     const [columns, setColumns] = useState<ProTableColumn<DaoRecordItem>[]>([]);
     const proTableRef = useRef<(() => void) | undefined>(undefined);
+    const periodListData = usePeriods();
+
+    const lockIndexDataSource = [
+      {
+        value: 0,
+        label: `5 ${tStaking('days')}`,
+        number: 5,
+      },
+      {
+        value: 1,
+        label: `10 ${tStaking('days')}`,
+        number: 10,
+      },
+      {
+        value: 2,
+        label: `15 ${tStaking('days')}`,
+        number: 15,
+      },
+      {
+        value: 3,
+        label: `20 ${tStaking('days')}`,
+        number: 20,
+      },
+    ];
 
     // 标签页数据
     const tabData = [
@@ -77,7 +103,79 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
       },
     };
     const historyColumns: ProTableColumn<DaoRecordItem>[] = [
-      evnetColumn,
+      {
+        title: t('event'),
+        dataIndex: 'event',
+        key: 'event',
+        render: () => {
+          return (
+            <span className='text-secondary'>
+              <Icon name='event' size={16} className='mr-2' />
+              {tStaking('claim')}
+            </span>
+          );
+        },
+      },
+      {
+        title: t('quantity_claimed'),
+        dataIndex: 'amount',
+        key: 'amount',
+        render: (value: string | number | boolean | undefined) => {
+          return <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>;
+        },
+      },
+      {
+        title: t('lockingCycle'),
+        dataIndex: 'lockIndex',
+        key: 'lockIndex',
+        render: (value: string | number | boolean | undefined) => {
+          const item = _.find(lockIndexDataSource, { value: Number(value) });
+          return <>{item?.label}</>;
+        },
+      },
+      {
+        title: tStaking('taxRate'),
+        dataIndex: 'lockIndex',
+        key: 'lockIndex',
+        render: (value: string | number | boolean | undefined) => {
+          const number = _.find(lockIndexDataSource, {
+            value: Number(value),
+          })?.number;
+          const periodItem = _.find(periodListData?.periodList || [], {
+            day: Number(number),
+          });
+          if (periodItem?.rate) {
+            return periodItem.rate;
+          }
+          return <>0 %</>;
+        },
+      },
+      {
+        title: tTurbine('amountToSend'),
+        dataIndex: 'sendAmount',
+        key: 'sendAmount',
+        render: (value: string | number | boolean | undefined, _record) => {
+          const number = _.find(lockIndexDataSource, {
+            value: Number(_record?.lockIndex),
+          })?.number;
+          const periodItem = _.find(periodListData?.periodList || [], {
+            day: Number(number),
+          });
+          const currentRate = Number(periodItem?.rate?.split('%')[0]);
+          if (periodItem?.rate) {
+            return (
+              <>
+                {formatNumbedecimalScale(
+                  Number(_record?.amount || 0) * ((100 - currentRate) / 100),
+                  6
+                )}{' '}
+                OLY
+              </>
+            );
+          }
+          return <>0.000000 OLY</>;
+        },
+      },
       {
         title: t('transaction_hash'),
         dataIndex: 'hash',
@@ -90,53 +188,7 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
           valueType: 'hash',
         },
       },
-      {
-        title: t('bonus_amount'),
-        dataIndex: 'amount',
-        key: 'amount',
-        render: (value: string | number | boolean | undefined) => {
-          return <>{formatDecimal(Number(value), 2)} OLY</>;
-        },
-      },
-      {
-        title: t('lockingCycle'),
-        dataIndex: 'lockIndex',
-        key: 'lockIndex',
-        render: (value: string | number | boolean | undefined) => {
-          const dataSource = [
-            {
-              value: 0,
-              label: `5 ${tStaking('days')}`,
-            },
-            {
-              value: 1,
-              label: `10 ${tStaking('days')}`,
-            },
-            {
-              value: 2,
-              label: `15 ${tStaking('days')}`,
-            },
-            {
-              value: 3,
-              label: `20 ${tStaking('days')}`,
-            },
-          ];
-          const item = _.find(dataSource, { value: Number(value) });
-          return <>{item?.label}</>;
-        },
-      },
-      {
-        title: tSwap('recipient'),
-        dataIndex: 'recipient',
-        key: 'recipient',
-        render: {
-          link: true,
-          href: (value: string | number | boolean | undefined) =>
-            `https://bscscan.com/address/${value}`,
-          target: '_blank',
-          valueType: 'hash',
-        },
-      },
+
       {
         title: t('date_time'),
         dataIndex: 'createdAt',
@@ -154,32 +206,37 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
           list = [
             evnetColumn,
             {
-              title: t('bonus_amount'),
-              dataIndex: 'actBonus',
-              key: 'actBonus',
-              render: (value: string | number | boolean | undefined) => {
-                return <>{formatDecimal(Number(value), 2)} OLY</>;
-              },
-            },
-            {
               title: t('unlock_layers_label'),
               dataIndex: 'unlockNum',
               key: 'unlockNum',
             },
             {
-              title: t('net_holding_amount'),
+              title: t('net_position_quantity'),
               dataIndex: 'stakeAmount',
               key: 'stakeAmount',
               render: (value: string | number | boolean | undefined) => {
-                return <>{formatDecimal(Number(value), 2)} OLY</>;
+                return (
+                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                );
               },
             },
+            {
+              title: t('bonus_amount'),
+              dataIndex: 'actBonus',
+              key: 'actBonus',
+              render: (value: string | number | boolean | undefined) => {
+                return <>{value} OLY</>;
+              },
+            },
+
             {
               title: t('loss_bonus_amount'),
               dataIndex: 'lossBonus',
               key: 'lossBonus',
               render: (value: string | number | boolean | undefined) => {
-                return <>{formatDecimal(Number(value), 2)} OLY</>;
+                return (
+                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                );
               },
             },
             {
@@ -196,11 +253,18 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
           list = [
             evnetColumn,
             {
-              title: t('bonus_amount'),
-              dataIndex: 'actBonus',
-              key: 'actBonus',
+              title: t('community_level'),
+              dataIndex: 'benefitLevel',
+              key: 'benefitLevel',
+            },
+            {
+              title: t('small_team_performance'),
+              dataIndex: 'smallMarket',
+              key: 'smallMarket',
               render: (value: string | number | boolean | undefined) => {
-                return <>{formatDecimal(Number(value), 2)} OLY</>;
+                return (
+                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                );
               },
             },
             {
@@ -208,21 +272,21 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
               dataIndex: 'market',
               key: 'market',
               render: (value: string | number | boolean | undefined) => {
-                return <>{formatDecimal(Number(value), 2)} OLY</>;
+                return (
+                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                );
               },
             },
+
             {
-              title: t('small_team_performance'),
-              dataIndex: 'smallMarket',
-              key: 'smallMarket',
+              title: t('bonus_amount'),
+              dataIndex: 'actBonus',
+              key: 'actBonus',
               render: (value: string | number | boolean | undefined) => {
-                return <>{formatDecimal(Number(value), 2)} OLY</>;
+                return (
+                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                );
               },
-            },
-            {
-              title: t('evangelist_level'),
-              dataIndex: 'benefitLevel',
-              key: 'benefitLevel',
             },
             {
               title: t('date_time'),
@@ -238,18 +302,21 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
           list = [
             evnetColumn,
             {
+              title: t('unlock_number_of_preaching_members'), // t('v_level_members_within_10_layers'),
+              dataIndex: 'sourceNum',
+              key: 'sourceNum',
+            },
+            {
               title: t('bonus_amount'),
               dataIndex: 'actBonus',
               key: 'actBonus',
               render: (value: string | number | boolean | undefined) => {
-                return <>{formatDecimal(Number(value), 2)} OLY</>;
+                return (
+                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                );
               },
             },
-            {
-              title: t('v_level_members_within_10_layers'),
-              dataIndex: 'sourceNum',
-              key: 'sourceNum',
-            },
+
             {
               title: t('date_time'),
               dataIndex: 'createTime',
@@ -263,14 +330,6 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
         case 'service':
           list = [
             evnetColumn,
-            {
-              title: t('bonus_amount'),
-              dataIndex: 'actBonus',
-              key: 'actBonus',
-              render: (value: string | number | boolean | undefined) => {
-                return <>{formatDecimal(Number(value), 2)} OLY</>;
-              },
-            },
             {
               title: t('source_address'),
               dataIndex: 'fromAddress',
@@ -287,7 +346,19 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
               dataIndex: 'interest',
               key: 'interest',
               render: (value: string | number | boolean | undefined) => {
-                return <>{formatDecimal(Number(value), 2)} OLY</>;
+                return (
+                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                );
+              },
+            },
+            {
+              title: t('bonus_amount'),
+              dataIndex: 'actBonus',
+              key: 'actBonus',
+              render: (value: string | number | boolean | undefined) => {
+                return (
+                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                );
               },
             },
             {

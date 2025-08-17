@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { useNolockStore } from '~/store/noLock';
 import { rewardPromotion } from '~/services/auth/dao';
-import { formatNumbedecimalScale, formatte2Num } from '~/lib/utils';
+import { formatNumbedecimalScale } from '~/lib/utils';
 import { ClaimSection } from '../components/ClaimSection';
 import DaoRecords, { DaoRecordsRef } from '../components/DaoRecords';
 import { useRef } from 'react';
@@ -59,7 +59,7 @@ export default function EvangelistBonusPage() {
             <div className='grid grid-cols-2 gap-4'>
               <Statistics
                 title={t('net_holding')}
-                value={`${formatte2Num.format(rewardPromotionData?.totalDepositAmount || 0)} OLY`}
+                value={`${formatNumbedecimalScale(rewardPromotionData?.totalDepositAmount || 0, 6)} OLY`}
                 desc={`$${formatNumbedecimalScale((rewardPromotionData?.totalDepositAmount || 0) * olyPrice, 2)}`}
               />
               <Statistics
@@ -75,7 +75,7 @@ export default function EvangelistBonusPage() {
               />
               <Statistics
                 title={t('small_team_performance')}
-                value={`${formatte2Num.format(rewardPromotionData?.smallMarket || 0)} OLY`}
+                value={`${formatNumbedecimalScale(rewardPromotionData?.smallMarket || 0, 6)} OLY`}
                 desc={`$${formatNumbedecimalScale((rewardPromotionData?.smallMarket || 0) * olyPrice, 2)}`}
               />
             </div>
@@ -83,12 +83,12 @@ export default function EvangelistBonusPage() {
             <div className='grid grid-cols-2 gap-4 mt-4'>
               <Statistics
                 title={t('total_performance')}
-                value={`${formatte2Num.format(rewardPromotionData?.market || 0)} OLY`}
+                value={`${formatNumbedecimalScale(rewardPromotionData?.market || 0, 6)} OLY`}
                 desc={`$${formatNumbedecimalScale((rewardPromotionData?.market || 0) * olyPrice, 2)}`}
               />
               <Statistics
                 title={t('total_bonus_amount')}
-                value={`${formatte2Num.format(rewardPromotionData?.totalBonus || 0)} OLY`}
+                value={`${formatNumbedecimalScale(rewardPromotionData?.totalBonus || 0, 6)} OLY`}
                 desc={`$${formatNumbedecimalScale((rewardPromotionData?.totalBonus || 0) * olyPrice, 2)}`}
               />
             </div>

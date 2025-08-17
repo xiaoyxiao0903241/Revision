@@ -184,7 +184,10 @@
     "referralNoRecords": "此地址没有推荐奖相关的交易记录。",
     "stakeNow": "立即质押",
     "currentlyReceiving": "正在領取中...",
-    "lockingCycle": "鎖定周期"
+    "lockingCycle": "鎖定周期",
+    "net_position_quantity": "净持倉數",
+    "unlock_number_of_preaching_members": "解鎖佈道成員數",
+    "quantity_claimed": "領取數量"
   },
   "noLockedStaking": {
     "title": "无锁定期质押",

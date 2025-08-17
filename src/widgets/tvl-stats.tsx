@@ -5,22 +5,15 @@ import React, { useEffect, useState } from 'react';
 import { Icon, IconFontName, View } from '~/components';
 import { PieChart } from './small-chart';
 
-// 定义数据存储结构
-interface ComponentData {
-  name: string;
-  value: number;
-  icon: IconFontName;
-}
-
-interface HistoricalData {
-  timestamp: number;
-  tokenMarketCap: number;
-  lpMarketCap: number;
-  treasuryMarketCap: number;
-  components: ComponentData[];
-  AllolyStakeNum: number;
-  AllLockOlyStakeNum: number;
-}
+// interface HistoricalData {
+//   timestamp: number;
+//   tokenMarketCap: number;
+//   lpMarketCap: number;
+//   treasuryMarketCap: number;
+//   components: ComponentData[];
+//   AllolyStakeNum: number;
+//   AllLockOlyStakeNum: number;
+// }
 
 interface TVLDataSource {
   tokenMarketCap?: number;
@@ -28,60 +21,18 @@ interface TVLDataSource {
   treasuryMarketCap?: number;
   AllolyStakeNum?: number;
   AllLockOlyStakeNum?: number;
+  TVL: number;
+  flexibleStakedAmount: number;
+  longStakedAmount: number;
 }
 
 // TVL统计组件
-export const TVLStats: React.FC<{ dataSource: TVLDataSource }> = ({
-  dataSource,
-}) => {
+export const TVLStats: React.FC<{
+  todayObj: TVLDataSource;
+  yesterdayObj: TVLDataSource;
+}> = ({ todayObj, yesterdayObj }) => {
   const t = useTranslations('analytics');
   const [showGraph, setShowGraph] = useState(false);
-
-  // 从localStorage获取历史数据
-  const getHistoricalData = (): HistoricalData | null => {
-    if (typeof window !== 'undefined') {
-      const data = localStorage.getItem('tvlHistoricalData');
-      return data ? JSON.parse(data) : null;
-    }
-    return null;
-  };
-
-  // 保存当前数据到localStorage
-  const saveHistoricalData = (data: TVLDataSource) => {
-    if (typeof window !== 'undefined') {
-      const historicalData: HistoricalData = {
-        timestamp: Date.now(),
-        tokenMarketCap: data?.tokenMarketCap || 0,
-        lpMarketCap: data?.lpMarketCap || 0,
-        treasuryMarketCap: data?.treasuryMarketCap || 0,
-        AllolyStakeNum: data?.AllolyStakeNum || 0,
-        AllLockOlyStakeNum: data?.AllLockOlyStakeNum || 0,
-        components: [
-          {
-            name: t('no_lock_staking'),
-            value: data?.AllolyStakeNum || 0,
-            icon: 'staking' as IconFontName,
-          },
-          {
-            name: t('locked_staking'),
-            value: data?.AllLockOlyStakeNum || 0,
-            icon: 'locked-staking' as IconFontName,
-          },
-          {
-            name: t('lp_bonds'),
-            value: data?.lpMarketCap || 0,
-            icon: 'lp-bonds' as IconFontName,
-          },
-          {
-            name: t('treasury_bonds'),
-            value: data?.treasuryMarketCap || 0,
-            icon: 'treasury-bonds' as IconFontName,
-          },
-        ],
-      };
-      localStorage.setItem('tvlHistoricalData', JSON.stringify(historicalData));
-    }
-  };
 
   // 计算变化值
   const calculateChange = (current: number, previous: number) => {
@@ -112,31 +63,29 @@ export const TVLStats: React.FC<{ dataSource: TVLDataSource }> = ({
 
   // 处理数据更新
   useEffect(() => {
-    // 获取历史数据
-    const historicalData = getHistoricalData();
+    // 根据todayObj和yesterdayObj计算当前和之前的值
+    const currentTokenMarketCap = Math.floor(todayObj?.TVL || 0);
+    const previousTokenMarketCap = Math.floor(yesterdayObj?.TVL || 0);
 
-    // 当前数据（如果dataSource为空则使用demo数据）
-    const currentTokenMarketCap = dataSource?.tokenMarketCap || 0;
-    const currentLpMarketCap = dataSource?.lpMarketCap || 0;
-    const currentTreasuryMarketCap = dataSource?.treasuryMarketCap || 0;
-    const currentNoLockStaking = dataSource?.AllolyStakeNum || 0;
-    const currentLockedStaking = dataSource?.AllLockOlyStakeNum || 0;
-    // 获取历史值或使用默认值
-    const previousTokenMarketCap = historicalData?.tokenMarketCap || 0;
-    const previousLpMarketCap =
-      historicalData?.components?.find(c => c.name === t('lp_bonds'))?.value ||
-      0;
-    const previousTreasuryMarketCap =
-      historicalData?.components?.find(c => c.name === t('treasury_bonds'))
-        ?.value || 0;
-    const previousNoLockStaking =
-      historicalData?.components?.find(c => c.name === t('no_lock_staking'))
-        ?.value || 0;
-    const previousLockedStaking =
-      historicalData?.components?.find(c => c.name === t('locked_staking'))
-        ?.value || 0;
+    const currentLpMarketCap = 0; // todayObj?.lpMarketCap || 0;
+    const previousLpMarketCap = 0; // yesterdayObj?.lpMarketCap || 0;
 
-    // 计算TVL变化
+    const currentTreasuryMarketCap = 0; // todayObj?.treasuryMarketCap || 0;
+    const previousTreasuryMarketCap = 0; // yesterdayObj?.treasuryMarketCap || 0;
+
+    const currentNoLockStaking = Math.floor(
+      todayObj?.flexibleStakedAmount || 0
+    );
+    const previousNoLockStaking = Math.floor(
+      yesterdayObj?.flexibleStakedAmount || 0
+    );
+
+    const currentLockedStaking = Math.floor(todayObj?.longStakedAmount || 0);
+    const previousLockedStaking = Math.floor(
+      yesterdayObj?.longStakedAmount || 0
+    );
+
+    // 计算TVL变化 (使用tokenMarketCap作为TVL)
     const currentTVL = currentTokenMarketCap;
     const previousTVL = previousTokenMarketCap;
     const tvlChange = calculateChange(currentTVL, previousTVL);
@@ -203,8 +152,8 @@ export const TVLStats: React.FC<{ dataSource: TVLDataSource }> = ({
     });
 
     // 保存当前数据作为下次的历史数据
-    saveHistoricalData(dataSource);
-  }, [dataSource]);
+    // saveHistoricalData(todayObj);
+  }, [todayObj, yesterdayObj]);
 
   return (
     <div className='flex flex-col gap-4'>

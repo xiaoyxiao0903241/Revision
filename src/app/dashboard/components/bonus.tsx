@@ -11,7 +11,8 @@ import { myMessDataType } from '../DashboardPage';
 // import { coolAllCLaimAmount } from "~/services/auth/claim";
 import { useRouter } from 'next/navigation';
 import { turbineMess } from '~/services/auth/turbine';
-import { getStakeNum } from '~/wallet/lib/web3/turbine';
+import { receiveList } from '~/wallet/lib/web3/turbine';
+import { useEffect, useState } from 'react';
 
 const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
   const safeMyMessInfo = myMessInfo || {};
@@ -20,6 +21,8 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
   const router = useRouter();
   const { olyPrice } = useNolockStore();
   const { userAddress } = useUserAddress();
+  const [totalBonus, setTotalBonus] = useState<number>(0);
+  const [turbineAmount, setTurbineAmount] = useState<number>(0);
 
   const { data: myReward } = useQuery({
     queryKey: ['getRewardList', userAddress],
@@ -47,13 +50,28 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
   });
 
   // 获取涡轮可解锁的数量
-  const { data: stakeAmount } = useQuery({
-    queryKey: ['userStakeNum', userAddress],
-    queryFn: () => getStakeNum({ address: userAddress as `0x${string}` }),
+  const { data: ReceiveList } = useQuery({
+    queryKey: ['bonusReceiveList', userAddress],
+    queryFn: () => receiveList({ address: userAddress as `0x${string}` }),
     enabled: Boolean(userAddress),
-    // retry: 1,
-    // refetchInterval: 25000,
   });
+
+  useEffect(() => {
+    let amount = 0;
+    (ReceiveList || [])?.forEach((item: any) => {
+      amount += Number(item.amount);
+    });
+    setTurbineAmount(amount);
+  }, [ReceiveList]);
+
+  useEffect(() => {
+    const totalBonus =
+      Number(safeMyMessInfo?.claimableBonus || 0) +
+      Number(myReward?.allPending || 0) +
+      Number(myReward?.allClaimable || 0) +
+      Number(turbineMessData?.receivedAmount || 0);
+    setTotalBonus(totalBonus);
+  }, [safeMyMessInfo, myReward, turbineMessData]);
 
   return (
     <Card className='flex flex-col gap-6'>
@@ -87,14 +105,10 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
           <div className='flex flex-col gap-2 items-center justify-center'>
             <div>{t('rewardPool')}</div>
             <div className='font-mono text-2xl font-bold text-gradient'>
-              {formatNumbedecimalScale(safeMyMessInfo?.totalBonus || 0, 2)} OLY
+              {formatNumbedecimalScale(totalBonus || 0, 6)} OLY
             </div>
             <div className='text-foreground/50 text-xs'>
-              $
-              {formatNumbedecimalScale(
-                Number(safeMyMessInfo?.totalBonus || 0) * olyPrice,
-                2
-              )}
+              ${formatNumbedecimalScale(Number(totalBonus || 0) * olyPrice, 2)}
             </div>
           </div>
         </div>
@@ -105,7 +119,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
             title={t('claimableRewardsAmount')}
             value={
               safeMyMessInfo?.claimableBonus
-                ? `${formatNumbedecimalScale(safeMyMessInfo?.claimableBonus || 0, 2)} OLY`
+                ? `${formatNumbedecimalScale(safeMyMessInfo?.claimableBonus || 0, 6)} OLY`
                 : '0 OLY'
             }
             desc={`$${formatNumbedecimalScale(Number(safeMyMessInfo?.claimableBonus || 0) * olyPrice, 2)}`}
@@ -120,7 +134,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
             onClick={() => {
               router.push('/dao');
             }}
-            disabled={Number(safeMyMessInfo?.claimableBonus || 0) <= 0}
+            disabled={Number(safeMyMessInfo?.claimableBonus || 0) < 0.01}
           >
             {t('claim')}
           </Button>
@@ -134,7 +148,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               title={t('rewardsInRelease')}
               value={
                 myReward?.allPending
-                  ? `${formatNumbedecimalScale(myReward?.allPending || 0, 2)} OLY`
+                  ? `${formatNumbedecimalScale(myReward?.allPending || 0, 6)} OLY`
                   : '0 OLY'
               }
               desc={`$${formatNumbedecimalScale((myReward?.allPending || 0) * olyPrice, 2)}`}
@@ -152,7 +166,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               title={t('releasedRewardsAmount')}
               value={
                 myReward?.allClaimable
-                  ? `${formatNumbedecimalScale(myReward?.allClaimable || 0, 2)} OLY`
+                  ? `${formatNumbedecimalScale(myReward?.allClaimable || 0, 6)} OLY`
                   : '0 OLY'
               }
               desc={`$${formatNumbedecimalScale((myReward?.allClaimable || 0) * olyPrice, 2)}`}
@@ -161,12 +175,13 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
             />
             <Button
               variant='primary'
-              size='sm'
-              clipDirection='topRight-bottomLeft'
+              clipSize={8}
+              clipDirection='topLeft-bottomRight'
+              className='h-6 px-3'
               onClick={() => {
                 router.push('/cooling-pool');
               }}
-              disabled={Number(myReward?.allClaimable || 0) <= 0}
+              disabled={Number(myReward?.allClaimable || 0) < 0.01}
             >
               {t('claim')}
             </Button>
@@ -182,19 +197,13 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               {t('turbineRewardsAmount')}
             </div>
             <div className='text-foreground/50 font-mono text-xl'>
-              {formatNumbedecimalScale(
-                (turbineMessData?.receivedAmount || 0) +
-                  (turbineMessData?.claimedAmount || 0),
-                2
-              )}{' '}
+              {formatNumbedecimalScale(turbineMessData?.receivedAmount || 0, 6)}{' '}
               OLY
             </div>
             <div className='text-foreground/50 text-xs'>
               $
               {formatNumbedecimalScale(
-                ((turbineMessData?.receivedAmount || 0) +
-                  (turbineMessData?.claimedAmount || 0)) *
-                  olyPrice,
+                (turbineMessData?.receivedAmount || 0) * (olyPrice || 0),
                 2
               )}
             </div>
@@ -210,17 +219,18 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
                 {t('unlockedRewardsAmount')}
               </div>
               <div className='text-foreground/50 font-mono text-xl'>
-                {formatNumbedecimalScale(stakeAmount || 0, 2)} OLY
+                {formatNumbedecimalScale(turbineAmount || 0, 6)} OLY
               </div>
               <div className='text-foreground/50 text-xs'>
-                ${formatNumbedecimalScale((stakeAmount || 0) * olyPrice, 2)}
+                ${formatNumbedecimalScale((turbineAmount || 0) * olyPrice, 2)}
               </div>
             </div>
             <Button
               variant='primary'
-              size='sm'
-              clipDirection='topRight-bottomLeft'
-              disabled={Number(stakeAmount || 0) <= 0}
+              clipSize={8}
+              clipDirection='topLeft-bottomRight'
+              className='h-6 px-3'
+              disabled={Number(turbineAmount || 0) < 0.01}
               onClick={() => {
                 router.push('/turbine');
               }}
@@ -238,7 +248,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
           <div className='flex flex-col py-4 gap-2 items-center justify-center'>
             <div>{t('rewardPool')}</div>
             <div className='font-mono text-2xl font-bold text-gradient'>
-              {formatNumbedecimalScale(safeMyMessInfo?.totalBonus || 0, 2)} OLY
+              {formatNumbedecimalScale(safeMyMessInfo?.totalBonus || 0, 6)} OLY
             </div>
             <div className='text-foreground/50 text-xs'>
               $
@@ -257,7 +267,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
             title={t('claimableRewardsAmount')}
             value={
               safeMyMessInfo?.claimableBonus
-                ? `${formatNumbedecimalScale(safeMyMessInfo?.claimableBonus || 0, 2)} OLY`
+                ? `${formatNumbedecimalScale(safeMyMessInfo?.claimableBonus || 0, 6)} OLY`
                 : '0 OLY'
             }
             desc={`$${formatNumbedecimalScale(Number(safeMyMessInfo?.claimableBonus || 0) * olyPrice, 2)}`}
@@ -271,7 +281,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
             onClick={() => {
               router.push('/dao');
             }}
-            disabled={Number(safeMyMessInfo?.claimableBonus || 0) <= 0}
+            disabled={Number(safeMyMessInfo?.claimableBonus || 0) < 0.01}
           >
             {t('claim')}
           </Button>
@@ -284,7 +294,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               title={t('rewardsInRelease')}
               value={
                 myReward?.allPending
-                  ? `${formatNumbedecimalScale(myReward?.allPending || 0, 2)} OLY`
+                  ? `${formatNumbedecimalScale(myReward?.allPending || 0, 6)} OLY`
                   : '0 OLY'
               }
               desc={`$${formatNumbedecimalScale((myReward?.allPending || 0) * olyPrice, 2)}`}
@@ -301,7 +311,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               title={t('releasedRewardsAmount')}
               value={
                 myReward?.allClaimable
-                  ? `${formatNumbedecimalScale(myReward?.allClaimable || 0, 2)} OLY`
+                  ? `${formatNumbedecimalScale(myReward?.allClaimable || 0, 6)} OLY`
                   : '0 OLY'
               }
               desc={`$${formatNumbedecimalScale((myReward?.allClaimable || 0) * olyPrice, 2)}`}
@@ -309,12 +319,13 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
             />
             <Button
               variant='primary'
-              size='sm'
-              clipDirection='topRight-bottomLeft'
+              clipSize={8}
+              clipDirection='topLeft-bottomRight'
+              className='h-6 px-3'
               onClick={() => {
                 router.push('/cooling-pool');
               }}
-              disabled={Number(myReward?.allClaimable || 0) <= 0}
+              disabled={Number(myReward?.allClaimable || 0) < 0.01}
             >
               {t('claim')}
             </Button>
@@ -330,19 +341,13 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               {t('turbineRewardsAmount')}
             </div>
             <div className='text-foreground/50 font-mono text-xl'>
-              {formatNumbedecimalScale(
-                (turbineMessData?.receivedAmount || 0) +
-                  (turbineMessData?.claimedAmount || 0),
-                2
-              )}{' '}
+              {formatNumbedecimalScale(turbineMessData?.receivedAmount || 0, 6)}{' '}
               OLY
             </div>
             <div className='text-foreground/50 text-xs'>
               $
               {formatNumbedecimalScale(
-                ((turbineMessData?.receivedAmount || 0) +
-                  (turbineMessData?.claimedAmount || 0)) *
-                  olyPrice,
+                (turbineMessData?.receivedAmount || 0) * (olyPrice || 0),
                 2
               )}
             </div>
@@ -358,17 +363,18 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
                 {t('unlockedRewardsAmount')}
               </div>
               <div className='text-foreground/50 font-mono text-xl'>
-                {formatNumbedecimalScale(stakeAmount || 0, 2)} OLY
+                {formatNumbedecimalScale(turbineAmount || 0, 6)} OLY
               </div>
               <div className='text-foreground/50 text-xs'>
-                ${formatNumbedecimalScale((stakeAmount || 0) * olyPrice, 2)}
+                ${formatNumbedecimalScale((turbineAmount || 0) * olyPrice, 2)}
               </div>
             </div>
             <Button
               variant='primary'
-              size='sm'
-              clipDirection='topRight-bottomLeft'
-              disabled={Number(stakeAmount || 0) <= 0}
+              clipSize={8}
+              clipDirection='topLeft-bottomRight'
+              className='h-6 px-3'
+              disabled={Number(turbineAmount || 0) < 0.01}
               onClick={() => {
                 router.push('/turbine');
               }}

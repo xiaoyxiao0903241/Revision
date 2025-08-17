@@ -3,9 +3,10 @@ import _ from 'lodash';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import React, { forwardRef, useCallback, useEffect, useState } from 'react';
-import { Button, Pager } from '~/components';
+import { Pager } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
-import { cn, dayjs, formatHash } from '~/lib/utils';
+import { cn, formatHash, formatTimeToLocal } from '~/lib/utils';
+import ConnectWalletButton from './web3/ConnectWalletButton';
 
 export type valueType = 'text' | 'date' | 'dateTime' | 'hash';
 
@@ -106,7 +107,7 @@ const ProTable = forwardRef(
   }: ProTableProps<T>) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const common = useTranslations();
-    const userAddress = useUserAddress();
+    const { userAddress } = useUserAddress();
     // 保存上一次的params用于比较
     const [prevParams, setPrevParams] = useState<
       Record<string, unknown> | undefined
@@ -140,9 +141,9 @@ const ProTable = forwardRef(
       const strValue = String(value);
       switch (valueType) {
         case 'date':
-          return dayjs(strValue).format('YYYY/MM/DD');
+          return formatTimeToLocal(strValue);
         case 'dateTime':
-          return dayjs(strValue).format('YYYY/MM/DD HH:mm:ss');
+          return formatTimeToLocal(strValue);
         case 'hash':
           return formatHash(strValue);
         case 'text':
@@ -326,26 +327,12 @@ const ProTable = forwardRef(
                   {!userAddress ? (
                     <>
                       {common('walletNotConnected')}
-                      <Button
-                        clipDirection='topRight-bottomLeft'
-                        className='w-auto'
-                      >
-                        {common('connectWallet')}
-                      </Button>
+                      <ConnectWalletButton />
                     </>
                   ) : (
                     <>
                       {appendNotDataText && appendNotDataText}
-                      <Button
-                        clipDirection='topRight-bottomLeft'
-                        className='flex-wrap text-wrap'
-                        style={{
-                          whiteSpace: 'wrap',
-                          height: 'auto',
-                        }}
-                      >
-                        {notDataText || common('common.nodata')}
-                      </Button>
+                      {notDataText || common('common.nodata')}
                     </>
                   )}
                 </td>
