@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { Alert, RoundedLogo, View } from '~/components';
+import { Alert, Button, RoundedLogo, View } from '~/components';
 import { Card } from '~/components/card';
 import { useMock } from '~/hooks/useMock';
 import {
@@ -491,7 +491,7 @@ export default function SwapPage() {
                 }}
               >
                 <BalanceCard
-                  balance={formattedFromBalance}
+                  balance={formatDecimal(Number(formattedFromBalance), 2)}
                   symbol={sourceOption!.symbol}
                   closePer={closePer}
                   onChange={value => {
@@ -505,15 +505,15 @@ export default function SwapPage() {
 
               {/* 交换图标 - 浮动在两个卡片之间 */}
               <div
-                className='py-1 z-20 cursor-pointer w-full flex items-center justify-center'
+                className=' z-20 cursor-pointer w-full flex items-center justify-center'
                 onClick={handleTokenSwap}
               >
                 <Image
-                  src='/images/icon/swap.png'
+                  src='/images/icon/arrow_d.png'
                   alt='swap'
                   className='z-20'
-                  width={48}
-                  height={48}
+                  width={55}
+                  height={55}
                 />
               </div>
 
@@ -528,7 +528,7 @@ export default function SwapPage() {
                 onChange={() => {}}
               >
                 <BalanceCard
-                  balance={formattedToBalance}
+                  balance={formatDecimal(Number(formattedToBalance), 4)}
                   symbol={destinationOption!.symbol}
                   refreshTokenBalance={refreshTokenBalance}
                 />
@@ -620,7 +620,64 @@ export default function SwapPage() {
               allowFullScreen
             ></iframe>
           </Card>
-
+          <Button
+            clipDirection='topRight-bottomLeft'
+            className='font-mono w-full mt-4'
+            variant='default'
+            onClick={() => {
+              window.open(
+                'https://ave.ai/token/0x544028231562a43b106fbceca722b65cb5c861b0-bsc?from=Token'
+              );
+            }}
+          >
+            <div className='flex gap-x-3 items-center justify-between w-full'>
+              <div></div>
+              <div className='flex items-center gap-x-3'>
+                <Image
+                  alt=''
+                  src='/images/icon/exchange.png'
+                  width={24}
+                  height={18}
+                ></Image>
+                <span className='font-normal'>Trade on AVE</span>
+              </div>
+              <Image
+                alt=''
+                src='/images/icon/share.png'
+                width={24}
+                height={18}
+              ></Image>
+            </div>
+          </Button>
+          <Button
+            clipDirection='topRight-bottomLeft'
+            className='font-mono w-full mt-4'
+            variant='default'
+            onClick={() => {
+              window.open(
+                'https://dexscreener.com/bsc/0x6865704FF097b1105Ed42B8517020e14Fe9A2ABD'
+              );
+            }}
+          >
+            <div className='flex gap-x-3 items-center justify-between w-full'>
+              <div></div>
+              <div className='flex items-center gap-x-3'>
+                <Image
+                  alt=''
+                  src='/images/icon/exchange.png'
+                  width={24}
+                  height={18}
+                ></Image>
+                <span className='font-normal'>Trade on dexscreener</span>
+              </div>
+              <Image
+                alt=''
+                src='/images/icon/share.png'
+                width={24}
+                height={18}
+              ></Image>
+            </div>
+          </Button>
           {/* 右侧：价格图表 */}
           {/* <Card className="flex flex-col gap-5">
             <h3 className="text-sm font-semibold">{t("priceChart")}</h3>
