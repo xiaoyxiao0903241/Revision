@@ -17,11 +17,7 @@ import {
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { useContractError } from '~/hooks/useContractError';
 import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
-import {
-  fallbackCopyText,
-  formatAddress,
-  formatNumbedecimalScale,
-} from '~/lib/utils';
+import { fallbackCopyText, formatNumbedecimalScale } from '~/lib/utils';
 import { inviterInfo } from '~/services/auth/invite';
 import MaxInviteAbi from '~/wallet/constants/MatrixNetworkAbi.json';
 import { matrixNetwork } from '~/wallet/constants/tokens';
@@ -33,9 +29,11 @@ const isValidEthereumAddress = (address: string): boolean => {
   return /^0x[a-fA-F0-9]{40}$/.test(address);
 };
 
+function formatInviteAddress(address: string): string {
+  return address.slice(0, 18) + '...' + address.slice(-15);
+}
 const InviteJoin = () => {
   const t = useTranslations('community');
-  const inviteT = useTranslations('invite');
   const commonT = useTranslations('common');
   const pathname = usePathname();
   const { userAddress } = useUserAddress();
@@ -112,11 +110,11 @@ const InviteJoin = () => {
 
   const handleJoin = async (address: string) => {
     if (!address) {
-      toast.error(inviteT('enterReferralId'));
+      toast.error(t('referralDescription'));
       return;
     }
     if (!publicClient || !userAddress) {
-      toast.error(inviteT('missingParams'));
+      toast.error(t('missingParams'));
       return;
     }
 
@@ -142,17 +140,17 @@ const InviteJoin = () => {
       const result = await publicClient.waitForTransactionReceipt({ hash });
 
       if (result.status === 'success') {
-        toast.success(inviteT('joinSuccess'));
+        toast.success(t('joinSuccess'));
         refetch();
       } else {
-        toast.error(inviteT('joinFailed'));
+        toast.error(t('joinFailed'));
       }
     } catch (error: unknown) {
       if (isContractError(error as Error)) {
         const errorMessage = handleContractError(error as Error);
         toast.error(errorMessage);
       } else {
-        toast.error(inviteT('unknownError'));
+        toast.error(t('unknownError'));
       }
     } finally {
       // setIsJoining(false);
@@ -196,7 +194,7 @@ const InviteJoin = () => {
                 <span className='text-white font-mono text-lg'>
                   {formatNumbedecimalScale(
                     InviterAmountInfo?.referralAmount || 0,
-                    6
+                    2
                   )}{' '}
                   OLY
                 </span>
@@ -208,7 +206,7 @@ const InviteJoin = () => {
                 <span className='text-white font-mono text-lg'>
                   {formatNumbedecimalScale(
                     InviterAmountInfo?.totalAmount || 0,
-                    6
+                    2
                   )}{' '}
                   OLY
                 </span>
@@ -227,14 +225,14 @@ const InviteJoin = () => {
               <label className='text-gray-300 text-sm'>{t('referralBy')}</label>
               <div className='bg-[#1b1f48] items-center flex shadow-[inset_0_0_20px_rgba(84,119,247,0.5)] px-3 py-4 w-full xl:w-5/6'>
                 {inviteInfo?.isActive ? (
-                  formatAddress(inviteInfo.networkMap as string)
+                  formatInviteAddress(inviteInfo.networkMap as string)
                 ) : (
                   <>
                     <Input
                       value={code}
                       className='flex-1'
                       onChange={e => handleCodeChange(e.target.value)}
-                      placeholder={inviteT('enterReferralId')}
+                      placeholder={t('referralDescription')}
                     />
                     <button
                       className='bg-transparent gradient-text font-bold text-sm'
@@ -267,14 +265,14 @@ const InviteJoin = () => {
                   {t('referralLink')}
                 </label>
                 <div className='flex gap-2 items-center'>
-                  <div className='text-white font-mono text-sm'>
+                  <div className='text-white font-mono text-sm break-all break-words'>
                     {inviteInfo?.isActive ? (
                       <>
                         <span>{link}</span>
                       </>
                     ) : (
                       <span className='opacity-50'>
-                        {inviteT('noLinkAvailable')}
+                        {t('nobindDescription')}
                       </span>
                     )}
                   </div>
@@ -282,7 +280,7 @@ const InviteJoin = () => {
               </div>
               <Button
                 onClick={handleCopy}
-                className='px-4 h-8'
+                className='px-4 h-8 min-w-[100px]'
                 clipSize={8}
                 clipDirection='topLeft-bottomRight'
                 disabled={!inviteInfo?.isActive || !link}

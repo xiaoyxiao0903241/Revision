@@ -6,6 +6,7 @@ import { Abi, parseUnits } from 'viem';
 import { usePublicClient } from 'wagmi';
 import { Alert, Button, Card, Notification, Segments } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useContractError } from '~/hooks/useContractError';
 import { usePeriods } from '~/hooks/userPeriod';
 import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
 import { getCurrentBlock } from '~/lib/multicall';
@@ -24,7 +25,6 @@ import { WalletSummary } from '~/widgets';
 import { AmountCard } from '~/widgets/amount-card';
 import { ClaimSummary } from '~/widgets/claim-summary';
 import { ClaimSelect, DurationSelect } from '~/widgets/select-lockMyList';
-import { useContractError } from '~/hooks/useContractError';
 
 export default function ClaimPage() {
   const t = useTranslations('staking');
@@ -39,7 +39,7 @@ export default function ClaimPage() {
   const [stakList, setstakList] = useState<StakingItem[]>([]);
   const [curStakeItem, setCurStakeItem] = useState<StakingItem>();
   const [lockIndex, setLockIndex] = useState<'' | number>('');
-  const [lockClaimIndex, setLockClaimIndex] = useState<number>(0);
+  const [lockClaimIndex, setLockClaimIndex] = useState<number>(100);
   const [rate, setRate] = useState(0);
   const [rewardAmount, setRewardAmount] = useState('');
   const [boostAmount, setBoostAmount] = useState('');
@@ -101,6 +101,8 @@ export default function ClaimPage() {
       });
       const result = await publicClient.waitForTransactionReceipt({ hash });
       if (result.status === 'success') {
+        setLockClaimIndex(100);
+        setLockIndex('');
         toast.success(t2('toast.claim_success'), {
           id: toastId,
         });
@@ -154,7 +156,8 @@ export default function ClaimPage() {
         toast.success(t2('toast.claim_success'), {
           id: toastId,
         });
-
+        setLockClaimIndex(100);
+        setLockIndex('');
         queryClient.invalidateQueries({
           queryKey: ['UserNodeStakes', userAddress],
         });
@@ -204,7 +207,8 @@ export default function ClaimPage() {
         toast.success(t2('toast.claim_success'), {
           id: toastId,
         });
-
+        setLockClaimIndex(100);
+        setLockIndex('');
         await queryClient.invalidateQueries({
           queryKey: ['UserStakes', userAddress],
         });
@@ -270,7 +274,9 @@ export default function ClaimPage() {
   ]);
   useEffect(() => {
     if (periodList?.length) {
-      setRate(Number(periodList[lockClaimIndex].rate.split('%')[0]));
+      if (lockClaimIndex !== 100) {
+        setRate(Number(periodList[lockClaimIndex].rate.split('%')[0]));
+      }
     }
   }, [periodList, lockClaimIndex]);
 
@@ -313,7 +319,9 @@ export default function ClaimPage() {
             <DurationSelect
               options={stakList}
               value={lockIndex}
+              placeholder={t('selectStakingAmount')}
               onChange={value => {
+                console.log(value, '选择啊');
                 const curItem = stakList[value];
                 setCurStakeItem(curItem);
                 setLockIndex(value);
@@ -363,6 +371,7 @@ export default function ClaimPage() {
             <ClaimSelect
               options={periodList || []}
               value={lockClaimIndex}
+              placeholder={t('selectRelease')}
               onChange={value => {
                 if (periodList) {
                   setRate(Number(periodList[value].rate.split('%')[0]));
@@ -387,6 +396,7 @@ export default function ClaimPage() {
                   (curStakeItem && curStakeItem.blockReward < 0.01) ||
                   isDisabled ||
                   curStakeItem?.blockReward === 0 ||
+                  lockClaimIndex === 100 ||
                   Number(rewardAmount) === 0
                     ? 'disabled'
                     : 'primary'
@@ -395,6 +405,7 @@ export default function ClaimPage() {
                   (curStakeItem && curStakeItem.blockReward < 0.01) ||
                   isDisabled ||
                   curStakeItem?.blockReward === 0 ||
+                  lockClaimIndex === 100 ||
                   Number(rewardAmount) === 0
                 }
                 onClick={() => {
@@ -416,6 +427,7 @@ export default function ClaimPage() {
                   (curStakeItem && curStakeItem.interest < 0.01) ||
                   isDisabled ||
                   curStakeItem?.interest === 0 ||
+                  lockClaimIndex === 100 ||
                   Number(boostAmount) === 0
                     ? 'disabled'
                     : 'primary'
@@ -423,6 +435,7 @@ export default function ClaimPage() {
                 disabled={
                   (curStakeItem && curStakeItem.interest < 0.01) ||
                   isDisabled ||
+                  lockClaimIndex === 100 ||
                   curStakeItem?.interest === 0 ||
                   Number(boostAmount) === 0
                 }

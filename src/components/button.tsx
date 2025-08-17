@@ -8,7 +8,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     | 'outlined'
     | 'accent'
     | 'disabled'
-    | 'link';
+    | 'link'
+    | 'default';
   size?: 'sm' | 'md' | 'lg';
   children: React.ReactNode;
   // 斜切相关属性
@@ -45,6 +46,7 @@ export function Button({
     outlined:
       'bg-transparent border-2 border-[#434c8c] text-white hover:bg-white/10  shadow-[inset_0_0_20px_rgba(84,119,247,0.5)]',
     link: 'bg-transparent text-white hover:bg-white/10',
+    default: 'bg-[rgba(87,106,244,0.28)]',
   };
 
   const clipPath = getClipPath(clipDirection, clipSize);

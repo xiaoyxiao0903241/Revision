@@ -92,7 +92,6 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
         Number(hotDataStakeNum || 0) + Number(afterHotData?.principal || 0);
       let rebalseProfit = Number(demandProfitInfo?.rebalseProfit || 0);
       // let totalDays = 0;
-      console.log(myStakingList, myNodeStakingList, '5555555');
       if (myStakingList?.myStakingList || myNodeStakingList?.length) {
         const list =
           (myStakingList?.myStakingList.length &&
@@ -170,7 +169,7 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
           >
             <Statistics
               title={t('pendingRewardsBalance')}
-              value={`${formatNumbedecimalScale(rebalseProfit ?? 0, 6)} OLY`}
+              value={`${formatNumbedecimalScale(rebalseProfit ?? 0, 2)} OLY`}
               desc={`${formatCurrency(olyPrice * Number(rebalseProfit ?? 0))}`}
               size='md'
             />
@@ -179,12 +178,13 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
         <div className='border-t border-foreground/10 w-full'></div>
         <PositionDetails
           data={{
-            myStakedAmount: String(allStakeAmount), // `${formatNumbedecimalScale(allStakeAmount || 0, 6)} OLY`,
+            type: 'stake',
+            myStakedAmount: String(allStakeAmount), // `${formatNumbedecimalScale(allStakeAmount || 0, 2)} OLY`,
             lifetimeRewards: formatNumbedecimalScale(
               safeMyMessInfo?.stakedRewardAmount || 0,
-              6
-            ), // `${formatNumbedecimalScale(safeMyMessInfo?.stakedRewardAmount || 0, 6)} OLY`,
-            timeInPool: `${getLongestStakingRemainingTime()} d`,
+              2
+            ), // `${formatNumbedecimalScale(safeMyMessInfo?.stakedRewardAmount || 0, 2)} OLY`,
+            timeInPool: `${getLongestStakingRemainingTime()} ${t('days')}`,
             olyPrice: olyPrice || 0,
             info1: t2('dash.life_rewards'),
             info2: t2('dash.stake_left_time'),
@@ -218,7 +218,7 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
           >
             <Statistics
               title={t('pendingRewardsBalance')}
-              value={`${formatNumbedecimalScale(safeMyMessInfo?.bondRewardAmount ?? 0, 6)} OLY`}
+              value={`${formatNumbedecimalScale(safeMyMessInfo?.bondRewardAmount ?? 0, 2)} OLY`}
               desc='$0.00'
               size='md'
             />
@@ -228,9 +228,10 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
 
         <PositionDetails
           data={{
+            type: 'bonus',
             myStakedAmount: '0.00',
-            lifetimeRewards: `${formatNumbedecimalScale(safeMyMessInfo?.bondRewardAmount || 0, 6)}`,
-            timeInPool: '0 d',
+            lifetimeRewards: `${formatNumbedecimalScale(safeMyMessInfo?.bondRewardAmount || 0, 2)}`,
+            timeInPool: `0 ${t('days')}`,
             olyPrice: olyPrice || 0,
             info1: t2('dash.bond_rewards'),
             info2: t2('dash.bonds_nleft_time'),

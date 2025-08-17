@@ -12,7 +12,13 @@ export const SmallChart: React.FC<{
   title: string;
   className?: string;
   dataSource?: { dates: string[]; data: number[] };
-}> = ({ title, className = '', dataSource = { dates: [], data: [] } }) => {
+  currency?: string;
+}> = ({
+  title,
+  className = '',
+  dataSource = { dates: [], data: [] },
+  currency = '',
+}) => {
   const { chartRef } = useChart();
   const chartOption = useMemo<EChartsOption>(() => {
     const { dates, data } = dataSource;
@@ -42,7 +48,7 @@ export const SmallChart: React.FC<{
           }>;
           const data = paramArray[0];
           return `<div style="font-weight: bold; margin-bottom: 4px;">${data.axisValue}</div>
-                  <div>${title}: <span style="color: #10B981;">${data.value}</span></div>`;
+                  <div>${title}: <span style="color: #10B981;">${currency}${data.value}</span></div>`;
         },
       },
       grid: {

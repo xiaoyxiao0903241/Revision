@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { Alert, RoundedLogo, View } from '~/components';
+import { Alert, Button, RoundedLogo, View } from '~/components';
 import { Card } from '~/components/card';
 import { useMock } from '~/hooks/useMock';
 import {
@@ -503,15 +503,15 @@ export default function SwapPage() {
 
               {/* 交换图标 - 浮动在两个卡片之间 */}
               <div
-                className='py-1 z-20 cursor-pointer w-full flex items-center justify-center'
+                className=' z-20 cursor-pointer w-full flex items-center justify-center'
                 onClick={handleTokenSwap}
               >
                 <Image
-                  src='/images/icon/swap.png'
+                  src='/images/icon/arrow_d.png'
                   alt='swap'
                   className='z-20'
-                  width={48}
-                  height={48}
+                  width={55}
+                  height={55}
                 />
               </div>
 
@@ -618,7 +618,35 @@ export default function SwapPage() {
               allowFullScreen
             ></iframe>
           </Card>
-
+          <Button
+            clipDirection='topRight-bottomLeft'
+            className='font-mono w-full mt-4'
+            variant='default'
+            onClick={() => {
+              window.open(
+                'https://pancakeswap.finance/swap?chain=bsc&inputCurrency=0x55d398326f99059fF775485246999027B3197955&outputCurrency=0x544028231562a43b106FbceCA722B65Cb5C861b0'
+              );
+            }}
+          >
+            <div className='flex gap-x-3 items-center justify-between w-full'>
+              <div></div>
+              <div className='flex items-center gap-x-3'>
+                <Image
+                  alt=''
+                  src='/images/icon/exchange.png'
+                  width={24}
+                  height={18}
+                ></Image>
+                <span className='font-normal'>Trade on PancakeSwap</span>
+              </div>
+              <Image
+                alt=''
+                src='/images/icon/share.png'
+                width={24}
+                height={18}
+              ></Image>
+            </div>
+          </Button>
           {/* 右侧：价格图表 */}
           {/* <Card className="flex flex-col gap-5">
             <h3 className="text-sm font-semibold">{t("priceChart")}</h3>

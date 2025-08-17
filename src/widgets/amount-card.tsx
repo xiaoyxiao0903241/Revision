@@ -43,7 +43,7 @@ export const AmountCard: FC<{
         <div className='flex items-center gap-2'>
           <span className='font-mono'>{description}</span>
           <span className='font-mono text-white'>
-            {`${formatNumbedecimalScale(data.balance, 3)} OLY`}
+            {`${formatNumbedecimalScale(data.balance, 4)} OLY`}
           </span>
           <span
             className='font-mono gradient-text cursor-pointer'

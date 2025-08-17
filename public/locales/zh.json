@@ -362,7 +362,12 @@
     "totalCommunityPerformance": "社区总业绩",
     "joinTime": "加入时间",
     "submit": "提交",
-    "notData": "此地址没有推荐记录"
+    "notData": "此地址没有推荐记录",
+    "nobindDescription": "请先绑定推荐人地址",
+    "joinSuccess": "绑定成功",
+    "joinFailed": "绑定失败",
+    "unknownError": "无效地址",
+    "missingParams": "缺少参数"
   },
   "analytics": {
     "title": "分析",

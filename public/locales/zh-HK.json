@@ -30,7 +30,7 @@
     "claim": "领取",
     "records": "记录",
     "calculator": "计算器",
-    "selectDuration": "选择质押期限",
+    "selectRelease": "选择释放期限",
     "selectDurationPlaceholder": "选择质押期限",
     "selectStakingAmount": "选择质押数量",
     "amount": "金额",
@@ -48,7 +48,7 @@
     "Unreleased-Rewards": "未释放奖励",
     "statistics": "统计",
     "viewOnBscScan": "在BscScan上查看",
-    "annualPercentageRate": "APR",
+    "annualPercentageRate": "年平均收益率",
     "totalStaked": "总质押量",
     "stakers": "质押者数量",
     "olyMarketCap": "OLY市值",
@@ -332,7 +332,8 @@
     "totalCommunityPerformance": "社区锁仓总量",
     "joinTime": "加入时间",
     "submit": "提交",
-    "notData": "此地址没有推荐相关的记录"
+    "notData": "此地址没有推荐相关的记录",
+    "nobindDescription": "请先绑定推荐人地址"
   },
   "analytics": {
     "title": "分析",
@@ -415,6 +416,7 @@
     "turbineRewardsAmount": "涡轮中的奖金数量",
     "unlockedRewardsAmount": "涡轮中已解锁的数量",
     "claim": "领取",
+    "days": "天",
     "timeFilters": {
       "all": "全部",
       "1m": "1月",

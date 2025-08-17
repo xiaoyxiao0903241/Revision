@@ -33,7 +33,7 @@ export default function ClaimPage() {
   const [rebalseProfit, setRebalseProfit] = useState<number>(0);
   const [hotDataInfo, setStakeInfo] = useState<StakInfo>({ stakNum: 0 });
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
-  const [lockIndex, setLockIndex] = useState<number>(0);
+  const [lockIndex, setLockIndex] = useState<number>(100);
   const { userAddress } = useUserAddress();
   const publicClient = usePublicClient();
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
@@ -68,16 +68,14 @@ export default function ClaimPage() {
       });
       const result = await publicClient.waitForTransactionReceipt({ hash });
       if (result.status === 'success') {
-        toast.success(t('toast.claim_success'), {
+        toast.success(t2('toast.claim_success'), {
           id: toastId,
         });
         setClaimAmount('');
+        setLockIndex(100);
         await Promise.all([
           queryClient.invalidateQueries({
             queryKey: ['UserDemandProfit', userAddress],
-          }),
-          queryClient.invalidateQueries({
-            queryKey: ['demandStakHisData', 1, userAddress],
           }),
         ]);
       } else {
@@ -103,8 +101,9 @@ export default function ClaimPage() {
   useEffect(() => {
     if (list?.length) {
       setPeriodList(list);
-      // setCurPeriod(list[lockIndex])
-      setRate(Number(list[lockIndex].rate.split('%')[0]));
+      if (lockIndex !== 100) {
+        setRate(Number(list[lockIndex].rate.split('%')[0]));
+      }
     }
   }, [list, lockIndex]);
   useEffect(() => {
@@ -145,7 +144,7 @@ export default function ClaimPage() {
                 value: claimAmount,
                 desc: Number(claimAmount || 0) * olyPrice,
                 balance: normalProfit
-                  ? Number(formatNumbedecimalScale(normalProfit, 2))
+                  ? Number(formatNumbedecimalScale(normalProfit, 4))
                   : 0,
               }}
               onChange={value => {
@@ -191,7 +190,8 @@ export default function ClaimPage() {
                 normalProfit < 0.0001 ||
                 isDisabled ||
                 (rebalseProfit > 0 && hotDataInfo.stakNum > 0) ||
-                Number(claimAmount) === 0
+                Number(claimAmount) === 0 ||
+                lockIndex === 100
               }
               onClick={claimInterest}
             >

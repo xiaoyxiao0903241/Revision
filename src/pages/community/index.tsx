@@ -34,7 +34,7 @@ const Step: FC<{
         <div
           className={cn(
             'border-l md:border-t border-dashed border-foreground/50 h-full md:h-auto md:w-full',
-            isHiddenLine && 'md:hidden'
+            isHiddenLine && 'hidden'
           )}
         ></div>
       </div>

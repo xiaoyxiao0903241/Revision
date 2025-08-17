@@ -138,12 +138,12 @@ export const SidebarContent = () => {
     },
     {
       label: t('viewOnAve'),
-      href: ' https://ave.ai/token/${TOKEN_ADDRESSES.OLY}-bsc',
+      href: 'https://ave.ai/token/0x544028231562a43b106fbceca722b65cb5c861b0-bsc?from=Token',
       icon: '/images/icon/ave.png', // 使用默认图标
     },
     {
       label: t('viewOnDexScreener'),
-      href: 'https://dexscreener.com/bsc/${TOKEN_ADDRESSES.OLY}',
+      href: 'https://dexscreener.com/bsc/0x6865704FF097b1105Ed42B8517020e14Fe9A2ABD',
       icon: '/images/icon/dex.png', // 使用默认图标
     },
   ];

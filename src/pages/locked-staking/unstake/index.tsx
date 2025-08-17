@@ -223,6 +223,7 @@ export default function UnstakePage() {
             <DurationSelect
               options={stakList}
               value={lockIndex}
+              placeholder={t('selectStakingAmount')}
               onChange={value => {
                 const curItem = stakList[value];
                 setCurStakeItem(curItem);
