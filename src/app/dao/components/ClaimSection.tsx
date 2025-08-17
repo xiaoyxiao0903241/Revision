@@ -45,7 +45,8 @@ interface PeriodInfo {
   day: number;
   feeRate: number;
   feeRecipient: string;
-  rate: string;
+  rate: number;
+  rateFormat: string;
   releasedBlocks: string;
 }
 
@@ -70,7 +71,8 @@ const defaultPeriodInfo = {
   day: 0,
   feeRate: 0,
   feeRecipient: '',
-  rate: '0%',
+  rate: 0,
+  rateFormat: '0%',
   releasedBlocks: '',
 };
 
@@ -92,10 +94,19 @@ export const ClaimSection = ({
   const publicClient = usePublicClient();
   const { handleContractError, isContractError } = useContractError();
   const [cutDownTime, setCutDownTime] = useState<number>(0);
+  const [incomeList, setIncomeList] = useState<
+    Array<{ label: string; value: string }>
+  >([]);
   const { currentBlock, nextBlock } = useNolockStore();
-  useEffect(() => {
-    setCurrentRate(Number(currentPeriodInfo?.rate?.split('%')[0]));
-  }, [currentPeriodInfo]);
+
+  const formatRate = (rate: string) => {
+    return rate ? Number(rate?.split('%')[0]) : 0;
+  };
+
+  // 计算税后可领取数量
+  const formatunclaimedAmount = (amount: number, rate: number) => {
+    return Number(amount || 0) * ((100 - rate) / 100);
+  };
 
   // 计算rebase倒计时
   useEffect(() => {
@@ -104,6 +115,20 @@ export const ClaimSection = ({
       setCutDownTime(time);
     }
   }, [currentBlock, nextBlock]);
+
+  // 计算收益
+  useEffect(() => {
+    const unclaimedAmount = rewardData?.unclaimedAmount || 0;
+    const arr = periodListData?.periodList?.map(item => {
+      const rate: number = formatRate(item?.rate || '0%');
+      const amount = formatunclaimedAmount(unclaimedAmount, rate);
+      return {
+        label: `${item.day} Days`,
+        value: `${formatNumbedecimalScale(amount, 6)} OLY`,
+      };
+    });
+    setIncomeList(arr || []);
+  }, [rewardData, periodListData?.periodList]);
 
   let toastId: string | number | undefined;
   const claimRewardMutation = useMutation({
@@ -198,7 +223,6 @@ export const ClaimSection = ({
   return (
     <Card>
       {/* 倒计时 */}
-
       {type !== 'service' && (
         <div className='flex items-center text-sm gap-2'>
           <p className='text-foreground/50'>{t('next_payout_in')}:</p>
@@ -247,14 +271,17 @@ export const ClaimSection = ({
             it => Number(it.day) === Number(value)
           );
           if (periodItem) {
+            const currentRate = formatRate(periodItem?.rate || '0%');
             setCurrentPeriodInfo({
               index,
               day: periodItem.day ?? 0,
               feeRate: Number(periodItem.feeRate || 0),
               feeRecipient: periodItem.feeRecipient ?? '',
-              rate: periodItem.rate ?? '0%',
+              rate: currentRate ?? 0,
+              rateFormat: periodItem?.rate ?? '0%',
               releasedBlocks: String(periodItem.releasedBlocks) ?? '',
             });
+            setCurrentRate(currentRate);
           } else {
             setCurrentPeriodInfo(defaultPeriodInfo);
           }
@@ -275,12 +302,14 @@ export const ClaimSection = ({
 
       <ClaimSummary
         data={{
-          amount:
-            Number(rewardData?.unclaimedAmount || 0) *
-            ((100 - currentRate) / 100),
+          amount: formatunclaimedAmount(
+            rewardData?.unclaimedAmount || 0,
+            currentRate
+          ),
           taxRate: currentRate,
           incomeTax: Number(rewardData?.unclaimedAmount) * (currentRate / 100),
         }}
+        incomeList={incomeList}
       />
       {/* 领取按钮 */}
       <Button

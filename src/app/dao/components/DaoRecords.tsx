@@ -12,7 +12,7 @@ import { Card, CardContent, Icon, Tabs } from '~/components';
 import ProTable, { ProTableColumn } from '~/components/ProTable';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { usePeriods } from '~/hooks/userPeriod';
-import { formatDecimal } from '~/lib/utils';
+import { formatNumbedecimalScale } from '~/lib/utils';
 import { rewardHistoryList, rewardList } from '~/services/auth/dao';
 
 type DaoRecordsParams = {
@@ -121,7 +121,7 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
         dataIndex: 'amount',
         key: 'amount',
         render: (value: string | number | boolean | undefined) => {
-          return <>{formatDecimal(Number(value || 0), 6)} OLY</>;
+          return <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>;
         },
       },
       {
@@ -141,11 +141,9 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
           const number = _.find(lockIndexDataSource, {
             value: Number(value),
           })?.number;
-          console.log(periodListData?.periodList, 'periodListData?.periodList');
           const periodItem = _.find(periodListData?.periodList || [], {
             day: Number(number),
           });
-          console.log(periodItem, 'periodItemperiodItem');
           if (periodItem?.rate) {
             return periodItem.rate;
           }
@@ -167,7 +165,7 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
           if (periodItem?.rate) {
             return (
               <>
-                {formatDecimal(
+                {formatNumbedecimalScale(
                   Number(_record?.amount || 0) * ((100 - currentRate) / 100),
                   6
                 )}{' '}
@@ -217,7 +215,9 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
               dataIndex: 'stakeAmount',
               key: 'stakeAmount',
               render: (value: string | number | boolean | undefined) => {
-                return <>{value} OLY</>;
+                return (
+                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                );
               },
             },
             {
@@ -234,7 +234,9 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
               dataIndex: 'lossBonus',
               key: 'lossBonus',
               render: (value: string | number | boolean | undefined) => {
-                return <>{formatDecimal(Number(value), 2)} OLY</>;
+                return (
+                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                );
               },
             },
             {
@@ -260,7 +262,9 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
               dataIndex: 'smallMarket',
               key: 'smallMarket',
               render: (value: string | number | boolean | undefined) => {
-                return <>{value} OLY</>;
+                return (
+                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                );
               },
             },
             {
@@ -268,7 +272,9 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
               dataIndex: 'market',
               key: 'market',
               render: (value: string | number | boolean | undefined) => {
-                return <>{value} OLY</>;
+                return (
+                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                );
               },
             },
 
@@ -277,7 +283,9 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
               dataIndex: 'actBonus',
               key: 'actBonus',
               render: (value: string | number | boolean | undefined) => {
-                return <>{value} OLY</>;
+                return (
+                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                );
               },
             },
             {
@@ -303,7 +311,9 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
               dataIndex: 'actBonus',
               key: 'actBonus',
               render: (value: string | number | boolean | undefined) => {
-                return <>{value} OLY</>;
+                return (
+                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                );
               },
             },
 
@@ -336,7 +346,9 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
               dataIndex: 'interest',
               key: 'interest',
               render: (value: string | number | boolean | undefined) => {
-                return <>{value} OLY</>;
+                return (
+                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                );
               },
             },
             {
@@ -344,7 +356,9 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
               dataIndex: 'actBonus',
               key: 'actBonus',
               render: (value: string | number | boolean | undefined) => {
-                return <>{value} OLY</>;
+                return (
+                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                );
               },
             },
             {

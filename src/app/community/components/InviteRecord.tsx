@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { useTranslations } from 'next-intl';
 import { Card, CardTitle } from '~/components';
-import { formatte2Num } from '~/lib/utils';
+import { formatNumbedecimalScale } from '~/lib/utils';
 import List from '~/assets/list.svg';
 import { inviteHisList } from '~/services/auth/invite';
 import ProTable, { ProTableColumn } from '~/components/ProTable';
@@ -26,7 +26,7 @@ const InviteRecord = () => {
   const formatText = (value: string) => {
     return (
       <span>
-        {formatte2Num.format(Number(value || 0))}{' '}
+        {formatNumbedecimalScale(Number(value || 0), 6)}{' '}
         <span className='gradient-text'> OLY</span>
       </span>
     );
