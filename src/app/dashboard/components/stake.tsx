@@ -229,8 +229,8 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
 
         <PositionDetails
           data={{
-            myStakedAmount: '0.00 OLY',
-            lifetimeRewards: `${formatNumbedecimalScale(safeMyMessInfo?.bondRewardAmount || 0, 6)} OLY`,
+            myStakedAmount: '0.00',
+            lifetimeRewards: `${formatNumbedecimalScale(safeMyMessInfo?.bondRewardAmount || 0, 6)}`,
             timeInPool: '0 d',
             olyPrice: olyPrice || 0,
             info1: t2('dash.bond_rewards'),

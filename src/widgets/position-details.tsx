@@ -22,14 +22,14 @@ export const PositionDetails: FC<{
       <div className='grid grid-cols-2 gap-x-2 md:gap-x-36 gap-y-6'>
         <Statistics
           title={t('myStakedAmount')}
-          value={formatNumbedecimalScale(data.myStakedAmount || 0, 6)}
-          desc={`${formatCurrency(data?.olyPrice * Number(data?.myStakedAmount))}`}
+          value={`${formatNumbedecimalScale(data.myStakedAmount || 0, 6)} OLY`}
+          desc={`${formatCurrency(data?.olyPrice * Number(data?.myStakedAmount))} OLY`}
           size='sm'
         />
         <Statistics
           title={t('lifetimeRewards')}
-          value={formatNumbedecimalScale(data.lifetimeRewards || 0, 6)}
-          desc={`${formatCurrency(data?.olyPrice * Number(data?.lifetimeRewards))}`}
+          value={`${formatNumbedecimalScale(data.lifetimeRewards || 0, 6)} OLY`}
+          desc={`${formatCurrency(data?.olyPrice * Number(data?.lifetimeRewards))} OLY`}
           size='sm'
           info={<span>{data.info1}</span>}
         />
