@@ -216,7 +216,7 @@ export default function StakingPage() {
 
   return (
     <div className='space-y-6'>
-      <Alert icon='stake' title={'STAKE'} description={t('stake_tip')} />
+      <Alert icon='stake' title={t('stake')} description={t('stake_tip')} />
 
       {/* 主要内容区域 */}
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>

@@ -31,10 +31,10 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
   const chartOption = useMemo<EChartsOption>(() => {
     const dates = data.map(item => dayjs(item.createdAt).format('YYYY-MM-DD'));
     const totalPerformanceData = data.map(item =>
-      formatNumbedecimalScale(item.market, 2)
+      formatNumbedecimalScale(item.market, 6)
     );
     const smallTeamPerformanceData = data.map(item =>
-      formatNumbedecimalScale(item.smallMarket, 2)
+      formatNumbedecimalScale(item.smallMarket, 6)
     );
 
     const option: EChartsOption = {

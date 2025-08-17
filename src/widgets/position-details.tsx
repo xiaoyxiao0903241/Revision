@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { FC } from 'react';
 import { Statistics } from '~/components';
-import { formatCurrency } from '~/lib/utils';
+import { formatCurrency, formatNumbedecimalScale } from '~/lib/utils';
 
 export const PositionDetails: FC<{
   data: {
@@ -28,8 +28,8 @@ export const PositionDetails: FC<{
         />
         <Statistics
           title={t('lifetimeRewards')}
-          value={data.lifetimeRewards}
-          desc='$0.00'
+          value={`${formatNumbedecimalScale(data.lifetimeRewards || 0, 6)} OLY`}
+          desc={`${formatCurrency(data?.olyPrice * Number(data?.lifetimeRewards))} OLY`}
           size='sm'
           info={<span>{data.info1}</span>}
         />
