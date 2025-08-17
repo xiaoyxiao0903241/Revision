@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Input, View } from '~/components';
-import { cn, formatDecimal, formatNumbedecimalScale } from '~/lib/utils';
+import { cn, formatDecimal } from '~/lib/utils';
 
 export interface Balance {
   symbol: 'USDT' | 'OLY';
@@ -43,8 +43,8 @@ export const SwapCard: FC<{
             <span>
               ≈
               {data.symbol === 'USDT'
-                ? formatNumbedecimalScale((data && data.value) || 0, 2)
-                : formatNumbedecimalScale(
+                ? formatDecimal(Number(data && data.value) || 0, 2)
+                : formatDecimal(
                     data && Number(data.value) * ((data && data.olyPrice) || 0),
                     2
                   )}

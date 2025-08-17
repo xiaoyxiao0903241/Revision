@@ -491,7 +491,7 @@ export default function SwapPage() {
                 }}
               >
                 <BalanceCard
-                  balance={formatDecimal(Number(formattedFromBalance), 2)}
+                  balance={formattedFromBalance}
                   symbol={sourceOption!.symbol}
                   closePer={closePer}
                   onChange={value => {
@@ -528,7 +528,7 @@ export default function SwapPage() {
                 onChange={() => {}}
               >
                 <BalanceCard
-                  balance={formatDecimal(Number(formattedToBalance), 4)}
+                  balance={formattedToBalance}
                   symbol={destinationOption!.symbol}
                   refreshTokenBalance={refreshTokenBalance}
                 />
@@ -626,7 +626,7 @@ export default function SwapPage() {
             variant='default'
             onClick={() => {
               window.open(
-                'https://ave.ai/token/0x544028231562a43b106fbceca722b65cb5c861b0-bsc?from=Token'
+                'https://pancakeswap.finance/swap?chain=bsc&inputCurrency=0x55d398326f99059fF775485246999027B3197955&outputCurrency=0x544028231562a43b106FbceCA722B65Cb5C861b0'
               );
             }}
           >
@@ -639,36 +639,7 @@ export default function SwapPage() {
                   width={24}
                   height={18}
                 ></Image>
-                <span className='font-normal'>Trade on AVE</span>
-              </div>
-              <Image
-                alt=''
-                src='/images/icon/share.png'
-                width={24}
-                height={18}
-              ></Image>
-            </div>
-          </Button>
-          <Button
-            clipDirection='topRight-bottomLeft'
-            className='font-mono w-full mt-4'
-            variant='default'
-            onClick={() => {
-              window.open(
-                'https://dexscreener.com/bsc/0x6865704FF097b1105Ed42B8517020e14Fe9A2ABD'
-              );
-            }}
-          >
-            <div className='flex gap-x-3 items-center justify-between w-full'>
-              <div></div>
-              <div className='flex items-center gap-x-3'>
-                <Image
-                  alt=''
-                  src='/images/icon/exchange.png'
-                  width={24}
-                  height={18}
-                ></Image>
-                <span className='font-normal'>Trade on dexscreener</span>
+                <span className='font-normal'>Trade on PancakeSwap</span>
               </div>
               <Image
                 alt=''

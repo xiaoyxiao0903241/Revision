@@ -179,6 +179,7 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
         <div className='border-t border-foreground/10 w-full'></div>
         <PositionDetails
           data={{
+            type: 'stake',
             myStakedAmount: String(allStakeAmount), // `${formatNumbedecimalScale(allStakeAmount || 0, 2)} OLY`,
             lifetimeRewards: formatNumbedecimalScale(
               safeMyMessInfo?.stakedRewardAmount || 0,
@@ -228,6 +229,7 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
 
         <PositionDetails
           data={{
+            type: 'bonus',
             myStakedAmount: '0.00',
             lifetimeRewards: `${formatNumbedecimalScale(safeMyMessInfo?.bondRewardAmount || 0, 2)}`,
             timeInPool: '0 d',

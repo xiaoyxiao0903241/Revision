@@ -5,6 +5,7 @@ import { formatCurrency, formatNumbedecimalScale } from '~/lib/utils';
 
 export const PositionDetails: FC<{
   data: {
+    type?: string;
     myStakedAmount: string;
     lifetimeRewards: string;
     timeInPool: string;
@@ -21,7 +22,9 @@ export const PositionDetails: FC<{
       </div>
       <div className='grid grid-cols-2 gap-x-2 md:gap-x-36 gap-y-6'>
         <Statistics
-          title={t('mybondsAmount')}
+          title={
+            data.type === 'bonus' ? t('mybondsAmount') : t('myStakedAmount')
+          }
           value={`${formatNumbedecimalScale(data.myStakedAmount || 0, 2)} OLY`}
           desc={`${formatCurrency(data?.olyPrice * Number(data?.myStakedAmount))}`}
           size='sm'
