@@ -73,7 +73,7 @@ export default function SwapPage() {
   const searchParams = useSearchParams();
 
   // 获取路由参数
-  const type = searchParams.get('type');
+  const type = searchParams?.get('type') || 'buy';
 
   // 根据参数设置初始状态
   useEffect(() => {

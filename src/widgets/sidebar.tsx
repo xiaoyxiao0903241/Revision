@@ -17,7 +17,8 @@ interface NavigationItem {
 const NavigationItem = ({ item }: { item: NavigationItem }) => {
   const pathname = usePathname();
   const isActive =
-    pathname === item.href || pathname.startsWith(`${item.href}/`);
+    (pathname ?? '').endsWith(item.href) ||
+    (pathname ?? '').startsWith(`${item.href}/`);
 
   return (
     <Link

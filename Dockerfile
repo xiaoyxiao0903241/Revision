@@ -1,6 +1,6 @@
 FROM node:20-slim AS builder
 WORKDIR /app
-  
+
 COPY package.json pnpm-lock.yaml ./
 RUN --mount=type=cache,id=pnpm-store,target=/home/node/.pnpm-store \
     corepack enable \
@@ -11,7 +11,7 @@ COPY . .
 RUN pnpm run build
 
 FROM nginx:alpine AS static-server
-COPY --from=builder /pages/out /usr/share/nginx/html
+COPY --from=builder /app/out /usr/share/nginx/html
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
