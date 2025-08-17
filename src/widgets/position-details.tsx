@@ -21,9 +21,9 @@ export const PositionDetails: FC<{
       </div>
       <div className='grid grid-cols-2 gap-x-2 md:gap-x-36 gap-y-6'>
         <Statistics
-          title={t('myStakedAmount')}
-          value={`${formatNumbedecimalScale(data.myStakedAmount || 0, 6)} OLY`}
-          desc={`${formatCurrency(data?.olyPrice * Number(data?.myStakedAmount))} OLY`}
+          title={t('mybondsAmount')}
+          value={data.myStakedAmount}
+          desc={`$${formatCurrency(data?.olyPrice * Number(data?.myStakedAmount))}`}
           size='sm'
         />
         <Statistics

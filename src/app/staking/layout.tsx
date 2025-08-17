@@ -1,24 +1,24 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
-import { Navigator } from '~/widgets';
-import { useNolockStore } from '~/store/noLock';
 import { useQuery } from '@tanstack/react-query';
-import { useUserAddress } from '~/contexts/UserAddressContext';
-import { demandStakHis } from '~/services/auth/stake';
-import { formatTimeToLocal } from '~/lib/utils';
 import dayjs from 'dayjs';
-import { getTokenPrice, getTokenBalance } from '~/wallet/lib/web3/bond';
+import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
+import { useUserAddress } from '~/contexts/UserAddressContext';
 import { getCurrentBlock } from '~/lib/multicall';
-import {
-  getEnchBlock,
-  getBalanceToken,
-  getAllnetReabalseNum,
-  demandAfterHot,
-  demandProfit,
-  demandInfo,
-} from '~/wallet/lib/web3/stake';
+import { formatTimeToLocal } from '~/lib/utils';
+import { demandStakHis } from '~/services/auth/stake';
+import { useNolockStore } from '~/store/noLock';
 import { OLY, staking } from '~/wallet/constants/tokens';
+import { getTokenBalance, getTokenPrice } from '~/wallet/lib/web3/bond';
+import {
+  demandAfterHot,
+  demandInfo,
+  demandProfit,
+  getAllnetReabalseNum,
+  getBalanceToken,
+  getEnchBlock,
+} from '~/wallet/lib/web3/stake';
+import { Navigator } from '~/widgets';
 
 interface StakingLayoutProps {
   children: React.ReactNode;
@@ -151,6 +151,7 @@ export default function StakingLayout({ children }: StakingLayoutProps) {
   }, [hotData]);
 
   useEffect(() => {
+    console.log(demandProfitInfo, 'demandProfitInfo111');
     useNolockStore.setState({
       demandProfitInfo: {
         rebalseProfit: demandProfitInfo?.rebalseProfit || 0,

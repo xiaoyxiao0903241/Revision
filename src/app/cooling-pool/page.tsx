@@ -102,46 +102,47 @@ export default function CoolingPoolPage() {
         active: 1,
         periodIndex: it.periodIndex,
       }));
+      console.log('获取冷却池');
       setMyRewardList(rewardList);
       const list = [
         {
           title: t('rewardsInPool'),
           value: myReward?.allPending
             ? formatNumbedecimalScale(myReward?.allPending, 4)
-            : '0',
+            : '0.0000',
           unit: 'OLY',
           usdValue: myReward?.allPending
             ? formatNumbedecimalScale(
                 myReward?.allPending * Number(olyPrice),
-                2
+                4
               )
-            : '0',
+            : '0.0000',
         },
         {
           title: t('releasedRewards'),
           value: myReward?.allClaimable
             ? formatNumbedecimalScale(myReward?.allClaimable, 4)
-            : '0',
+            : '0.0000',
           unit: 'OLY',
           usdValue: myReward?.allClaimable
             ? formatNumbedecimalScale(
                 myReward?.allClaimable * Number(olyPrice),
-                2
+                4
               )
-            : '0',
+            : '0.0000',
         },
         {
           title: t('totalClaimedRewards'),
           value: Number(coolAllCLaimAmountData)
             ? formatNumbedecimalScale(coolAllCLaimAmountData, 4)
-            : '0',
+            : '0.0000',
           unit: 'OLY',
           usdValue: Number(coolAllCLaimAmountData)
             ? formatNumbedecimalScale(
                 Number(coolAllCLaimAmountData) * Number(olyPrice),
-                2
+                4
               )
-            : '0',
+            : '0.0000',
         },
       ];
       setCoolMessList(list);
@@ -171,8 +172,8 @@ export default function CoolingPoolPage() {
                   <Image
                     src={`/images/widgets/pool-${index + 1}.png`}
                     alt='gear'
-                    width={140}
-                    height={140}
+                    width={180}
+                    height={180}
                     className={`${Number(item.claimable) > 0.0001 && 'animate-spin-slow'}`}
                   />
                 </CoolingPoolCard>

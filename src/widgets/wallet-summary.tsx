@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
-import { Card, CardHeader, InfoPopover, List, Statistics } from '~/components';
+import { BscScanLook, Card, CardHeader, List, Statistics } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import {
   formatCurrency,
@@ -206,7 +206,7 @@ export const WalletSummary: FC = () => {
         </Button> */}
         <AddToWallet></AddToWallet>
         <Statistics
-          title={'Unreleased Rewards'}
+          title={t('Unreleased-Rewards')}
           value={`${formatCurrency(rebalseProfit, false)} OLY`}
           desc={formatCurrency(Number(rebalseProfit * olyPrice))}
           info={<span>{t2('stake.unreabase_rwards')}</span>}
@@ -218,8 +218,7 @@ export const WalletSummary: FC = () => {
             {t('statistics')}
           </List.Label>
           <List.Label className='text-gradient text-base  flex items-center gap-x-2'>
-            <span>{t('viewOnBscScan')}</span>
-            <InfoPopover className='right-[50px] w-auto'>
+            <BscScanLook className='right-[10px] w-auto'>
               <div
                 className='flex justify-between cursor-pointer'
                 onClick={() => {
@@ -230,7 +229,7 @@ export const WalletSummary: FC = () => {
                   <span>{shortenAddress(demandStaking)}</span>
                 </div>
               </div>
-            </InfoPopover>
+            </BscScanLook>
           </List.Label>
         </List.Item>
         <List.Item>

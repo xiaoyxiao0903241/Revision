@@ -4,7 +4,12 @@ import { FC, ReactNode, useEffect, useState } from 'react';
 import { Button, Card, Icon, Pager, Tabs } from '~/components';
 import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
 import { useUserAddress } from '~/contexts/UserAddressContext';
-import { cn, formatHash, formatNumbedecimalScale } from '~/lib/utils';
+import {
+  cn,
+  formatHash,
+  formatNumbedecimalScale,
+  formatTimeToLocal,
+} from '~/lib/utils';
 import { rewardRecord } from '~/services/auth/claim';
 import { getClaimPeriod } from '~/wallet/lib/web3/claim';
 
@@ -129,7 +134,7 @@ export const CoolingPoolRecords: FC = () => {
               history.map((record: ReciveItem) => (
                 <tr
                   key={record.hash}
-                  className='bg-foreground/5 mb-2 rounded-lg w-full grid grid-cols-2 md:grid-cols-6'
+                  className='bg-foreground/5 mb-2 rounded-lg w-full grid grid-cols-2 md:grid-cols-5'
                 >
                   <Cell
                     title={t('event')}
@@ -146,14 +151,15 @@ export const CoolingPoolRecords: FC = () => {
                       : t('receive')}
                   </Cell>
                   <Cell title={t('releaseNum')}>
-                    {formatNumbedecimalScale(record.amount, 2)} OLY
+                    {formatNumbedecimalScale(record.amount, 6)}{' '}
+                    <span className='text-gradient'>OLY</span>
                   </Cell>
                   <Cell title={t('releaseDay')}>{record.day as string}</Cell>
-                  <Cell title={t('releaseRate')}>{record.roi as string}</Cell>
+                  {/* <Cell title={t('releaseRate')}>{record.roi as string}</Cell> */}
                   <Cell title={t('transactionHash')}>
                     <a
                       href='#'
-                      className='underline text-sm'
+                      className='underline text-sm text-[#576AF4]'
                       title={record.hash}
                       onClick={() => {
                         window.open(`https://bscscan.com/tx/${record.hash}`);
@@ -162,7 +168,9 @@ export const CoolingPoolRecords: FC = () => {
                       {formatHash(record.hash)}
                     </a>
                   </Cell>
-                  <Cell title={t('dateTime')}>{record.createdAt}</Cell>
+                  <Cell title={t('dateTime')}>
+                    {formatTimeToLocal(record.createdAt)}
+                  </Cell>
                 </tr>
               ))
             ) : (
