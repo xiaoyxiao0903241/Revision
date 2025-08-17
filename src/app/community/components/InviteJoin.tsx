@@ -143,7 +143,7 @@ const InviteJoin = () => {
         toast.success(t('joinSuccess'));
         refetch();
       } else {
-        toast.error(top('joinFailed'));
+        toast.error(t('joinFailed'));
       }
     } catch (error: unknown) {
       if (isContractError(error as Error)) {

@@ -81,12 +81,6 @@ const Market = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
   const { data: myMessData } = useQuery({
     queryKey,
     queryFn: () => {
-      console.log(
-        'Fetching market data with params:',
-        startTime,
-        endTime,
-        userAddress
-      );
       return myMess(startTime, endTime, userAddress as `0x${string}`);
     },
     enabled: Boolean(userAddress && startTime && endTime),
