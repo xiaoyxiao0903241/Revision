@@ -171,6 +171,9 @@ export default function StakingPage() {
     } finally {
       setIsLoading(false);
       setIsDisabled(false);
+      toast.error('error', {
+        id: toastId,
+      });
     }
   };
 
