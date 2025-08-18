@@ -67,6 +67,8 @@ export default function SwapPage() {
   const { writeContractAsync } = useWriteContractWithGasBuffer(1.5, BigInt(0));
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isChange, setIsChange] = useState(false);
+  const [refreshSymbol, setRefreshSymbol] = useState('');
 
   // 获取路由参数
   const type = searchParams?.get('type') || 'buy';
@@ -113,7 +115,7 @@ export default function SwapPage() {
     {
       symbol: 'USDT',
       icon: (
-        <Image src='/images/icon/usdt.png' alt='usdt' width={32} height={32} />
+        <Image src='/images/icon/usdt.png' alt='usdt' width={48} height={48} />
       ),
       profit: -3,
       description: t('usdtDescription'),
@@ -121,7 +123,7 @@ export default function SwapPage() {
     },
     {
       symbol: 'OLY',
-      icon: <RoundedLogo className='w-8 h-8' />,
+      icon: <RoundedLogo className='w-12 h-12' />,
 
       profit: -3,
       description: t('olyDescription'),
@@ -152,7 +154,7 @@ export default function SwapPage() {
     if (fromToken === 'OLY') {
       setSlippage('1');
     } else {
-      setSlippage('4');
+      setSlippage('5');
     }
     setSource(source =>
       source === sourceOption?.symbol
@@ -477,6 +479,8 @@ export default function SwapPage() {
                       setAmount(value);
                     }
                   }}
+                  refreshSymbol={refreshSymbol}
+                  onRefreshSymbol={setRefreshSymbol}
                   refreshTokenBalance={refreshTokenBalance}
                 />
               </SwapCard>
@@ -509,21 +513,23 @@ export default function SwapPage() {
                   balance={formattedToBalance}
                   symbol={destinationOption!.symbol}
                   refreshTokenBalance={refreshTokenBalance}
+                  refreshSymbol={refreshSymbol}
+                  onRefreshSymbol={setRefreshSymbol}
                 />
               </SwapCard>
             </View>
 
             <RateCard
-              description={`1 USDT= ${olyPrice ? formatNumbedecimalScale(1 / Number(olyPrice), 6) : 0} OLY`}
+              // description={`1 USDT= ${olyPrice ? formatNumbedecimalScale(1 / Number(olyPrice), 4) : 0} OLY`}
+              description={`${isChange ? '1 OLY = ' + formatNumbedecimalScale(1 / (1 / Number(olyPrice)), 4) + ' USDT' : '1 USDT = ' + formatNumbedecimalScale(1 / Number(olyPrice), 4) + ' OLY'}`}
               isLoading={isLoading}
               onRefresh={onToggle}
               value={showSlippage}
               onTogleSlippage={setShowSlippage}
-            >
-              {
-                // olyPrice && <div className="w-40">1 USDT= formatNumbedecimalScale(1/olyPrice,6)  OLY</div>
-              }
-            </RateCard>
+              onTogChange={setIsChange}
+              isChange={isChange}
+              type='swap'
+            ></RateCard>
 
             {/* 滑点设置 */}
             {showSlippage && (

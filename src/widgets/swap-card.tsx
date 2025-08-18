@@ -23,9 +23,9 @@ export const SwapCard: FC<{
   return (
     <View className='bg-[#22285E] font-mono'>
       {/* Token Header */}
-      <div className='flex items-center space-x-2 p-4 border-b border-border/20'>
+      <div className='flex items-center space-x-4 p-4 border-b border-border/20'>
         {data.icon}
-        <div className='flex-1 flex flex-col gap-2'>
+        <div className='flex-1 flex flex-col gap-2 ml-[20px]'>
           <span className='font-semibold text-lg'>{data.symbol}</span>
           <span className='text-sm text-gray-400 font-chakrapetch'>
             {data.description}
@@ -41,7 +41,7 @@ export const SwapCard: FC<{
           />
           <div className='flex justify-end items-center text-sm text-gray-400'>
             <span>
-              ~
+              ~$
               {data.symbol === 'USDT'
                 ? formatDecimal(Number(data && data.value) || 0, 2)
                 : formatDecimal(

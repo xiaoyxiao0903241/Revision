@@ -42,7 +42,7 @@ export const getClaimPeriod = async () => {
     if (res.length && res[0].data.length) {
       const list = res[0].data;
       list.map((it: periodItem) => {
-        it['day'] = Number(it.releasedBlocks) / 57600;
+        it['day'] = Number(it.releasedBlocks) / 115200;
         it['rate'] = Number(it.feeRate) / 100 + '%';
       });
       return list;
