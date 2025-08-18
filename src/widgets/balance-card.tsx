@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { FC, useEffect, useState } from 'react';
 import { RadioGroup } from '~/components';
 import { useMock } from '~/hooks/useMock';
-import { cn } from '~/lib/utils';
+import { cn, formatDecimal } from '~/lib/utils';
 import { useMockStore } from '~/store/mock';
 
 export const BalanceCard: FC<{
@@ -39,7 +39,7 @@ export const BalanceCard: FC<{
       <div className='text-sm text-gray-400 flex items-center gap-2'>
         <span>{t('myWallet')}</span>{' '}
         <span className='text-foreground'>
-          {balance} {symbol}
+          {formatDecimal(Number(balance), 2)} {symbol}
         </span>
         <div className='cursor-pointer' onClick={toggle}>
           <Image

@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { InfoPopover, Input, View } from '~/components';
-import { cn, formatDecimal, formatNumbedecimalScale } from '~/lib/utils';
+import { Input, View } from '~/components';
+import { cn, formatDecimal } from '~/lib/utils';
 
 export interface Balance {
   symbol: 'USDT' | 'OLY';
@@ -41,10 +41,10 @@ export const SwapCard: FC<{
           />
           <div className='flex justify-end items-center text-sm text-gray-400'>
             <span>
-              ≈
+              ~
               {data.symbol === 'USDT'
-                ? formatNumbedecimalScale((data && data.value) || 0, 2)
-                : formatNumbedecimalScale(
+                ? formatDecimal(Number(data && data.value) || 0, 2)
+                : formatDecimal(
                     data && Number(data.value) * ((data && data.olyPrice) || 0),
                     2
                   )}
@@ -57,11 +57,8 @@ export const SwapCard: FC<{
                     'text-success': data.profit != null && data.profit > 0,
                   })}
                 >
-                  ({`${formatDecimal(data.profit ?? 0)}%`})
+                  {/* ({`${formatDecimal(data.profit ?? 0)}%`}) */}
                 </span>
-                <InfoPopover triggerClassName='w-4 h-4 ml-2 text-warning'>
-                  <div className='w-40'>交易手续费</div>
-                </InfoPopover>
               </>
             ) : null}
           </div>

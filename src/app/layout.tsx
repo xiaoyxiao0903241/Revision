@@ -1,15 +1,15 @@
 // import { NextIntlClientProvider } from "next-intl";
-import './global.css';
-import AppProviders from './components/AppProviders';
 import { Sidebar } from '../widgets/sidebar';
+import AppProviders from './components/AppProviders';
+import './global.css';
 // import { Header } from "../../widgets/header";
-import { LocaleDetector } from '~/widgets/locale-detector';
-import { locales } from '../i18n/config';
-import { MobileSidebarProvider } from '~/widgets/mobile-sidebar-provider';
+import { Suspense } from 'react';
 import { LanguageProvider } from '~/i18n/LanguageProvider';
 import { getInitialLocale } from '~/i18n/client';
 import { loadMessages } from '~/i18n/request';
-import { Suspense } from 'react';
+import { LocaleDetector } from '~/widgets/locale-detector';
+import { MobileSidebarProvider } from '~/widgets/mobile-sidebar-provider';
+import { locales } from '../i18n/config';
 import CommonTokenProvider from './components/CommonTokenProvider';
 export function generateStaticParams() {
   return locales.map((locale: string) => ({
@@ -38,6 +38,9 @@ export default async function LocaleLayout({
   );
   return (
     <html lang={locale} suppressHydrationWarning>
+      <head>
+        <title>OLY ONE</title>
+      </head>
       {/* <NextIntlClientProvider> */}
       <LanguageProvider messages={messages}>
         <LocaleDetector />

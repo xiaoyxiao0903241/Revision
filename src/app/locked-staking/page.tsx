@@ -8,12 +8,12 @@ import { usePublicClient } from 'wagmi';
 import { Alert, Button, Card } from '~/components';
 import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
 import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useContractError } from '~/hooks/useContractError';
 import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
 import { formatNumbedecimalScale } from '~/lib/utils';
 import { useNolockStore } from '~/store/noLock';
 import longStakingAbi from '~/wallet/constants/LongStakingAbi.json';
 import { OLY } from '~/wallet/constants/tokens';
-import { useContractError } from '~/hooks/useContractError';
 import { getInviteInfo } from '~/wallet/lib/web3/invite';
 import type { periodlongItem } from '~/wallet/lib/web3/stake';
 import {
@@ -32,7 +32,7 @@ export default function StakingPage() {
   const t = useTranslations('staking');
   const t2 = useTranslations('common');
   const tLockedStaking = useTranslations('lockedStaking');
-  const [lockIndex, setLockIndex] = useState<number>(0);
+  const [lockIndex, setLockIndex] = useState<number>(100);
   const { userAddress } = useUserAddress();
   const [periodLongList, setPeriodLongList] = useState<periodlongItem[]>([]);
   const [curPeriod, setCurPeriod] = useState<periodlongItem | null>(null);
@@ -188,7 +188,9 @@ export default function StakingPage() {
     } catch (error: unknown) {
       if (isContractError(error as Error)) {
         const errorMessage = handleContractError(error as Error);
-        toast.error(errorMessage);
+        toast.error(errorMessage, {
+          id: toastId,
+        });
       } else {
         toast.error('error', {
           id: toastId,
@@ -221,7 +223,9 @@ export default function StakingPage() {
       })) as periodlongItem[];
       setPeriodLongList(updatedList);
       console.log(updatedList, 'updatedList');
-      setCurPeriod(updatedList[lockIndex]);
+      if (lockIndex !== 100) {
+        setCurPeriod(updatedList[lockIndex]);
+      }
     }
   }, [longStakListData, stakingStatusList, longAllowanceList, lockIndex]);
 
@@ -264,6 +268,7 @@ export default function StakingPage() {
             <DurationSelect
               options={periodLongList || []}
               value={lockIndex}
+              placeholder={t('selectDurationPlaceholder')}
               onChange={value => {
                 setLockIndex(value);
                 setCurPeriod(periodLongList[value]);
@@ -320,14 +325,14 @@ export default function StakingPage() {
                       {isLoading ? t('approving') : t('approve')}
                     </Button>
                   )}
-                {curPeriod && (
+                {
                   <Button
                     clipDirection='topRight-bottomLeft'
                     className='font-mono flex-1'
                     variant={
                       isDisabled ||
-                      Number(curPeriod.allowanceNum) === 0 ||
-                      Number(curPeriod.allowanceNum) < Number(stakeAmount) ||
+                      Number(curPeriod?.allowanceNum) === 0 ||
+                      Number(curPeriod?.allowanceNum) < Number(stakeAmount) ||
                       Number(stakeAmount) === 0 ||
                       Number(myolybalance) === 0
                         ? 'disabled'
@@ -335,8 +340,8 @@ export default function StakingPage() {
                     }
                     disabled={
                       isDisabled ||
-                      Number(curPeriod.allowanceNum) === 0 ||
-                      Number(curPeriod.allowanceNum) < Number(stakeAmount) ||
+                      Number(curPeriod?.allowanceNum) === 0 ||
+                      Number(curPeriod?.allowanceNum) < Number(stakeAmount) ||
                       Number(stakeAmount) === 0 ||
                       Number(myolybalance) === 0
                     }
@@ -345,12 +350,12 @@ export default function StakingPage() {
                     }}
                   >
                     {isLoading &&
-                    Number(curPeriod.allowanceNum) > 0 &&
-                    Number(curPeriod.allowanceNum) > Number(stakeAmount)
+                    Number(curPeriod?.allowanceNum) > 0 &&
+                    Number(curPeriod?.allowanceNum) > Number(stakeAmount)
                       ? t('staking')
                       : t('stake')}
                   </Button>
-                )}
+                }
               </div>
             )}
           </Card>

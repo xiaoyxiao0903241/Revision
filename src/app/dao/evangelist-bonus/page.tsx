@@ -1,15 +1,15 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-import { Alert, Card, Statistics } from '~/components';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
+import { useRef } from 'react';
+import { Alert, Card, Statistics } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
-import { useNolockStore } from '~/store/noLock';
-import { rewardPromotion } from '~/services/auth/dao';
 import { formatNumbedecimalScale } from '~/lib/utils';
+import { rewardPromotion } from '~/services/auth/dao';
+import { useNolockStore } from '~/store/noLock';
 import { ClaimSection } from '../components/ClaimSection';
 import DaoRecords, { DaoRecordsRef } from '../components/DaoRecords';
-import { useRef } from 'react';
 
 export default function EvangelistBonusPage() {
   const t = useTranslations('dao');
@@ -59,7 +59,7 @@ export default function EvangelistBonusPage() {
             <div className='grid grid-cols-2 gap-4'>
               <Statistics
                 title={t('net_holding')}
-                value={`${formatNumbedecimalScale(rewardPromotionData?.totalDepositAmount || 0, 6)} OLY`}
+                value={`${formatNumbedecimalScale(rewardPromotionData?.totalDepositAmount || 0, 2)} OLY`}
                 desc={`$${formatNumbedecimalScale((rewardPromotionData?.totalDepositAmount || 0) * olyPrice, 2)}`}
               />
               <Statistics
@@ -75,7 +75,7 @@ export default function EvangelistBonusPage() {
               />
               <Statistics
                 title={t('small_team_performance')}
-                value={`${formatNumbedecimalScale(rewardPromotionData?.smallMarket || 0, 6)} OLY`}
+                value={`${formatNumbedecimalScale(rewardPromotionData?.smallMarket || 0, 2)} OLY`}
                 desc={`$${formatNumbedecimalScale((rewardPromotionData?.smallMarket || 0) * olyPrice, 2)}`}
               />
             </div>
@@ -83,12 +83,12 @@ export default function EvangelistBonusPage() {
             <div className='grid grid-cols-2 gap-4 mt-4'>
               <Statistics
                 title={t('total_performance')}
-                value={`${formatNumbedecimalScale(rewardPromotionData?.market || 0, 6)} OLY`}
+                value={`${formatNumbedecimalScale(rewardPromotionData?.market || 0, 2)} OLY`}
                 desc={`$${formatNumbedecimalScale((rewardPromotionData?.market || 0) * olyPrice, 2)}`}
               />
               <Statistics
                 title={t('total_bonus_amount')}
-                value={`${formatNumbedecimalScale(rewardPromotionData?.totalBonus || 0, 6)} OLY`}
+                value={`${formatNumbedecimalScale(rewardPromotionData?.totalBonus || 0, 2)} OLY`}
                 desc={`$${formatNumbedecimalScale((rewardPromotionData?.totalBonus || 0) * olyPrice, 2)}`}
               />
             </div>

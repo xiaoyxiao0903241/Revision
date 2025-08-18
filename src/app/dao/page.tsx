@@ -1,14 +1,14 @@
 'use client';
-import { useTranslations } from 'next-intl';
-import { Alert, Card, Statistics } from '~/components';
 import { useQuery } from '@tanstack/react-query';
-import { useUserAddress } from '~/contexts/UserAddressContext';
-import { rewardMatrix } from '~/services/auth/dao';
-import { formatNumbedecimalScale } from '~/lib/utils';
-import { useNolockStore } from '~/store/noLock';
-import DaoRecords, { DaoRecordsRef } from './components/DaoRecords';
-import { ClaimSection } from './components/ClaimSection';
+import { useTranslations } from 'next-intl';
 import { useRef } from 'react';
+import { Alert, Card, Statistics } from '~/components';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import { formatNumbedecimalScale } from '~/lib/utils';
+import { rewardMatrix } from '~/services/auth/dao';
+import { useNolockStore } from '~/store/noLock';
+import { ClaimSection } from './components/ClaimSection';
+import DaoRecords, { DaoRecordsRef } from './components/DaoRecords';
 
 export default function DaoPage() {
   const t = useTranslations('dao');
@@ -57,7 +57,7 @@ export default function DaoPage() {
             <div className='grid grid-cols-2 gap-4'>
               <Statistics
                 title={t('net_holding')}
-                value={`${formatNumbedecimalScale(rewardMatrixData?.totalDepositAmount || 0, 6)} OLY`}
+                value={`${formatNumbedecimalScale(rewardMatrixData?.totalDepositAmount || 0, 2)} OLY`}
                 desc={`$${formatNumbedecimalScale((rewardMatrixData?.totalDepositAmount || 0) * olyPrice, 2)}`}
               />
               <Statistics
@@ -77,7 +77,7 @@ export default function DaoPage() {
               />
               <Statistics
                 title={t('total_bonus_amount')}
-                value={`${formatNumbedecimalScale(rewardMatrixData?.totalBonus || 0, 6)} OLY`}
+                value={`${formatNumbedecimalScale(rewardMatrixData?.totalBonus || 0, 2)} OLY`}
                 desc={`$${formatNumbedecimalScale((rewardMatrixData?.totalBonus || 0) * olyPrice, 2)}`}
               />
             </div>

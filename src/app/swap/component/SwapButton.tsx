@@ -1,5 +1,5 @@
-import { Button } from '~/components/button';
 import { useTranslations } from 'next-intl';
+import { Button } from '~/components/button';
 
 interface SwapButtonProps {
   amount: string;
@@ -20,7 +20,7 @@ export default function SwapButton({
 }: SwapButtonProps) {
   const t = useTranslations('swap');
   return (
-    <div className='flex items-center w-full box-border justify-between'>
+    <div className='flex items-center w-full box-border justify-between gap-x-4'>
       {needsApproval && (
         <Button
           clipDirection='topRight-bottomLeft'

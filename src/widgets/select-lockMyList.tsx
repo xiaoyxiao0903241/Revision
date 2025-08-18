@@ -28,10 +28,10 @@ export const DurationSelect: FC<{
     <Select
       value={value?.toString()}
       onValueChange={value => {
-        const index = options.findIndex(
-          it => Number(it.time) === Number(value)
-        );
-        onChange(index);
+        // const index = options.findIndex(
+        //   it => Number(it.time) === Number(value)
+        // );
+        onChange(Number(value));
       }}
     >
       <SelectTrigger>
@@ -57,7 +57,7 @@ export const DurationSelect: FC<{
         {userAddress ? (
           options.length > 0 ? (
             options.map((it, index) => (
-              <SelectItem key={index} value={it.time?.toString() || ''}>
+              <SelectItem key={index} value={index.toString() || ''}>
                 <div className='w-full flex justify-between'>
                   <div className='flex items-center'>
                     <RoundedLogo className='w-5 h-5' />

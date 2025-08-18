@@ -326,7 +326,7 @@ const ProTable = forwardRef(
                 >
                   {!userAddress ? (
                     <>
-                      {common('walletNotConnected')}
+                      {common('coolingPool.walletNotConnected')}
                       <ConnectWalletButton />
                     </>
                   ) : (

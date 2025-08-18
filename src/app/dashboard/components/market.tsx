@@ -81,12 +81,6 @@ const Market = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
   const { data: myMessData } = useQuery({
     queryKey,
     queryFn: () => {
-      console.log(
-        'Fetching market data with params:',
-        startTime,
-        endTime,
-        userAddress
-      );
       return myMess(startTime, endTime, userAddress as `0x${string}`);
     },
     enabled: Boolean(userAddress && startTime && endTime),
@@ -119,7 +113,7 @@ const Market = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               </View>
               <Statistics
                 title={t('totalPerformance')}
-                value={`${formatNumbedecimalScale(safeMyMessInfo.market || 0, 6)} OLY`}
+                value={`${formatNumbedecimalScale(safeMyMessInfo.market || 0, 2)} OLY`}
                 desc={`${formatCurrency(olyPrice * Number(safeMyMessInfo?.market ?? 0))}`}
                 size='sm'
               />
@@ -134,7 +128,7 @@ const Market = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               </View>
               <Statistics
                 title={t('smallTeamPerformance')}
-                value={`${formatNumbedecimalScale(safeMyMessInfo.smallMarket || 0, 6)} OLY`}
+                value={`${formatNumbedecimalScale(safeMyMessInfo.smallMarket || 0, 2)} OLY`}
                 desc={`${formatCurrency(olyPrice * Number(safeMyMessInfo?.smallMarket ?? 0))}`}
                 size='sm'
               />

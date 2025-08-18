@@ -6,6 +6,7 @@ import { Alert, Card, InfoPopover, View } from '~/components';
 import { TVLChart, SmallChart, TVLStats } from '~/widgets';
 import { useQuery } from '@tanstack/react-query';
 import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useNolockStore } from '~/store/noLock';
 import {
   dashMess,
   responseItem,
@@ -39,7 +40,9 @@ export type TVLDataSourceType = {
 };
 export default function AnalyticsPage() {
   const t = useTranslations('analytics');
+  const t2 = useTranslations('tooltip');
   const { userAddress } = useUserAddress();
+  const { olyPrice } = useNolockStore();
   const [depositList, setDepositList] = useState<Array<[string, string]>>([]);
   const [todayObj, setTodayObj] = useState<responseItem>(responseItemDefault);
   const [yesterdayObj, setYesterdayObj] =
@@ -140,12 +143,18 @@ export default function AnalyticsPage() {
   //   olyPrice,
   // ]);
 
-  const formatData = (data: DepositItem[]) => {
+  const formatData = (data: DepositItem[], type?: string) => {
     const dateArr: string[] = [];
     const dataArr: number[] = [];
     data.forEach(item => {
       dateArr.push(dayjs(item.createdAt).format('YYYY-MM-DD'));
-      dataArr.push(Number(item.amount));
+      if (type) {
+        dataArr.push(
+          Math.floor(Number(item.amount || 0) * Number(olyPrice || 0))
+        );
+      } else {
+        dataArr.push(Math.floor(Number(item.amount || 0)));
+      }
     });
     return { dates: dateArr, data: dataArr };
   };
@@ -159,16 +168,63 @@ export default function AnalyticsPage() {
     const supplyList = dashMessInfo?.supplyList || [];
     // const backingPriceList = dashMessInfo?.backingPriceList || [];
     // const premiumList = dashMessInfo?.PremiumList || [];
+    const newTodayObj = dashMessInfo?.todayObj
+      ? {
+          amount: dashMessInfo.todayObj.amount || 0,
+          createdAt: dashMessInfo.todayObj.createdAt || '',
+          week: dashMessInfo.todayObj.week || '',
+          tokenTotalSupply: dashMessInfo.todayObj.tokenTotalSupply || 0,
+          tokenPrice: dashMessInfo.todayObj.tokenPrice || 0,
+          treasuryMarketCap: dashMessInfo.todayObj.treasuryMarketCap || 0,
+          lpMarketCap: dashMessInfo.todayObj.lpMarketCap || 0,
+          longStakedAmount:
+            Number(dashMessInfo.todayObj.longStakedAmount || 0) *
+            Number(olyPrice || 0),
+          flexibleStakedAmount:
+            Number(dashMessInfo.todayObj.flexibleStakedAmount || 0) *
+            Number(olyPrice || 0),
+          lpBondMarketCap: dashMessInfo.todayObj.lpBondMarketCap || 0,
+          liquidityBondMarketCap:
+            dashMessInfo.todayObj.liquidityBondMarketCap || 0,
+          stableBondMarketCap: dashMessInfo.todayObj.stableBondMarketCap || 0,
+          TVL: Number(dashMessInfo.todayObj.TVL || 0) * Number(olyPrice || 0),
+        }
+      : responseItemDefault;
 
-    setTodayObj(dashMessInfo?.todayObj || responseItemDefault);
-    setYesterdayObj(dashMessInfo?.yesterdayObj || responseItemDefault);
+    const newYesterdayObj = dashMessInfo?.yesterdayObj
+      ? {
+          amount: dashMessInfo.yesterdayObj.amount || 0,
+          createdAt: dashMessInfo.yesterdayObj.createdAt || '',
+          week: dashMessInfo.yesterdayObj.week || '',
+          tokenTotalSupply: dashMessInfo.yesterdayObj.tokenTotalSupply || 0,
+          tokenPrice: dashMessInfo.yesterdayObj.tokenPrice || 0,
+          treasuryMarketCap: dashMessInfo.yesterdayObj.treasuryMarketCap || 0,
+          lpMarketCap: dashMessInfo.yesterdayObj.lpMarketCap || 0,
+          longStakedAmount:
+            Number(dashMessInfo.yesterdayObj.longStakedAmount || 0) *
+            Number(olyPrice || 0),
+          flexibleStakedAmount:
+            Number(dashMessInfo.yesterdayObj.flexibleStakedAmount || 0) *
+            Number(olyPrice || 0),
+          lpBondMarketCap: dashMessInfo.yesterdayObj.lpBondMarketCap || 0,
+          liquidityBondMarketCap:
+            dashMessInfo.yesterdayObj.liquidityBondMarketCap || 0,
+          stableBondMarketCap:
+            dashMessInfo.yesterdayObj.stableBondMarketCap || 0,
+          TVL:
+            Number(dashMessInfo.yesterdayObj.TVL || 0) * Number(olyPrice || 0),
+        }
+      : responseItemDefault;
+    console.log(newTodayObj, newYesterdayObj, 'dashMessInfo?.todayObj');
+    setTodayObj(newTodayObj || responseItemDefault);
+    setYesterdayObj(newYesterdayObj || responseItemDefault);
 
     if (depositList?.length) {
       const formattedList = depositList.map(item => {
-        return [dayjs(item.createdAt).format('YYYY-MM-DD'), item.amount] as [
-          string,
-          string,
-        ];
+        return [
+          dayjs(item.createdAt).format('YYYY-MM-DD'),
+          (Number(item.amount || 0) * Number(olyPrice || 0)).toFixed(0),
+        ] as [string, string];
       });
       setDepositList(formattedList);
     }
@@ -178,7 +234,7 @@ export default function AnalyticsPage() {
     // }
     // 流通市值
     if (marketList?.length) {
-      const formattedList = formatData(marketList);
+      const formattedList = formatData(marketList, 'market');
       setMarketList(formattedList);
     }
     // if (treasuryList?.length) {
@@ -237,7 +293,7 @@ export default function AnalyticsPage() {
                 </span>
                 <InfoPopover>
                   <p className='text-white font-mono text-sm break-all whitespace-normal'>
-                    预览图表说明
+                    {t2('analytics.total_value')}
                   </p>
                 </InfoPopover>
               </div>
@@ -266,7 +322,7 @@ export default function AnalyticsPage() {
               </h4>
               <InfoPopover>
                 <p className='text-white font-mono text-sm break-all whitespace-normal'>
-                  分析页面说明
+                  {t2('analytics.circulation_market')}
                 </p>
               </InfoPopover>
             </div>
@@ -274,6 +330,7 @@ export default function AnalyticsPage() {
               className='h-[272px]'
               title={t('oly_market_cap')}
               dataSource={marketList}
+              currency='$'
             />
           </Card>
 
@@ -285,7 +342,7 @@ export default function AnalyticsPage() {
               </h4>
               <InfoPopover>
                 <p className='text-white font-mono text-sm break-all whitespace-normal'>
-                  分析页面说明
+                  {t2('analytics.oly_circulation')}
                 </p>
               </InfoPopover>
             </div>
