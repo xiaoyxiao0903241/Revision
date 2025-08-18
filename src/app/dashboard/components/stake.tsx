@@ -24,6 +24,7 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
   const router = useRouter();
   const [allStakeAmount, setAllStakeAmount] = useSafeState(0);
   const [rebalseProfit, setRebalseProfit] = useState<number>(0);
+  const [lpDays, setLpDays] = useState<number>(0);
   // const [stakList, setstakList] = useState<StakingItem[]>([]);
   // 活期质押
   const { olyPrice, afterHotData, hotDataStakeNum, demandProfitInfo } =
@@ -89,10 +90,13 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
   //获取质押总数量
   useEffect(() => {
     const updateList = async () => {
+      // 总质押数量
       let allStakeAmount =
         Number(hotDataStakeNum || 0) + Number(afterHotData?.principal || 0);
-      let rebalseProfit = Number(demandProfitInfo?.rebalseProfit || 0);
-      // let totalDays = 0;
+      // 总领取数量
+      let rebalseProfit = Number(demandProfitInfo?.normalProfit || 0);
+      // LP-360
+      let lpDays = 0;
       if (myStakingList?.myStakingList || myNodeStakingList?.length) {
         const list =
           (myStakingList?.myStakingList.length &&
@@ -103,14 +107,24 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
           : [];
         const curBlock = Number(currentBlock);
         const allList = [...nodeList, ...list];
+
+        console.log(
+          allList,
+          demandProfitInfo?.rebalseProfit,
+          'allListallListallList'
+        );
         const updatedList = allList.map(it => {
           allStakeAmount += it.pending;
-          rebalseProfit += it.claimableBalance;
+          rebalseProfit +=
+            Number(it.blockReward || 0) + Number(it.interest || 0);
           const time = String(
             Number(it.expiry) - curBlock < 0
               ? '0'
               : Number(it.expiry) - curBlock
           );
+          if (it.period === 'LP-360') {
+            lpDays = 360;
+          }
           // const remainingSeconds = Number(time) * blocksNum;
           // const days = Math.floor(remainingSeconds / (24 * 60 * 60));
           // it.period
@@ -121,6 +135,7 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
             isShow: false,
           };
         });
+        setLpDays(lpDays);
         setRebalseProfit(rebalseProfit);
         console.log(updatedList, 'updatedList');
         // setstakList(updatedList);
@@ -185,7 +200,7 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
               safeMyMessInfo?.stakedRewardAmount || 0,
               2
             ),
-            timeInPool: `${getLongestStakingRemainingTime()} ${t('days')}`,
+            timeInPool: `${lpDays > 0 ? lpDays : getLongestStakingRemainingTime()} ${t('days')}`,
             olyPrice: olyPrice || 0,
             info1: t2('dash.life_rewards'),
             info2: t2('dash.stake_left_time'),
