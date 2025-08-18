@@ -98,8 +98,6 @@ export default function AnalyticsPage() {
   //   // refetchInterval: 20000,
   // });
 
-  console.log(dashMessInfo, 'dashMessInfodashMessInfo');
-
   //获取全网锁定质押的的oly数量
   // const { data: AllLockOlyStakeNum } = useQuery({
   //   queryKey: ['analyticsAllolyStakeNum', userAddress],
@@ -292,7 +290,7 @@ export default function AnalyticsPage() {
                   {t('total_value_locked')}
                 </span>
                 <InfoPopover>
-                  <p className='text-white font-mono text-sm break-all whitespace-normal'>
+                  <p className='text-white font-chakraPetch text-sm break-all whitespace-normal'>
                     {t2('analytics.total_value')}
                   </p>
                 </InfoPopover>
@@ -321,7 +319,7 @@ export default function AnalyticsPage() {
                 {t('oly_market_cap')}
               </h4>
               <InfoPopover>
-                <p className='text-white font-mono text-sm break-all whitespace-normal'>
+                <p className='text-white font-chakraPetch text-sm break-all whitespace-normal'>
                   {t2('analytics.circulation_market')}
                 </p>
               </InfoPopover>
@@ -341,7 +339,7 @@ export default function AnalyticsPage() {
                 {t('oly_circulation')}
               </h4>
               <InfoPopover>
-                <p className='text-white font-mono text-sm break-all whitespace-normal'>
+                <p className='text-white font-chakraPetch text-sm break-all whitespace-normal'>
                   {t2('analytics.oly_circulation')}
                 </p>
               </InfoPopover>
@@ -360,7 +358,7 @@ export default function AnalyticsPage() {
                 {t('treasury_risk_free_value')}
               </h4>
               <InfoPopover>
-                <p className='text-white font-mono text-sm break-all whitespace-normal'>
+                <p className='text-white font-chakraPetch text-sm break-all whitespace-normal'>
                   分析页面说明
                 </p>
               </InfoPopover>
@@ -379,7 +377,7 @@ export default function AnalyticsPage() {
                 {t('treasury_unknown')}
               </h4>
               <InfoPopover>
-                <p className='text-white font-mono text-sm break-all whitespace-normal'>
+                <p className='text-white font-chakraPetch text-sm break-all whitespace-normal'>
                   分析页面说明
                 </p>
               </InfoPopover>
@@ -398,7 +396,7 @@ export default function AnalyticsPage() {
                 {t('backingPrice')}
               </h4>
               <InfoPopover>
-                <p className='text-white font-mono text-sm break-all whitespace-normal'>
+                <p className='text-white font-chakraPetch text-sm break-all whitespace-normal'>
                   分析页面说明
                 </p>
               </InfoPopover>
@@ -417,7 +415,7 @@ export default function AnalyticsPage() {
                 {t('Premium')}
               </h4>
               <InfoPopover>
-                <p className='text-white font-mono text-sm break-all whitespace-normal'>
+                <p className='text-white font-chakraPetch text-sm break-all whitespace-normal'>
                   分析页面说明
                 </p>
               </InfoPopover>

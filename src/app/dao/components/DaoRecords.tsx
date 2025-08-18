@@ -216,7 +216,7 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
               key: 'stakeAmount',
               render: (value: string | number | boolean | undefined) => {
                 return (
-                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                  <>{formatNumbedecimalScale(Number(value || 0), 2)} OLY</>
                 );
               },
             },
@@ -225,7 +225,9 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
               dataIndex: 'actBonus',
               key: 'actBonus',
               render: (value: string | number | boolean | undefined) => {
-                return <>{value} OLY</>;
+                return (
+                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                );
               },
             },
 
@@ -263,7 +265,7 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
               key: 'smallMarket',
               render: (value: string | number | boolean | undefined) => {
                 return (
-                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                  <>{formatNumbedecimalScale(Number(value || 0), 2)} OLY</>
                 );
               },
             },
@@ -273,7 +275,7 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
               key: 'market',
               render: (value: string | number | boolean | undefined) => {
                 return (
-                  <>{formatNumbedecimalScale(Number(value || 0), 6)} OLY</>
+                  <>{formatNumbedecimalScale(Number(value || 0), 2)} OLY</>
                 );
               },
             },

@@ -68,8 +68,8 @@ export const TVLChart: React.FC<{
       yAxis: {
         type: 'value',
         min: 0,
-        max: 6000,
-        interval: 1000,
+        // max: 6000,
+        // interval: 1000,
         axisLine: {
           lineStyle: {
             color: '#8392A5',
@@ -86,6 +86,7 @@ export const TVLChart: React.FC<{
           // show: false,
           color: '#ffffff',
           formatter: (value: number) => {
+            console.log(value, 'value font-chakrapetch font-chakrapetch');
             if (value >= 1000000000) {
               return `${(value / 1000000000).toFixed(0)}B`;
             } else if (value >= 1000000) {

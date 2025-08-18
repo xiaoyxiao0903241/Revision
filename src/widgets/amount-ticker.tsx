@@ -52,7 +52,9 @@ export const AmountTicker: FC<{
     <View className='bg-[#22285E] px-4' clipDirection='topRight-bottomLeft'>
       <div className='flex items-center justify-between py-4'>
         <div className='flex flex-col gap-2'>
-          <span className='text-foreground/70 text-sm'>{t('amount')}</span>
+          <span className='text-foreground/70 text-sm'>
+            {data?.title ? data?.title : t('amount')}
+          </span>
           <div className='flex items-center gap-2'>
             <RoundedLogo className='w-6 h-6' />
             <span className='text-foreground text-3xl font-mono'>

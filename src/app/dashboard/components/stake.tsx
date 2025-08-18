@@ -180,11 +180,11 @@ const Stake = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
         <PositionDetails
           data={{
             type: 'stake',
-            myStakedAmount: String(allStakeAmount), // `${formatNumbedecimalScale(allStakeAmount || 0, 2)} OLY`,
+            myStakedAmount: String(allStakeAmount),
             lifetimeRewards: formatNumbedecimalScale(
               safeMyMessInfo?.stakedRewardAmount || 0,
               2
-            ), // `${formatNumbedecimalScale(safeMyMessInfo?.stakedRewardAmount || 0, 2)} OLY`,
+            ),
             timeInPool: `${getLongestStakingRemainingTime()} ${t('days')}`,
             olyPrice: olyPrice || 0,
             info1: t2('dash.life_rewards'),

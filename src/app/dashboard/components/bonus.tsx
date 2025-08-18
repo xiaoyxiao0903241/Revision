@@ -13,6 +13,12 @@ import { useRouter } from 'next/navigation';
 import { turbineMess } from '~/services/auth/turbine';
 import { receiveList } from '~/wallet/lib/web3/turbine';
 import { useEffect, useState } from 'react';
+import {
+  leadReward,
+  rewardMatrix,
+  rewardPromotion,
+  serviceReward,
+} from '~/services/auth/dao';
 
 const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
   const safeMyMessInfo = myMessInfo || {};
@@ -22,6 +28,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
   const { olyPrice } = useNolockStore();
   const { userAddress } = useUserAddress();
   const [totalBonus, setTotalBonus] = useState<number>(0);
+  const [daoBonus, setDaoBonus] = useState<number>(0);
   const [turbineAmount, setTurbineAmount] = useState<number>(0);
 
   const { data: myReward } = useQuery({
@@ -30,6 +37,32 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
     enabled: Boolean(userAddress),
     // retry: 1,
     // refetchInterval: 30000,
+  });
+
+  // 矩阵奖励
+  const { data: rewardMatrixData } = useQuery({
+    queryKey: ['bonusRewardMatrix', userAddress],
+    queryFn: () => rewardMatrix(userAddress as `0x${string}`),
+    enabled: Boolean(userAddress),
+  });
+
+  // 布道奖励
+  const { data: rewardPromotionData } = useQuery({
+    queryKey: ['bonusRewardPromotion', userAddress],
+    queryFn: () => rewardPromotion(userAddress as `0x${string}`),
+    enabled: Boolean(userAddress),
+  });
+  // 推荐奖励
+  const { data: serviceRewardData } = useQuery({
+    queryKey: ['bonusServiceReward', userAddress],
+    queryFn: () => serviceReward(userAddress as `0x${string}`),
+    enabled: Boolean(userAddress),
+  });
+  // 平超奖励
+  const { data: leadRewardData } = useQuery({
+    queryKey: ['bonusLeadReward', userAddress],
+    queryFn: () => leadReward(userAddress as `0x${string}`),
+    enabled: Boolean(userAddress),
   });
 
   // const { data: coolAllCLaimAmountData } = useQuery({
@@ -65,13 +98,26 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
   }, [ReceiveList]);
 
   useEffect(() => {
+    const daoBonus =
+      Number(rewardMatrixData?.unclaimedAmount || 0) +
+      Number(rewardPromotionData?.unclaimedAmount || 0) +
+      Number(serviceRewardData?.unclaimedAmount || 0) +
+      Number(leadRewardData?.unclaimedAmount || 0);
     const totalBonus =
-      Number(safeMyMessInfo?.claimableBonus || 0) +
+      daoBonus +
       Number(myReward?.allPending || 0) +
       Number(myReward?.allClaimable || 0) +
       Number(turbineMessData?.receivedAmount || 0);
+    setDaoBonus(daoBonus);
     setTotalBonus(totalBonus);
-  }, [safeMyMessInfo, myReward, turbineMessData]);
+  }, [
+    myReward,
+    turbineMessData,
+    rewardMatrixData,
+    rewardPromotionData,
+    serviceRewardData,
+    leadRewardData,
+  ]);
 
   return (
     <Card className='flex flex-col gap-6'>
@@ -119,10 +165,10 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
             title={t('claimableRewardsAmount')}
             value={
               safeMyMessInfo?.claimableBonus
-                ? `${formatNumbedecimalScale(safeMyMessInfo?.claimableBonus || 0, 2)} OLY`
+                ? `${formatNumbedecimalScale(daoBonus || 0, 2)} OLY`
                 : '0 OLY'
             }
-            desc={`$${formatNumbedecimalScale(Number(safeMyMessInfo?.claimableBonus || 0) * olyPrice, 2)}`}
+            desc={`$${formatNumbedecimalScale(Number(daoBonus || 0) * olyPrice, 2)}`}
             size='sm'
             info={<span>{t2('dash.can_claim_reards')}</span>}
           />
@@ -134,7 +180,7 @@ const Bonus = ({ myMessInfo }: { myMessInfo: myMessDataType }) => {
             onClick={() => {
               router.push('/dao');
             }}
-            disabled={Number(safeMyMessInfo?.claimableBonus || 0) < 0.01}
+            disabled={Number(daoBonus || 0) < 0.01}
           >
             {t('claim')}
           </Button>

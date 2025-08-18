@@ -24,7 +24,7 @@ export default function SwapButton({
       {needsApproval && (
         <Button
           clipDirection='topRight-bottomLeft'
-          className='font-mono w-[50%]'
+          className='w-[50%] font-chakrapetch'
           onClick={onSwap}
           variant={
             !amount ||
@@ -54,7 +54,7 @@ export default function SwapButton({
       )}
       <Button
         clipDirection='topRight-bottomLeft'
-        className={`${needsApproval ? 'w-[calc(50%-5px)]' : 'w-full'} `}
+        className={`${needsApproval ? 'w-[calc(50%-5px)]' : 'w-full'}  font-chakrapetch`}
         onClick={onSwap}
         variant={
           !amount ||

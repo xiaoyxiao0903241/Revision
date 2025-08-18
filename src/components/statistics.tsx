@@ -26,7 +26,7 @@ export const Statistics: React.FC<StatisticsProps> = ({
       {/* Title Row */}
       <div className='flex items-center gap-1 text-foreground/70'>
         <span className={cn('text-xs', className)}>{title}</span>
-        {info && <InfoPopover>{info}</InfoPopover>}
+        {info && <InfoPopover className='font-chakraPetch'>{info}</InfoPopover>}
       </div>
 
       {/* Value Row */}

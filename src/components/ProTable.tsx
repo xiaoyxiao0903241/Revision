@@ -2,7 +2,13 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import React, { forwardRef, useCallback, useEffect, useState } from 'react';
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react';
 import { Pager } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { cn, formatHash, formatTimeToLocal } from '~/lib/utils';
@@ -91,20 +97,23 @@ export interface ProTableProps<T> {
  * @param appendNotDataText 暂无数据顶部追加文案
  */
 const ProTable = forwardRef(
-  <T extends Record<string, any>>({
-    columns,
-    queryFn,
-    params,
-    rowKey = 'address' as keyof T,
-    showPagination = true,
-    pageSize: pageSizeProp = 10,
-    formatResult,
-    manualRequest = false,
-    appendNotDataText: appendNotDataText = '',
-    notDataText,
-    onSuccess,
-    onRefreshRef,
-  }: ProTableProps<T>) => {
+  <T extends Record<string, any>>(
+    {
+      columns,
+      queryFn,
+      params,
+      rowKey = 'address' as keyof T,
+      showPagination = true,
+      pageSize: pageSizeProp = 10,
+      formatResult,
+      manualRequest = false,
+      appendNotDataText: appendNotDataText = '',
+      notDataText,
+      onSuccess,
+      onRefreshRef,
+    }: ProTableProps<T>,
+    ref: React.Ref<ProTableRef>
+  ) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const common = useTranslations();
     const { userAddress } = useUserAddress();
@@ -186,6 +195,10 @@ const ProTable = forwardRef(
         }
       };
     }, [onRefreshRef, refresh]);
+
+    useImperativeHandle(ref, () => ({
+      refresh,
+    }));
 
     return (
       <div className='md:overflow-x-auto'>
@@ -357,5 +370,6 @@ const ProTable = forwardRef(
     );
   }
 );
+
 ProTable.displayName = 'ProTable';
 export default ProTable;

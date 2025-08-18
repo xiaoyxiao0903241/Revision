@@ -17,7 +17,7 @@ export default function SuperBonusPage() {
   const daoRecordsRef = useRef<DaoRecordsRef>(null);
   // 奖励信息
   const { data: serviceRewardData, refetch } = useQuery({
-    queryKey: ['leadReward', userAddress],
+    queryKey: ['serviceReward', userAddress],
     queryFn: () => serviceReward(userAddress as `0x${string}`),
     enabled: Boolean(userAddress),
   });
