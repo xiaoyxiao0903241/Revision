@@ -24,6 +24,7 @@ import {
   depositDayList,
   getNodeStakes,
   getUserStakes,
+  getExchangeStakes,
 } from '~/wallet/lib/web3/stake';
 import { WalletSummaryLock } from '~/widgets';
 import { AmountTicker } from '~/widgets/amount-ticker';
@@ -68,6 +69,17 @@ export default function UnstakePage() {
     retry: 1,
     refetchInterval: 20000,
   });
+
+  //兑换质押
+  const { data: exchangeStakesList } = useQuery({
+    queryKey: ['ExchangeStakes', userAddress],
+    queryFn: () => getExchangeStakes({ address: userAddress as `0x${string}` }),
+    enabled: Boolean(userAddress),
+    retry: 1,
+    refetchInterval: 20000,
+  });
+
+  console.log(exchangeStakesList, 'exchangeStakesList');
 
   //领取长期本金
   const claimLongPending = async (type: string) => {
@@ -173,7 +185,9 @@ export default function UnstakePage() {
   useEffect(() => {
     const updateList = async () => {
       if (
-        (myStakingList?.myStakingList || myNodeStakingList?.length) &&
+        (myStakingList?.myStakingList ||
+          myNodeStakingList?.length ||
+          exchangeStakesList?.length) &&
         currentBlock &&
         blocksNum
       ) {
@@ -184,8 +198,11 @@ export default function UnstakePage() {
         const nodeList = myNodeStakingList?.length
           ? (myNodeStakingList as StakingItem[])
           : [];
+        const exchangeList = exchangeStakesList?.length
+          ? (exchangeStakesList as StakingItem[])
+          : [];
         const curBlock = Number(currentBlock);
-        const allList = [...nodeList, ...list];
+        const allList = [...nodeList, ...list, ...exchangeList];
         const updatedList = allList.map(it => ({
           ...it,
           time: String(
@@ -208,6 +225,7 @@ export default function UnstakePage() {
     currentBlock,
     myNodeStakingList,
     lockIndex,
+    exchangeStakesList,
   ]);
   return (
     <LockStakingLayout>

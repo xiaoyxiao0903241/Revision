@@ -133,6 +133,7 @@ export const longStaking5 = '0xEf6018936E94cfa7c04A9dA39e2B4f3f5590f340';
 // export const longStaking90 = '0x9e6D278751151555783FC06478E5A9Da1B1A1cA1';
 export const longStaking180 = '0xb5632224eceBF48ebD790EADA5431c670207e69d';
 export const longStaking360 = '0xEF721beE2E97a0375020580f8EFFaAf619B8BCf8';
+export const MappingStaking = '0x4F74d8a61Ba888C121c89190cce64E9Cbb851193';
 
 //债券
 export const stableBond5 = '0x46eD1c1160E2c10fe84b59E3778EAEfd6204967d';
