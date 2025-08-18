@@ -121,7 +121,9 @@ export default function UnstakePage() {
     } catch (error: unknown) {
       if (isContractError(error as Error)) {
         const errorMessage = handleContractError(error as Error);
-        toast.error(errorMessage);
+        toast.error(errorMessage, {
+          id: toastId,
+        });
       } else {
         toast.error('error', {
           id: toastId,
@@ -181,7 +183,9 @@ export default function UnstakePage() {
     } catch (error: unknown) {
       if (isContractError(error as Error)) {
         const errorMessage = handleContractError(error as Error);
-        toast.error(errorMessage);
+        toast.error(errorMessage, {
+          id: toastId,
+        });
       } else {
         toast.error('error', {
           id: toastId,
@@ -279,7 +283,7 @@ export default function UnstakePage() {
                           <RoundedLogo className='w-6 h-6' />
                           <span className='text-foreground text-2xl font-mono'>
                             {hotDataInfo.stakNum
-                              ? formatNumbedecimalScale(hotDataInfo.stakNum, 2)
+                              ? formatNumbedecimalScale(hotDataInfo.stakNum, 6)
                               : 0}
                           </span>
                         </div>
@@ -327,7 +331,7 @@ export default function UnstakePage() {
                       value: UnstakeAmount,
                       desc: Number(UnstakeAmount) * olyPrice,
                       balance: principal
-                        ? Number(formatNumbedecimalScale(principal, 2))
+                        ? Number(formatNumbedecimalScale(principal, 6))
                         : 0,
                     }}
                     onChange={value => {

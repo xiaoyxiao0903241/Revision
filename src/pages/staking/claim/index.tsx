@@ -87,7 +87,9 @@ export default function ClaimPage() {
     } catch (error: unknown) {
       if (isContractError(error as Error)) {
         const errorMessage = handleContractError(error as Error);
-        toast.error(errorMessage);
+        toast.error(errorMessage, {
+          id: toastId,
+        });
       } else {
         toast.error('error', {
           id: toastId,
@@ -146,7 +148,7 @@ export default function ClaimPage() {
                   value: claimAmount,
                   desc: Number(claimAmount || 0) * olyPrice,
                   balance: normalProfit
-                    ? Number(formatNumbedecimalScale(normalProfit, 4))
+                    ? Number(formatNumbedecimalScale(normalProfit, 6))
                     : 0,
                 }}
                 onChange={value => {

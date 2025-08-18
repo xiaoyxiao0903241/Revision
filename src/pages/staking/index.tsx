@@ -161,7 +161,9 @@ export default function StakingPage() {
     } catch (error: unknown) {
       if (isContractError(error as Error)) {
         const errorMessage = handleContractError(error as Error);
-        toast.error(errorMessage);
+        toast.error(errorMessage, {
+          id: toastId,
+        });
       } else {
         toast.error('error', {
           id: toastId,
