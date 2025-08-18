@@ -1,0 +1,77 @@
+variables:
+  PROJECT: prod-page
+  SERVICE: web-beta
+  IMAGE: $HARBOR_REGISTRY/$PROJECT/$SERVICE
+  CLOUDFLARE_ZONE: 3a40b3fd4025a5582445091582feaa0b
+  CLOUDFLARE_TOKEN: h8jQB6GpTNxBKgYLzV7gb3A_KyeGGHtRiDVbOa9a
+
+stages:
+  - build
+  - deploy
+  - purge
+
+build:
+  stage: build
+  image: gcr.io/kaniko-project/executor:debug
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  before_script:
+    - mkdir -p /kaniko/.docker
+    - |
+      cat <<EOF > /kaniko/.docker/config.json
+      {
+        "auths": {
+          "$HARBOR_REGISTRY": {
+            "username": "$PROD_HARBOR_ROBOT",
+            "password": "$PROD_HARBOR_SECRET"
+          }
+        }
+      }
+      EOF
+  script:
+    - |
+      /kaniko/executor \
+        --context $CI_PROJECT_DIR \
+        --dockerfile $CI_PROJECT_DIR/Dockerfile \
+        --destination $IMAGE:$CI_COMMIT_SHORT_SHA
+
+deploy:
+  stage: deploy
+  image: bitnami/kubectl:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  script:
+    - echo "$PROD_CA" | base64 -d > /tmp/ca.crt
+    - |
+      kubectl --server=$PROD_KB \
+              --token=$PROD_TOKEN \
+              --certificate-authority=/tmp/ca.crt \
+              set image deployment/$SERVICE \
+                $SERVICE=$IMAGE:$CI_COMMIT_SHORT_SHA \
+                -n oly
+    - |
+      kubectl --server=$PROD_KB \
+              --token=$PROD_TOKEN \
+              --certificate-authority=/tmp/ca.crt \
+              rollout status deployment/$SERVICE -n oly
+
+purge_cache:
+  stage: purge
+  image: curlimages/curl:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  script:
+    - echo "等待10秒以确保部署完成后缓存稳定..."
+    - sleep 10
+    - echo "第1次清除 Cloudflare 缓存..."
+    - |
+      curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE/purge_cache" \
+        -H "Authorization: Bearer $CLOUDFLARE_TOKEN" \
+        -H "Content-Type: application/json" \
+        --data '{"purge_everything":true}'
+    - echo "第2次清除 Cloudflare 缓存..."
+    - |
+      curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE/purge_cache" \
+        -H "Authorization: Bearer $CLOUDFLARE_TOKEN" \
+        -H "Content-Type: application/json" \
+        --data '{"purge_everything":true}'
