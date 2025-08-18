@@ -345,7 +345,8 @@ export default function StakingPage() {
                         Number(curPeriod?.allowanceNum) === 0 ||
                         Number(curPeriod?.allowanceNum) < Number(stakeAmount) ||
                         Number(stakeAmount) === 0 ||
-                        Number(myolybalance) === 0
+                        Number(myolybalance) === 0 ||
+                        lockIndex === 100
                       }
                       onClick={() => {
                         staking(lockIndex);

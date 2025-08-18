@@ -7,11 +7,11 @@ export const RoundedLogo: FC<{
   return (
     <div
       className={cn(
-        'rounded-full bg-[#D9BFFF] w-8 h-8 flex items-center justify-center',
+        'rounded-full bg-[#D9BFFF] w-12 h-12 flex items-center justify-center',
         className
       )}
     >
-      <Image src='/images/widgets/logo.png' alt='logo' width={24} height={24} />
+      <Image src='/images/widgets/logo.png' alt='logo' width={33} height={15} />
     </div>
   );
 };
