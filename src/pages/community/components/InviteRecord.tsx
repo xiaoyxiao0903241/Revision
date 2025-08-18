@@ -39,7 +39,7 @@ const InviteRecord = () => {
       key: 'address',
       render: {
         link: true,
-        href: value => `https://bscscan.com/tx/${value}`,
+        href: value => `https://bscscan.com/address/${value}`,
         target: '_blank',
         valueType: 'hash',
         // render: (value: string) => value, // 自定义渲染
