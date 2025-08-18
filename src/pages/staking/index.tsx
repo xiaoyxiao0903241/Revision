@@ -13,11 +13,12 @@ import { WalletSummary } from '~/widgets';
 import { AmountCard } from '~/widgets/amount-card';
 // import { DurationSelect } from "~/widgets/select"
 import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
+import { useContractError } from '~/hooks/useContractError';
 import { formatNumbedecimalScale } from '~/lib/utils';
 import { useNolockStore } from '~/store/noLock';
 import DemandStakingAbi from '~/wallet/constants/DemandStakingAbi.json';
 import { getInviteInfo } from '~/wallet/lib/web3/invite';
-import { useContractError } from '~/hooks/useContractError';
+import StakingLayout from './layout';
 
 export default function StakingPage() {
   const t = useTranslations('staking');
@@ -214,108 +215,111 @@ export default function StakingPage() {
   }, [olyBalance]);
 
   return (
-    <div className='space-y-6'>
-      <Alert icon='stake' title={t('stake')} description={t('stake_tip')} />
+    <StakingLayout>
+      <div className='space-y-6'>
+        <Alert icon='stake' title={t('stake')} description={t('stake_tip')} />
 
-      {/* 主要内容区域 */}
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-        <div>
-          <Card>
-            <AmountCard
-              data={{
-                value: stakeAmount,
-                desc: olyToUsdt,
-                balance: (myolybalance && Number(myolybalance)) || 0,
-              }}
-              onChange={value => {
-                setStakeAmount(value);
-              }}
-              description={t('balance')}
-            />
-            <List>
-              <List.Item>
-                <List.Label>{t('rebaseRewardRate')}</List.Label>
-                <List.Value>0.3%-1%</List.Value>
-              </List.Item>
+        {/* 主要内容区域 */}
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+          <div>
+            <Card>
+              <AmountCard
+                data={{
+                  value: stakeAmount,
+                  desc: olyToUsdt,
+                  balance: (myolybalance && Number(myolybalance)) || 0,
+                }}
+                onChange={value => {
+                  setStakeAmount(value);
+                }}
+                description={t('balance')}
+              />
+              <List>
+                <List.Item>
+                  <List.Label>{t('rebaseRewardRate')}</List.Label>
+                  <List.Value>0.3%-1%</List.Value>
+                </List.Item>
 
-              <List.Item>
-                <List.Label>{t('nextRebaseRewardRate')}</List.Label>
-                <List.Value className='text-secondary'>
-                  {Number(apy) > 0 ? apy : 0}%
-                </List.Value>
-              </List.Item>
-              <List.Item>
-                <List.Label>{t('countdownToNextRebase')}</List.Label>
-                <List.Value>
-                  <CountdownDisplay
-                    blocks={BigInt(cutDownTime)}
-                    isShowDay={false}
-                  />
-                </List.Value>
-              </List.Item>
-            </List>
-            {!userAddress ? (
-              <ConnectWalletButton className='text-xl py-3 cursor-pointer px-6 !text-white text-5    h-[48px] min-w-[160px]   mx-auto' />
-            ) : (
-              <div className='flex items-center justify-center w-full gap-x-4'>
-                {(allowanceNum === 0 || allowanceNum < Number(stakeAmount)) && (
-                  <Button
-                    clipDirection='topRight-bottomLeft'
-                    className='font-mono w-[50%]'
-                    variant={
-                      isDisabled ||
-                      Number(stakeAmount) === 0 ||
-                      Number(myolybalance) === 0
-                        ? 'disabled'
-                        : 'primary'
-                    }
-                    disabled={
-                      isDisabled ||
-                      Number(stakeAmount) === 0 ||
-                      Number(myolybalance) === 0
-                    }
-                    onClick={toStaking}
-                  >
-                    {isLoading ? t2('toast.approving') : t2('toast.approve')}
-                  </Button>
-                )}
-                {
-                  <Button
-                    clipDirection='topRight-bottomLeft'
-                    className='font-mono flex-1'
-                    variant={
-                      isDisabled ||
-                      allowanceNum === 0 ||
-                      allowanceNum < Number(stakeAmount) ||
-                      Number(stakeAmount) === 0 ||
-                      Number(myolybalance) === 0
-                        ? 'disabled'
-                        : 'primary'
-                    }
-                    disabled={
-                      isDisabled ||
-                      allowanceNum === 0 ||
-                      allowanceNum < Number(stakeAmount) ||
-                      Number(stakeAmount) === 0 ||
-                      Number(myolybalance) === 0
-                    }
-                    onClick={toStaking}
-                  >
-                    {isLoading &&
-                    allowanceNum > 0 &&
-                    allowanceNum > Number(stakeAmount)
-                      ? t('staking')
-                      : t('stake')}
-                  </Button>
-                }
-              </div>
-            )}
-          </Card>
-        </div>
-        <div>
-          <WalletSummary />
+                <List.Item>
+                  <List.Label>{t('nextRebaseRewardRate')}</List.Label>
+                  <List.Value className='text-secondary'>
+                    {Number(apy) > 0 ? apy : 0}%
+                  </List.Value>
+                </List.Item>
+                <List.Item>
+                  <List.Label>{t('countdownToNextRebase')}</List.Label>
+                  <List.Value>
+                    <CountdownDisplay
+                      blocks={BigInt(cutDownTime)}
+                      isShowDay={false}
+                    />
+                  </List.Value>
+                </List.Item>
+              </List>
+              {!userAddress ? (
+                <ConnectWalletButton className='text-xl py-3 cursor-pointer px-6 !text-white text-5    h-[48px] min-w-[160px]   mx-auto' />
+              ) : (
+                <div className='flex items-center justify-center w-full gap-x-4'>
+                  {(allowanceNum === 0 ||
+                    allowanceNum < Number(stakeAmount)) && (
+                    <Button
+                      clipDirection='topRight-bottomLeft'
+                      className='font-mono w-[50%]'
+                      variant={
+                        isDisabled ||
+                        Number(stakeAmount) === 0 ||
+                        Number(myolybalance) === 0
+                          ? 'disabled'
+                          : 'primary'
+                      }
+                      disabled={
+                        isDisabled ||
+                        Number(stakeAmount) === 0 ||
+                        Number(myolybalance) === 0
+                      }
+                      onClick={toStaking}
+                    >
+                      {isLoading ? t2('toast.approving') : t2('toast.approve')}
+                    </Button>
+                  )}
+                  {
+                    <Button
+                      clipDirection='topRight-bottomLeft'
+                      className='font-mono flex-1'
+                      variant={
+                        isDisabled ||
+                        allowanceNum === 0 ||
+                        allowanceNum < Number(stakeAmount) ||
+                        Number(stakeAmount) === 0 ||
+                        Number(myolybalance) === 0
+                          ? 'disabled'
+                          : 'primary'
+                      }
+                      disabled={
+                        isDisabled ||
+                        allowanceNum === 0 ||
+                        allowanceNum < Number(stakeAmount) ||
+                        Number(stakeAmount) === 0 ||
+                        Number(myolybalance) === 0
+                      }
+                      onClick={toStaking}
+                    >
+                      {isLoading &&
+                      allowanceNum > 0 &&
+                      allowanceNum > Number(stakeAmount)
+                        ? t('staking')
+                        : t('stake')}
+                    </Button>
+                  }
+                </div>
+              )}
+            </Card>
+          </div>
+          <div>
+            <WalletSummary />
+          </div>
         </div>
       </div>
-    </div>
+    </StakingLayout>
   );
 }

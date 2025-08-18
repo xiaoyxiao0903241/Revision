@@ -28,6 +28,7 @@ import {
 import { WalletSummaryLock } from '~/widgets';
 import { AmountTicker } from '~/widgets/amount-ticker';
 import { DurationSelect } from '~/widgets/select-lockMyList';
+import LockStakingLayout from '../layout';
 
 export default function UnstakePage() {
   const t = useTranslations('staking');
@@ -209,86 +210,90 @@ export default function UnstakePage() {
     lockIndex,
   ]);
   return (
-    <div className='space-y-6'>
-      <Alert
-        icon='unstake'
-        title={t('unstakeTitle')}
-        description={tLockedStaking('unstakeDescription')}
-      />
+    <LockStakingLayout>
+      <div className='space-y-6'>
+        <Alert
+          icon='unstake'
+          title={t('unstakeTitle')}
+          description={tLockedStaking('unstakeDescription')}
+        />
 
-      {/* 主要内容区域 */}
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-        <div>
-          <Card>
-            <DurationSelect
-              options={stakList}
-              value={lockIndex}
-              placeholder={t('selectStakingAmount')}
-              onChange={value => {
-                const curItem = stakList[value];
-                setCurStakeItem(curItem);
-                setLockIndex(value);
-              }}
-            />
-            <AmountTicker
-              data={{
-                title: tLockedStaking('pendingAmount'),
-                value: (curStakeItem && Number(curStakeItem?.pending)) || 0,
-                desc:
-                  (curStakeItem && Number(curStakeItem?.pending) * olyPrice) ||
-                  0,
-              }}
-              disabled
-            >
-              {curStakeItem && (
-                <CountdownDisplay
-                  blocks={BigInt(Number(curStakeItem.time))}
-                ></CountdownDisplay>
-              )}
-            </AmountTicker>
-            <AmountTicker
-              data={{
-                title: tLockedStaking('releasedAmount'),
-                value:
-                  (curStakeItem && Number(curStakeItem?.claimableBalance)) || 0,
-                desc:
-                  (curStakeItem &&
-                    Number(curStakeItem?.claimableBalance) * olyPrice) ||
-                  0,
-              }}
-            >
-              {curStakeItem && (
-                <Button
-                  clipDirection='topRight-bottomLeft'
-                  className='font-mono w-40'
-                  variant={
-                    isDisabled || Number(curStakeItem.claimableBalance) < 0.01
-                      ? 'disabled'
-                      : 'primary'
-                  }
-                  disabled={
-                    isDisabled || Number(curStakeItem.claimableBalance) < 0.01
-                  }
-                  onClick={() => {
-                    if (curStakeItem && curStakeItem.type === 'longStake') {
-                      claimLongPending(curStakeItem.period);
-                    } else {
-                      claimNodePending();
+        {/* 主要内容区域 */}
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+          <div>
+            <Card>
+              <DurationSelect
+                options={stakList}
+                value={lockIndex}
+                placeholder={t('selectStakingAmount')}
+                onChange={value => {
+                  const curItem = stakList[value];
+                  setCurStakeItem(curItem);
+                  setLockIndex(value);
+                }}
+              />
+              <AmountTicker
+                data={{
+                  title: tLockedStaking('pendingAmount'),
+                  value: (curStakeItem && Number(curStakeItem?.pending)) || 0,
+                  desc:
+                    (curStakeItem &&
+                      Number(curStakeItem?.pending) * olyPrice) ||
+                    0,
+                }}
+                disabled
+              >
+                {curStakeItem && (
+                  <CountdownDisplay
+                    blocks={BigInt(Number(curStakeItem.time))}
+                  ></CountdownDisplay>
+                )}
+              </AmountTicker>
+              <AmountTicker
+                data={{
+                  title: tLockedStaking('releasedAmount'),
+                  value:
+                    (curStakeItem && Number(curStakeItem?.claimableBalance)) ||
+                    0,
+                  desc:
+                    (curStakeItem &&
+                      Number(curStakeItem?.claimableBalance) * olyPrice) ||
+                    0,
+                }}
+              >
+                {curStakeItem && (
+                  <Button
+                    clipDirection='topRight-bottomLeft'
+                    className='font-mono w-40'
+                    variant={
+                      isDisabled || Number(curStakeItem.claimableBalance) < 0.01
+                        ? 'disabled'
+                        : 'primary'
                     }
-                  }}
-                >
-                  {isLoading ? t('unpledgeing') : t('unpledge')}
-                </Button>
-              )}
-            </AmountTicker>
-            {/* 信息提示 */}
-            <Notification>{tLockedStaking('unstakeInfo')}</Notification>
-          </Card>
-        </div>
-        <div>
-          <WalletSummaryLock />
+                    disabled={
+                      isDisabled || Number(curStakeItem.claimableBalance) < 0.01
+                    }
+                    onClick={() => {
+                      if (curStakeItem && curStakeItem.type === 'longStake') {
+                        claimLongPending(curStakeItem.period);
+                      } else {
+                        claimNodePending();
+                      }
+                    }}
+                  >
+                    {isLoading ? t('unpledgeing') : t('unpledge')}
+                  </Button>
+                )}
+              </AmountTicker>
+              {/* 信息提示 */}
+              <Notification>{tLockedStaking('unstakeInfo')}</Notification>
+            </Card>
+          </div>
+          <div>
+            <WalletSummaryLock />
+          </div>
         </div>
       </div>
-    </div>
+    </LockStakingLayout>
   );
 }

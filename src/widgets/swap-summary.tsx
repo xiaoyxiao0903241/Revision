@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl';
+import { FC } from 'react';
 import {
   Accordion,
   AccordionContent,
@@ -5,8 +7,7 @@ import {
   AccordionTrigger,
   List,
 } from '~/components';
-import { useTranslations } from 'next-intl';
-import { FC } from 'react';
+import { formatHash } from '~/lib/utils';
 
 export const SwapSummary: FC<{
   data: {
@@ -42,13 +43,27 @@ export const SwapSummary: FC<{
             </List.Item>
             <List.Item>
               <List.Label>{t('contractSpender')}</List.Label>
-              <List.Value className='font-mono'>
-                {data.contractSpender}
+              <List.Value
+                className='font-mono cursor-pointer'
+                onClick={() => {
+                  window.open(
+                    `https://bscscan.com/address/${data.contractSpender}`
+                  );
+                }}
+              >
+                {formatHash(data.contractSpender)}
               </List.Value>
             </List.Item>
             <List.Item>
               <List.Label>{t('recipient')}</List.Label>
-              <List.Value className='font-mono'>{data.recipient}</List.Value>
+              <List.Value
+                className='font-mono cursor-pointer'
+                onClick={() => {
+                  window.open(`https://bscscan.com/address/${data.recipient}`);
+                }}
+              >
+                {formatHash(data.recipient)}
+              </List.Value>
             </List.Item>
             <List.Item>
               <List.Label>{t('tokenIn')}</List.Label>

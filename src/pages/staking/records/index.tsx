@@ -6,6 +6,7 @@ import { Pager } from '~/components/pagination';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { demandStakHis } from '~/services/auth/stake';
 import { StakingRecords } from '~/widgets/staking-records';
+import StakingLayout from '../layout';
 
 export default function RecordsPage() {
   const t = useTranslations('staking');
@@ -45,24 +46,26 @@ export default function RecordsPage() {
     setPage(1);
   }, [recordType]);
   return (
-    <div className='space-y-6'>
-      <Alert
-        icon='record'
-        title={t('records')}
-        description={t('recordsDescription')}
-      />
-      <StakingRecords
-        records={hisList}
-        changeTab={setRecordType}
-        total={total}
-      />
-      {pages > 0 && (
-        <Pager
-          currentPage={page}
-          totalPages={pages}
-          onPageChange={setPage}
-        ></Pager>
-      )}
-    </div>
+    <StakingLayout>
+      <div className='space-y-6'>
+        <Alert
+          icon='record'
+          title={t('records')}
+          description={t('recordsDescription')}
+        />
+        <StakingRecords
+          records={hisList}
+          changeTab={setRecordType}
+          total={total}
+        />
+        {pages > 0 && (
+          <Pager
+            currentPage={page}
+            totalPages={pages}
+            onPageChange={setPage}
+          ></Pager>
+        )}
+      </div>
+    </StakingLayout>
   );
 }

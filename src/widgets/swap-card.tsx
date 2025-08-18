@@ -41,7 +41,7 @@ export const SwapCard: FC<{
           />
           <div className='flex justify-end items-center text-sm text-gray-400'>
             <span>
-              ≈
+              ~
               {data.symbol === 'USDT'
                 ? formatDecimal(Number(data && data.value) || 0, 2)
                 : formatDecimal(
@@ -57,7 +57,7 @@ export const SwapCard: FC<{
                     'text-success': data.profit != null && data.profit > 0,
                   })}
                 >
-                  ({`${formatDecimal(data.profit ?? 0)}%`})
+                  {/* ({`${formatDecimal(data.profit ?? 0)}%`}) */}
                 </span>
               </>
             ) : null}

@@ -7,12 +7,12 @@ import { usePublicClient } from 'wagmi';
 import { Alert, Button, Card } from '~/components';
 import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
 import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useContractError } from '~/hooks/useContractError';
 import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
 import { formatNumbedecimalScale } from '~/lib/utils';
 import { useNolockStore } from '~/store/noLock';
 import longStakingAbi from '~/wallet/constants/LongStakingAbi.json';
 import { OLY } from '~/wallet/constants/tokens';
-import { useContractError } from '~/hooks/useContractError';
 import { getInviteInfo } from '~/wallet/lib/web3/invite';
 import type { periodlongItem } from '~/wallet/lib/web3/stake';
 import {
@@ -26,12 +26,13 @@ import { WalletSummaryLock } from '~/widgets';
 import { AmountCard } from '~/widgets/amount-card';
 import { DurationSelect } from '~/widgets/select';
 import { StakingSummary } from '~/widgets/staking-summary';
+import LockStakingLayout from './layout';
 
 export default function StakingPage() {
   const t = useTranslations('staking');
   const t2 = useTranslations('common');
   const tLockedStaking = useTranslations('lockedStaking');
-  const [lockIndex, setLockIndex] = useState<number>(0);
+  const [lockIndex, setLockIndex] = useState<number>(100);
   const { userAddress } = useUserAddress();
   const [periodLongList, setPeriodLongList] = useState<periodlongItem[]>([]);
   const [curPeriod, setCurPeriod] = useState<periodlongItem | null>(null);
@@ -187,7 +188,9 @@ export default function StakingPage() {
     } catch (error: unknown) {
       if (isContractError(error as Error)) {
         const errorMessage = handleContractError(error as Error);
-        toast.error(errorMessage);
+        toast.error(errorMessage, {
+          id: toastId,
+        });
       } else {
         toast.error('error', {
           id: toastId,
@@ -220,7 +223,9 @@ export default function StakingPage() {
       })) as periodlongItem[];
       setPeriodLongList(updatedList);
       console.log(updatedList, 'updatedList');
-      setCurPeriod(updatedList[lockIndex]);
+      if (lockIndex !== 100) {
+        setCurPeriod(updatedList[lockIndex]);
+      }
     }
   }, [longStakListData, stakingStatusList, longAllowanceList, lockIndex]);
 
@@ -249,115 +254,119 @@ export default function StakingPage() {
     }
   }, [currentBlock, nextBlock]);
   return (
-    <div className='space-y-6'>
-      <Alert
-        icon='stake'
-        title={tLockedStaking('alertTitle')}
-        description={tLockedStaking('alertDescription')}
-      />
+    <LockStakingLayout>
+      <div className='space-y-6'>
+        <Alert
+          icon='stake'
+          title={tLockedStaking('alertTitle')}
+          description={tLockedStaking('alertDescription')}
+        />
 
-      {/* 主要内容区域 */}
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-        <div>
-          <Card>
-            <DurationSelect
-              options={periodLongList || []}
-              value={lockIndex}
-              onChange={value => {
-                setLockIndex(value);
-                setCurPeriod(periodLongList[value]);
-              }}
-            />
-            <AmountCard
-              data={{
-                value: stakeAmount,
-                desc: Number(stakeAmount) * olyPrice,
-                balance: (myolybalance && Number(myolybalance)) || 0,
-              }}
-              onChange={value => {
-                setStakeAmount(value);
-              }}
-              description={t('balance')}
-            />
-            <StakingSummary
-              data={{
-                rebaseRewardRate: (curPeriod && curPeriod?.rate) || '0.3%-1%',
-                rebaseBoost: (curPeriod && curPeriod?.addition) || '0.02-0.04',
-                nextRebaseRewardRate: apy + '%',
-                cutDownTime: cutDownTime,
-              }}
-            />
-            {!userAddress ? (
-              <ConnectWalletButton className='text-xl py-3 cursor-pointer px-6 !text-white text-5  h-[48px] min-w-[160px]   mx-auto' />
-            ) : (
-              <div className='flex items-center justify-center w-full gap-x-4'>
-                {curPeriod &&
-                  !curPeriod.isApprove &&
-                  (curPeriod.allowanceNum === 0 ||
-                    Number(curPeriod.allowanceNum) < Number(stakeAmount)) && (
+        {/* 主要内容区域 */}
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+          <div>
+            <Card>
+              <DurationSelect
+                options={periodLongList || []}
+                value={lockIndex}
+                placeholder={t('selectDurationPlaceholder')}
+                onChange={value => {
+                  setLockIndex(value);
+                  setCurPeriod(periodLongList[value]);
+                }}
+              />
+              <AmountCard
+                data={{
+                  value: stakeAmount,
+                  desc: Number(stakeAmount) * olyPrice,
+                  balance: (myolybalance && Number(myolybalance)) || 0,
+                }}
+                onChange={value => {
+                  setStakeAmount(value);
+                }}
+                description={t('balance')}
+              />
+              <StakingSummary
+                data={{
+                  rebaseRewardRate: (curPeriod && curPeriod?.rate) || '0.3%-1%',
+                  rebaseBoost:
+                    (curPeriod && curPeriod?.addition) || '0.02-0.04',
+                  nextRebaseRewardRate: apy + '%',
+                  cutDownTime: cutDownTime,
+                }}
+              />
+              {!userAddress ? (
+                <ConnectWalletButton className='text-xl py-3 cursor-pointer px-6 !text-white text-5  h-[48px] min-w-[160px]   mx-auto' />
+              ) : (
+                <div className='flex items-center justify-center w-full gap-x-4'>
+                  {curPeriod &&
+                    !curPeriod.isApprove &&
+                    (curPeriod.allowanceNum === 0 ||
+                      Number(curPeriod.allowanceNum) < Number(stakeAmount)) && (
+                      <Button
+                        clipDirection='topRight-bottomLeft'
+                        className='font-mono w-[50%]'
+                        variant={
+                          isDisabled ||
+                          Number(stakeAmount) === 0 ||
+                          Number(myolybalance) === 0 ||
+                          !curPeriod.status
+                            ? 'disabled'
+                            : 'primary'
+                        }
+                        disabled={
+                          isDisabled ||
+                          Number(stakeAmount) === 0 ||
+                          Number(myolybalance) === 0 ||
+                          !curPeriod.status
+                        }
+                        onClick={() => {
+                          handApprove(lockIndex);
+                        }}
+                      >
+                        {isLoading ? t('approving') : t('approve')}
+                      </Button>
+                    )}
+                  {
                     <Button
                       clipDirection='topRight-bottomLeft'
-                      className='font-mono w-[50%]'
+                      className='font-mono flex-1'
                       variant={
                         isDisabled ||
+                        Number(curPeriod?.allowanceNum) === 0 ||
+                        Number(curPeriod?.allowanceNum) < Number(stakeAmount) ||
                         Number(stakeAmount) === 0 ||
-                        Number(myolybalance) === 0 ||
-                        !curPeriod.status
+                        Number(myolybalance) === 0
                           ? 'disabled'
                           : 'primary'
                       }
                       disabled={
                         isDisabled ||
+                        Number(curPeriod?.allowanceNum) === 0 ||
+                        Number(curPeriod?.allowanceNum) < Number(stakeAmount) ||
                         Number(stakeAmount) === 0 ||
-                        Number(myolybalance) === 0 ||
-                        !curPeriod.status
+                        Number(myolybalance) === 0
                       }
                       onClick={() => {
-                        handApprove(lockIndex);
+                        staking(lockIndex);
                       }}
                     >
-                      {isLoading ? t('approving') : t('approve')}
+                      {isLoading &&
+                      Number(curPeriod?.allowanceNum) > 0 &&
+                      Number(curPeriod?.allowanceNum) > Number(stakeAmount)
+                        ? t('staking')
+                        : t('stake')}
                     </Button>
-                  )}
-                {curPeriod && (
-                  <Button
-                    clipDirection='topRight-bottomLeft'
-                    className='font-mono flex-1'
-                    variant={
-                      isDisabled ||
-                      Number(curPeriod.allowanceNum) === 0 ||
-                      Number(curPeriod.allowanceNum) < Number(stakeAmount) ||
-                      Number(stakeAmount) === 0 ||
-                      Number(myolybalance) === 0
-                        ? 'disabled'
-                        : 'primary'
-                    }
-                    disabled={
-                      isDisabled ||
-                      Number(curPeriod.allowanceNum) === 0 ||
-                      Number(curPeriod.allowanceNum) < Number(stakeAmount) ||
-                      Number(stakeAmount) === 0 ||
-                      Number(myolybalance) === 0
-                    }
-                    onClick={() => {
-                      staking(lockIndex);
-                    }}
-                  >
-                    {isLoading &&
-                    Number(curPeriod.allowanceNum) > 0 &&
-                    Number(curPeriod.allowanceNum) > Number(stakeAmount)
-                      ? t('staking')
-                      : t('stake')}
-                  </Button>
-                )}
-              </div>
-            )}
-          </Card>
-        </div>
-        <div>
-          <WalletSummaryLock />
+                  }
+                </div>
+              )}
+            </Card>
+          </div>
+          <div>
+            <WalletSummaryLock />
+          </div>
         </div>
       </div>
-    </div>
+    </LockStakingLayout>
   );
 }

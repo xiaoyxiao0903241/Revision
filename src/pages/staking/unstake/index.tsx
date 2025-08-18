@@ -25,6 +25,7 @@ import DemandStakingAbi from '~/wallet/constants/DemandStakingAbi.json';
 import { demandStaking } from '~/wallet/constants/tokens';
 import { Abi, parseUnits } from 'viem';
 import { useContractError } from '~/hooks/useContractError';
+import StakingLayout from '../layout';
 
 interface StakInfo {
   stakNum: number;
@@ -244,155 +245,161 @@ export default function UnstakePage() {
   }, [currentBlock, nextBlock]);
 
   return (
-    <div className='space-y-6'>
-      <Alert
-        icon='unstake'
-        title={t('unstakeTitle')}
-        description={tNoLockedStaking('unstakeDescription')}
-      />
+    <StakingLayout>
+      <div className='space-y-6'>
+        <Alert
+          icon='unstake'
+          title={t('unstakeTitle')}
+          description={tNoLockedStaking('unstakeDescription')}
+        />
 
-      {/* 主要内容区域 */}
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-        <div>
-          <Card>
-            <Segments
-              options={stakeOptions}
-              value={selectedStakeType}
-              onChange={value =>
-                setSelectedStakeType(value as 'release' | 'unstake')
-              }
-            />
-            {selectedStakeType === 'release' ? (
-              <>
-                <View
-                  className='bg-[#22285E] px-4'
-                  clipDirection='topRight-bottomLeft'
-                >
-                  <div className='flex items-center justify-between py-4'>
-                    <div className='flex flex-col gap-2'>
-                      <span className='text-foreground/70 text-sm'>
-                        {t('amount')}
-                      </span>
-                      <div className='flex items-center gap-2'>
-                        <RoundedLogo className='w-6 h-6' />
-                        <span className='text-foreground text-3xl font-mono'>
-                          {hotDataInfo.stakNum
-                            ? formatNumbedecimalScale(hotDataInfo.stakNum, 2)
-                            : 0}
+        {/* 主要内容区域 */}
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+          <div>
+            <Card>
+              <Segments
+                options={stakeOptions}
+                value={selectedStakeType}
+                onChange={value =>
+                  setSelectedStakeType(value as 'release' | 'unstake')
+                }
+              />
+              {selectedStakeType === 'release' ? (
+                <>
+                  <View
+                    className='bg-[#22285E] px-4'
+                    clipDirection='topRight-bottomLeft'
+                  >
+                    <div className='flex items-center justify-between py-4'>
+                      <div className='flex flex-col gap-2'>
+                        <span className='text-foreground/70 text-sm'>
+                          {t('amount')}
+                        </span>
+                        <div className='flex items-center gap-2'>
+                          <RoundedLogo className='w-6 h-6' />
+                          <span className='text-foreground text-3xl font-mono'>
+                            {hotDataInfo.stakNum
+                              ? formatNumbedecimalScale(hotDataInfo.stakNum, 2)
+                              : 0}
+                          </span>
+                        </div>
+                        <span className='text-foreground/70 text-sm'>
+                          $
+                          {formatNumbedecimalScale(
+                            hotDataInfo.stakNum * olyPrice,
+                            2
+                          )}
                         </span>
                       </div>
-                      <span className='text-foreground/70 text-sm'>
-                        $
-                        {formatNumbedecimalScale(
-                          hotDataInfo.stakNum * olyPrice,
-                          2
-                        )}
-                      </span>
+                      {lastStakeTimestamp &&
+                      lastStakeTimestamp > 0 &&
+                      hotDataInfo.stakNum > 0 &&
+                      !isClaim ? (
+                        <span className='text-white'>
+                          <CountDownTimer time={time}></CountDownTimer>
+                        </span>
+                      ) : (
+                        <Button
+                          className='h-10'
+                          disabled={
+                            hotDataInfo.stakNum === 0 || !isClaim || isDisabled
+                          }
+                          clipDirection='topRight-bottomLeft'
+                          variant='primary'
+                          onClick={claimToStakes}
+                        >
+                          {isLoading ? 'Release...' : 'Release'}
+                        </Button>
+                      )}
                     </div>
-                    {lastStakeTimestamp &&
-                    lastStakeTimestamp > 0 &&
-                    hotDataInfo.stakNum > 0 &&
-                    !isClaim ? (
-                      <span className='text-white'>
-                        <CountDownTimer time={time}></CountDownTimer>
-                      </span>
-                    ) : (
-                      <Button
-                        className='h-10'
-                        disabled={
-                          hotDataInfo.stakNum === 0 || !isClaim || isDisabled
-                        }
-                        clipDirection='topRight-bottomLeft'
-                        variant='primary'
-                        onClick={claimToStakes}
-                      >
-                        {isLoading ? 'Release...' : 'Release'}
-                      </Button>
+                  </View>
+                  {/* 信息提示 */}
+                  <Notification>
+                    {tNoLockedStaking(
+                      disabled ? 'unstakeDisabledInfo' : 'unstakeInfo'
                     )}
-                  </div>
-                </View>
-                {/* 信息提示 */}
-                <Notification>
-                  {tNoLockedStaking(
-                    disabled ? 'unstakeDisabledInfo' : 'unstakeInfo'
-                  )}
-                </Notification>
-              </>
-            ) : (
-              <>
-                <AmountCard
-                  data={{
-                    value: UnstakeAmount,
-                    desc: Number(UnstakeAmount) * olyPrice,
-                    balance: principal
-                      ? Number(formatNumbedecimalScale(principal, 2))
-                      : 0,
-                  }}
-                  onChange={value => {
-                    if (Number(value) > principal) {
-                      setUnstakeAmount(principal.toString());
-                    } else {
-                      setUnstakeAmount(value);
-                    }
-                  }}
-                  description={t('balance')}
-                />
-                <List>
-                  <List.Item>
-                    <List.Label>{t('youWillReceive')}</List.Label>
-                    <List.Value className='text-xl font-mono'>{`${formatDecimal(
-                      Number(UnstakeAmount),
-                      4
-                    )} OLY`}</List.Value>
-                  </List.Item>
-                  <List.Item>
-                    <List.Label>{t2('nextBlockRate')}</List.Label>
-                    <List.Value className='font-mono'>
-                      {Number(apy) > 0 ? apy : 0}%
-                    </List.Value>
-                  </List.Item>
-                  <List.Item>
-                    <List.Label>{t2('next_earnings')}</List.Label>
-                    <List.Value className='text-success'>
-                      {nextEarnAmount > 0
-                        ? formatNumbedecimalScale(nextEarnAmount, 2)
-                        : 0}{' '}
-                      OLY
-                    </List.Value>
-                  </List.Item>
+                  </Notification>
+                </>
+              ) : (
+                <>
+                  <AmountCard
+                    data={{
+                      value: UnstakeAmount,
+                      desc: Number(UnstakeAmount) * olyPrice,
+                      balance: principal
+                        ? Number(formatNumbedecimalScale(principal, 2))
+                        : 0,
+                    }}
+                    onChange={value => {
+                      if (Number(value) > principal) {
+                        setUnstakeAmount(principal.toString());
+                      } else {
+                        setUnstakeAmount(value);
+                      }
+                    }}
+                    description={t('balance')}
+                  />
+                  <List>
+                    <List.Item>
+                      <List.Label>{t('youWillReceive')}</List.Label>
+                      <List.Value className='text-xl font-mono'>{`${formatDecimal(
+                        Number(UnstakeAmount),
+                        4
+                      )} OLY`}</List.Value>
+                    </List.Item>
+                    <List.Item>
+                      <List.Label>{t2('nextBlockRate')}</List.Label>
+                      <List.Value className='font-mono'>
+                        {Number(apy) > 0 ? apy : 0}%
+                      </List.Value>
+                    </List.Item>
+                    <List.Item>
+                      <List.Label>{t2('next_earnings')}</List.Label>
+                      <List.Value className='text-success'>
+                        {nextEarnAmount > 0
+                          ? formatNumbedecimalScale(nextEarnAmount, 2)
+                          : 0}{' '}
+                        OLY
+                      </List.Value>
+                    </List.Item>
 
-                  <List.Item>
-                    <List.Label>{t('countdownToNextRebase')}</List.Label>
-                    <List.Value className='font-mono'>
-                      <CountdownDisplay
-                        blocks={BigInt(cutDownTime)}
-                        isShowDay={false}
-                      />
-                    </List.Value>
-                  </List.Item>
-                </List>
-                <Button
-                  clipDirection='topRight-bottomLeft'
-                  variant={
-                    principal == 0 || isDisabled || Number(UnstakeAmount) === 0
-                      ? 'disabled'
-                      : 'primary'
-                  }
-                  disabled={
-                    principal == 0 || isDisabled || Number(UnstakeAmount) === 0
-                  }
-                  onClick={claimPrincipal}
-                >
-                  {isLoading ? t2('unpledgeing') : t2('unpledge')}
-                </Button>
-              </>
-            )}
-          </Card>
-        </div>
-        <div>
-          <WalletSummary />
+                    <List.Item>
+                      <List.Label>{t('countdownToNextRebase')}</List.Label>
+                      <List.Value className='font-mono'>
+                        <CountdownDisplay
+                          blocks={BigInt(cutDownTime)}
+                          isShowDay={false}
+                        />
+                      </List.Value>
+                    </List.Item>
+                  </List>
+                  <Button
+                    clipDirection='topRight-bottomLeft'
+                    variant={
+                      principal == 0 ||
+                      isDisabled ||
+                      Number(UnstakeAmount) === 0
+                        ? 'disabled'
+                        : 'primary'
+                    }
+                    disabled={
+                      principal == 0 ||
+                      isDisabled ||
+                      Number(UnstakeAmount) === 0
+                    }
+                    onClick={claimPrincipal}
+                  >
+                    {isLoading ? t2('unpledgeing') : t2('unpledge')}
+                  </Button>
+                </>
+              )}
+            </Card>
+          </div>
+          <div>
+            <WalletSummary />
+          </div>
         </div>
       </div>
-    </div>
+    </StakingLayout>
   );
 }

@@ -20,6 +20,7 @@ import {
   cn,
   fallbackCopyText,
   formatAddress,
+  formatDecimal,
   formatNumbedecimalScale,
 } from '~/lib/utils';
 import { myMess } from '~/services/auth/dashboard';
@@ -205,8 +206,8 @@ export function WalletDropdown({
     {
       type: 'staking',
       name: t('staking'),
-      amount: formatNumbedecimalScale(allStakeAmount, 4),
-      value: formatNumbedecimalScale(allStakeAmount * Number(olyPrice), 2),
+      amount: formatDecimal(allStakeAmount, 2),
+      value: formatDecimal(allStakeAmount * Number(olyPrice), 2),
       icon: 'staking',
       className: 'bg-warning',
     },
@@ -214,7 +215,7 @@ export function WalletDropdown({
       type: 'bonds',
       name: t('bonds'),
       amount: '0',
-      value: '$0.0',
+      value: '0.0',
       icon: 'diamond',
       className: 'bg-secondary',
     },
@@ -225,16 +226,16 @@ export function WalletDropdown({
     {
       type: 'rebaseReward',
       name: t('rebaseReward'),
-      amount: formatNumbedecimalScale(allClaimAmount, 4),
-      value: formatNumbedecimalScale(allClaimAmount * Number(olyPrice), 2),
+      amount: formatDecimal(allClaimAmount, 2),
+      value: formatDecimal(allClaimAmount * Number(olyPrice), 2),
       icon: 'medal',
       className: 'gradient',
     },
     {
       type: 'totalBonus',
       name: t('totalBonus'),
-      amount: formatNumbedecimalScale(myMessData?.totalBonus, 4),
-      value: formatNumbedecimalScale(
+      amount: formatDecimal(myMessData?.totalBonus, 2),
+      value: formatDecimal(
         Number(myMessData?.totalBonus) * Number(olyPrice),
         2
       ),
@@ -274,7 +275,7 @@ export function WalletDropdown({
       {
         symbol: 'USDT',
         name: 'Tether USD',
-        balance: formatNumbedecimalScale(daiBalance, 2),
+        balance: formatDecimal(Number(daiBalance), 2),
         value: formatNumbedecimalScale(daiBalance, 2),
         icon: '/images/icon/usdt.png',
         chain: 'BNB CHAIN',
@@ -283,9 +284,9 @@ export function WalletDropdown({
         symbol: 'BNB',
         name: 'BNB',
         balance: bnbBalance
-          ? formatNumbedecimalScale(
-              formatUnits(bnbBalance.value, bnbBalance.decimals),
-              6
+          ? formatDecimal(
+              Number(formatUnits(bnbBalance.value, bnbBalance.decimals)),
+              4
             )
           : '0',
         value: bnbBalance
@@ -301,7 +302,7 @@ export function WalletDropdown({
       {
         symbol: 'OLY',
         name: 'OLYONE TOKEN',
-        balance: formatNumbedecimalScale(olyBalance, 4),
+        balance: formatDecimal(Number(olyBalance), 2),
         value:
           olyBalance && olyPrice
             ? formatNumbedecimalScale(Number(olyBalance) * Number(olyPrice), 2)
@@ -314,6 +315,15 @@ export function WalletDropdown({
     return total.toFixed(1);
   }, [daiBalance, bnbBalance, bnbprice, olyBalance, olyPrice]);
 
+  const totalValueInUSDAccount = useMemo(() => {
+    let total = 0;
+    const stakUsdt = allStakeAmount * Number(olyPrice);
+    const claimUsdt = allClaimAmount * Number(olyPrice);
+    const totalBonusUsdt = Number(myMessData?.totalBonus) * Number(olyPrice);
+    total = stakUsdt + claimUsdt + totalBonusUsdt;
+    return total.toFixed(1);
+  }, [myMessData, olyPrice, allClaimAmount]);
+
   const handleBuy = () => {
     toSwap('buy');
   };
@@ -322,9 +332,9 @@ export function WalletDropdown({
     toSwap('sell');
   };
 
-  const handleReceive = () => {
-    console.log('Receive clicked');
-  };
+  // const handleReceive = () => {
+  //   console.log('Receive clicked');
+  // };
   const addressRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -444,7 +454,12 @@ export function WalletDropdown({
 
           {/* Balance */}
           <div className='flex flex-col gap-2'>
-            <div className='text-3xl font-bold'>{totalValueInUSD}</div>
+            <div className='text-3xl font-bold'>
+              $
+              {activeTab == 'wallet'
+                ? formatDecimal(Number(totalValueInUSD), 2)
+                : formatDecimal(Number(totalValueInUSDAccount), 2)}
+            </div>
             <div className='text-foreground/50 text-xs'>
               {activeTab === 'wallet' ? t('myWallet') : t('myAccount')}
             </div>
@@ -509,7 +524,9 @@ export function WalletDropdown({
                       <div className='font-medium font-mono text-lg'>
                         {asset.balance}
                       </div>
-                      <div className='text-xs text-white/50'>{asset.value}</div>
+                      <div className='text-xs text-white/50'>
+                        ${formatDecimal(Number(asset.value), 2)}
+                      </div>
                     </div>
                   </DropdownMenuItem>
                 ))}
@@ -532,7 +549,7 @@ export function WalletDropdown({
                 >
                   {t('sell')}
                 </Button>
-                <Button
+                {/* <Button
                   onClick={handleReceive}
                   variant='outlined'
                   clipDirection='topLeft-bottomRight'
@@ -542,7 +559,7 @@ export function WalletDropdown({
                   <span className='text-gradient text-sm px-2 z-10'>
                     {t('receive')}
                   </span>
-                </Button>
+                </Button> */}
               </div>
             </div>
           )}

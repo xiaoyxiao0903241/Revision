@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { FC, ReactNode, useEffect, useState } from 'react';
-import { Button, Card, Icon, Pager, Tabs } from '~/components';
+import { Card, Icon, Pager, Tabs } from '~/components';
 import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import {
@@ -54,7 +54,6 @@ interface ReciveItem extends Record<string, unknown> {
 
 export const CoolingPoolRecords: FC = () => {
   const t = useTranslations('coolingPool');
-  const t2 = useTranslations('common');
   const [activeTab, setActiveTab] = useState(0);
   const [page, setPage] = useState<number>(1);
   const { userAddress } = useUserAddress();
@@ -185,15 +184,7 @@ export const CoolingPoolRecords: FC = () => {
                       <ConnectWalletButton />
                     </>
                   ) : (
-                    <>
-                      {t('noRecords')}
-                      <Button
-                        clipDirection='topRight-bottomLeft'
-                        className='w-auto'
-                      >
-                        {t2('nodata')}
-                      </Button>
-                    </>
+                    <>{t('noRecords')}</>
                   )}
                 </td>
               </tr>

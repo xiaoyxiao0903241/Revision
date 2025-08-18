@@ -18,6 +18,7 @@ import { WalletSummary } from '~/widgets';
 import { AmountCard } from '~/widgets/amount-card';
 import { ClaimSummary } from '~/widgets/claim-summary';
 import { DurationSelect } from '~/widgets/select';
+import StakingLayout from '../layout';
 
 interface StakInfo {
   stakNum: number;
@@ -127,84 +128,86 @@ export default function ClaimPage() {
 
   // },[claimAmount])
   return (
-    <div className='space-y-6'>
-      <Alert
-        icon='claim'
-        title={t('claimTitle')}
-        description={t('claimDescription')}
-      />
+    <StakingLayout>
+      <div className='space-y-6'>
+        <Alert
+          icon='claim'
+          title={t('claimTitle')}
+          description={t('claimDescription')}
+        />
 
-      {/* 主要内容区域 */}
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-        <div className='space-y-6'>
-          {/* 分段控制器 */}
-          <Card>
-            <AmountCard
-              data={{
-                value: claimAmount,
-                desc: Number(claimAmount || 0) * olyPrice,
-                balance: normalProfit
-                  ? Number(formatNumbedecimalScale(normalProfit, 4))
-                  : 0,
-              }}
-              onChange={value => {
-                if (Number(value) > allProfit) {
-                  setClaimAmount(allProfit.toString());
-                } else {
-                  setClaimAmount(value);
+        {/* 主要内容区域 */}
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+          <div className='space-y-6'>
+            {/* 分段控制器 */}
+            <Card>
+              <AmountCard
+                data={{
+                  value: claimAmount,
+                  desc: Number(claimAmount || 0) * olyPrice,
+                  balance: normalProfit
+                    ? Number(formatNumbedecimalScale(normalProfit, 4))
+                    : 0,
+                }}
+                onChange={value => {
+                  if (Number(value) > allProfit) {
+                    setClaimAmount(allProfit.toString());
+                  } else {
+                    setClaimAmount(value);
+                  }
+                }}
+                description={t('balance')}
+              />
+              <Notification>{tNoLockedStaking('claimInfo')}</Notification>
+              <DurationSelect
+                options={periodList}
+                value={lockIndex}
+                placeholder={tNoLockedStaking('selectReleasePeriod')}
+                onChange={value => {
+                  setRate(Number(periodList[value].rate.split('%')[0]));
+                  setLockIndex(value);
+                }}
+              />
+              <ClaimSummary
+                data={{
+                  amount: Number(claimAmount) * ((100 - rate) / 100),
+                  taxRate: rate,
+                  incomeTax: Number(claimAmount) * (rate / 100),
+                }}
+              />
+
+              {/* 领取按钮 */}
+              <Button
+                clipDirection='topRight-bottomLeft'
+                className='w-full'
+                variant={
+                  normalProfit < 0.0001 ||
+                  isDisabled ||
+                  (rebalseProfit > 0 && hotDataInfo.stakNum > 0) ||
+                  Number(claimAmount) === 0
+                    ? 'disabled'
+                    : 'primary'
                 }
-              }}
-              description={t('balance')}
-            />
-            <Notification>{tNoLockedStaking('claimInfo')}</Notification>
-            <DurationSelect
-              options={periodList}
-              value={lockIndex}
-              placeholder={tNoLockedStaking('selectReleasePeriod')}
-              onChange={value => {
-                setRate(Number(periodList[value].rate.split('%')[0]));
-                setLockIndex(value);
-              }}
-            />
-            <ClaimSummary
-              data={{
-                amount: Number(claimAmount) * ((100 - rate) / 100),
-                taxRate: rate,
-                incomeTax: Number(claimAmount) * (rate / 100),
-              }}
-            />
+                disabled={
+                  normalProfit < 0.0001 ||
+                  isDisabled ||
+                  (rebalseProfit > 0 && hotDataInfo.stakNum > 0) ||
+                  Number(claimAmount) === 0 ||
+                  lockIndex === 100
+                }
+                onClick={claimInterest}
+              >
+                {t('claimButton')}
+              </Button>
+            </Card>
+          </div>
 
-            {/* 领取按钮 */}
-            <Button
-              clipDirection='topRight-bottomLeft'
-              className='w-full'
-              variant={
-                normalProfit < 0.0001 ||
-                isDisabled ||
-                (rebalseProfit > 0 && hotDataInfo.stakNum > 0) ||
-                Number(claimAmount) === 0
-                  ? 'disabled'
-                  : 'primary'
-              }
-              disabled={
-                normalProfit < 0.0001 ||
-                isDisabled ||
-                (rebalseProfit > 0 && hotDataInfo.stakNum > 0) ||
-                Number(claimAmount) === 0 ||
-                lockIndex === 100
-              }
-              onClick={claimInterest}
-            >
-              {t('claimButton')}
-            </Button>
-          </Card>
-        </div>
-
-        {/* 右侧钱包摘要 */}
-        <div>
-          <WalletSummary />
+          {/* 右侧钱包摘要 */}
+          <div>
+            <WalletSummary />
+          </div>
         </div>
       </div>
-    </div>
+    </StakingLayout>
   );
 }

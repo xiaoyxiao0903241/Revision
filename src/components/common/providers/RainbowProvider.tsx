@@ -43,7 +43,7 @@ interface ExtendedWindow extends Window {
 const queryClient = new QueryClient();
 
 const customTheme = darkTheme({
-  accentColor: '#FF8908',
+  accentColor: 'rgba(87, 106, 244, 0.5)',
   accentColorForeground: 'white',
   borderRadius: 'large',
   fontStack: 'system',
@@ -75,7 +75,7 @@ const getRainbowLocale = (locale: string): Locale => {
       return 'vi';
     case 'th':
       return 'th';
-    case 'zh-hk':
+    case 'zh-HK':
       return 'zh-HK';
     case 'en':
     default:
