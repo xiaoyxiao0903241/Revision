@@ -176,7 +176,7 @@ export default function DashboardPage() {
           <div className='flex justify-between'>
             <Statistics
               title={t('genesisSize')}
-              value={`${formatNumbedecimalScale(nodeAmount, 2)} OLY`}
+              value={`${formatNumbedecimalScale(nodeAmount, 2)} USDT`}
               size='sm'
               info={<span>{t2('dash.invite_serving')}</span>}
             />
