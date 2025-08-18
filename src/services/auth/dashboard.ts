@@ -15,6 +15,8 @@ export interface responseItem {
   liquidityBondMarketCap: number;
   stableBondMarketCap: number;
   TVL: number;
+  nodeStakedAmount: number;
+  newLockedStaking: number;
 }
 export interface airItem {
   amount: string;
@@ -36,6 +38,8 @@ export const responseItemDefault: responseItem = {
   liquidityBondMarketCap: 0,
   stableBondMarketCap: 0,
   TVL: 0,
+  nodeStakedAmount: 0,
+  newLockedStaking: 0,
 };
 
 //仪表盘
@@ -86,13 +90,22 @@ export const dashMess = async (startTime: string, endTime: string) => {
           Number(it.liquidityBondMarketCap) / Number(it.tokenTotalSupply);
         // 溢价指数
         const Premium = backingPrice !== 0 ? Number(value) / backingPrice : 0;
+        // 长期+活期+节点总量
         const depositNum = (
-          Number(it.longStakedAmount) + Number(it.flexibleStakedAmount)
+          (Number(it.longStakedAmount) +
+            Number(it.flexibleStakedAmount) +
+            Number(it.nodeStakedAmount)) *
+          Number(it.tokenPrice)
         ).toFixed(6);
+        const newLockedStaking =
+          (Number(it.longStakedAmount) + Number(it.nodeStakedAmount)) *
+          Number(it.tokenPrice);
+
         const itemDateStr = it.createdAt.split(' ')[0]; // YYYY-MM-DD
         const item = {
           ...it,
           TVL: Number(depositNum),
+          newLockedStaking,
         };
 
         if (itemDateStr === todayStr) {
@@ -100,7 +113,6 @@ export const dashMess = async (startTime: string, endTime: string) => {
         } else if (itemDateStr === yesterdayStr) {
           yesterdayObj = item;
         }
-
         marketList.push({
           amount: value,
           week: getWeekday(it.createdAt),

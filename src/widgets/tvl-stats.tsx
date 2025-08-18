@@ -22,6 +22,8 @@ interface TVLDataSource {
   TVL: number;
   flexibleStakedAmount: number;
   longStakedAmount: number;
+  nodeStakedAmount: number;
+  newLockedStaking: number;
 }
 
 // TVL统计组件
@@ -40,7 +42,6 @@ export const TVLStats: React.FC<{
   // 计算变化百分比
   const calculateChangePercent = (current: number, previous: number) => {
     if (previous === 0) return 0;
-    console.log(current, previous, 'tttttttttttttttttttttttt');
     return ((current - previous) / previous) * 100;
   };
 
@@ -79,9 +80,11 @@ export const TVLStats: React.FC<{
       yesterdayObj?.flexibleStakedAmount || 0
     );
 
-    const currentLockedStaking = Math.floor(todayObj?.longStakedAmount || 0);
+    const currentLockedStaking = Math.floor(
+      Number(todayObj?.newLockedStaking || 0)
+    );
     const previousLockedStaking = Math.floor(
-      yesterdayObj?.longStakedAmount || 0
+      Number(yesterdayObj?.newLockedStaking || 0)
     );
 
     // 计算TVL变化 (使用tokenMarketCap作为TVL)

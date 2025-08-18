@@ -600,7 +600,7 @@ export default function SwapPage() {
               width='100%'
               id='geckoterminal-embed'
               title='GeckoTerminal Embed'
-              src='https://www.geckoterminal.com/bsc/pools/0x6865704ff097b1105ed42b8517020e14fe9a2abd?embed=1&info=0&swaps=0&grayscale=0&light_chart=0&chart_type=price&resolution=15m'
+              src='https://www.geckoterminal.com/bsc/pools/0x6865704ff097b1105ed42b8517020e14fe9a2abd?embed=1&info=0&swaps=0&grayscale=0&light_chart=0&chart_type=price&resolution=1d'
               frameBorder='0'
               allow='clipboard-write'
               allowFullScreen
