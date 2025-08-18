@@ -1,5 +1,3 @@
-'use client';
-
 import { AddToWallet } from './addToWallet';
 interface ClaimTickerProps {
   lockedAmount: number | string;

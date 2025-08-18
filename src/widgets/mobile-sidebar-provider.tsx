@@ -1,4 +1,3 @@
-'use client';
 import { createContext, useContext, useState, ReactNode } from 'react';
 import { Header } from './header';
 import { MobileSidebar } from './mobile-sidebar';

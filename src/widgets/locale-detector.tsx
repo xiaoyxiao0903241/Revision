@@ -1,4 +1,3 @@
-'use client';
 import { useLocale } from 'next-intl';
 import { dayjs } from '~/lib/utils';
 

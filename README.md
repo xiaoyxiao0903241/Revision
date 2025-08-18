@@ -17,7 +17,7 @@
 
 ```
 src/
-├── app/
+├── pages/
 │   ├── [locale]/           # 多语言路由
 │   │   ├── layout.tsx      # 语言特定布局
 │   │   ├── page.tsx        # 主页
@@ -160,7 +160,7 @@ npm run dev
 
 ### 添加新页面
 
-1. 在 `src/app/[locale]/` 下创建新的页面目录
+1. 在 `src/pages/[locale]/` 下创建新的页面目录
 2. 添加 `page.tsx` 文件
 3. 在侧边栏导航中添加对应的链接
 

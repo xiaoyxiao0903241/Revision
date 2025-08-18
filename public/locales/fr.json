@@ -21,7 +21,24 @@
   "header": {
     "language": "Langue",
     "network": "BNB Smart Chain",
-    "wallet": "Portefeuille"
+    "wallet": "Portefeuille",
+    "connect": "Connecter le Portefeuille"
+  },
+  "invite": {
+    "title": "Inviter",
+    "description": "Invitez des amis à participer au staking et gagnez des récompenses supplémentaires",
+    "referralCode": "Code de Parrainage",
+    "enterReferralCode": "Entrez le Code de Parrainage",
+    "submit": "Soumettre",
+    "copyReferralLink": "Copier le Lien de Parrainage",
+    "inviteSuccess": "Invitation Réussie",
+    "invalidReferralCode": "Code de Parrainage Invalide"
+  },
+  "netWork": {
+    "changeNet": "Cliquez pour changer de réseau",
+    "connect": "Veuillez d'abord connecter votre portefeuille",
+    "noSupport": "Réseau inconnu",
+    "NotConnected": "Réseau non connecté"
   },
   "staking": {
     "stake": "Stake",

@@ -1,6 +1,6 @@
 FROM node:20-slim AS builder
 WORKDIR /app
-  
+
 COPY package.json pnpm-lock.yaml ./
 RUN --mount=type=cache,id=pnpm-store,target=/home/node/.pnpm-store \
     corepack enable \

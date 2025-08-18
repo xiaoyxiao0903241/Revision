@@ -1,4 +1,3 @@
-'use client';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import ClipboardJS from 'clipboard';
 import { ChevronDown } from 'lucide-react';

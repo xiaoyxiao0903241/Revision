@@ -21,7 +21,24 @@
   "header": {
     "language": "言語",
     "network": "BNB Smart Chain",
-    "wallet": "ウォレット"
+    "wallet": "ウォレット",
+    "connect": "ウォレット接続"
+  },
+  "invite": {
+    "title": "招待",
+    "description": "友達をステーキングに招待して追加報酬を獲得",
+    "referralCode": "紹介コード",
+    "enterReferralCode": "紹介コードを入力",
+    "submit": "送信",
+    "copyReferralLink": "紹介リンクをコピー",
+    "inviteSuccess": "招待成功",
+    "invalidReferralCode": "無効な紹介コード"
+  },
+  "netWork": {
+    "changeNet": "ネットワークを切り替えるにはクリック",
+    "connect": "まずウォレットを接続してください",
+    "noSupport": "未知のネットワーク",
+    "NotConnected": "ネットワーク未接続"
   },
   "staking": {
     "stake": "Stake",

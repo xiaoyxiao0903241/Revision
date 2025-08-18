@@ -21,7 +21,24 @@
   "header": {
     "language": "ภาษา",
     "network": "BNB Smart Chain",
-    "wallet": "กระเป๋าเงิน"
+    "wallet": "กระเป๋าเงิน",
+    "connect": "เชื่อมต่อกระเป๋าเงิน"
+  },
+  "invite": {
+    "title": "เชิญ",
+    "description": "เชิญเพื่อนมาร่วมเดิมพันและรับรางวัลเพิ่มเติม",
+    "referralCode": "รหัสแนะนำ",
+    "enterReferralCode": "ใส่รหัสแนะนำ",
+    "submit": "ส่ง",
+    "copyReferralLink": "คัดลอกลิงก์แนะนำ",
+    "inviteSuccess": "เชิญสำเร็จ",
+    "invalidReferralCode": "รหัสแนะนำไม่ถูกต้อง"
+  },
+  "netWork": {
+    "changeNet": "คลิกเพื่อเปลี่ยนเครือข่าย",
+    "connect": "กรุณาเชื่อมต่อกระเป๋าเงินก่อน",
+    "noSupport": "เครือข่ายที่ไม่รู้จัก",
+    "NotConnected": "เครือข่ายไม่ได้เชื่อมต่อ"
   },
   "staking": {
     "stake": "Stake",

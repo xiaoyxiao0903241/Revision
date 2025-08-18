@@ -8,6 +8,9 @@ import type { NextConfig } from 'next';
  */
 const nextConfig: NextConfig = {
   output: 'export',
+  trailingSlash: true, // 确保所有路径以斜杠结尾，防止生成 .txt 文件
+  skipTrailingSlashRedirect: true, // 跳过尾部斜杠重定向
+
   /**
    * 图片配置 - 禁用图片优化以兼容静态导出
    * 当使用 output: 'export' 时，Next.js 的图片优化 API 不可用

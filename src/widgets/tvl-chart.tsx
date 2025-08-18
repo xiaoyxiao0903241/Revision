@@ -1,5 +1,3 @@
-'use client';
-
 import dayjs from 'dayjs';
 import type { EChartsOption } from 'echarts';
 import ReactECharts from 'echarts-for-react';

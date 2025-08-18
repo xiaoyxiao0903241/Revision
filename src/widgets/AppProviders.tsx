@@ -1,5 +1,3 @@
-'use client';
-
 import { Suspense } from 'react';
 import { Toaster } from 'sonner';
 import { RainbowProvider } from '~/components/common/providers/RainbowProvider';

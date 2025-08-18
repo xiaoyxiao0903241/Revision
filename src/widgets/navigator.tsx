@@ -1,5 +1,3 @@
-'use client';
-
 import { usePathname } from 'next/navigation';
 import { NavigationTabs } from '~/components';
 
@@ -12,10 +10,13 @@ export function Navigator({
   return (
     <NavigationTabs
       data={items}
-      activeIndex={items.findIndex(
-        item =>
-          pathname.endsWith(item.href) || pathname.includes(`/${item.href}/`)
-      )}
+      activeIndex={
+        items.findIndex(
+          item =>
+            (pathname ?? '').endsWith(item.href) ||
+            (pathname ?? '').includes(`/${item.href}/`)
+        ) || 0
+      }
     />
   );
 }
