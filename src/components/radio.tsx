@@ -16,10 +16,9 @@ export const RadioGroup: FC<{
         <div
           key={option.value}
           className={cn(
-            'rounded-full h-[18px] cursor-pointer flex px-4 items-center justify-center border-gray-400 text-xs',
+            'rounded-[2px] h-[18px] cursor-pointer flex px-4 items-center justify-center border-gray-400 text-xs border-[1px]',
             {
-              'border-2 text-foreground/50':
-                Number(value) !== Number(option.value),
+              'text-foreground/50': Number(value) !== Number(option.value),
               gradient: Number(value) === Number(option.value),
             }
           )}

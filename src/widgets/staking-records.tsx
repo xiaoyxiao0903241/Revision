@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { FC, ReactNode, useState } from 'react';
-import { Button, Card, Icon, Tabs } from '~/components';
+import { Card, Icon, Tabs } from '~/components';
 import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { cn, formatDecimal, formatHash, formatTimeToLocal } from '~/lib/utils';
@@ -48,7 +48,6 @@ export const StakingRecords: FC<{
   total: number;
 }> = ({ records, changeTab, total = 0 }) => {
   const t = useTranslations('staking');
-  const t2 = useTranslations('common');
   const [activeTab, setActiveTab] = useState(0);
   const { userAddress } = useUserAddress();
   // 标签页数据
@@ -131,15 +130,7 @@ export const StakingRecords: FC<{
                       <ConnectWalletButton />
                     </>
                   ) : (
-                    <>
-                      {t('noRecords')}
-                      <Button
-                        clipDirection='topRight-bottomLeft'
-                        className='w-auto'
-                      >
-                        {t2('nodata')}
-                      </Button>
-                    </>
+                    <>{t('noRecords')}</>
                   )}
                 </td>
               </tr>

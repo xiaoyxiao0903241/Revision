@@ -1,27 +1,26 @@
 'use client';
 
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import debounce from 'lodash/debounce';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { toast } from 'sonner';
+import { erc20Abi, formatUnits, parseUnits } from 'viem';
+import { usePublicClient, useWriteContract } from 'wagmi';
 import { Alert, Button, Card } from '~/components';
-import { cn, formatDecimal, formatAddress } from '~/lib/utils';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import { useContractError } from '~/hooks/useContractError';
+import { cn, formatDecimal, formatNumbedecimalScale } from '~/lib/utils';
+import { DAI, turbine } from '~/wallet/constants/tokens';
+import TurbineAbi from '~/wallet/constants/TurbineAbi.json';
+import { getTokenPrice } from '~/wallet/lib/web3/bond';
+import { getAllowance, getBalanceToken } from '~/wallet/lib/web3/stake';
+import { getStakeNum } from '~/wallet/lib/web3/turbine';
 import { AmountCard, TurbineRecords, TurbineSummary } from '~/widgets';
 import { RateCard } from '~/widgets/rate-card';
 import { Slippage } from '~/widgets/slippage';
-import { getTokenPrice } from '~/wallet/lib/web3/bond';
-import { useUserAddress } from '~/contexts/UserAddressContext';
-import { getAllowance, getBalanceToken } from '~/wallet/lib/web3/stake';
-import { turbine, DAI } from '~/wallet/constants/tokens';
-import { formatNumbedecimalScale } from '~/lib/utils';
-import { getStakeNum } from '~/wallet/lib/web3/turbine';
-import { useWriteContract, usePublicClient } from 'wagmi';
-import TurbineAbi from '~/wallet/constants/TurbineAbi.json';
-import { erc20Abi, parseUnits, formatUnits } from 'viem';
-import debounce from 'lodash/debounce';
-import { toast } from 'sonner';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ReciveTable } from './component/reciveTable';
-import { useContractError } from '~/hooks/useContractError';
 
 export default function TurbinePage() {
   const t = useTranslations('turbine');
@@ -271,7 +270,9 @@ export default function TurbinePage() {
   }, [olyPrice]);
 
   useEffect(() => {
-    setMyStakeNum(Number(stakeAmount));
+    if (stakeAmount) {
+      setMyStakeNum(Number(stakeAmount));
+    }
   }, [stakeAmount]);
 
   useEffect(() => {
@@ -361,7 +362,6 @@ export default function TurbinePage() {
             {isSlippage && (
               <Slippage
                 options={[
-                  { value: '0.5', label: '0.5%' },
                   { value: '0.1', label: '1%' },
                   { value: '3', label: '3%' },
                   { value: '5', label: '5%' },
@@ -414,12 +414,11 @@ export default function TurbinePage() {
                   <span className='uppercase'>
                     {`${formatNumbedecimalScale(amount, 4)}  ${'OLY'}`}
                     <span className='text-foreground/50 pl-2'>
-                      ($
+                      $
                       {formatNumbedecimalScale(
                         Number(amount) * Number(unitPrice),
                         2
                       )}
-                      )
                     </span>
                   </span>
                 ),
@@ -427,20 +426,19 @@ export default function TurbinePage() {
                   <span className='uppercase'>
                     {`${formatNumbedecimalScale(Number(amount) * (1 - slippage / 100), 4)}  ${'OLY'}`}
                     <span className='text-foreground/50 pl-2'>
-                      ($
+                      $
                       {formatNumbedecimalScale(
                         Number(amount) *
                           (1 - slippage / 100) *
                           Number(unitPrice),
                         2
                       )}
-                      )
                     </span>
                   </span>
                 ),
                 yakSwapFee: '0 USDT',
-                contractSpender: formatAddress(turbine),
-                recipient: (userAddress && formatAddress(userAddress)) || '',
+                contractSpender: turbine,
+                recipient: (userAddress && userAddress) || null,
                 tokenIn: 'OLY Token',
                 tokenOut: 'BSC USDT',
               }}

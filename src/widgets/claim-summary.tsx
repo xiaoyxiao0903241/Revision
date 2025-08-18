@@ -23,7 +23,8 @@ export const ClaimSummary: FC<{
           </InfoPopover>
         </List.Label>
         <List.Value className='text-xl font-mono'>
-          {formatNumbedecimalScale(data.amount || 0, 4)} OLY
+          {data.amount ? formatNumbedecimalScale(data.amount || 0, 4) : '0.00'}{' '}
+          OLY
         </List.Value>
       </List.Item>
       <List.Item>
@@ -35,7 +36,10 @@ export const ClaimSummary: FC<{
       <List.Item>
         <List.Label>{t('incomeTax')}</List.Label>
         <List.Value className='font-mono'>
-          {formatNumbedecimalScale(data.incomeTax || 0, 4)} OLY
+          {data.incomeTax
+            ? formatNumbedecimalScale(data.incomeTax || 0, 4)
+            : '0.00'}{' '}
+          OLY
         </List.Value>
       </List.Item>
     </List>

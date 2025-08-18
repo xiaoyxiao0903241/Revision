@@ -16,7 +16,7 @@ export const Unlockcalculator: FC<{
   // 计算器状态
   const [amount, setAmount] = useState('');
   const [stakingDuration, setStakingDuration] = useState(1);
-  const [rebaseApy, setRebaseApy] = useState(0.7);
+  const [rebaseApy, setRebaseApy] = useState(0.3);
   const [currentOlyPrice, setOlyPrice] = useState(60);
   const [addAmount, setAddAmount] = useState(0.02);
   const [nowOlyPrice, setNowOlyPrice] = useState(2);

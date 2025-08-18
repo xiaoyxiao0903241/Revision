@@ -1,9 +1,9 @@
 'use client';
 
-import { RainbowProvider } from '~/components/common/providers/RainbowProvider';
-import { Toaster } from 'sonner';
-import { UserAddressProvider } from '~/contexts/UserAddressContext';
 import { Suspense } from 'react';
+import { Toaster } from 'sonner';
+import { RainbowProvider } from '~/components/common/providers/RainbowProvider';
+import { UserAddressProvider } from '~/contexts/UserAddressContext';
 export default function AppProviders({
   children,
 }: {
@@ -18,7 +18,19 @@ export default function AppProviders({
           {children}
         </Suspense>
       </UserAddressProvider>
-      <Toaster richColors position='top-right' />
+      <Toaster
+        richColors
+        position='top-right'
+        theme='light'
+        toastOptions={{
+          style: {
+            background: '#293170',
+            color: '#ffffff',
+            border: '1px solid rgba(255, 255, 255, 0.40)',
+            boxShadow: `0 0 11px 0 rgba(87, 106, 244, 0.8) inset`,
+          },
+        }}
+      />
     </RainbowProvider>
   );
 }

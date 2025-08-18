@@ -18,6 +18,7 @@ import {
   SelectValue,
   View,
 } from '~/components';
+import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { useContractError } from '~/hooks/useContractError';
 import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
@@ -34,6 +35,7 @@ import {
 } from '~/wallet/constants/tokens';
 import { verifySignature } from '~/wallet/lib/web3/dao';
 import { ClaimSummary } from '~/widgets/claim-summary';
+
 const typeAddressMap = {
   matrix: ReferralRewardPool as `0x${string}`,
   promotion: TitleRewardPool as `0x${string}`,
@@ -236,7 +238,7 @@ export const ClaimSection = ({
               {t('amount')}
             </label>
             <div className='flex gap-2 text-white font-mono text-3xl'>
-              {formatNumbedecimalScale(rewardData?.unclaimedAmount || 0, 6)}
+              {formatNumbedecimalScale(rewardData?.unclaimedAmount || 0, 4)}
             </div>
           </div>
           <div className='flex items-center gap-1'>
@@ -247,16 +249,14 @@ export const ClaimSection = ({
       </View>
       {/* 信息提示 */}
       {Number(rewardData?.ratio || 0) > 0 ? (
-        Number(rewardData?.ratio || 0) < 6 ? (
+        Number(rewardData?.ratio || 0) >= 6 ? (
           <Notification>
             {t.rich('max_bonus_info', {
               rate: `x${rewardData?.ratio || 0}`,
               highlight: chunks => <span className='text-white'>{chunks}</span>,
             })}
           </Notification>
-        ) : (
-          <Notification>{t('max_bonus_info_max')}</Notification>
-        )
+        ) : null
       ) : (
         <></>
       )}
@@ -291,12 +291,18 @@ export const ClaimSection = ({
           <SelectValue placeholder={t('select_release_period')} />
         </SelectTrigger>
         <SelectContent>
-          {periodListData?.periodList?.map(item => (
-            <SelectItem
-              key={item.day}
-              value={String(item.day)}
-            >{`${item.day} ${tStaking('days')}`}</SelectItem>
-          ))}
+          {userAddress ? (
+            periodListData?.periodList?.map(item => (
+              <SelectItem
+                key={item.day}
+                value={String(item.day)}
+              >{`${item.day} ${tStaking('days')}`}</SelectItem>
+            ))
+          ) : (
+            <div className='text-center'>
+              <ConnectWalletButton className='text-xl  cursor-pointer px-6 !text-white text-5  min-w-[160px]   mx-auto' />
+            </div>
+          )}
         </SelectContent>
       </Select>
 

@@ -6,11 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Button, RoundedLogo, View } from '~/components';
 import { Card } from '~/components/card';
 import { useMock } from '~/hooks/useMock';
-import {
-  formatDecimal,
-  formatHash,
-  formatNumbedecimalScale,
-} from '~/lib/utils';
+import { formatDecimal, formatNumbedecimalScale } from '~/lib/utils';
 import { useMockStore } from '~/store/mock';
 import { BalanceCard } from '~/widgets/balance-card';
 // import { CandlestickChart } from "~/widgets/charts";
@@ -308,22 +304,6 @@ export default function SwapPage() {
             id: toastId,
           });
         }
-        // } else if (err?.message?.includes('insufficient')) {
-        //   toast.error(t2('toast.insufficient_balance'), {
-        //     id: toastId,
-        //   });
-        // } else if (err?.message?.includes('slippage')) {
-        //   toast.error(t2('toast.slippage_too_high'), {
-        //     id: toastId,
-        //   });
-        // } else if (err?.message?.includes('expired')) {
-        //   toast.error(t2('toast.transaction_expired'), {
-        //     id: toastId,
-        //   });
-        // } else {
-        //   toast.error(t2('toast.swap_error'), {
-        //     id: toastId,
-        //   });
       }
     } finally {
       setIsSwapping(false);
@@ -582,7 +562,7 @@ export default function SwapPage() {
                   <span className='uppercase'>
                     {`${exchangeMess.send.amount}  ${sourceOption?.symbol}`}
                     <span className='text-foreground/50 pl-2'>
-                      {`($${exchangeMess.send.usdt})`}
+                      {`$${exchangeMess.send.usdt}`}
                     </span>
                   </span>
                 ),
@@ -599,8 +579,8 @@ export default function SwapPage() {
                 yakSwapFee: `${formatDecimal(Number(decimal))} ${
                   sourceOption?.symbol
                 }`,
-                contractSpender: formatHash(sourceOption!.address),
-                recipient: formatHash(destinationOption!.address),
+                contractSpender: sourceOption!.address,
+                recipient: destinationOption!.address,
                 tokenIn: sourceOption!.description,
                 tokenOut: destinationOption!.description,
               }}

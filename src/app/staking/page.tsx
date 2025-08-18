@@ -14,11 +14,11 @@ import { WalletSummary } from '~/widgets';
 import { AmountCard } from '~/widgets/amount-card';
 // import { DurationSelect } from "~/widgets/select"
 import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
+import { useContractError } from '~/hooks/useContractError';
 import { formatNumbedecimalScale } from '~/lib/utils';
 import { useNolockStore } from '~/store/noLock';
 import DemandStakingAbi from '~/wallet/constants/DemandStakingAbi.json';
 import { getInviteInfo } from '~/wallet/lib/web3/invite';
-import { useContractError } from '~/hooks/useContractError';
 
 export default function StakingPage() {
   const t = useTranslations('staking');
