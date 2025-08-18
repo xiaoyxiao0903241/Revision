@@ -529,6 +529,8 @@ export default function SwapPage() {
               onTogChange={setIsChange}
               isChange={isChange}
               type='swap'
+              refreshSymbol={refreshSymbol}
+              onRefreshSymbol={setRefreshSymbol}
             ></RateCard>
 
             {/* 滑点设置 */}

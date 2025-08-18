@@ -12,6 +12,8 @@ export const RateCard: FC<{
   onTogChange: (value: boolean) => void;
   isChange?: boolean;
   type: string;
+  refreshSymbol?: string;
+  onRefreshSymbol?: (value: string) => void;
 }> = ({
   children,
   description,
@@ -22,6 +24,8 @@ export const RateCard: FC<{
   onTogChange,
   isChange,
   type = 'swap',
+  refreshSymbol = '0',
+  onRefreshSymbol,
 }) => {
   return (
     <div>
@@ -49,9 +53,12 @@ export const RateCard: FC<{
           ) : null}
           <div
             className={cn('cursor-pointer', {
-              'animate-spin': isLoading && type === 'swap',
+              'animate-spin': isLoading && refreshSymbol === 'btc',
             })}
-            onClick={onRefresh}
+            onClick={() => {
+              onRefreshSymbol?.('btc');
+              onRefresh();
+            }}
           >
             <Icon name='refresh' className={'w-5 h-5 pointer-events-none'} />
           </div>
