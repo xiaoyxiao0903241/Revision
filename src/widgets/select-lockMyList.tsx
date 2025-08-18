@@ -54,8 +54,8 @@ export const DurationSelect: FC<{
         </SelectValue>
       </SelectTrigger>
       <SelectContent className='px-2 h-[200px] overflow-y-scroll overflow-x-hidden'>
-        {userAddress ? (
-          options.length > 0 ? (
+        {userAddress &&
+          (options.length > 0 ? (
             options.map((it, index) => (
               <SelectItem key={index} value={index.toString() || ''}>
                 <div className='w-full flex justify-between'>
@@ -75,12 +75,7 @@ export const DurationSelect: FC<{
             ))
           ) : (
             <div className='text-center'>{t('noData')}</div>
-          )
-        ) : (
-          <div className='text-center'>
-            <ConnectWalletButton className='text-xl  cursor-pointer px-6 !text-white text-5  min-w-[160px]   mx-auto' />
-          </div>
-        )}
+          ))}
       </SelectContent>
     </Select>
   );
