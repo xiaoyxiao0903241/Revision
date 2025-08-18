@@ -118,9 +118,7 @@ export const CoolingPoolCard: FC<CoolingPoolCardProps> = ({
             <div className='text-xs text-foreground/50'>
               {t('waitingToBeReleased')}
             </div>
-            <div className='text-xs font-mono text-white'>
-              {data.waiting} ({data.waitingPercent.toFixed(2)}%)
-            </div>
+            <div className='text-xs font-mono text-white'>{data.waiting}</div>
           </div>
           {/* 进度条 */}
           <div className='bg-foreground/20 w-full h-2 rounded-full overflow-hidden'>
@@ -153,6 +151,9 @@ export const CoolingPoolCard: FC<CoolingPoolCardProps> = ({
                 }}
               />
             </div>
+          </div>
+          <div className='text-xs font-mono text-white text-center mt-2'>
+            {data.waitingPercent.toFixed(2)}%
           </div>
           {/* 周期 */}
           <div className='flex w-full items-center justify-between my-4'>

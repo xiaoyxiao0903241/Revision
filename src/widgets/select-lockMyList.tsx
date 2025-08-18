@@ -53,7 +53,7 @@ export const DurationSelect: FC<{
           </div>
         </SelectValue>
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className='px-2 h-[200px] overflow-y-scroll overflow-x-hidden'>
         {userAddress ? (
           options.length > 0 ? (
             options.map((it, index) => (

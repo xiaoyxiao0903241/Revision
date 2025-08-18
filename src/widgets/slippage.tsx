@@ -15,7 +15,9 @@ export const Slippage: FC<{
   const [isFocus, setIsFocus] = useState(false);
   return (
     <View className='bg-[#22285E] font-mono flex flex-col md:flex-row cl justify-start  md:justify-between md:items-center p-4 gap-2'>
-      <h3 className='text-sm font-semibold'>{t('allowableSlippage')}</h3>
+      <h3 className='text-sm font-chakraPetch font-semibold'>
+        {t('allowableSlippage')}
+      </h3>
       <div className='flex space-x-2 items-center'>
         <div
           onClick={() => {

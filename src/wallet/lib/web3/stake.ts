@@ -12,12 +12,14 @@ import {
   sOLY,
   OLY,
   nodeStaking,
+  MappingStaking,
 } from '../../constants/tokens';
 import LongStakingAbi from '../../constants/LongStakingAbi.json';
 import StakingAbi from '../../constants/staking.json';
 import DemandStakingAbi from '../../constants/DemandStakingAbi.json';
 import DistributorAbi from '../../constants/DistributorAbi.json';
 import NodeStakingAbi from '../../constants/NodeStaking.json';
+import MappingStakingAbi from '../../constants/MappingStaking.json';
 
 interface ContractCall {
   address: `0x${string}`;
@@ -216,6 +218,53 @@ export const getNodeStakes = async ({ address }: { address: Address }) => {
     return [];
   }
 };
+
+// 兑换质押列表
+export const getExchangeStakes = async ({ address }: { address: Address }) => {
+  try {
+    const exchangeStakes = await executeMulticall({
+      calls: [
+        {
+          address: MappingStaking,
+          abi: MappingStakingAbi as Abi,
+          functionName: 'listStake',
+          args: [address],
+        },
+      ],
+    });
+
+    if (exchangeStakes.length) {
+      const stakeData = exchangeStakes[0].data as {
+        blockReward: bigint;
+        claimableBalance: bigint;
+        expiry: bigint;
+        extraInterest: bigint;
+        pending: bigint;
+      };
+      if (Number(formatUnits(stakeData.pending, 9)) === 0) {
+        return [];
+      }
+      const list = [
+        {
+          pending: Number(formatUnits(stakeData.pending, 9)),
+          blockReward: Number(formatUnits(stakeData.blockReward, 9)),
+          interest: Number(formatUnits(stakeData.extraInterest, 9)),
+          expiry: Number(stakeData.expiry),
+          claimableBalance: Number(formatUnits(stakeData.claimableBalance, 9)),
+          index: 20000, //在质押列表里的最后
+          period: 'LP-360',
+          type: 'nodeStake',
+        },
+      ];
+      return list;
+    }
+    return [];
+  } catch (err: unknown) {
+    console.log(err);
+    return [];
+  }
+};
+
 //获取块
 export const getEnchBlock = async () => {
   try {

@@ -18,11 +18,10 @@ export default function EvangelistBonusPage() {
 
   // 奖励信息
   const { data: rewardPromotionData, refetch } = useQuery({
-    queryKey: ['rewardMatrix', userAddress],
+    queryKey: ['rewardPromotion', userAddress],
     queryFn: () => rewardPromotion(userAddress as `0x${string}`),
     enabled: Boolean(userAddress),
   });
-  console.log(rewardPromotionData, 'rewardPromotionData');
 
   const handleManualRefresh = () => {
     console.log(daoRecordsRef, 'daoRecordsRef');

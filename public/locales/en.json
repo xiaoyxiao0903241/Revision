@@ -24,22 +24,6 @@
     "wallet": "Wallet",
     "connect": "Connect Wallet"
   },
-  "invite": {
-    "title": "Invite",
-    "description": "Invite friends to participate in staking and earn additional rewards",
-    "referralCode": "Referral Code",
-    "enterReferralCode": "Enter Referral Code",
-    "submit": "Submit",
-    "copyReferralLink": "Copy Referral Link",
-    "inviteSuccess": "Invitation Successful",
-    "invalidReferralCode": "Invalid Referral Code"
-  },
-  "netWork": {
-    "changeNet": "Click to Switch Network",
-    "connect": "Please Connect Wallet First",
-    "noSupport": "Unknown Network",
-    "NotConnected": "Network Not Connected"
-  },
   "staking": {
     "stake": "Stake",
     "unstake": "Unstake",
@@ -143,7 +127,7 @@
     "calculatorDescription": "You can simulate and calculate returns from locked staking.",
     "claimInfo": "You can claim rebase rewards at any time. If unclaimed, these rewards will automatically compound and continue generating additional rebase rewards.",
     "release": "Release",
-    "pendingAmount": "Pending Release Amount",
+    "pendingAmount": "Pending Amount",
     "releasedAmount": "Released Amount"
   },
   "dao": {
@@ -184,11 +168,11 @@
     "source_address": "Source Address",
     "source_address_transaction_amount": "Source Address Transaction Amount",
     "bonus_amount": "Bonus Amount",
-    "loss_bonus_amount": "Loss Bonus Amount",
+    "loss_bonus_amount": "Loss Amount",
     "transaction_hash": "Transaction Hash",
     "date_time": "Date&Time",
     "bonus_event_type": "Bonus",
-    "community_level": "Community Level",
+    "community_level": "Evangelism Level",
     "unlock_layers_label": "Unlock Layers",
     "net_holding_amount": "Position",
     "walletNotConnected": "Please connect your wallet address to view detailed records",
@@ -384,7 +368,7 @@
     "noRecords": "This address has no cooling pool related transaction records.",
     "days": "Days",
     "releaseNum": "Release Amount",
-    "releaseDay": "Release Days",
+    "releaseDay": "Release Period",
     "releaseRate": "Tax Rate"
   },
   "dashboard": {
@@ -408,7 +392,7 @@
     "currentTotalValue": "Current Total Value",
     "performance": "Performance",
     "totalPerformance": "Total Community Locked",
-    "communityLevel": "Community Level",
+    "communityLevel": "Evangelism Level",
     "smallTeamPerformance": "Sub-community Locked",
     "rewards": "Rewards",
     "rewardPool": "Reward Pool",
@@ -453,6 +437,7 @@
     "receive": "Receive",
     "assets": "Assets",
     "account": "Account",
+    "mywallet": "Wallet",
     "myWallet": "My Wallet",
     "position": "Position",
     "reward": "Reward",
@@ -461,22 +446,6 @@
     "rebaseReward": "Rebase Reward",
     "totalBonus": "Total Bonus",
     "myAccount": "My Account",
-    "unlockOver": "Unlock Completed",
-    "addToken": "Add to Wallet",
-    "add_tip": "Current wallet does not support adding token function, please copy address and add manually!",
-    "add_err": "Please install wallet plugin first",
-    "nextBlockRate": "Next Block APR",
-    "next_earnings": "Next Block Reward",
-    "unpledgeing": "Unstaking in Progress...",
-    "unpledge": "Unstake",
-    "nodata": "No data",
-    "language": "English",
-    "copyright": "© 2025 OLYONE DAO",
-    "copy_success_message": "Copy Successful",
-    "copy_error_message": "Copy Failed",
-    "expired": "Countdown Ended",
-    "unclaimed_reward": "Claimable Rewards",
-    "connect_wallet": "Connect Wallet",
     "unlockOver": "Unlock Completed",
     "addToken": "Add to Wallet",
     "add_tip": "Current wallet does not support adding token function, please copy address and add manually!",
@@ -613,22 +582,6 @@
       "claim_failed": "Claim failed"
     }
   },
-  "bonds": {
-    "title": "Bonds",
-    "description": "Purchase bonds to earn rewards",
-    "lpBonds": "LP Bonds",
-    "treasuryBonds": "Treasury Bonds",
-    "purchase": "Purchase",
-    "redeem": "Redeem",
-    "bondPrice": "Bond Price",
-    "marketPrice": "Market Price",
-    "discount": "Discount",
-    "vestingTerm": "Vesting Term",
-    "maxPayout": "Max Payout",
-    "purchased": "Purchased",
-    "pending": "Pending",
-    "claimable": "Claimable"
-  },
   "tooltip": {
     "dash": {
       "life_rewards": "Total rewards earned from staking",
@@ -639,11 +592,8 @@
       "all_value": "Current total value of OLY tokens obtained through crowdfunding",
       "can_claim_reards": "Total unclaimed rewards in the DAO",
       "rebase_claim_reards": "Total rewards not yet released in the cooling pool",
-      "hand_rebase_reards": "Total rewards already released in the cooling pool",
-      "turbine_rewards": "Amount of rewards in turbine",
-      "unlocked_turbine_rewards": "Amount of unlocked rewards in turbine"
+      "hand_rebase_reards": "Total rewards already released in the cooling pool"
     },
-
     "community": {},
     "analytics": {
       "total_value": "Current total value of tokens staked and bonds purchased on the OLYONE platform",
@@ -655,7 +605,7 @@
     },
     "stake": {
       "receive": "Block rewards will enter the cooling pool",
-      "解除质押/您将收到": "The unstaked portion will be sent directly to your wallet",
+      "解除质押/您将收到": "The unstaked position will be sent directly to your wallet",
       "year_reate": "Represents the actual annual yield of staking, including compounding effects (from unclaimed rewards).",
       "APR": "APR = Latest per-block reward × Blocks per year",
       "unreabase_rwards": "Must release staking to unfreeze block rewards"

@@ -208,7 +208,11 @@ export const WalletSummaryLock: FC = () => {
             <Statistics
               title={t('apr')}
               value={`${yearApy}%`}
-              info={<span>{t2('stake.year_reate')}</span>}
+              info={
+                <span style={{ fontFamily: 'ChakraPetch, sans-serif' }}>
+                  {t2('stake.year_reate')}
+                </span>
+              }
             />
             <div className='h-px bg-border/20 w-full'></div>
             <Statistics
