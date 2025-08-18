@@ -22,7 +22,7 @@ import {
   getUserStakes,
   getExchangeStakes,
 } from '~/wallet/lib/web3/stake';
-import { WalletSummary } from '~/widgets';
+import { WalletSummaryLock } from '~/widgets';
 import { AmountCard } from '~/widgets/amount-card';
 import { ClaimSummary } from '~/widgets/claim-summary';
 import { ClaimSelect, DurationSelect } from '~/widgets/select-lockMyList';
@@ -484,7 +484,7 @@ export default function ClaimPage() {
 
           {/* 右侧钱包摘要 */}
           <div>
-            <WalletSummary />
+            <WalletSummaryLock />
           </div>
         </div>
       </div>
