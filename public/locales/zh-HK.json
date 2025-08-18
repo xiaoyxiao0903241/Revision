@@ -412,6 +412,8 @@
     }
   },
   "common": {
+    "copySuccess": "已複製到剪貼板！",
+    "copyError": "複製鏈接失敗,請手動複製",
     "welcome": "歡迎來到 OLYONE DAO",
     "description": "DeFi 質押平台",
     "loading": "載入中...",

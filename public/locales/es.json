@@ -412,6 +412,8 @@
     }
   },
   "common": {
+    "copySuccess": "¡Copiado al portapapeles!",
+    "copyError": "Error al copiar, por favor copie manualmente",
     "welcome": "Bienvenido a OLYONE DAO",
     "description": "Plataforma DeFi Staking",
     "loading": "Cargando...",
