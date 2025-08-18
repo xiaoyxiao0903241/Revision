@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { Alert } from '~/components';
-import { WalletSummary } from '~/widgets';
+import { WalletSummaryLock } from '~/widgets';
 import { StakingCalculator } from '~/widgets/staking-calculator';
 import LockStakingLayout from '../layout';
 export default function CalculatorPage() {
@@ -24,7 +24,7 @@ export default function CalculatorPage() {
 
           {/* 右侧钱包摘要 */}
           <div className='space-y-6'>
-            <WalletSummary />
+            <WalletSummaryLock />
           </div>
         </div>
       </div>

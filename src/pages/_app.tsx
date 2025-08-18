@@ -14,8 +14,8 @@ import './global.css';
 const Loading = () => (
   <div className='fixed inset-0 flex items-center justify-center bg-black'>
     <div className='flex flex-col items-center'>
-      <div className='w-16 h-16 border-4 border-[#4BFE05] border-t-transparent rounded-full animate-spin'></div>
-      <p className='mt-4 border-[#4BFE05] font-orbitron'>Loading...</p>
+      <div className='w-16 h-16 border-4 border-[#B408D7] border-t-transparent rounded-full animate-spin'></div>
+      <p className='mt-4 border-[#B408D7] font-orbitron'>Loading...</p>
     </div>
   </div>
 );

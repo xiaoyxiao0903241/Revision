@@ -87,7 +87,9 @@ export default function ClaimPage() {
     } catch (error: unknown) {
       if (isContractError(error as Error)) {
         const errorMessage = handleContractError(error as Error);
-        toast.error(errorMessage);
+        toast.error(errorMessage, {
+          id: toastId,
+        });
       } else {
         toast.error('error', {
           id: toastId,
@@ -145,8 +147,8 @@ export default function ClaimPage() {
                 data={{
                   value: claimAmount,
                   desc: Number(claimAmount || 0) * olyPrice,
-                  balance: normalProfit
-                    ? Number(formatNumbedecimalScale(normalProfit, 4))
+                  balance: allProfit
+                    ? Number(formatNumbedecimalScale(allProfit, 6))
                     : 0,
                 }}
                 onChange={value => {
@@ -181,7 +183,7 @@ export default function ClaimPage() {
                 clipDirection='topRight-bottomLeft'
                 className='w-full'
                 variant={
-                  normalProfit < 0.0001 ||
+                  normalProfit < 0.00001 ||
                   isDisabled ||
                   (rebalseProfit > 0 && hotDataInfo.stakNum > 0) ||
                   Number(claimAmount) === 0
@@ -189,7 +191,7 @@ export default function ClaimPage() {
                     : 'primary'
                 }
                 disabled={
-                  normalProfit < 0.0001 ||
+                  normalProfit < 0.00001 ||
                   isDisabled ||
                   (rebalseProfit > 0 && hotDataInfo.stakNum > 0) ||
                   Number(claimAmount) === 0 ||

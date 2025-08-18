@@ -20,8 +20,9 @@ import {
   depositDayList,
   getNodeStakes,
   getUserStakes,
+  getExchangeStakes,
 } from '~/wallet/lib/web3/stake';
-import { WalletSummary } from '~/widgets';
+import { WalletSummaryLock } from '~/widgets';
 import { AmountCard } from '~/widgets/amount-card';
 import { ClaimSummary } from '~/widgets/claim-summary';
 import { ClaimSelect, DurationSelect } from '~/widgets/select-lockMyList';
@@ -71,10 +72,20 @@ export default function ClaimPage() {
     queryFn: () => getCurrentBlock(),
     enabled: Boolean(userAddress),
   });
+
   //节点质押
   const { data: myNodeStakingList } = useQuery({
     queryKey: ['UserNodeStakes', userAddress],
     queryFn: () => getNodeStakes({ address: userAddress as `0x${string}` }),
+    enabled: Boolean(userAddress),
+    retry: 1,
+    refetchInterval: 20000,
+  });
+
+  //兑换质押
+  const { data: exchangeStakesList } = useQuery({
+    queryKey: ['ExchangeStakes', userAddress],
+    queryFn: () => getExchangeStakes({ address: userAddress as `0x${string}` }),
     enabled: Boolean(userAddress),
     retry: 1,
     refetchInterval: 20000,
@@ -121,7 +132,9 @@ export default function ClaimPage() {
     } catch (error: unknown) {
       if (isContractError(error as Error)) {
         const errorMessage = handleContractError(error as Error);
-        toast.error(errorMessage);
+        toast.error(errorMessage, {
+          id: toastId,
+        });
       } else {
         console.log(error);
         toast.error('error', {
@@ -170,7 +183,9 @@ export default function ClaimPage() {
     } catch (error: unknown) {
       if (isContractError(error as Error)) {
         const errorMessage = handleContractError(error as Error);
-        toast.error(errorMessage);
+        toast.error(errorMessage, {
+          id: toastId,
+        });
       } else {
         console.log(error);
         toast.error('error', {
@@ -221,7 +236,9 @@ export default function ClaimPage() {
     } catch (error: unknown) {
       if (isContractError(error as Error)) {
         const errorMessage = handleContractError(error as Error);
-        toast.error(errorMessage);
+        toast.error(errorMessage, {
+          id: toastId,
+        });
       } else {
         console.log(error);
         toast.error('error', {
@@ -237,7 +254,9 @@ export default function ClaimPage() {
   useEffect(() => {
     const updateList = async () => {
       if (
-        (myStakingList?.myStakingList || myNodeStakingList?.length) &&
+        (myStakingList?.myStakingList ||
+          myNodeStakingList ||
+          exchangeStakesList?.length) &&
         currentBlock &&
         blocksNum
       ) {
@@ -248,8 +267,11 @@ export default function ClaimPage() {
         const nodeList = myNodeStakingList?.length
           ? (myNodeStakingList as StakingItem[])
           : [];
+        const exchangeList = exchangeStakesList?.length
+          ? (exchangeStakesList as StakingItem[])
+          : [];
         const curBlock = Number(currentBlock);
-        const allList = [...nodeList, ...list];
+        const allList = [...nodeList, ...list, ...exchangeList];
         const updatedList = allList.map(it => ({
           ...it,
           time: String(
@@ -259,7 +281,7 @@ export default function ClaimPage() {
           ),
           isShow: false,
         }));
-        console.log(updatedList, 'updatedList99999');
+
         setstakList(updatedList);
         if (lockIndex != '') {
           setCurStakeItem(updatedList[lockIndex]);
@@ -345,13 +367,13 @@ export default function ClaimPage() {
                         ? Number(
                             formatNumbedecimalScale(
                               curStakeItem?.blockReward,
-                              2
+                              6
                             )
                           )
                         : 0
                       : curStakeItem
                         ? Number(
-                            formatNumbedecimalScale(curStakeItem?.interest)
+                            formatNumbedecimalScale(curStakeItem?.interest, 6)
                           )
                         : 0,
                 }}
@@ -400,7 +422,7 @@ export default function ClaimPage() {
                   clipDirection='topRight-bottomLeft'
                   className='w-full'
                   variant={
-                    (curStakeItem && curStakeItem.blockReward < 0.01) ||
+                    (curStakeItem && curStakeItem.blockReward < 0.00001) ||
                     isDisabled ||
                     curStakeItem?.blockReward === 0 ||
                     lockClaimIndex === 100 ||
@@ -409,7 +431,7 @@ export default function ClaimPage() {
                       : 'primary'
                   }
                   disabled={
-                    (curStakeItem && curStakeItem.blockReward < 0.01) ||
+                    (curStakeItem && curStakeItem.blockReward < 0.00001) ||
                     isDisabled ||
                     curStakeItem?.blockReward === 0 ||
                     lockClaimIndex === 100 ||
@@ -431,7 +453,7 @@ export default function ClaimPage() {
                   clipDirection='topRight-bottomLeft'
                   className='w-full'
                   variant={
-                    (curStakeItem && curStakeItem.interest < 0.01) ||
+                    (curStakeItem && curStakeItem.interest < 0.00001) ||
                     isDisabled ||
                     curStakeItem?.interest === 0 ||
                     lockClaimIndex === 100 ||
@@ -440,7 +462,7 @@ export default function ClaimPage() {
                       : 'primary'
                   }
                   disabled={
-                    (curStakeItem && curStakeItem.interest < 0.01) ||
+                    (curStakeItem && curStakeItem.interest < 0.00001) ||
                     isDisabled ||
                     lockClaimIndex === 100 ||
                     curStakeItem?.interest === 0 ||
@@ -462,7 +484,7 @@ export default function ClaimPage() {
 
           {/* 右侧钱包摘要 */}
           <div>
-            <WalletSummary />
+            <WalletSummaryLock />
           </div>
         </div>
       </div>

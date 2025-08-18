@@ -161,7 +161,9 @@ export default function StakingPage() {
     } catch (error: unknown) {
       if (isContractError(error as Error)) {
         const errorMessage = handleContractError(error as Error);
-        toast.error(errorMessage);
+        toast.error(errorMessage, {
+          id: toastId,
+        });
       } else {
         toast.error('error', {
           id: toastId,
@@ -257,7 +259,7 @@ export default function StakingPage() {
                 </List.Item>
               </List>
               {!userAddress ? (
-                <ConnectWalletButton className='text-xl py-3 cursor-pointer px-6 !text-white text-5    h-[48px] min-w-[160px]   mx-auto' />
+                <ConnectWalletButton className='py-3 cursor-pointer px-6 !text-white text-5    h-[48px] min-w-[160px]   mx-auto' />
               ) : (
                 <div className='flex items-center justify-center w-full gap-x-4'>
                   {(allowanceNum === 0 ||

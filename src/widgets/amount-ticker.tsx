@@ -57,7 +57,7 @@ export const AmountTicker: FC<{
           </span>
           <div className='flex items-center gap-2'>
             <RoundedLogo className='w-6 h-6' />
-            <span className='text-foreground text-3xl font-mono'>
+            <span className='text-foreground text-2xl font-mono'>
               {formatCurrency(data.value, false)}
             </span>
           </div>
