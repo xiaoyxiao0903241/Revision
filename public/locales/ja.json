@@ -412,6 +412,8 @@
     }
   },
   "common": {
+    "copySuccess": "クリップボードにコピーしました！",
+    "copyError": "リンクのコピーに失敗しました、手動でコピーしてください",
     "welcome": "OLYONE DAOへようこそ",
     "description": "DeFiステーキングプラットフォーム",
     "loading": "読込中...",

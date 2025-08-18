@@ -412,6 +412,8 @@
     }
   },
   "common": {
+    "copySuccess": "Đã sao chép vào bộ nhớ tạm!",
+    "copyError": "Sao chép thất bại, vui lòng sao chép thủ công",
     "welcome": "Chào mừng đến OLYONE DAO",
     "description": "Nền tảng DeFi Staking",
     "loading": "Đang tải...",

@@ -412,6 +412,8 @@
     }
   },
   "common": {
+    "copySuccess": "클립보드에 복사됨!",
+    "copyError": "복사 실패, 수동으로 복사하세요",
     "welcome": "OLYONE DAO에 오신 것을 환영합니다",
     "description": "DeFi 스테이킹 플랫폼",
     "loading": "불러오는 중...",

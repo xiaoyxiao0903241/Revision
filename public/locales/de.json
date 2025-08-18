@@ -412,6 +412,8 @@
     }
   },
   "common": {
+    "copySuccess": "In Zwischenablage kopiert!",
+    "copyError": "Kopieren fehlgeschlagen, bitte manuell kopieren",
     "welcome": "Willkommen bei OLYONE DAO",
     "description": "DeFi-Staking-Plattform",
     "loading": "Laden...",
