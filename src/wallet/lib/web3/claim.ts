@@ -104,7 +104,7 @@ export const newRewardList = async ({ address }: { address: string }) => {
           );
           allPending += Number(pending);
           rewardArr.push({
-            day: Number(list[i].releasedBlocks) / 57600,
+            day: Number(list[i].releasedBlocks) / 115200,
             periodIndex: i,
             claimable: profit,
             remainingRewards: pending.toString(),

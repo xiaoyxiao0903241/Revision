@@ -51,7 +51,7 @@ export const BalanceCard: FC<{
       <div className='text-sm text-gray-400 flex items-center gap-2'>
         <span>{t('myWallet')}</span>{' '}
         <span className='text-foreground'>
-          {formatDecimal(Number(balance), 2)} {symbol}
+          {formatDecimal(Number(balance), 6)} {symbol}
         </span>
         <div className='cursor-pointer' onClick={toggle}>
           <Image
