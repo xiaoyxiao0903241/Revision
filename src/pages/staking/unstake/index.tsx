@@ -277,7 +277,7 @@ export default function UnstakePage() {
                         </span>
                         <div className='flex items-center gap-2'>
                           <RoundedLogo className='w-6 h-6' />
-                          <span className='text-foreground text-3xl font-mono'>
+                          <span className='text-foreground text-2xl font-mono'>
                             {hotDataInfo.stakNum
                               ? formatNumbedecimalScale(hotDataInfo.stakNum, 2)
                               : 0}

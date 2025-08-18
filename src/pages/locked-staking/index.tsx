@@ -296,7 +296,7 @@ export default function StakingPage() {
                 }}
               />
               {!userAddress ? (
-                <ConnectWalletButton className='text-xl py-3 cursor-pointer px-6 !text-white text-5  h-[48px] min-w-[160px]   mx-auto' />
+                <ConnectWalletButton className='py-3 cursor-pointer px-6 !text-white text-5  h-[48px] min-w-[160px]   mx-auto' />
               ) : (
                 <div className='flex items-center justify-center w-full gap-x-4'>
                   {curPeriod &&
