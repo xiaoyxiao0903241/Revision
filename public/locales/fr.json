@@ -327,7 +327,10 @@
     "joinTime": "Date d'entrée",
     "submit": "Soumettre",
     "notData": "Aucun enregistrement",
-    "nobindDescription": "Veuillez lier l'adresse du parrain"
+    "nobindDescription": "Veuillez lier l'adresse du parrain",
+    "joinSuccess": "Réseau rejoint avec succès",
+    "joinFailed": "Échec de l'adhésion au réseau",
+    "unknownError": "Compte non activé ou incorrect"
   },
   "analytics": {
     "title": "Analyse",

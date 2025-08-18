@@ -327,7 +327,10 @@
     "joinTime": "参加時間",
     "submit": "送信",
     "notData": "このアドレスに紹介関連の記録はありません",
-    "nobindDescription": "先に紹介者アドレスを紐付けてください"
+    "nobindDescription": "先に紹介者アドレスを紐付けてください",
+    "joinSuccess": "ネットワークへの参加に成功",
+    "joinFailed": "ネットワーク参加失敗",
+    "unknownError": "リンクされたアカウントが非アクティブまたは誤っています"
   },
   "analytics": {
     "title": "分析",

@@ -327,7 +327,10 @@
     "joinTime": "Fecha Unión",
     "submit": "Enviar",
     "notData": "Sin registros de referidos",
-    "nobindDescription": "Debes vincular dirección de referido"
+    "nobindDescription": "Debes vincular dirección de referido",
+    "joinSuccess": "Red unida exitosamente",
+    "joinFailed": "Error al unirse a la red",
+    "unknownError": "Cuenta no activada o incorrecta"
   },
   "analytics": {
     "title": "Análisis",

@@ -327,7 +327,10 @@
     "joinTime": "Join Time",
     "submit": "Submit",
     "notData": "This address has no referral-related records",
-    "nobindDescription": "Please bind referrer address first"
+    "nobindDescription": "Please bind referrer address first",
+    "joinSuccess": "Successfully joined network",
+    "joinFailed": "Failed to join network",
+    "unknownError": "Account not activated or incorrect"
   },
   "analytics": {
     "title": "Analytics",

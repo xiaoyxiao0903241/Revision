@@ -110,15 +110,15 @@ export const CoolingPoolCard: FC<CoolingPoolCardProps> = ({
           >
             {data.claimable}
           </div>
-          <div className='text-xs text-foreground/50'>{t('released')}</div>
+          <div className='text-sm text-foreground/50'>{t('released')}</div>
         </div>
         <div className='w-full'>
           {/* 等待释放数量 */}
           <div className='flex w-full items-center justify-between my-2'>
-            <div className='text-xs text-foreground/50'>
+            <div className='text-sm text-foreground/50'>
               {t('waitingToBeReleased')}
             </div>
-            <div className='text-xs font-mono text-white'>{data.waiting}</div>
+            <div className='text-sm font-mono text-white'>{data.waiting}</div>
           </div>
           {/* 进度条 */}
           <div className='bg-foreground/20 w-full h-2 rounded-full overflow-hidden'>
@@ -152,13 +152,13 @@ export const CoolingPoolCard: FC<CoolingPoolCardProps> = ({
               />
             </div>
           </div>
-          <div className='text-xs font-mono text-white text-center mt-2'>
+          <div className='text-sm font-mono text-white text-center mt-2'>
             {data.waitingPercent.toFixed(2)}%
           </div>
           {/* 周期 */}
-          <div className='flex w-full items-center justify-between my-4'>
-            <div className='text-xs text-foreground/50'>{t('period')}</div>
-            <div className='text-xs font-mono text-white'>
+          <div className='flex w-full items-center justify-between my-2'>
+            <div className='text-sm text-foreground/50'>{t('period')}</div>
+            <div className='text-sm font-mono text-white'>
               {data.period}
               {tStaking('days')}
             </div>

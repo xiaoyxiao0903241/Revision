@@ -327,7 +327,10 @@
     "joinTime": "Beitrittszeit",
     "submit": "Senden",
     "notData": "Keine Referral-Einträge für diese Adresse",
-    "nobindDescription": "Bitte zuerst Werber-Adresse binden"
+    "nobindDescription": "Bitte zuerst Werber-Adresse binden",
+    "joinSuccess": "Erfolgreich dem Netzwerk beigetreten",
+    "joinFailed": "Beitritt zum Netzwerk fehlgeschlagen",
+    "unknownError": "Konto nicht aktiviert oder fehlerhaft"
   },
   "analytics": {
     "title": "Analytics",

@@ -327,7 +327,10 @@
     "joinTime": "Thời gian tham gia",
     "submit": "Gửi",
     "notData": "Địa chỉ này không có bản ghi giới thiệu",
-    "nobindDescription": "Vui lòng liên kết địa chỉ người giới thiệu trước"
+    "nobindDescription": "Vui lòng liên kết địa chỉ người giới thiệu trước",
+    "joinSuccess": "Tham gia mạng lưới thành công",
+    "joinFailed": "Tham gia mạng lưới thất bại",
+    "unknownError": "Tài khoản chưa kích hoạt hoặc sai"
   },
   "analytics": {
     "title": "Phân tích",

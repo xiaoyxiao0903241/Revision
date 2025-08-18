@@ -327,7 +327,10 @@
     "joinTime": "加入時間",
     "submit": "提交",
     "notData": "此地址沒有推薦相關的記錄",
-    "nobindDescription": "請先綁定推薦人地址"
+    "nobindDescription": "請先綁定推薦人地址",
+    "joinSuccess": "成功加入網絡",
+    "joinFailed": "加入網絡失敗",
+    "unknownError": "綁定的賬戶未激活或賬戶錯誤"
   },
   "analytics": {
     "title": "分析",

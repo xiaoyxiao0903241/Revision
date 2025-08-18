@@ -327,7 +327,10 @@
     "joinTime": "Data de Entrada",
     "submit": "Enviar",
     "notData": "Este endereço não possui registros de indicação",
-    "nobindDescription": "Vincule um endereço de referência primeiro"
+    "nobindDescription": "Vincule um endereço de referência primeiro",
+    "joinSuccess": "Rede ingressada com sucesso",
+    "joinFailed": "Falha ao ingressar na rede",
+    "unknownError": "Conta não ativada ou incorreta"
   },
   "analytics": {
     "title": "Análises",
