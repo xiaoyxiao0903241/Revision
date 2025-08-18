@@ -82,7 +82,7 @@ export const InfoPopover: FC<{
           )}
         />
       </PopoverTrigger>
-      <PopoverContent className={cn('w-52', className)}>
+      <PopoverContent className={cn('w-52 font-chakraPetch', className)}>
         {children}
       </PopoverContent>
     </Popover>
