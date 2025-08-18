@@ -213,7 +213,7 @@ export default function StakingPage() {
 
   //余额
   useEffect(() => {
-    const myBalance = formatNumbedecimalScale(olyBalance, 2);
+    const myBalance = formatNumbedecimalScale(olyBalance, 6);
     seMyolybalance(myBalance);
   }, [olyBalance]);
 
