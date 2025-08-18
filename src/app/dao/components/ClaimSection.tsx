@@ -18,7 +18,6 @@ import {
   SelectValue,
   View,
 } from '~/components';
-import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { useContractError } from '~/hooks/useContractError';
 import { useWriteContractWithGasBuffer } from '~/hooks/useWriteContractWithGasBuffer';
@@ -291,18 +290,12 @@ export const ClaimSection = ({
           <SelectValue placeholder={t('select_release_period')} />
         </SelectTrigger>
         <SelectContent>
-          {userAddress ? (
-            periodListData?.periodList?.map(item => (
-              <SelectItem
-                key={item.day}
-                value={String(item.day)}
-              >{`${item.day} ${tStaking('days')}`}</SelectItem>
-            ))
-          ) : (
-            <div className='text-center'>
-              <ConnectWalletButton className='text-xl  cursor-pointer px-6 !text-white text-5  min-w-[160px]   mx-auto' />
-            </div>
-          )}
+          {periodListData?.periodList?.map(item => (
+            <SelectItem
+              key={item.day}
+              value={String(item.day)}
+            >{`${item.day} ${tStaking('days')}`}</SelectItem>
+          ))}
         </SelectContent>
       </Select>
 
