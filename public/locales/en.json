@@ -127,7 +127,7 @@
     "calculatorDescription": "You can simulate and calculate returns from locked staking.",
     "claimInfo": "You can claim rebase rewards at any time. If unclaimed, these rewards will automatically compound and continue generating additional rebase rewards.",
     "release": "Release",
-    "pendingAmount": "Pending Release Amount",
+    "pendingAmount": "Pending Amount",
     "releasedAmount": "Released Amount"
   },
   "dao": {
@@ -168,11 +168,11 @@
     "source_address": "Source Address",
     "source_address_transaction_amount": "Source Address Transaction Amount",
     "bonus_amount": "Bonus Amount",
-    "loss_bonus_amount": "Loss Bonus Amount",
+    "loss_bonus_amount": "Loss Amount",
     "transaction_hash": "Transaction Hash",
     "date_time": "Date&Time",
     "bonus_event_type": "Bonus",
-    "community_level": "Community Level",
+    "community_level": "Evangelism Level",
     "unlock_layers_label": "Unlock Layers",
     "net_holding_amount": "Position",
     "walletNotConnected": "Please connect your wallet address to view detailed records",
@@ -368,7 +368,7 @@
     "noRecords": "This address has no cooling pool related transaction records.",
     "days": "Days",
     "releaseNum": "Release Amount",
-    "releaseDay": "Release Days",
+    "releaseDay": "Release Period",
     "releaseRate": "Tax Rate"
   },
   "dashboard": {
@@ -392,7 +392,7 @@
     "currentTotalValue": "Current Total Value",
     "performance": "Performance",
     "totalPerformance": "Total Community Locked",
-    "communityLevel": "Community Level",
+    "communityLevel": "Evangelism Level",
     "smallTeamPerformance": "Sub-community Locked",
     "rewards": "Rewards",
     "rewardPool": "Reward Pool",
@@ -605,7 +605,7 @@
     },
     "stake": {
       "receive": "Block rewards will enter the cooling pool",
-      "解除质押/您将收到": "The unstaked portion will be sent directly to your wallet",
+      "解除质押/您将收到": "The unstaked position will be sent directly to your wallet",
       "year_reate": "Represents the actual annual yield of staking, including compounding effects (from unclaimed rewards).",
       "APR": "APR = Latest per-block reward × Blocks per year",
       "unreabase_rwards": "Must release staking to unfreeze block rewards"
