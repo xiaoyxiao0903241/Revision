@@ -68,6 +68,7 @@ export default function SwapPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isChange, setIsChange] = useState(false);
+  const [refreshSymbol, setRefreshSymbol] = useState('');
 
   // 获取路由参数
   const type = searchParams?.get('type') || 'buy';
@@ -478,6 +479,8 @@ export default function SwapPage() {
                       setAmount(value);
                     }
                   }}
+                  refreshSymbol={refreshSymbol}
+                  onRefreshSymbol={setRefreshSymbol}
                   refreshTokenBalance={refreshTokenBalance}
                 />
               </SwapCard>
@@ -510,6 +513,8 @@ export default function SwapPage() {
                   balance={formattedToBalance}
                   symbol={destinationOption!.symbol}
                   refreshTokenBalance={refreshTokenBalance}
+                  refreshSymbol={refreshSymbol}
+                  onRefreshSymbol={setRefreshSymbol}
                 />
               </SwapCard>
             </View>
@@ -523,6 +528,7 @@ export default function SwapPage() {
               onTogleSlippage={setShowSlippage}
               onTogChange={setIsChange}
               isChange={isChange}
+              type='swap'
             ></RateCard>
 
             {/* 滑点设置 */}

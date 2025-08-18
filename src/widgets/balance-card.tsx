@@ -7,18 +7,30 @@ import { cn, formatDecimal } from '~/lib/utils';
 import { useMockStore } from '~/store/mock';
 
 export const BalanceCard: FC<{
+  refreshSymbol?: string;
   balance: string;
   value?: string;
   symbol: string;
   closePer?: boolean;
   onChange?: (value: string) => void;
   refreshTokenBalance: () => void;
-}> = ({ balance, value, onChange, symbol, refreshTokenBalance, closePer }) => {
+  onRefreshSymbol?: (value: string) => void;
+}> = ({
+  balance,
+  value,
+  onChange,
+  symbol,
+  refreshTokenBalance,
+  closePer,
+  onRefreshSymbol,
+  refreshSymbol,
+}) => {
   console.log(value);
   const t = useTranslations('swap');
   const { walletConnected: isLoading } = useMock();
   const [selectPer, setSelectPer] = useState('');
   const toggle = async () => {
+    onRefreshSymbol?.(symbol);
     refreshTokenBalance();
     useMockStore.setState({
       walletConnected: true,
@@ -47,7 +59,9 @@ export const BalanceCard: FC<{
             alt='refresh'
             width={12}
             height={12}
-            className={cn('w-3 h-3', { 'animate-spin': isLoading })}
+            className={cn('w-3 h-3', {
+              'animate-spin': isLoading && refreshSymbol === symbol,
+            })}
           />
         </div>
       </div>

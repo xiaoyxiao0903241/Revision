@@ -352,10 +352,12 @@ export default function TurbinePage() {
               onRefresh={() => {
                 onToggle(refreshOlyPrice, 'OLY');
               }}
+              onTogChange={() => {}}
               value={isSlippage}
               onTogleSlippage={value => {
                 setIsSlippage(value);
               }}
+              type='turbine'
             />
             {isSlippage && (
               <Slippage
