@@ -83,8 +83,8 @@ export default function AnalyticsPage() {
     queryKey: ['analyticsDashMess', userAddress],
     queryFn: () =>
       dashMess(
-        dayjs().subtract(1, 'y').format('YYYY-MM-DD'),
-        dayjs().format('YYYY-MM-DD')
+        dayjs().subtract(1, 'month').format('YYYY-MM-DD'),
+        dayjs().add(1, 'day').format('YYYY-MM-DD')
       ),
     enabled: Boolean(userAddress),
     // retry: 1,

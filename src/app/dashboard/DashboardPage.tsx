@@ -54,9 +54,11 @@ export default function DashboardPage() {
   const [saleAmount, setSaleAmount] = useState<number>(0);
   const [nodeAmount, setNodeAmount] = useState<number>(0);
   const [startTime] = useState<string>(
-    dayjs().subtract(1, 'year').format('YYYY-MM-DD')
+    dayjs().subtract(1, 'month').format('YYYY-MM-DD')
   );
-  const [endTime] = useState<string>(dayjs().format('YYYY-MM-DD'));
+  const [endTime] = useState<string>(
+    dayjs().add(1, 'day').format('YYYY-MM-DD')
+  );
   const { userAddress } = useUserAddress();
 
   const { data: myMessData } = useQuery({
@@ -174,7 +176,7 @@ export default function DashboardPage() {
           <div className='flex justify-between'>
             <Statistics
               title={t('genesisSize')}
-              value={`${formatNumbedecimalScale(nodeAmount, 2)} USDT`}
+              value={`${formatNumbedecimalScale(nodeAmount, 2)} OLY`}
               size='sm'
               info={<span>{t2('dash.invite_serving')}</span>}
             />
