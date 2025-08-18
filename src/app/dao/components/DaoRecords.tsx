@@ -183,7 +183,7 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
         render: {
           link: true,
           href: (value: string | number | boolean | undefined) =>
-            `https://bscscan.com/address/${value}`,
+            `https://bscscan.com/tx/${value}`,
           target: '_blank',
           valueType: 'hash',
         },
@@ -370,7 +370,7 @@ const DaoRecords = forwardRef<DaoRecordsRef, { type: string }>(
               render: {
                 link: true,
                 href: (value: string | number | boolean | undefined) =>
-                  `https://bscscan.com/address/${value}`,
+                  `https://bscscan.com/tx/${value}`,
                 target: '_blank',
                 valueType: 'hash',
               },

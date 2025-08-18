@@ -141,18 +141,12 @@ export default function AnalyticsPage() {
   //   olyPrice,
   // ]);
 
-  const formatData = (data: DepositItem[], type?: string) => {
+  const formatData = (data: DepositItem[]) => {
     const dateArr: string[] = [];
     const dataArr: number[] = [];
     data.forEach(item => {
       dateArr.push(dayjs(item.createdAt).format('YYYY-MM-DD'));
-      if (type) {
-        dataArr.push(
-          Math.floor(Number(item.amount || 0) * Number(olyPrice || 0))
-        );
-      } else {
-        dataArr.push(Math.floor(Number(item.amount || 0)));
-      }
+      dataArr.push(Math.floor(Number(item.amount || 0)));
     });
     return { dates: dateArr, data: dataArr };
   };
@@ -166,6 +160,7 @@ export default function AnalyticsPage() {
     const supplyList = dashMessInfo?.supplyList || [];
     // const backingPriceList = dashMessInfo?.backingPriceList || [];
     // const premiumList = dashMessInfo?.PremiumList || [];
+
     const newTodayObj = dashMessInfo?.todayObj
       ? {
           amount: dashMessInfo.todayObj.amount || 0,
@@ -185,7 +180,11 @@ export default function AnalyticsPage() {
           liquidityBondMarketCap:
             dashMessInfo.todayObj.liquidityBondMarketCap || 0,
           stableBondMarketCap: dashMessInfo.todayObj.stableBondMarketCap || 0,
-          TVL: Number(dashMessInfo.todayObj.TVL || 0) * Number(olyPrice || 0),
+          TVL: dashMessInfo.todayObj.TVL || 0,
+          nodeStakedAmount:
+            Number(dashMessInfo.todayObj.nodeStakedAmount || 0) *
+            Number(olyPrice || 0),
+          newLockedStaking: dashMessInfo.todayObj.newLockedStaking || 0,
         }
       : responseItemDefault;
 
@@ -209,8 +208,11 @@ export default function AnalyticsPage() {
             dashMessInfo.yesterdayObj.liquidityBondMarketCap || 0,
           stableBondMarketCap:
             dashMessInfo.yesterdayObj.stableBondMarketCap || 0,
-          TVL:
-            Number(dashMessInfo.yesterdayObj.TVL || 0) * Number(olyPrice || 0),
+          TVL: dashMessInfo.yesterdayObj.TVL || 0,
+          nodeStakedAmount:
+            Number(dashMessInfo.yesterdayObj.nodeStakedAmount || 0) *
+            Number(olyPrice || 0),
+          newLockedStaking: dashMessInfo.yesterdayObj.newLockedStaking || 0,
         }
       : responseItemDefault;
     console.log(newTodayObj, newYesterdayObj, 'dashMessInfo?.todayObj');
@@ -221,7 +223,7 @@ export default function AnalyticsPage() {
       const formattedList = depositList.map(item => {
         return [
           dayjs(item.createdAt).format('YYYY-MM-DD'),
-          (Number(item.amount || 0) * Number(olyPrice || 0)).toFixed(0),
+          Number(item.amount || 0).toFixed(0),
         ] as [string, string];
       });
       setDepositList(formattedList);
@@ -232,7 +234,7 @@ export default function AnalyticsPage() {
     // }
     // 流通市值
     if (marketList?.length) {
-      const formattedList = formatData(marketList, 'market');
+      const formattedList = formatData(marketList);
       setMarketList(formattedList);
     }
     // if (treasuryList?.length) {

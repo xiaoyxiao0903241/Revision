@@ -51,7 +51,7 @@ export default function DashboardPage() {
   const t2 = useTranslations('tooltip');
   const { olyPrice } = useNolockStore();
   const [myMessInfo, setMyMessInfo] = useSafeState<myMessDataType>();
-  const [saleAmount, setSaleAmount] = useState<number>(0);
+  // const [saleAmount, setSaleAmount] = useState<number>(0);
   const [nodeAmount, setNodeAmount] = useState<number>(0);
   const [startTime] = useState<string>(
     dayjs().subtract(1, 'month').format('YYYY-MM-DD')
@@ -96,7 +96,7 @@ export default function DashboardPage() {
           (nodeTotal += Number(item.amount))
       );
     }
-    setSaleAmount(nodeTotal * (olyPrice || 0));
+    // setSaleAmount(nodeTotal * (olyPrice || 0));
     setNodeAmount(nodeTotal);
   }, [nodeSummaryData, olyPrice]);
 
@@ -182,7 +182,7 @@ export default function DashboardPage() {
             />
             <Statistics
               title={t('currentTotalValue')}
-              value={`${formatNumbedecimalScale(saleAmount?.toString(), 2)} USDT`}
+              value={`${formatNumbedecimalScale(nodeAmount, 2)} USDT`}
               size='sm'
               info={<span>{t2('dash.all_value')}</span>}
             />
