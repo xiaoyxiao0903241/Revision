@@ -440,6 +440,7 @@
     "buy": "매수",
     "sell": "매도",
     "receive": "수령",
+    "receiveCrypto": "수령 Crypto",
     "assets": "자산",
     "account": "계정",
     "mywallet": "지갑",

@@ -14,6 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '~/components/dropdown-menu';
+import { ResponsiveDialog } from '~/components/responsive-dialog';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { useTokenBalance } from '~/hooks/useTokenBalance';
 import {
@@ -74,6 +75,8 @@ export function WalletDropdown({
   children,
   handleDisconnect,
 }: WalletDropdownProps) {
+  const [open, toggleOpen] = useState(false);
+  const [receiveDialogOpen, setReceiveDialogOpen] = useState(false);
   const t = useTranslations('common');
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('wallet');
@@ -401,248 +404,290 @@ export function WalletDropdown({
   const shortAddress = address ? formatAddress(address) : '';
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
-      <DropdownMenuContent
-        align='end'
-        className='w-[412px] p-0 bg-gradient-to-b from-[#1a1d4a] to-[#0f1235] border-[#434c8c] text-white'
-      >
-        {/* Header */}
-        <div className='flex flex-col p-6 gap-6'>
-          <div className='flex items-center justify-between gap-4'>
-            <div className='flex items-center gap-2 text-foreground/50'>
-              <Image
-                src='/images/icon/fox.png'
-                alt='wallet'
-                width={24}
-                height={24}
-              />
-              <span className='text-lg text-foreground font-mono'>
-                {shortAddress}
-              </span>
-              <button
-                className='cursor-pointer hover:text-white/70'
-                ref={addressRef}
-                onClick={() => {
-                  handleCopyAddress();
-                }}
-              >
-                <Icon name='copy' size={16} className='pointer-events-none' />
-              </button>
-              <div
-                className='cursor-pointer
+    <>
+      <DropdownMenu open={open} onOpenChange={toggleOpen}>
+        <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
+        <DropdownMenuContent
+          align='end'
+          className='w-[412px] p-0 bg-gradient-to-b from-[#1a1d4a] to-[#0f1235] border-[#434c8c] text-white'
+        >
+          {/* Header */}
+          <div className='flex flex-col p-6 gap-6'>
+            <div className='flex items-center justify-between gap-4'>
+              <div className='flex items-center gap-2 text-foreground/50'>
+                <Image
+                  src='/images/icon/fox.png'
+                  alt='wallet'
+                  width={24}
+                  height={24}
+                />
+                <span className='text-lg text-foreground font-mono'>
+                  {shortAddress}
+                </span>
+                <button
+                  className='cursor-pointer hover:text-white/70'
+                  ref={addressRef}
+                  onClick={() => {
+                    handleCopyAddress();
+                  }}
+                >
+                  <Icon name='copy' size={16} className='pointer-events-none' />
+                </button>
+                <div
+                  className='cursor-pointer
                 hover:text-white/70'
-                onClick={() => {
-                  window.open(`https://bscscan.com/address/${userAddress}`);
-                }}
+                  onClick={() => {
+                    window.open(`https://bscscan.com/address/${userAddress}`);
+                  }}
+                >
+                  <Icon
+                    name='share'
+                    size={16}
+                    className='pointer-events-none'
+                  />
+                </div>
+              </div>
+              <Button
+                clipDirection='topLeft-bottomRight'
+                clipSize={8}
+                variant='outlined'
+                className='h-8'
+                onClick={handleDisconnect}
               >
-                <Icon name='share' size={16} className='pointer-events-none' />
+                <span className='text-gradient text-sm px-2 z-10'>
+                  {t('disconnect')}
+                </span>
+              </Button>
+            </div>
+
+            {/* Balance */}
+            <div className='flex flex-col gap-2'>
+              <div className='text-3xl font-bold'>
+                $
+                {activeTab == 'wallet'
+                  ? formatDecimal(Number(totalValueInUSD), 2)
+                  : formatDecimal(Number(totalValueInUSDAccount), 2)}
+              </div>
+              <div className='text-foreground/50 text-xs'>
+                {activeTab === 'wallet' ? t('myWallet') : t('myAccount')}
               </div>
             </div>
-            <Button
-              clipDirection='topLeft-bottomRight'
-              clipSize={8}
-              variant='outlined'
-              className='h-8'
-              onClick={handleDisconnect}
-            >
-              <span className='text-gradient text-sm px-2 z-10'>
-                {t('disconnect')}
-              </span>
-            </Button>
+
+            <Segments
+              options={[
+                { value: 'wallet', label: t('myWallet') },
+                { value: 'account', label: t('account') },
+              ]}
+              value={activeTab}
+              onChange={value => setActiveTab(value as 'wallet' | 'account')}
+            />
           </div>
 
-          {/* Balance */}
-          <div className='flex flex-col gap-2'>
-            <div className='text-3xl font-bold'>
-              $
-              {activeTab == 'wallet'
-                ? formatDecimal(Number(totalValueInUSD), 2)
-                : formatDecimal(Number(totalValueInUSDAccount), 2)}
-            </div>
-            <div className='text-foreground/50 text-xs'>
-              {activeTab === 'wallet' ? t('myWallet') : t('myAccount')}
-            </div>
-          </div>
+          {/* Content */}
+          <div className='px-6 pb-6'>
+            {activeTab === 'wallet' && (
+              <div className='space-y-3'>
+                {/* Assets Header */}
+                <span className='text-foreground/50 text-xs px-0'>
+                  {t('assets')}
+                </span>
 
-          <Segments
-            options={[
-              { value: 'wallet', label: t('myWallet') },
-              { value: 'account', label: t('account') },
-            ]}
-            value={activeTab}
-            onChange={value => setActiveTab(value as 'wallet' | 'account')}
-          />
-        </div>
-
-        {/* Content */}
-        <div className='px-6 pb-6'>
-          {activeTab === 'wallet' && (
-            <div className='space-y-3'>
-              {/* Assets Header */}
-              <span className='text-foreground/50 text-xs px-0'>
-                {t('assets')}
-              </span>
-
-              {/* Assets List */}
-              <div className=''>
-                {walletAssets.map((asset, index) => (
-                  <DropdownMenuItem
-                    key={index}
-                    className='flex items-center justify-between px-0'
+                {/* Assets List */}
+                <div className=''>
+                  {walletAssets.map((asset, index) => (
+                    <DropdownMenuItem
+                      key={index}
+                      className='flex items-center justify-between px-0'
+                    >
+                      <div className='flex items-center gap-3'>
+                        <div className='relative'>
+                          <Image
+                            src={asset.icon}
+                            alt={asset.symbol}
+                            width={32}
+                            height={32}
+                            className='rounded-full'
+                          />
+                          <Image
+                            src='/images/icon/bnb.png'
+                            alt='bnb'
+                            width={16}
+                            height={16}
+                            className='absolute -bottom-1 -right-1 w-4 h-4'
+                          />
+                        </div>
+                        <div>
+                          <div className='font-medium space-x-2'>
+                            <span>{asset.symbol}</span>
+                            <span className='text-white/50 text-xs'>
+                              {asset.name}
+                            </span>
+                          </div>
+                          <div className='text-xs text-white/50'>
+                            {asset.chain}
+                          </div>
+                        </div>
+                      </div>
+                      <div className='text-right'>
+                        <div className='font-medium font-mono text-lg'>
+                          {asset.balance}
+                        </div>
+                        <div className='text-xs text-white/50'>
+                          ${formatDecimal(Number(asset.value), 2)}
+                        </div>
+                      </div>
+                    </DropdownMenuItem>
+                  ))}
+                </div>
+                {/* Action Buttons */}
+                <div className='flex gap-5 w-full text-sm font-mono'>
+                  <Button
+                    onClick={handleBuy}
+                    clipDirection='topLeft-bottomRight'
+                    clipSize={8}
+                    className='h-8 flex-1 text-sm font-mono'
                   >
-                    <div className='flex items-center gap-3'>
-                      <div className='relative'>
-                        <Image
-                          src={asset.icon}
-                          alt={asset.symbol}
-                          width={32}
-                          height={32}
-                          className='rounded-full'
-                        />
-                        <Image
-                          src='/images/icon/bnb.png'
-                          alt='bnb'
-                          width={16}
-                          height={16}
-                          className='absolute -bottom-1 -right-1 w-4 h-4'
-                        />
-                      </div>
-                      <div>
-                        <div className='font-medium space-x-2'>
-                          <span>{asset.symbol}</span>
-                          <span className='text-white/50 text-xs'>
-                            {asset.name}
-                          </span>
-                        </div>
-                        <div className='text-xs text-white/50'>
-                          {asset.chain}
-                        </div>
-                      </div>
-                    </div>
-                    <div className='text-right'>
-                      <div className='font-medium font-mono text-lg'>
-                        {asset.balance}
-                      </div>
-                      <div className='text-xs text-white/50'>
-                        ${formatDecimal(Number(asset.value), 2)}
-                      </div>
-                    </div>
-                  </DropdownMenuItem>
-                ))}
+                    {t('buy')}
+                  </Button>
+                  <Button
+                    onClick={handleSell}
+                    clipDirection='topLeft-bottomRight'
+                    clipSize={8}
+                    className='h-8 flex-1 text-sm font-mono'
+                  >
+                    {t('sell')}
+                  </Button>
+
+                  <Button
+                    onClick={() => {
+                      toggleOpen(false);
+                      setReceiveDialogOpen(true);
+                    }}
+                    variant='outlined'
+                    clipDirection='topLeft-bottomRight'
+                    clipSize={8}
+                    className='h-8 flex-1 text-sm font-mono'
+                  >
+                    <span className='text-gradient text-sm px-2 z-10'>
+                      {t('receive')}
+                    </span>
+                  </Button>
+                </div>
               </div>
-              {/* Action Buttons */}
-              <div className='flex gap-5 w-full text-sm font-mono'>
-                <Button
-                  onClick={handleBuy}
-                  clipDirection='topLeft-bottomRight'
-                  clipSize={8}
-                  className='h-8 flex-1 text-sm font-mono'
-                >
-                  {t('buy')}
-                </Button>
-                <Button
-                  onClick={handleSell}
-                  clipDirection='topLeft-bottomRight'
-                  clipSize={8}
-                  className='h-8 flex-1 text-sm font-mono'
-                >
-                  {t('sell')}
-                </Button>
-                {/* <Button
-                  onClick={handleReceive}
-                  variant='outlined'
-                  clipDirection='topLeft-bottomRight'
-                  clipSize={8}
-                  className='h-8 flex-1 text-sm font-mono'
-                >
-                  <span className='text-gradient text-sm px-2 z-10'>
-                    {t('receive')}
+            )}
+
+            {activeTab === 'account' && (
+              <div className='space-y-6'>
+                {/* Position Section */}
+                <div className='space-y-3'>
+                  <span className='text-white/50 text-xs px-0'>
+                    {t('position')}
                   </span>
-                </Button> */}
-              </div>
-            </div>
-          )}
+                  <div className='space-y-2'>
+                    {positionItems.map((item, index) => (
+                      <div
+                        key={index}
+                        className='flex items-center justify-between'
+                      >
+                        <div className='flex items-center gap-3'>
+                          <div
+                            className={cn(
+                              `w-8 h-8 rounded-full flex items-center justify-center`,
+                              item.className
+                            )}
+                          >
+                            <Icon name={item.icon} size={24} />
+                          </div>
+                          <div className='font-medium text-lg font-mono text-white'>
+                            {item.name}
+                          </div>
+                        </div>
+                        <div className='text-right'>
+                          <div className='font-medium text-lg font-mono text-white'>
+                            {item.amount} OLY
+                          </div>
+                          <div className='text-xs text-white/50'>
+                            ${item.value}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
-          {activeTab === 'account' && (
-            <div className='space-y-6'>
-              {/* Position Section */}
-              <div className='space-y-3'>
-                <span className='text-white/50 text-xs px-0'>
-                  {t('position')}
-                </span>
-                <div className='space-y-2'>
-                  {positionItems.map((item, index) => (
-                    <div
-                      key={index}
-                      className='flex items-center justify-between'
-                    >
-                      <div className='flex items-center gap-3'>
-                        <div
-                          className={cn(
-                            `w-8 h-8 rounded-full flex items-center justify-center`,
-                            item.className
-                          )}
-                        >
-                          <Icon name={item.icon} size={24} />
+                {/* Reward Section */}
+                <div className='space-y-3'>
+                  <span className='text-white/50 text-xs px-0'>
+                    {t('reward')}
+                  </span>
+                  <div className='space-y-2'>
+                    {rewardItems.map((item, index) => (
+                      <div
+                        key={index}
+                        className='flex items-center justify-between'
+                      >
+                        <div className='flex items-center gap-3'>
+                          <div
+                            className={cn(
+                              `w-8 h-8 rounded-full flex items-center justify-center`,
+                              item.className
+                            )}
+                          >
+                            <Icon name={item.icon} size={24} />
+                          </div>
+                          <div className='font-medium text-lg text-white'>
+                            {item.name}
+                          </div>
                         </div>
-                        <div className='font-medium text-lg font-mono text-white'>
-                          {item.name}
+                        <div className='text-right'>
+                          <div className='font-medium text-lg text-white'>
+                            {item.amount} OLY
+                          </div>
+                          <div className='text-xs text-white/50'>
+                            ${item.value}
+                          </div>
                         </div>
                       </div>
-                      <div className='text-right'>
-                        <div className='font-medium text-lg font-mono text-white'>
-                          {item.amount} OLY
-                        </div>
-                        <div className='text-xs text-white/50'>
-                          ${item.value}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
+            )}
+          </div>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
-              {/* Reward Section */}
-              <div className='space-y-3'>
-                <span className='text-white/50 text-xs px-0'>
-                  {t('reward')}
-                </span>
-                <div className='space-y-2'>
-                  {rewardItems.map((item, index) => (
-                    <div
-                      key={index}
-                      className='flex items-center justify-between'
-                    >
-                      <div className='flex items-center gap-3'>
-                        <div
-                          className={cn(
-                            `w-8 h-8 rounded-full flex items-center justify-center`,
-                            item.className
-                          )}
-                        >
-                          <Icon name={item.icon} size={24} />
-                        </div>
-                        <div className='font-medium text-lg text-white'>
-                          {item.name}
-                        </div>
-                      </div>
-                      <div className='text-right'>
-                        <div className='font-medium text-lg text-white'>
-                          {item.amount} OLY
-                        </div>
-                        <div className='text-xs text-white/50'>
-                          ${item.value}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+      <ResponsiveDialog
+        open={receiveDialogOpen}
+        onOpenChange={setReceiveDialogOpen}
+        title={t('receive')}
+      >
+        <div className='flex flex-col items-center justify-center'>
+          <div className='gradient rounded-sm p-[2px] my-3'>
+            <div className='rounded-sm bg-white w-40 h-40 '></div>
+          </div>
+          <Image
+            src='/images/icon/fox.png'
+            alt='wallet'
+            width={24}
+            height={24}
+          />
+
+          <span className='text-white font-semibold'>1Hx1k……ESNB</span>
+          <div className='flex items-center gap-2'>
+            <span className='text-xs text-foreground/50'>
+              1Hx1kZ9BUUukDVyHjg8wn5EwnCyb6wESNBESNB
+            </span>
+            <div className='cursor-pointer' onClick={handleCopyAddress}>
+              <Icon
+                name='copy'
+                size={16}
+                className='pointer-events-none text-gradient'
+              />
             </div>
-          )}
+          </div>
         </div>
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </ResponsiveDialog>
+    </>
   );
 }

@@ -440,6 +440,7 @@
     "buy": "Buy",
     "sell": "Sell",
     "receive": "Receive",
+    "receiveCrypto": "Receive Crypto",
     "assets": "Assets",
     "account": "Account",
     "mywallet": "Wallet",

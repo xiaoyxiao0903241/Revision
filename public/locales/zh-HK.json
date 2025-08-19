@@ -440,6 +440,7 @@
     "buy": "買入",
     "sell": "賣出",
     "receive": "接收",
+    "receiveCrypto": "接收 Crypto",
     "assets": "資產",
     "account": "賬戶",
     "mywallet": "錢包",
