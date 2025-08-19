@@ -1,7 +1,9 @@
 import * as SelectPrimitive from '@radix-ui/react-select';
+import { motion } from 'framer-motion';
 import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 import * as React from 'react';
 
+import { useResponsive } from '~/hooks/useResponsive';
 import { cn } from '~/lib/utils';
 import { View } from './view';
 
@@ -69,6 +71,58 @@ function SelectContent({
   position = 'popper',
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Content>) {
+  const { isMobile } = useResponsive();
+
+  if (isMobile) {
+    return (
+      <SelectPrimitive.Portal>
+        <SelectPrimitive.Content
+          data-slot='select-content'
+          className={cn(
+            'fixed inset-x-0 bottom-0 z-[100] outline-none',
+            className
+          )}
+          position='item-aligned'
+          side='bottom'
+          sideOffset={0}
+          avoidCollisions={false}
+          {...props}
+        >
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className='fixed inset-0 z-50 bg-black/50 backdrop-blur-sm'
+            onClick={e => {
+              e.preventDefault();
+              e.stopPropagation();
+              const event = new Event('keydown');
+              Object.defineProperty(event, 'keyCode', { value: 27 });
+              Object.defineProperty(event, 'key', { value: 'Escape' });
+              document.dispatchEvent(event);
+            }}
+          />
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            className='fixed left-1 bottom-4 right-1 z-50'
+          >
+            <View
+              clipDirection='topLeft-bottomRight'
+              containerClassName='backdrop-blur-sm'
+              className='relative shadow-[inset_0_0_10px_rgba(84,119,247,0.3)] bg-[#171837]/80 backdrop-blur-sm'
+            >
+              <SelectPrimitive.Viewport className='py-4 max-h-[min(80vh,400px)] overflow-y-auto px-4'>
+                {children}
+              </SelectPrimitive.Viewport>
+            </View>
+          </motion.div>
+        </SelectPrimitive.Content>
+      </SelectPrimitive.Portal>
+    );
+  }
+
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
