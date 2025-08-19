@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { FC, useEffect, useState } from 'react';
 import { Button, Card, Input, List, Slider, View } from '~/components';
 import {
+  cn,
   formatCurrency,
   formatDecimal,
   formatNumbedecimalScale,
@@ -61,25 +62,36 @@ export const Unlockcalculator: FC<{
     setOlyPrice(Number(formatNumbedecimalScale(olyPrice, 2)));
     setNowOlyPrice(Number(formatNumbedecimalScale(olyPrice, 2)));
   }, [olyPrice]);
+  const [focused, setFocused] = useState(false);
   return (
     <Card className='p-6'>
       {/* 金额输入 */}
-      <View className='space-y-2 bg-secondary/20 p-4'>
-        <label className='text-sm font-medium text-white'>{t('amount')}</label>
-        <div className='flex gap-2'>
-          <Input.Number
-            value={amount}
-            onChange={value => {
-              setAmount(value);
-            }}
-            placeholder='0.0'
-            step={0.000001}
-            className='flex-1 text-white text-3xl font-bold font-mono'
-          />
-        </div>
-        <p className='text-sm text-foreground/50 text-right'>
-          {t('latestOlyPrice', { amount: formatDecimal(olyPrice) })}
-        </p>
+      <View
+        className={cn('bg-[#22285E] p-[1px] transition-all', {
+          gradient: focused,
+        })}
+      >
+        <View className='bg-[#22285E] space-y-2 p-4'>
+          <label className='text-sm font-medium text-white'>
+            {t('amount')}
+          </label>
+          <div className='flex gap-2'>
+            <Input.Number
+              value={amount}
+              onChange={value => {
+                setAmount(value);
+              }}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
+              placeholder='0.0'
+              step={0.000001}
+              className='flex-1 text-white text-3xl font-bold font-mono caret-warning'
+            />
+          </div>
+          <p className='text-sm text-foreground/50 text-right'>
+            {t('latestOlyPrice', { amount: formatDecimal(olyPrice) })}
+          </p>
+        </View>
       </View>
       <View className='flex flex-col space-y-9 bg-secondary/20 p-4'>
         {/* 质押期限滑块 */}
