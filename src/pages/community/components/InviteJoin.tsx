@@ -223,7 +223,7 @@ const InviteJoin = () => {
 
             <div className='space-y-2'>
               <label className='text-gray-300 text-sm'>{t('referralBy')}</label>
-              <div className='bg-[#1b1f48] items-center flex shadow-[inset_0_0_20px_rgba(84,119,247,0.5)] px-3 py-4 w-full xl:w-5/6'>
+              <div className='bg-[#1b1f48] items-center flex shadow-[inset_0_0_20px_rgba(84,119,247,0.5)] px-3 py-4 w-full xl:w-5/6 gap-2'>
                 {inviteInfo?.isActive ? (
                   formatInviteAddress(inviteInfo.networkMap as string)
                 ) : (
@@ -235,7 +235,7 @@ const InviteJoin = () => {
                       placeholder={t('referralDescription')}
                     />
                     <button
-                      className='bg-transparent gradient-text font-bold text-sm'
+                      className='bg-transparent text-gradient font-bold text-sm'
                       onClick={() => handleJoin(code)}
                       disabled={
                         isJoining ||

@@ -46,7 +46,7 @@ export const AmountCard: FC<{
             {`${formatNumbedecimalScale(data.balance, 6)} OLY`}
           </span>
           <span
-            className='font-mono gradient-text cursor-pointer text-gradient'
+            className='font-mono text-gradient cursor-pointer text-gradient'
             onClick={() => {
               onChange?.(formatNumbedecimalScale(data.balance, 6));
             }}

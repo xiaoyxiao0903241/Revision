@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { useUserAddress } from '~/contexts/UserAddressContext';
 import { useTranslations } from 'next-intl';
-import { Card, CardTitle } from '~/components';
-import { formatNumbedecimalScale } from '~/lib/utils';
+import { useState } from 'react';
 import List from '~/assets/list.svg';
-import { inviteHisList } from '~/services/auth/invite';
+import { Card, CardTitle } from '~/components';
 import ProTable, { ProTableColumn } from '~/components/ProTable';
+import { useUserAddress } from '~/contexts/UserAddressContext';
+import { formatNumbedecimalScale } from '~/lib/utils';
+import { inviteHisList } from '~/services/auth/invite';
 
 // interface InviteDataSource {
 //   address: string;
@@ -27,7 +27,7 @@ const InviteRecord = () => {
     return (
       <span>
         {formatNumbedecimalScale(Number(value || 0), 6)}{' '}
-        <span className='gradient-text'> OLY</span>
+        <span className='text-gradient'> OLY</span>
       </span>
     );
   };
