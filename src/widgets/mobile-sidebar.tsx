@@ -49,9 +49,9 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
               onClick={onClose}
             >
               <motion.div
-                initial={{ x: '100%' }}
+                initial={{ x: '-100%' }}
                 animate={{ x: 0 }}
-                exit={{ x: '100%' }}
+                exit={{ x: '-100%' }}
                 transition={{ type: 'tween', duration: 0.2 }}
                 className={cn(
                   'w-full z-40 transform sidebar h-[calc(100vh-96px)] flex-1 md:hidden'

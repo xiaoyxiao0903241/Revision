@@ -1,15 +1,14 @@
 // import { useTranslations } from "next-intl";
 import Image from 'next/image';
 // import { usePathname, useRouter } from "next/navigation";
-import NetWork from '~/components/common/netWork';
-import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
-import { LanguageSwitcher } from './language-switcher';
-import { Icon } from '~/components';
+import { AlignJustify } from 'lucide-react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { useEffect } from 'react';
-
+import NetWork from '~/components/common/netWork';
+import ConnectWalletButton from '~/components/web3/ConnectWalletButton';
+import { LanguageSwitcher } from './language-switcher';
 /**
  * 配置 NProgress 进度条
  * 设置进度条的行为和样式参数
@@ -56,7 +55,14 @@ export function Header({ onMenuClick }: HeaderProps) {
   }, [pathname, searchParams]);
   return (
     <header className='flex h-20 items-center justify-between md:px-9 px-4'>
-      <div className='flex flex-col items-center justify-center'>
+      <div className='flex items-center'>
+        <button
+          onClick={onMenuClick}
+          className='md:hidden w-[20px] h-[20px] mr-3 flex items-center justify-center'
+        >
+          <AlignJustify className='w-[20px] h-[20px] text-white' />
+        </button>
+
         <Image
           src='/images/widgets/site-logo.png'
           alt='logo'
@@ -69,12 +75,6 @@ export function Header({ onMenuClick }: HeaderProps) {
         <LanguageSwitcher />
         <NetWork />
         <ConnectWalletButton></ConnectWalletButton>
-        <button
-          onClick={onMenuClick}
-          className='md:hidden w-[25px] h-[25px] border-[#434c8c] shadow-[inset_0_0_20px_rgba(84,119,247,0.5)] border rounded-full rotate-90 flex items-center justify-center'
-        >
-          <Icon name='arrow' size={20} />
-        </button>
       </div>
     </header>
   );

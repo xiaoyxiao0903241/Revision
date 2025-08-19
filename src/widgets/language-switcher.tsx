@@ -145,9 +145,9 @@ export const LanguageSwitcherMobile = () => {
               }}
             >
               <motion.div
-                initial={{ x: '100%', opacity: 0 }}
+                initial={{ x: '-100%', opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
-                exit={{ x: '100%', opacity: 0 }}
+                exit={{ x: '-100%', opacity: 0 }}
                 transition={{ type: 'tween', duration: 0.15 }}
                 className={cn(
                   'w-full z-40 transform sidebar h-[calc(100vh-96px)] flex-1 md:hidden'
