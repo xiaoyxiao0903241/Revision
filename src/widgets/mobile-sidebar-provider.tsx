@@ -1,6 +1,7 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react';
 import { Header } from './header';
 import { MobileSidebar } from './mobile-sidebar';
+import { Sidebar } from './sidebar';
 
 interface MobileSidebarContextType {
   isOpen: boolean;
@@ -38,9 +39,14 @@ export function MobileSidebarProvider({
     <MobileSidebarContext.Provider
       value={{ isOpen, openSidebar, closeSidebar }}
     >
-      <Header onMenuClick={openSidebar} />
-      {children}
-      <MobileSidebar isOpen={isOpen} onClose={closeSidebar} />
+      <div className='flex w-full'>
+        <Sidebar />
+        <div className='flex-1'>
+          <Header onMenuClick={openSidebar} />
+          {children}
+          <MobileSidebar isOpen={isOpen} onClose={closeSidebar} />
+        </div>
+      </div>
     </MobileSidebarContext.Provider>
   );
 }

@@ -236,10 +236,22 @@
     border-image: url('/images/background/sidebar.png');
     border-image-slice: 32 32 32 120 fill;
   }
+  .sidebar.collapsed {
+    width: 100px;
+    border-width: 32px;
+    border-image-slice: 32 fill;
+  }
+
   /* 直接子元素样式 */
   .sidebar > nav {
     margin: -32px;
     margin-left: -120px;
+    margin-bottom: -16px;
+  }
+
+  .sidebar.collapsed > nav {
+    margin: -32px;
+    margin-left: -32px;
     margin-bottom: -16px;
   }
   /* 卡片 */

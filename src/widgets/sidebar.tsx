@@ -1,20 +1,28 @@
+import { motion } from 'motion/react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Icon, IconFontName } from '~/components';
+import { FC, useState } from 'react';
+import { Icon, IconFontName, View } from '~/components';
 import { cn } from '~/lib/utils';
 import { LanguageSwitcherMobile } from './language-switcher';
-
 interface NavigationItem {
   label: string;
   href: string;
   icon: string;
   section?: string;
   uppercase?: boolean;
+  collapsed?: boolean;
 }
 
-const NavigationItem = ({ item }: { item: NavigationItem }) => {
+const NavigationItem = ({
+  item,
+  collapsed,
+}: {
+  item: NavigationItem;
+  collapsed?: boolean;
+}) => {
   const pathname = usePathname();
   const isActive =
     (pathname ?? '').endsWith(item.href) ||
@@ -26,7 +34,8 @@ const NavigationItem = ({ item }: { item: NavigationItem }) => {
       className={cn(
         'flex w-full items-center space-x-3 px-5 py-4 text-base font-medium transition-colors',
         'hover:bg-foreground/5',
-        isActive && 'text-gradient'
+        isActive && 'text-gradient',
+        collapsed && 'text-center'
       )}
     >
       {item.icon.startsWith('/') ? (
@@ -35,23 +44,29 @@ const NavigationItem = ({ item }: { item: NavigationItem }) => {
         <Icon
           name={item.icon as IconFontName}
           size={24}
-          className={cn('text-gray-400', isActive && 'text-gradient')}
+          className={cn('text-gray-400', isActive && 'text-gradient', {
+            'w-full text-center': collapsed,
+          })}
         />
       )}
-      <span
-        className={cn(
-          'text-gray-300',
-          isActive && 'text-gradient',
-          item.uppercase && 'uppercase'
-        )}
-      >
-        {item.label}
-      </span>
+      {collapsed ? null : (
+        <span
+          className={cn(
+            'text-gray-300',
+            isActive && 'text-gradient',
+            item.uppercase && 'uppercase'
+          )}
+        >
+          {item.label}
+        </span>
+      )}
     </Link>
   );
 };
 
-export const SidebarContent = () => {
+export const SidebarContent: FC<{ collapsed: boolean }> = ({
+  collapsed = false,
+}) => {
   const t = useTranslations('navigation');
 
   const navigationItems: NavigationItem[] = [
@@ -172,10 +187,17 @@ export const SidebarContent = () => {
   return (
     <>
       {/* Main Navigation */}
+      <div className='border-t border-foreground/10 mx-5'></div>
       {groupedItems.main && (
         <div className='space-y-2'>
           {groupedItems.main.map(item => {
-            return <NavigationItem key={item.href} item={item} />;
+            return (
+              <NavigationItem
+                key={item.href}
+                item={item}
+                collapsed={collapsed}
+              />
+            );
           })}
         </div>
       )}
@@ -183,11 +205,24 @@ export const SidebarContent = () => {
       {/* Staking Section */}
       {groupedItems.staking && (
         <div className='space-y-2'>
-          <h3 className='px-5 text-xs font-semibold uppercase tracking-wider text-gray-400'>
+          <h3
+            className={cn(
+              'px-5 text-xs font-semibold uppercase tracking-wider text-gray-400',
+              {
+                'w-full text-center': collapsed,
+              }
+            )}
+          >
             {t('staking')}
           </h3>
           {groupedItems.staking.map(item => {
-            return <NavigationItem key={item.href} item={item} />;
+            return (
+              <NavigationItem
+                key={item.href}
+                item={item}
+                collapsed={collapsed}
+              />
+            );
           })}
         </div>
       )}
@@ -195,11 +230,24 @@ export const SidebarContent = () => {
       {/* Bonds Section */}
       {groupedItems.bonds && (
         <div className='space-y-2'>
-          <h3 className='px-5 text-xs font-semibold uppercase tracking-wider text-gray-400'>
+          <h3
+            className={cn(
+              'px-5 text-xs font-semibold uppercase tracking-wider text-gray-400',
+              {
+                'w-full text-center': collapsed,
+              }
+            )}
+          >
             {t('bonds')}
           </h3>
           {groupedItems.bonds.map(item => {
-            return <NavigationItem key={item.href} item={item} />;
+            return (
+              <NavigationItem
+                key={item.href}
+                item={item}
+                collapsed={collapsed}
+              />
+            );
           })}
         </div>
       )}
@@ -207,11 +255,24 @@ export const SidebarContent = () => {
       {/* Tools Section */}
       {groupedItems.tools && (
         <div className='space-y-2'>
-          <h3 className='px-5 text-xs font-semibold uppercase tracking-wider text-gray-400'>
+          <h3
+            className={cn(
+              'px-5 text-xs font-semibold uppercase tracking-wider text-gray-400',
+              {
+                'w-full text-center': collapsed,
+              }
+            )}
+          >
             {t('tools')}
           </h3>
           {groupedItems.tools.map(item => {
-            return <NavigationItem key={item.href} item={item} />;
+            return (
+              <NavigationItem
+                key={item.href}
+                item={item}
+                collapsed={collapsed}
+              />
+            );
           })}
         </div>
       )}
@@ -222,7 +283,12 @@ export const SidebarContent = () => {
           {footerItems.map((item, index) => {
             return (
               <div
-                className='flex w-full items-center space-x-3 px-5 py-4 text-base font-medium transition-colors hover:bg-foreground/5 cursor-pointer'
+                className={cn(
+                  'flex w-full items-center space-x-3 px-5 py-4 text-base font-medium transition-colors hover:bg-foreground/5 cursor-pointer',
+                  {
+                    'items-center w-full justify-center': collapsed,
+                  }
+                )}
                 onClick={() => {
                   window.open(item.href);
                 }}
@@ -234,7 +300,7 @@ export const SidebarContent = () => {
                   width={24}
                   height={24}
                 />
-                <span>{item.label}</span>
+                {collapsed ? null : <span>{item.label}</span>}
               </div>
             );
           })}
@@ -242,7 +308,11 @@ export const SidebarContent = () => {
       )}
       {/* Social Links */}
       <div className='py-10'>
-        <div className='flex gap-6 px-5'>
+        <div
+          className={cn('flex gap-6 px-5', {
+            'flex-col items-center justify-center': collapsed,
+          })}
+        >
           <a
             href='#'
             aria-label='x'
@@ -294,11 +364,63 @@ export const SidebarContent = () => {
 };
 
 export const Sidebar = () => {
+  const [collapsed, setCollapsed] = useState(false);
   return (
-    <div className='hidden md:flex px-4 lg:px-9 flex-col'>
-      <div className='sidebar w-[260px] min-h-[calc(100vh-128px)]'>
+    <div className='hidden md:flex p-4 flex-col'>
+      <div
+        className={cn('sidebar min-h-[calc(100vh-32px)] transition-all', {
+          collapsed: collapsed,
+        })}
+      >
         <nav className='h-full flex flex-col gap-6 pt-6'>
-          <SidebarContent />
+          <div className='flex items-center justify-between px-5 relative'>
+            <Image
+              src='/images/widgets/site-logo.png'
+              alt='logo'
+              width={64}
+              height={36}
+            />
+            <motion.div
+              className='absolute'
+              initial={{
+                right: 20,
+              }}
+              animate={{
+                right: collapsed ? -9 : 20,
+              }}
+            >
+              <View
+                clipDirection='topLeft-bottomRight'
+                clipSize={4}
+                onClick={() => setCollapsed(!collapsed)}
+                border={true}
+                borderWidth={1}
+                borderColor='#434c8c'
+                className={cn(
+                  'flex items-center justify-center w-[24px] h-[24px] cursor-pointer text-xs bg-[#1b1f48] shadow-[inset_0_0_20px_rgba(84,119,247,0.5)] text-foreground transition-all',
+                  {
+                    'w-[18px] h-[18px]': collapsed,
+                  }
+                )}
+              >
+                <motion.div
+                  initial={{
+                    rotate: 90,
+                  }}
+                  animate={{
+                    rotate: collapsed ? -90 : 90,
+                  }}
+                >
+                  <Icon
+                    name='arrow'
+                    size={12}
+                    className='pointer-events-none'
+                  />
+                </motion.div>
+              </View>
+            </motion.div>
+          </div>
+          <SidebarContent collapsed={collapsed} />
         </nav>
       </div>
     </div>

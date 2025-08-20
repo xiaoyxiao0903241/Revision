@@ -68,7 +68,7 @@ export function Header({ onMenuClick }: HeaderProps) {
           alt='logo'
           width={106}
           height={60}
-          className='md:w-[106px] md:h-[60px] w-[60px] h-[30px]'
+          className='md:hidden w-[60px] h-[30px]'
         />
       </div>
       <div className='flex items-center gap-4'>

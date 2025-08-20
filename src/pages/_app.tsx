@@ -5,7 +5,6 @@ import { LanguageProvider } from '~/i18n/LanguageProvider';
 import { loadMessages } from '~/i18n/request';
 import { LocaleDetector } from '~/widgets/locale-detector';
 import { MobileSidebarProvider } from '~/widgets/mobile-sidebar-provider';
-import { Sidebar } from '../widgets/sidebar';
 import AppProviders from './components/AppProviders';
 import CommonTokenProvider from './components/CommonTokenProvider';
 import './global.css';
@@ -56,8 +55,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               <CommonTokenProvider>
                 {/* 主内容区域 */}
                 <div className='flex flex-1 md:flex-row md:py-6 md:pr-9 p-4'>
-                  {/* 左侧主导航栏 */}
-                  <Sidebar />
                   {/* 右侧主内容区域 */}
                   <main className='md:flex-1 md:w-auto w-full'>
                     <Component {...pageProps} />
