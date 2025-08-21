@@ -10,7 +10,7 @@ import { Button } from '~/components';
 import { useUserAddress } from '~/contexts/UserAddressContext';
 import { formatAddress } from '~/lib/utils';
 import { chainId as chainIdConstant } from '~/wallet/constants/tokens';
-import { WalletDropdown } from '~/widgets';
+import { WalletDropdown, useWalletDropdownStore } from '~/widgets';
 
 export default function ConnectWalletButton({
   className,
@@ -23,7 +23,6 @@ export default function ConnectWalletButton({
   const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
   const { openConnectModal } = useConnectModal();
-  const [isOpen, setIsOpen] = useState(false);
   const [isSigning, setIsSigning] = useState(false);
   const [copeA, setcopeA] = useState(1);
   const [copeB, setcopeB] = useState(1);
@@ -32,24 +31,13 @@ export default function ConnectWalletButton({
   const addressRef = useRef<HTMLButtonElement>(null);
   const addressClipboardRef = useRef<ClipboardJS | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
-
-  // 添加点击外部区域关闭菜单的功能
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  const walletDialogOpen = useWalletDropdownStore(
+    state => state.walletDialogOpen
+  );
 
   // 监听账户变化，保持按钮收起状态
   useEffect(() => {
-    setIsOpen(false);
+    useWalletDropdownStore.setState({ walletDialogOpen: false });
   }, [address]);
 
   const { switchChain } = useSwitchChain();
@@ -72,7 +60,7 @@ export default function ConnectWalletButton({
     try {
       setIsSigning(true);
       await sign(address);
-      setIsOpen(false);
+      useWalletDropdownStore.setState({ walletDialogOpen: false });
     } catch (error) {
       console.error('Sign in failed:', error);
       disconnect();
@@ -128,7 +116,7 @@ export default function ConnectWalletButton({
     setIsSigned(false);
     setUserAddress(null);
     disconnect();
-    setIsOpen(false);
+    useWalletDropdownStore.setState({ walletDialogOpen: false });
   };
 
   if (!isConnected) {
@@ -165,8 +153,12 @@ export default function ConnectWalletButton({
       <div className='relative' ref={menuRef}>
         <Button
           clipDirection='topRight-bottomLeft'
-          onClick={() => setIsOpen(!isOpen)}
           className='gap-2 px-2 h-9 lg:px-6 lg:h-12 lg:text-base text-[13px]'
+          onClick={() => {
+            useWalletDropdownStore.setState({
+              walletDialogOpen: true,
+            });
+          }}
         >
           <div className='flex items-center gap-2'>
             <Image
@@ -180,7 +172,7 @@ export default function ConnectWalletButton({
           <ChevronDown
             color='white'
             className={`w-4 h-4 transition-transform  ${
-              isOpen ? 'rotate-180' : ''
+              walletDialogOpen ? 'rotate-180' : ''
             }`}
           />
         </Button>
